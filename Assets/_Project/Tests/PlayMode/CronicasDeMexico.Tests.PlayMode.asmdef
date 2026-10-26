@@ -1,0 +1,14 @@
+{
+    "name": "CronicasDeMexico.Tests.PlayMode",
+    "rootNamespace": "CronicasDeMexico.Tests",
+    "references": ["UnityEngine.TestRunner", "UnityEditor.TestRunner", "CronicasDeMexico.Core"],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": true,
+    "precompiledReferences": ["nunit.framework.dll"],
+    "autoReferenced": false,
+    "defineConstraints": ["UNITY_INCLUDE_TESTS"],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

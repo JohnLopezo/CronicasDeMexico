@@ -1,0 +1,14 @@
+{
+    "name": "CronicasDeMexico.Data",
+    "rootNamespace": "CronicasDeMexico.Data",
+    "references": ["CronicasDeMexico.Core"],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

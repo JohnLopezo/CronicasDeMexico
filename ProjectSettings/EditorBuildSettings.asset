@@ -1,0 +1,16 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1045 &1
+EditorBuildSettings:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Scenes:
+  - enabled: 1
+    path: Assets/_Project/Scenes/Boot/Boot.unity
+    guid: b86a7a0c363201846a40cf3126ed744b
+  - enabled: 1
+    path: Assets/_Project/Scenes/Sandbox/Sandbox_HD2D.unity
+    guid: 8df210e78a16fa242b059972540d1a5e
+  m_configObjects:
+    com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
+  m_UseUCBPForAssetBundles: 0

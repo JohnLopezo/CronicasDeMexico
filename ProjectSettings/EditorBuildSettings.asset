@@ -11,6 +11,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/_Project/Scenes/Sandbox/Sandbox_HD2D.unity
     guid: 8df210e78a16fa242b059972540d1a5e
+  - enabled: 1
+    path: Assets/_Project/Scenes/Regions/Olmeca/Olmeca_Prototipo.unity
+    guid: 3c64a04cf6f4e614c9d62e6bcd440735
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   m_UseUCBPForAssetBundles: 0

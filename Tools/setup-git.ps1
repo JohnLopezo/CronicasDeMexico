@@ -20,6 +20,7 @@ if (Test-Path $Merge) {
     Write-Warning "No se encontró UnityYAMLMerge en $Merge. Instala Unity $UnityVersion desde Unity Hub y vuelve a ejecutar."
 }
 
+git config --local lfs.https://github.com/JohnLopezo/CronicasDeMexico.git/info/lfs.locksverify false
 git config --local core.autocrlf false
 git config --local pull.rebase true
 Write-Host 'Listo.'

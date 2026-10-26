@@ -1,7 +1,7 @@
 {
     "name": "CronicasDeMexico.Tests.PlayMode",
     "rootNamespace": "CronicasDeMexico.Tests",
-    "references": ["UnityEngine.TestRunner", "UnityEditor.TestRunner", "CronicasDeMexico.Core"],
+    "references": ["UnityEngine.TestRunner", "UnityEditor.TestRunner", "CronicasDeMexico.Core", "CronicasDeMexico.World", "CronicasDeMexico.Gameplay", "Unity.InputSystem"],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,

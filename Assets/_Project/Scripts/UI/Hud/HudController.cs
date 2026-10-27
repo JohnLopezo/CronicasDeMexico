@@ -5,8 +5,8 @@ using UnityEngine.UIElements;
 namespace CronicasDeMexico.UI.Hud
 {
     /// <summary>
-    /// Muestra el aviso de interacción, los mensajes y, opcionalmente, un contador de FPS.
-    /// No conoce al jugador: recibe los textos por canales de eventos.
+    /// Muestra la vida del jugador, el aviso de interacción, los mensajes y, opcionalmente, un contador de FPS.
+    /// No conoce al jugador: recibe los datos por canales de eventos.
     /// </summary>
     [RequireComponent(typeof(UIDocument))]
     public sealed class HudController : MonoBehaviour
@@ -17,13 +17,17 @@ namespace CronicasDeMexico.UI.Hud
 
         [SerializeField] StringEventChannel promptChannel;
         [SerializeField] StringEventChannel messageChannel;
+        [SerializeField] HealthEventChannel healthChannel;
 
-        [SerializeField, Tooltip("Muestra FPS y milisegundos por frame en la esquina superior izquierda.")]
+        [SerializeField, Tooltip("Muestra FPS y milisegundos por frame en la esquina superior derecha.")]
         bool showFps = true;
 
         Label prompt;
         Label message;
         Label fps;
+        VisualElement health;
+        VisualElement healthFill;
+        Label healthText;
         int frameCount;
         float fpsTimer;
 
@@ -33,6 +37,9 @@ namespace CronicasDeMexico.UI.Hud
             prompt = root.Q<Label>("prompt");
             message = root.Q<Label>("message");
             fps = root.Q<Label>("fps");
+            health = root.Q("health");
+            healthFill = root.Q("health-fill");
+            healthText = root.Q<Label>("health-text");
 
             ShowPrompt(null);
             ShowMessage(null);
@@ -42,6 +49,8 @@ namespace CronicasDeMexico.UI.Hud
                 promptChannel.Subscribe(ShowPrompt);
             if (messageChannel != null)
                 messageChannel.Subscribe(ShowMessage);
+            if (healthChannel != null)
+                healthChannel.Subscribe(ShowHealth);
         }
 
         void OnDisable()
@@ -50,6 +59,8 @@ namespace CronicasDeMexico.UI.Hud
                 promptChannel.Unsubscribe(ShowPrompt);
             if (messageChannel != null)
                 messageChannel.Unsubscribe(ShowMessage);
+            if (healthChannel != null)
+                healthChannel.Unsubscribe(ShowHealth);
         }
 
         void Update()
@@ -70,6 +81,14 @@ namespace CronicasDeMexico.UI.Hud
         void ShowPrompt(string text) => SetText(prompt, text);
 
         void ShowMessage(string text) => SetText(message, text);
+
+        // La barra se muestra con el primer dato: escenas sin jugador con vida no la enseñan.
+        void ShowHealth(HealthChange change)
+        {
+            health.RemoveFromClassList(HiddenClass);
+            healthFill.style.width = Length.Percent(change.Max > 0 ? 100f * change.Current / change.Max : 0f);
+            healthText.text = $"{change.Current}/{change.Max}";
+        }
 
         static void SetText(Label label, string text)
         {

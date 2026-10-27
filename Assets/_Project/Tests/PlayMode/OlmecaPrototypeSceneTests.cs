@@ -1,5 +1,9 @@
 using System.Collections;
+using System.Linq;
+using CronicasDeMexico.Gameplay.Combat;
+using CronicasDeMexico.Gameplay.Enemies;
 using CronicasDeMexico.Gameplay.Interaction;
+using CronicasDeMexico.Gameplay.Npc;
 using CronicasDeMexico.Gameplay.Player;
 using CronicasDeMexico.World.Rendering;
 using NUnit.Framework;
@@ -28,6 +32,19 @@ namespace CronicasDeMexico.Tests
             Assert.IsNotNull(Camera.main, "La escena no tiene una cámara con la etiqueta MainCamera.");
             Assert.IsNotNull(Camera.main.GetComponent<CameraQualityApplier>(), "La cámara no tiene CameraQualityApplier.");
             Assert.IsNotNull(player.GetComponent<DirectionalSpriteAnimator>(), "El jugador no tiene DirectionalSpriteAnimator.");
+            Assert.IsNotNull(player.GetComponent<PlayerAttack>(), "El jugador no puede atacar.");
+            Assert.That(player.GetComponent<Health>().Current, Is.EqualTo(player.GetComponent<Health>().Max),
+                "Al empezar ningún enemigo debe alcanzar al jugador.");
+
+            Assert.That(Object.FindObjectsByType<InscriptionInteractable>(FindObjectsSortMode.None).Length, Is.EqualTo(5),
+                "Debe haber inscripciones en la cabeza, el altar y las tres estelas.");
+            Assert.IsNotNull(Object.FindAnyObjectByType<NpcPatrol>(), "Falta el artesano.");
+            Assert.IsNotNull(Object.FindAnyObjectByType<DialogueInteractable>(), "El artesano no tiene diálogo.");
+            Assert.That(Object.FindObjectsByType<EnemyChaser>(FindObjectsSortMode.None).Length, Is.EqualTo(2), "Debe haber dos espíritus jaguar.");
+
+            var health = Object.FindAnyObjectByType<UIDocument>().rootVisualElement.Q("health");
+            Assert.IsNotNull(health, "El HUD no tiene barra de vida.");
+            Assert.IsFalse(health.ClassListContains("hidden"), "La barra de vida debe verse con el jugador en escena.");
 
             yield return SceneManager.UnloadSceneAsync(SceneName);
         }
@@ -38,7 +55,8 @@ namespace CronicasDeMexico.Tests
             yield return SceneManager.LoadSceneAsync(SceneName, LoadSceneMode.Additive);
             yield return null;
 
-            var inscription = Object.FindAnyObjectByType<InscriptionInteractable>();
+            var inscription = Object.FindObjectsByType<InscriptionInteractable>(FindObjectsSortMode.None)
+                .FirstOrDefault(i => i.transform.parent != null && i.transform.parent.name == "CabezaColosal");
             Assert.IsNotNull(inscription, "La cabeza colosal no tiene inscripción.");
             var document = Object.FindAnyObjectByType<UIDocument>();
             Assert.IsNotNull(document, "La escena no tiene HUD.");

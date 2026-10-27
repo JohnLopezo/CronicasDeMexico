@@ -1,6 +1,12 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements">
     <Style src="Hud.uss" />
     <ui:VisualElement name="hud-root" class="hud-root" picking-mode="Ignore">
+        <ui:VisualElement name="health" class="hud-health hidden" picking-mode="Ignore">
+            <ui:VisualElement class="hud-health__bar" picking-mode="Ignore">
+                <ui:VisualElement name="health-fill" class="hud-health__fill" picking-mode="Ignore" />
+            </ui:VisualElement>
+            <ui:Label name="health-text" class="hud-health__text" picking-mode="Ignore" />
+        </ui:VisualElement>
         <ui:Label name="fps" class="hud-fps" picking-mode="Ignore" />
         <ui:VisualElement class="hud-bottom" picking-mode="Ignore">
             <ui:Label name="message" class="hud-message hidden" picking-mode="Ignore" />

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using CronicasDeMexico.Core.Events;
 using CronicasDeMexico.Gameplay.Interaction;
+using CronicasDeMexico.Gameplay.Npc;
 using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -128,6 +129,51 @@ namespace CronicasDeMexico.Tests
             Assert.That(messages.Count, Is.EqualTo(2), "La segunda pulsación debe cerrar el mensaje y no reabrirlo.");
             Assert.That(messages[^1], Is.Null);
             StringAssert.Contains("Examinar", prompts[^1], "Al cerrar el mensaje debe volver el aviso.");
+        }
+
+        [UnityTest]
+        public IEnumerator Conversation_AdvancesLineByLine_ThenCloses_AndReleasesNpc()
+        {
+            // Suelo para que el CharacterController del NPC no caiga y salga del alcance.
+            var ground = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            ground.transform.position = new Vector3(0f, -0.5f, 0f);
+            ground.transform.localScale = new Vector3(10f, 1f, 10f);
+
+            var npc = new GameObject("NpcPrueba") { layer = inscription.layer };
+            npc.SetActive(false);
+            npc.transform.position = new Vector3(-1f, 0f, 0f);
+            npc.AddComponent<CharacterController>();
+            var patrol = npc.AddComponent<NpcPatrol>();
+            var trigger = npc.AddComponent<SphereCollider>();
+            trigger.isTrigger = true;
+            trigger.center = new Vector3(0f, 0.7f, 0f);
+            var dialogue = npc.AddComponent<DialogueInteractable>();
+            typeof(DialogueInteractable).GetField("lines", PrivateField).SetValue(dialogue, new[] { "Uno", "Dos" });
+            typeof(DialogueInteractable).GetField("messageChannel", PrivateField).SetValue(dialogue, messageChannel);
+            typeof(DialogueInteractable).GetField("patrol", PrivateField).SetValue(dialogue, patrol);
+            npc.SetActive(true);
+
+            try
+            {
+                yield return new WaitForSeconds(0.25f);
+                StringAssert.Contains("Hablar", prompts[^1]);
+
+                yield return PressInteract();
+                Assert.That(messages[^1], Is.EqualTo("Uno"));
+                Assert.IsTrue(patrol.IsHeld, "El NPC debe detenerse mientras habla.");
+
+                yield return PressInteract();
+                Assert.That(messages[^1], Is.EqualTo("Dos"), "La segunda pulsación debe mostrar la línea siguiente.");
+
+                yield return PressInteract();
+                Assert.That(messages[^1], Is.Null, "Tras la última línea, Interactuar debe cerrar el mensaje.");
+                Assert.IsFalse(patrol.IsHeld, "Al terminar la conversación el NPC debe seguir su camino.");
+            }
+            finally
+            {
+                Object.Destroy(npc);
+                Object.Destroy(ground);
+            }
         }
 
         [UnityTest]

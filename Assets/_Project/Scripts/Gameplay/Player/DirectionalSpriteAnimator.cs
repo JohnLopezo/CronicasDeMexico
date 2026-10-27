@@ -15,20 +15,34 @@ namespace CronicasDeMexico.Gameplay.Player
         // Por debajo de esta velocidad (m/s) se muestra la pose quieta.
         const float WalkSpeedThreshold = 0.1f;
 
-        [SerializeField] PlayerMovement movement;
+        [SerializeField, Tooltip("Componente que implementa IPlanarMotion (PlayerMovement, NpcPatrol, EnemyChaser...).")]
+        MonoBehaviour motionSource;
+
         [SerializeField] SpriteRenderer spriteRenderer;
         [SerializeField] DirectionalSpriteSet spriteSet;
 
         [SerializeField, Tooltip("Si está vacía se usa Camera.main al iniciar.")]
         Transform cameraTransform;
 
+        IPlanarMotion movement;
         Transform spriteTransform;
         float walkTime;
 
         void Awake()
         {
+            movement = motionSource as IPlanarMotion;
+            if (motionSource != null && movement == null)
+                Debug.LogError($"[{nameof(DirectionalSpriteAnimator)}] {motionSource.GetType().Name} no implementa IPlanarMotion.", this);
+
             if (spriteRenderer != null)
                 spriteTransform = spriteRenderer.transform;
+        }
+
+        // Al arrastrar un GameObject al campo, Unity asigna su primer MonoBehaviour: se busca el que sirve.
+        void OnValidate()
+        {
+            if (motionSource != null && motionSource is not IPlanarMotion)
+                motionSource = motionSource.GetComponent<IPlanarMotion>() as MonoBehaviour;
         }
 
         void Start()

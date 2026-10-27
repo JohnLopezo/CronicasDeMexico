@@ -1,7 +1,10 @@
 using System.Linq;
 using CronicasDeMexico.Core.Events;
 using CronicasDeMexico.Data.Characters;
+using CronicasDeMexico.Gameplay.Combat;
+using CronicasDeMexico.Gameplay.Enemies;
 using CronicasDeMexico.Gameplay.Interaction;
+using CronicasDeMexico.Gameplay.Npc;
 using CronicasDeMexico.Gameplay.Player;
 using CronicasDeMexico.UI.Hud;
 using CronicasDeMexico.World.Rendering;
@@ -21,8 +24,8 @@ using BindingMode = Unity.Cinemachine.TargetTracking.BindingMode;
 namespace CronicasDeMexico.Editor.SceneGeneration
 {
     /// <summary>
-    /// Genera la escena del prototipo olmeca (plaza inspirada en La Venta), el prefab del jugador, sus sprites
-    /// provisionales, los materiales, la inscripción de la cabeza colosal y el HUD.
+    /// Genera la escena del prototipo olmeca (plaza inspirada en La Venta): prefabs del jugador, el artesano y el
+    /// espíritu jaguar con sus sprites provisionales, materiales, inscripciones, canales de eventos y HUD.
     /// Se puede volver a ejecutar: sobrescribe los assets conservando sus GUID.
     /// Desde consola: Unity.exe -batchmode -quit -projectPath . -executeMethod
     /// CronicasDeMexico.Editor.SceneGeneration.OlmecaPrototypeGenerator.Generate
@@ -32,10 +35,13 @@ namespace CronicasDeMexico.Editor.SceneGeneration
         public const string SceneName = "Olmeca_Prototipo";
         public const string ScenePath = "Assets/_Project/Scenes/Regions/Olmeca/" + SceneName + ".unity";
         public const string PlayerPrefabPath = "Assets/_Project/Prefabs/Player/Jugador.prefab";
+        public const string ArtisanPrefabPath = "Assets/_Project/Prefabs/Characters/Artesano.prefab";
+        public const string JaguarPrefabPath = "Assets/_Project/Prefabs/Enemies/EspirituJaguar.prefab";
 
         const string PlaceholderFolder = "Assets/_Project/Art/Characters/Placeholder";
-        const string SpriteTexturePath = PlaceholderFolder + "/Jugador_Placeholder.png";
+        // El material de sprites lo comparten todos los personajes (el destello va por MaterialPropertyBlock).
         const string SpriteMaterialPath = PlaceholderFolder + "/M_Jugador_Placeholder.mat";
+        const string CharacterDataFolder = "Assets/_Project/Data/Characters";
         const string EnvironmentMaterialsFolder = "Assets/_Project/Art/Environment/Olmeca/Materials";
         const string SpriteShaderPath = "Assets/_Project/Art/Shaders/HD2D_SpriteLit.shader";
         const string InputActionsPath = "Assets/_Project/Settings/Input/InputSystem_Actions.inputactions";
@@ -43,23 +49,46 @@ namespace CronicasDeMexico.Editor.SceneGeneration
         const string MoveActionPath = "Player/Move";
         const string InteractActionPath = "Player/Interact";
         const string OptionsActionPath = "Player/Options";
+        const string AttackActionPath = "Player/Attack";
         const string SimpleLitShaderName = "Universal Render Pipeline/Simple Lit";
-        const string SpriteSetPath = "Assets/_Project/Data/Characters/DSS_Jugador.asset";
         const string EventsFolder = "Assets/_Project/Data/Events";
         const string PromptChannelPath = EventsFolder + "/EVT_Interaccion_Aviso.asset";
         const string MessageChannelPath = EventsFolder + "/EVT_Interaccion_Mensaje.asset";
+        const string PlayerHealthChannelPath = EventsFolder + "/EVT_Jugador_Vida.asset";
         const string HudLayoutPath = "Assets/_Project/Art/UI/Hud/Hud.uxml";
         const string HudThemePath = "Assets/_Project/Art/UI/Hud/HudTheme.tss";
         const string PanelSettingsPath = "Assets/_Project/Settings/UI/PanelSettings_Hud.asset";
         const string InteractableLayerName = "Interactuable";
+        const string EnemyLayerName = "Enemigo";
 
         const string ColossalHeadText =
             "Una cabeza colosal de basalto. Los olmecas tallaron estos retratos, probablemente de sus gobernantes, " +
             "en piedra traída desde la sierra de los Tuxtlas, a más de 80 km de aquí.";
+        const string AltarText =
+            "Un altar-trono de piedra. En su nicho frontal, una figura sentada sostiene una cuerda que rodea la base, " +
+            "como en el Altar 4 de La Venta.";
+        const string EnclosureStelaText =
+            "Dentro del recinto de columnas de basalto se enterraron ofrendas de jade y grandes mosaicos de serpentina.";
+        const string WestStelaText = "Una estela muy gastada. Apenas se distingue una figura de perfil con un gran tocado.";
+        const string EastStelaText = "Otra estela. Sus relieves muestran manos que sostienen una ofrenda.";
+
+        const string ArtisanName = "Artesano de jade";
+        static readonly string[] ArtisanLines =
+        {
+            "¡Bienvenido a la plaza! Trabajo el jade que llega de muy lejos.",
+            "Lo pulo durante días con arena y agua, hasta que brilla como el pantano al amanecer.",
+            "Ten cuidado entre los árboles del este y del oeste: dicen que ahí rondan espíritus jaguar.",
+        };
 
         const int PixelsPerUnit = 32;
         const float PlazaHalfSize = 18f;
         static readonly Vector3 PlayerStart = new(0f, 0f, -13f);
+        // Ruta libre entre la cabeza colosal, las estelas y el altar.
+        static readonly Vector3[] ArtisanPatrol =
+        {
+            new(0f, 0f, -1f), new(4.5f, 0f, -1.5f), new(4.5f, 0f, 2.5f), new(0f, 0f, 2.5f),
+        };
+        static readonly Vector3[] JaguarSpawns = { new(12f, 0f, -9f), new(-13f, 0f, -11f) };
         static readonly Vector3 CameraOffset = new(0f, 6f, -9f);
         const float CameraPitch = 30f;
         const float CameraFieldOfView = 30f;
@@ -78,8 +107,8 @@ namespace CronicasDeMexico.Editor.SceneGeneration
 
             if (AssetDatabase.LoadAssetAtPath<SceneAsset>(ScenePath) != null &&
                 !EditorUtility.DisplayDialog("Generar prototipo olmeca",
-                    $"Ya existe {ScenePath}.\nSe sobrescribirán la escena, el prefab del jugador, sus sprites, los materiales, " +
-                    "los canales de eventos y la configuración del HUD generados.",
+                    $"Ya existe {ScenePath}.\nSe sobrescribirán la escena, los prefabs de personajes, sus sprites, " +
+                    "los materiales, los canales de eventos y la configuración del HUD generados.",
                     "Sobrescribir", "Cancelar"))
                 return;
 
@@ -90,8 +119,10 @@ namespace CronicasDeMexico.Editor.SceneGeneration
         {
             EnsureFolder(PlaceholderFolder);
             EnsureFolder(EnvironmentMaterialsFolder);
-            EnsureFolder("Assets/_Project/Prefabs/Player");
-            EnsureFolder("Assets/_Project/Data/Characters");
+            EnsureFolder(System.IO.Path.GetDirectoryName(PlayerPrefabPath).Replace('\\', '/'));
+            EnsureFolder(System.IO.Path.GetDirectoryName(ArtisanPrefabPath).Replace('\\', '/'));
+            EnsureFolder(System.IO.Path.GetDirectoryName(JaguarPrefabPath).Replace('\\', '/'));
+            EnsureFolder(CharacterDataFolder);
             EnsureFolder(EventsFolder);
             EnsureFolder("Assets/_Project/Settings/UI");
 
@@ -100,21 +131,28 @@ namespace CronicasDeMexico.Editor.SceneGeneration
             var scene = EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
 
             var palette = CreatePalette();
-            var spriteSet = CreateSpriteSet(PlaceholderSpriteFactory.CreateOrUpdate(SpriteTexturePath, PixelsPerUnit));
             var spriteMaterial = LoadOrCreateMaterial(SpriteMaterialPath, AssetDatabase.LoadAssetAtPath<Shader>(SpriteShaderPath));
+            var playerSprites = CreateSpriteSet("Jugador", PlaceholderSpriteFactory.Player);
+            var artisanSprites = CreateSpriteSet("Artesano", PlaceholderSpriteFactory.Artisan);
+            var jaguarSprites = CreateSpriteSet("Jaguar", PlaceholderSpriteFactory.JaguarSpirit);
             var promptChannel = LoadOrCreateAsset<StringEventChannel>(PromptChannelPath);
             var messageChannel = LoadOrCreateAsset<StringEventChannel>(MessageChannelPath);
-            var playerPrefab = CreatePlayerPrefab(spriteSet, spriteMaterial, promptChannel, messageChannel);
+            var playerHealthChannel = LoadOrCreateAsset<HealthEventChannel>(PlayerHealthChannelPath);
+
+            var playerPrefab = CreatePlayerPrefab(playerSprites, spriteMaterial, promptChannel, messageChannel, playerHealthChannel);
+            var artisanPrefab = CreateArtisanPrefab(artisanSprites, spriteMaterial, messageChannel);
+            var jaguarPrefab = CreateJaguarPrefab(jaguarSprites, spriteMaterial);
 
             ConfigureRenderSettings(CreateSun());
             BuildEnvironment(palette, messageChannel);
 
             var player = (GameObject)PrefabUtility.InstantiatePrefab(playerPrefab, scene);
             player.transform.position = PlayerStart;
+            PlaceCharacters(scene, artisanPrefab, jaguarPrefab, player.transform);
 
             CreateCameraRig(player.transform);
             CreateGlobalVolume();
-            CreateHud(promptChannel, messageChannel);
+            CreateHud(promptChannel, messageChannel, playerHealthChannel);
 
             EditorSceneManager.SaveScene(scene, ScenePath);
             AddSceneToBuildSettings(ScenePath);
@@ -177,31 +215,34 @@ namespace CronicasDeMexico.Editor.SceneGeneration
             return asset;
         }
 
-        // sprites[dirección][cuadro]: el cuadro 0 es la pose quieta y el resto la caminata.
-        static DirectionalSpriteSet CreateSpriteSet(Sprite[][] sprites)
+        // Hoja de sprites provisional y su DirectionalSpriteSet. El cuadro 0 es la pose quieta y el resto la caminata.
+        static DirectionalSpriteSet CreateSpriteSet(string characterName, PlaceholderSpriteFactory.CharacterPalette palette)
         {
+            var sprites = PlaceholderSpriteFactory.CreateOrUpdate(
+                $"{PlaceholderFolder}/{characterName}_Placeholder.png", characterName, palette, PixelsPerUnit);
             var clips = sprites
                 .Select(frames => new DirectionalSpriteSet.DirectionClip(frames[0], frames.Skip(1).ToArray()))
                 .ToArray();
 
-            var spriteSet = LoadOrCreateAsset<DirectionalSpriteSet>(SpriteSetPath);
+            var spriteSet = LoadOrCreateAsset<DirectionalSpriteSet>($"{CharacterDataFolder}/DSS_{characterName}.asset");
             spriteSet.SetClips(clips);
             EditorUtility.SetDirty(spriteSet);
             return spriteSet;
         }
 
-        static int InteractableLayer()
+        static int Layer(string layerName)
         {
-            var layer = LayerMask.NameToLayer(InteractableLayerName);
+            var layer = LayerMask.NameToLayer(layerName);
             if (layer < 0)
-                throw new System.InvalidOperationException($"Falta el layer '{InteractableLayerName}' en Project Settings > Tags and Layers.");
+                throw new System.InvalidOperationException($"Falta el layer '{layerName}' en Project Settings > Tags and Layers.");
             return layer;
         }
 
-        static GameObject CreatePlayerPrefab(DirectionalSpriteSet spriteSet, Material spriteMaterial,
-            StringEventChannel promptChannel, StringEventChannel messageChannel)
+        // Raíz con CharacterController y un hijo "Sprite" que mira a la cámara. Todos los personajes miden lo mismo.
+        static GameObject CreateCharacterRoot(string name, DirectionalSpriteSet spriteSet, Material spriteMaterial,
+            out SpriteRenderer spriteRenderer)
         {
-            var root = new GameObject("Jugador");
+            var root = new GameObject(name);
 
             var controller = root.AddComponent<CharacterController>();
             controller.height = 1.4f;
@@ -211,34 +252,132 @@ namespace CronicasDeMexico.Editor.SceneGeneration
             controller.skinWidth = 0.03f;
             controller.minMoveDistance = 0f; // con el valor por defecto se pierden pasos pequeños a FPS altos
 
-            var movement = root.AddComponent<PlayerMovement>();
-            SetReference(movement, "moveAction", FindInputActionReference(MoveActionPath));
-
             var spriteObject = new GameObject("Sprite");
             spriteObject.transform.SetParent(root.transform, false);
 
-            var spriteRenderer = spriteObject.AddComponent<SpriteRenderer>();
+            spriteRenderer = spriteObject.AddComponent<SpriteRenderer>();
             spriteRenderer.sprite = spriteSet.GetIdle(DirectionalSpriteSet.DirectionCount - 1); // Sur: de frente
             spriteRenderer.sharedMaterial = spriteMaterial;
             spriteRenderer.shadowCastingMode = ShadowCastingMode.On;
             spriteRenderer.receiveShadows = true;
 
             spriteObject.AddComponent<SpriteBillboard>();
+            return root;
+        }
 
+        static void AddSpriteAnimator(GameObject root, MonoBehaviour motionSource, SpriteRenderer spriteRenderer, DirectionalSpriteSet spriteSet)
+        {
             var animator = root.AddComponent<DirectionalSpriteAnimator>();
-            SetReference(animator, "movement", movement);
+            SetReference(animator, "motionSource", motionSource);
             SetReference(animator, "spriteRenderer", spriteRenderer);
             SetReference(animator, "spriteSet", spriteSet);
+        }
+
+        static Health AddHealth(GameObject root, int maxHealth, float invulnerabilityTime, SpriteRenderer spriteRenderer,
+            HealthEventChannel changedChannel = null)
+        {
+            var health = root.AddComponent<Health>();
+            SetProperty(health, "maxHealth", property => property.intValue = maxHealth);
+            SetProperty(health, "invulnerabilityTime", property => property.floatValue = invulnerabilityTime);
+            SetReference(health, "changedChannel", changedChannel);
+
+            var flash = root.AddComponent<DamageFlash>();
+            SetReference(flash, "health", health);
+            SetReference(flash, "spriteRenderer", spriteRenderer);
+            return health;
+        }
+
+        static GameObject SavePrefab(GameObject root, string path)
+        {
+            var prefab = PrefabUtility.SaveAsPrefabAsset(root, path);
+            Object.DestroyImmediate(root);
+            return prefab;
+        }
+
+        static GameObject CreatePlayerPrefab(DirectionalSpriteSet spriteSet, Material spriteMaterial,
+            StringEventChannel promptChannel, StringEventChannel messageChannel, HealthEventChannel healthChannel)
+        {
+            var root = CreateCharacterRoot("Jugador", spriteSet, spriteMaterial, out var spriteRenderer);
+            root.tag = "Player"; // así lo encuentran los enemigos
+
+            var movement = root.AddComponent<PlayerMovement>();
+            SetReference(movement, "moveAction", FindInputActionReference(MoveActionPath));
+            AddSpriteAnimator(root, movement, spriteRenderer, spriteSet);
 
             var interactor = root.AddComponent<PlayerInteractor>();
             SetReference(interactor, "interactAction", FindInputActionReference(InteractActionPath));
-            SetProperty(interactor, "interactableLayers", property => property.intValue = 1 << InteractableLayer());
+            SetProperty(interactor, "interactableLayers", property => property.intValue = 1 << Layer(InteractableLayerName));
             SetReference(interactor, "promptChannel", promptChannel);
             SetReference(interactor, "messageChannel", messageChannel);
 
-            var prefab = PrefabUtility.SaveAsPrefabAsset(root, PlayerPrefabPath);
-            Object.DestroyImmediate(root);
-            return prefab;
+            AddHealth(root, maxHealth: 5, invulnerabilityTime: 1f, spriteRenderer, healthChannel);
+            root.AddComponent<PlayerDamageResponse>();
+
+            var attack = root.AddComponent<PlayerAttack>();
+            SetReference(attack, "attackAction", FindInputActionReference(AttackActionPath));
+            SetProperty(attack, "targetLayers", property => property.intValue = 1 << Layer(EnemyLayerName));
+
+            return SavePrefab(root, PlayerPrefabPath);
+        }
+
+        static GameObject CreateArtisanPrefab(DirectionalSpriteSet spriteSet, Material spriteMaterial, StringEventChannel messageChannel)
+        {
+            var root = CreateCharacterRoot("Artesano", spriteSet, spriteMaterial, out var spriteRenderer);
+            var patrol = root.AddComponent<NpcPatrol>();
+            AddSpriteAnimator(root, patrol, spriteRenderer, spriteSet);
+
+            // El trigger de conversación va en un hijo: el CharacterController de la raíz queda en Default.
+            var talk = new GameObject("Conversacion") { layer = Layer(InteractableLayerName) };
+            talk.transform.SetParent(root.transform, false);
+            var trigger = talk.AddComponent<SphereCollider>();
+            trigger.isTrigger = true;
+            trigger.center = new Vector3(0f, 0.7f, 0f);
+            trigger.radius = 1.2f;
+
+            var dialogue = talk.AddComponent<DialogueInteractable>();
+            SetProperty(dialogue, "speakerName", property => property.stringValue = ArtisanName);
+            SetProperty(dialogue, "lines", property =>
+            {
+                property.arraySize = ArtisanLines.Length;
+                for (var i = 0; i < ArtisanLines.Length; i++)
+                    property.GetArrayElementAtIndex(i).stringValue = ArtisanLines[i];
+            });
+            SetReference(dialogue, "messageChannel", messageChannel);
+            SetReference(dialogue, "patrol", patrol);
+
+            return SavePrefab(root, ArtisanPrefabPath);
+        }
+
+        static GameObject CreateJaguarPrefab(DirectionalSpriteSet spriteSet, Material spriteMaterial)
+        {
+            var root = CreateCharacterRoot("EspirituJaguar", spriteSet, spriteMaterial, out var spriteRenderer);
+            root.layer = Layer(EnemyLayerName); // solo la raíz tiene collider: es lo que golpea PlayerAttack
+
+            AddHealth(root, maxHealth: 3, invulnerabilityTime: 0.2f, spriteRenderer);
+            var chaser = root.AddComponent<EnemyChaser>();
+            AddSpriteAnimator(root, chaser, spriteRenderer, spriteSet);
+
+            return SavePrefab(root, JaguarPrefabPath);
+        }
+
+        static void PlaceCharacters(UnityEngine.SceneManagement.Scene scene, GameObject artisanPrefab, GameObject jaguarPrefab, Transform player)
+        {
+            var artisan = (GameObject)PrefabUtility.InstantiatePrefab(artisanPrefab, scene);
+            artisan.transform.position = ArtisanPatrol[0];
+            SetProperty(artisan.GetComponent<NpcPatrol>(), "patrolPoints", property =>
+            {
+                property.arraySize = ArtisanPatrol.Length;
+                for (var i = 0; i < ArtisanPatrol.Length; i++)
+                    property.GetArrayElementAtIndex(i).vector3Value = ArtisanPatrol[i];
+            });
+
+            for (var i = 0; i < JaguarSpawns.Length; i++)
+            {
+                var jaguar = (GameObject)PrefabUtility.InstantiatePrefab(jaguarPrefab, scene);
+                jaguar.name = $"EspirituJaguar_{i + 1}";
+                jaguar.transform.position = JaguarSpawns[i];
+                SetReference(jaguar.GetComponent<EnemyChaser>(), "target", player);
+            }
         }
 
         static InputActionReference FindInputActionReference(string actionPath)
@@ -338,7 +477,7 @@ namespace CronicasDeMexico.Editor.SceneGeneration
 
         // ---------- HUD ----------
 
-        static void CreateHud(StringEventChannel promptChannel, StringEventChannel messageChannel)
+        static void CreateHud(StringEventChannel promptChannel, StringEventChannel messageChannel, HealthEventChannel healthChannel)
         {
             var theme = AssetDatabase.LoadAssetAtPath<ThemeStyleSheet>(HudThemePath)
                 ?? throw new System.InvalidOperationException($"No se encontró el tema {HudThemePath}.");
@@ -361,6 +500,7 @@ namespace CronicasDeMexico.Editor.SceneGeneration
             var controller = hud.AddComponent<HudController>();
             SetReference(controller, "promptChannel", promptChannel);
             SetReference(controller, "messageChannel", messageChannel);
+            SetReference(controller, "healthChannel", healthChannel);
 
             var options = hud.AddComponent<QualityOptionsPanel>();
             SetReference(options, "optionsAction", FindInputActionReference(OptionsActionPath));
@@ -401,13 +541,19 @@ namespace CronicasDeMexico.Editor.SceneGeneration
 
             BuildMound(Group("Monticulo", root), palette);
             BuildColumnEnclosure(Group("RecintoColumnas", root), palette, new Vector3(-7f, 0f, -1f), 8f, 10f, 2.4f);
-            BuildAltar(Group("Altar", root), palette, new Vector3(8f, 0f, 0f));
+            BuildAltar(Group("Altar", root), palette, new Vector3(8f, 0f, 0f), messageChannel);
             BuildColossalHead(Group("CabezaColosal", root), palette, new Vector3(3.5f, 0f, -7f), messageChannel);
 
             var stelae = Group("Estelas", root);
-            Primitive(PrimitiveType.Cube, "Estela_Oeste", stelae, new Vector3(-2f, 1.2f, -4f), new Vector3(1f, 2.4f, 0.35f), palette.Stone);
-            Primitive(PrimitiveType.Cube, "Estela_Este", stelae, new Vector3(2f, 1.2f, -4f), new Vector3(1f, 2.4f, 0.35f), palette.Stone);
-            Primitive(PrimitiveType.Cube, "Estela_Recinto", stelae, new Vector3(-7f, 1.1f, 1.5f), new Vector3(0.9f, 2.2f, 0.3f), palette.Stone);
+            void Stela(string name, Vector3 basePosition, Vector3 size, string text)
+            {
+                Primitive(PrimitiveType.Cube, name, stelae, basePosition + Vector3.up * (size.y * 0.5f), size, palette.Stone);
+                AddInscription(stelae, $"Inscripcion_{name}", basePosition + Vector3.up, 1.2f, text, messageChannel);
+            }
+
+            Stela("Estela_Oeste", new Vector3(-2f, 0f, -4f), new Vector3(1f, 2.4f, 0.35f), WestStelaText);
+            Stela("Estela_Este", new Vector3(2f, 0f, -4f), new Vector3(1f, 2.4f, 0.35f), EastStelaText);
+            Stela("Estela_Recinto", new Vector3(-7f, 0f, 1.5f), new Vector3(0.9f, 2.2f, 0.3f), EnclosureStelaText);
 
             BuildVegetation(Group("Vegetacion", root), palette);
             BuildBounds(Group("Limites", root));
@@ -466,12 +612,13 @@ namespace CronicasDeMexico.Editor.SceneGeneration
         }
 
         // Altar-trono con nicho frontal, al estilo del Altar 4 de La Venta.
-        static void BuildAltar(Transform parent, Palette palette, Vector3 position)
+        static void BuildAltar(Transform parent, Palette palette, Vector3 position, StringEventChannel messageChannel)
         {
             Primitive(PrimitiveType.Cube, "Cuerpo", parent, position + new Vector3(0f, 0.8f, 0f), new Vector3(3.4f, 1.6f, 2.2f), palette.Stone);
             Primitive(PrimitiveType.Cube, "Cornisa", parent, position + new Vector3(0f, 1.75f, 0f), new Vector3(3.8f, 0.3f, 2.6f), palette.Stone);
             var niche = Primitive(PrimitiveType.Cube, "Nicho", parent, position + new Vector3(0f, 0.6f, -1.12f), new Vector3(1.2f, 0.9f, 0.1f), palette.Basalt);
             RemoveCollider(niche);
+            AddInscription(parent, "Inscripcion", position + Vector3.up, 2.4f, AltarText, messageChannel);
         }
 
         static void BuildColossalHead(Transform parent, Palette palette, Vector3 position, StringEventChannel messageChannel)
@@ -480,17 +627,21 @@ namespace CronicasDeMexico.Editor.SceneGeneration
             Primitive(PrimitiveType.Sphere, "Rostro", parent, position + new Vector3(0f, 1.6f, 0f), new Vector3(2.2f, 2.6f, 2f), palette.Stone);
             var helmet = Primitive(PrimitiveType.Sphere, "Casco", parent, position + new Vector3(0f, 2.35f, 0.05f), new Vector3(2.35f, 1.4f, 2.15f), palette.Stone);
             RemoveCollider(helmet);
+            AddInscription(parent, "Inscripcion", position + Vector3.up, 2.2f, ColossalHeadText, messageChannel);
+        }
 
-            // Trigger de interacción: no bloquea al CharacterController y solo lo encuentra PlayerInteractor.
-            var inscriptionObject = new GameObject("Inscripcion") { layer = InteractableLayer() };
+        // Trigger de interacción: no bloquea al CharacterController y solo lo encuentra PlayerInteractor.
+        static void AddInscription(Transform parent, string name, Vector3 position, float radius, string text, StringEventChannel messageChannel)
+        {
+            var inscriptionObject = new GameObject(name) { layer = Layer(InteractableLayerName) };
             inscriptionObject.transform.SetParent(parent, false);
-            inscriptionObject.transform.localPosition = position + Vector3.up;
+            inscriptionObject.transform.localPosition = position;
             var trigger = inscriptionObject.AddComponent<SphereCollider>();
             trigger.isTrigger = true;
-            trigger.radius = 2.2f;
+            trigger.radius = radius;
 
             var inscription = inscriptionObject.AddComponent<InscriptionInteractable>();
-            SetProperty(inscription, "text", property => property.stringValue = ColossalHeadText);
+            SetProperty(inscription, "text", property => property.stringValue = text);
             SetReference(inscription, "messageChannel", messageChannel);
         }
 

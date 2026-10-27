@@ -6,7 +6,8 @@ namespace CronicasDeMexico.Gameplay.Interaction
 {
     /// <summary>
     /// Busca el objeto interactuable más cercano, publica su aviso ("[E] Examinar") y lo activa al pulsar
-    /// Interactuar. Con un mensaje abierto, Interactuar lo cierra; alejarse también lo cierra.
+    /// Interactuar. Con un mensaje abierto, Interactuar pasa a la siguiente línea de una conversación o lo cierra;
+    /// alejarse también lo cierra.
     /// La búsqueda corre unas diez veces por segundo con un búfer fijo: no genera basura ni cuesta física cada frame.
     /// </summary>
     public sealed class PlayerInteractor : MonoBehaviour
@@ -34,6 +35,7 @@ namespace CronicasDeMexico.Gameplay.Interaction
 
         readonly Collider[] hits = new Collider[8];
         IInteractable current;
+        IInteractable active; // el que abrió el mensaje actual
         string keyLabel;
         string shownPrompt;
         bool messageOpen;
@@ -81,9 +83,16 @@ namespace CronicasDeMexico.Gameplay.Interaction
                 return;
 
             if (messageOpen)
+            {
+                if (active is IConversation conversation && conversation.Advance())
+                    return;
                 CloseMessage();
-            else
-                current?.Interact();
+            }
+            else if (current != null)
+            {
+                active = current;
+                current.Interact(transform);
+            }
         }
 
         void Scan()
@@ -127,6 +136,13 @@ namespace CronicasDeMexico.Gameplay.Interaction
         void OnMessage(string message)
         {
             messageOpen = !string.IsNullOrEmpty(message);
+            if (!messageOpen && active != null)
+            {
+                var ended = active;
+                active = null;
+                (ended as IConversation)?.End();
+            }
+
             RefreshPrompt();
         }
 

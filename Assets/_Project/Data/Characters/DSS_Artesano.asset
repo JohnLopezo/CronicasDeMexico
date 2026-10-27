@@ -1,0 +1,46 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0f3a2dbe737f384da36cc4134724892, type: 3}
+  m_Name: DSS_Artesano
+  m_EditorClassIdentifier: 
+  clips:
+  - idle: {fileID: 324849713, guid: 1a6cf23daca6aff48970c1120c1d5335, type: 3}
+    walk:
+    - {fileID: -2033576991, guid: 1a6cf23daca6aff48970c1120c1d5335, type: 3}
+    - {fileID: -2022447510, guid: 1a6cf23daca6aff48970c1120c1d5335, type: 3}
+    - {fileID: 1674214121, guid: 1a6cf23daca6aff48970c1120c1d5335, type: 3}
+    - {fileID: 1861685059, guid: 1a6cf23daca6aff48970c1120c1d5335, type: 3}
+  - idle: {fileID: 294763799, guid: 1a6cf23daca6aff48970c1120c1d5335, type: 3}
+    walk:
+    - {fileID: -47199444, guid: 1a6cf23daca6aff48970c1120c1d5335, type: 3}
+    - {fileID: 515425243, guid: 1a6cf23daca6aff48970c1120c1d5335, type: 3}
+    - {fileID: 110216578, guid: 1a6cf23daca6aff48970c1120c1d5335, type: 3}
+    - {fileID: -1697192985, guid: 1a6cf23daca6aff48970c1120c1d5335, type: 3}
+  - idle: {fileID: 813349891, guid: 1a6cf23daca6aff48970c1120c1d5335, type: 3}
+    walk:
+    - {fileID: 747689372, guid: 1a6cf23daca6aff48970c1120c1d5335, type: 3}
+    - {fileID: 628039106, guid: 1a6cf23daca6aff48970c1120c1d5335, type: 3}
+    - {fileID: 1278140712, guid: 1a6cf23daca6aff48970c1120c1d5335, type: 3}
+    - {fileID: 1075291491, guid: 1a6cf23daca6aff48970c1120c1d5335, type: 3}
+  - idle: {fileID: -1749775042, guid: 1a6cf23daca6aff48970c1120c1d5335, type: 3}
+    walk:
+    - {fileID: -362406525, guid: 1a6cf23daca6aff48970c1120c1d5335, type: 3}
+    - {fileID: -73680829, guid: 1a6cf23daca6aff48970c1120c1d5335, type: 3}
+    - {fileID: -1006113374, guid: 1a6cf23daca6aff48970c1120c1d5335, type: 3}
+    - {fileID: -253439279, guid: 1a6cf23daca6aff48970c1120c1d5335, type: 3}
+  - idle: {fileID: 1225427968, guid: 1a6cf23daca6aff48970c1120c1d5335, type: 3}
+    walk:
+    - {fileID: -1270828421, guid: 1a6cf23daca6aff48970c1120c1d5335, type: 3}
+    - {fileID: -2056467515, guid: 1a6cf23daca6aff48970c1120c1d5335, type: 3}
+    - {fileID: -204779279, guid: 1a6cf23daca6aff48970c1120c1d5335, type: 3}
+    - {fileID: -851229385, guid: 1a6cf23daca6aff48970c1120c1d5335, type: 3}
+  walkFramesPerSecond: 8

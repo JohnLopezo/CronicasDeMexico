@@ -121,7 +121,7 @@ namespace CronicasDeMexico.Tests
             player.SetActive(false);
             var animator = player.AddComponent<DirectionalSpriteAnimator>();
             const BindingFlags privateField = BindingFlags.NonPublic | BindingFlags.Instance;
-            typeof(DirectionalSpriteAnimator).GetField("movement", privateField).SetValue(animator, player.GetComponent<PlayerMovement>());
+            typeof(DirectionalSpriteAnimator).GetField("motionSource", privateField).SetValue(animator, player.GetComponent<PlayerMovement>());
             typeof(DirectionalSpriteAnimator).GetField("spriteRenderer", privateField).SetValue(animator, spriteRenderer);
             typeof(DirectionalSpriteAnimator).GetField("spriteSet", privateField).SetValue(animator, spriteSet);
             player.SetActive(true);

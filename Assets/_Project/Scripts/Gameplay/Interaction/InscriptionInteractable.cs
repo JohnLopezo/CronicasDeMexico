@@ -17,7 +17,7 @@ namespace CronicasDeMexico.Gameplay.Interaction
 
         public string Prompt => prompt;
 
-        public void Interact()
+        public void Interact(Transform interactor)
         {
             if (messageChannel != null)
                 messageChannel.Raise(text);

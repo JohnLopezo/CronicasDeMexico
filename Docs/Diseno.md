@@ -155,7 +155,7 @@ Datos de Guardianes, enemigos, habilidades, elementos, bendiciones y salas media
 
 ## 16. Rendimiento y hardware
 
-Equipo de desarrollo de referencia: HP ProDesk 600 G2, Intel Core i5-6500, 12 GB RAM, SSD 1 TB, probablemente Intel HD 530 salvo confirmación de otra GPU. Priorizar un flujo liviano. Android de gama media como objetivo inicial: **30 FPS estables tras pruebas en dispositivo real**; 60 FPS opcionales. Preferir pipeline gráfico existente si es viable; evaluar URP, atlas, pooling, batching, materiales compartidos, iluminación horneada, sombras limitadas, texturas comprimidas, LOD/culling según necesidad y reducción de GC.
+Equipos de desarrollo: **PC 1 (referencia de rendimiento)** HP ProDesk 600 G2, Intel Core i5-6500, 12 GB RAM, Intel HD Graphics 530, SSD 1 TB; **PC 2 (desarrollo principal)** Intel Core i7-10700, 16 GB RAM, Intel UHD Graphics 630, SSD M.2 ~930 GB. Ambas con Unity 6000.0.85f1 y Claude Code, sincronizadas por Git (`Docs/DesarrolloMultiPC.md`). Priorizar un flujo liviano. Android de gama media como objetivo inicial: **30 FPS estables tras pruebas en dispositivo real**; 60 FPS opcionales. Preferir pipeline gráfico existente si es viable; evaluar URP, atlas, pooling, batching, materiales compartidos, iluminación horneada, sombras limitadas, texturas comprimidas, LOD/culling según necesidad y reducción de GC.
 
 Perfiles **Bajo, Medio y Alto**. Según el estado reportado por Claude, actualmente los builds Windows inician en **Bajo**; en Bajo se desactivan HDR y Depth Texture y la cámara apaga postprocesado. **`Docs/Rendimiento.md` está desactualizado:** corregir estas descripciones en Fase 1, después de autorizar cambios. La tabla de FPS permanece vacía hasta mediciones reales; no inventar resultados.
 

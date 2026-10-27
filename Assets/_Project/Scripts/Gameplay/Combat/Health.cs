@@ -7,6 +7,7 @@ namespace CronicasDeMexico.Gameplay.Combat
     /// <summary>
     /// Vida de un personaje, con invulnerabilidad breve tras cada golpe.
     /// Otros componentes reaccionan a sus eventos (retroceso, destello, muerte); este no mueve ni oculta nada.
+    /// No hay regeneración: estando vivo, la vida solo sube con Heal y una HealSource explícita (Diseno.md §9).
     /// </summary>
     public sealed class Health : MonoBehaviour
     {
@@ -30,6 +31,9 @@ namespace CronicasDeMexico.Gameplay.Combat
 
         public event Action Died;
 
+        /// <summary>Recuperó vida: cantidad efectiva y origen.</summary>
+        public event Action<int, HealSource> Healed;
+
         void Awake() => current = maxHealth;
 
         // En Start y no en Awake: los oyentes ya se suscribieron en su OnEnable.
@@ -50,9 +54,36 @@ namespace CronicasDeMexico.Gameplay.Combat
             return true;
         }
 
-        /// <summary>Recupera toda la vida (p. ej. al reaparecer).</summary>
-        public void Restore()
+        /// <summary>
+        /// Cura sin pasar del máximo. No revive: muerto no hace nada. Devuelve la vida realmente recuperada.
+        /// </summary>
+        public int Heal(int amount, HealSource source)
         {
+            if (amount <= 0 || IsDead)
+                return 0;
+
+            var healed = Mathf.Min(amount, maxHealth - current);
+            if (healed == 0)
+                return 0;
+
+            current += healed;
+            Publish();
+            Healed?.Invoke(healed, source);
+            return healed;
+        }
+
+        /// <summary>
+        /// Devuelve la vida completa a un personaje muerto, al reaparecer. No es una curación: con el personaje vivo
+        /// no hace nada. La vida con la que reaparece el jugador sigue pendiente de diseño (Diseno.md §9 y §19).
+        /// </summary>
+        public void ReviveFull()
+        {
+            if (!IsDead)
+            {
+                Debug.LogWarning($"[{nameof(Health)}] ReviveFull en {name}, que no está muerto: se ignora. Para curar usa Heal.", this);
+                return;
+            }
+
             current = maxHealth;
             invulnerableUntil = float.NegativeInfinity;
             Publish();

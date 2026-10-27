@@ -26,9 +26,13 @@ namespace CronicasDeMexico.Editor.SceneGeneration
     /// <summary>
     /// Genera la escena del prototipo olmeca (plaza inspirada en La Venta): prefabs del jugador, el artesano y el
     /// espíritu jaguar con sus sprites provisionales, materiales, inscripciones, canales de eventos y HUD.
-    /// Se puede volver a ejecutar: sobrescribe los assets conservando sus GUID.
     /// Desde consola: Unity.exe -batchmode -quit -projectPath . -executeMethod
     /// CronicasDeMexico.Editor.SceneGeneration.OlmecaPrototypeGenerator.Generate
+    ///
+    /// ESCENA CONGELADA (Fase 1): Olmeca_Prototipo se edita a mano desde ahora y el generador se niega a
+    /// sobrescribirla. Regenerar reemplaza la escena entera y también los prefabs de personajes, así que se
+    /// perderían los cambios manuales y las modificaciones de las instancias. Para regenerar a propósito hay que
+    /// borrar o renombrar antes la escena.
     /// </summary>
     public static class OlmecaPrototypeGenerator
     {
@@ -102,21 +106,36 @@ namespace CronicasDeMexico.Editor.SceneGeneration
         [MenuItem("Crónicas/Generar prototipo olmeca")]
         static void GenerateFromMenu()
         {
+            if (SceneExists())
+            {
+                EditorUtility.DisplayDialog("Escena congelada", FrozenMessage, "Entendido");
+                return;
+            }
+
             if (!EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo())
                 return;
 
-            if (AssetDatabase.LoadAssetAtPath<SceneAsset>(ScenePath) != null &&
-                !EditorUtility.DisplayDialog("Generar prototipo olmeca",
-                    $"Ya existe {ScenePath}.\nSe sobrescribirán la escena, los prefabs de personajes, sus sprites, " +
-                    "los materiales, los canales de eventos y la configuración del HUD generados.",
-                    "Sobrescribir", "Cancelar"))
+            if (!EditorUtility.DisplayDialog("Generar prototipo olmeca",
+                    "Se creará la escena y se sobrescribirán los prefabs de personajes, sus sprites, los materiales, " +
+                    "los canales de eventos y la configuración del HUD generados.",
+                    "Generar", "Cancelar"))
                 return;
 
             Generate();
         }
 
+        static bool SceneExists() => AssetDatabase.LoadAssetAtPath<SceneAsset>(ScenePath) != null;
+
+        static string FrozenMessage =>
+            $"{ScenePath} está congelada: se edita a mano y el generador no la sobrescribe.\n\n" +
+            "Para regenerarla a propósito, bórrala o renómbrala antes. Se reemplazarán también los prefabs de " +
+            "personajes y se perderán sus cambios manuales.";
+
         public static void Generate()
         {
+            if (SceneExists())
+                throw new System.InvalidOperationException(FrozenMessage);
+
             EnsureFolder(PlaceholderFolder);
             EnsureFolder(EnvironmentMaterialsFolder);
             EnsureFolder(System.IO.Path.GetDirectoryName(PlayerPrefabPath).Replace('\\', '/'));

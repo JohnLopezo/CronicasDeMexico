@@ -22,6 +22,13 @@ El proyecto busca ofrecer una experiencia de exploración y fantasía inspirada 
 - Claude Code como herramienta de asistencia al desarrollo
 - Git y GitHub para control de versiones
 
+## Entorno de desarrollo
+
+- **Unity 6000.0.85f1** (exacta) con Android Build Support, Git y Git LFS.
+- Dos PC Windows con gráficos integrados: i5-6500 / Intel HD 530 / 12 GB (referencia de rendimiento) e i7-10700 / Intel UHD 630 / 16 GB.
+- Plataforma objetivo: Android en horizontal, con arquitectura preparada para iOS.
+- Puesta en marcha y rutina de trabajo entre ambas PC: [`Docs/DesarrolloMultiPC.md`](Docs/DesarrolloMultiPC.md). Perfiles de calidad y guía gráfica: [`Docs/Rendimiento.md`](Docs/Rendimiento.md).
+
 ## Estado del proyecto
 
 **En preproducción y desarrollo inicial.**

@@ -78,7 +78,7 @@ namespace CronicasDeMexico.Gameplay.Player
             transform.position = spawnPoint;
             controller.enabled = true;
 
-            health.Restore();
+            health.ReviveFull();
             health.GrantInvulnerability(respawnInvulnerability);
             movement.enabled = true;
         }

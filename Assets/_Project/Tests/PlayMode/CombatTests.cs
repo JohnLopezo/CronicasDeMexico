@@ -77,9 +77,7 @@ namespace CronicasDeMexico.Tests
 
             playerHealth.GrantInvulnerability(10f);
             Assert.IsFalse(playerHealth.TryDamage(1, Vector3.zero), "Invulnerable no debe recibir daño.");
-
-            playerHealth.Restore();
-            Assert.That(playerHealth.Current, Is.EqualTo(playerHealth.Max), "Restore debe devolver la vida completa.");
+            typeof(Health).GetField("invulnerableUntil", PrivateField).SetValue(playerHealth, float.NegativeInfinity);
 
             Assert.IsTrue(playerHealth.TryDamage(100, Vector3.zero));
             Assert.That(playerHealth.Current, Is.EqualTo(0), "La vida no debe bajar de 0.");
@@ -87,20 +85,79 @@ namespace CronicasDeMexico.Tests
             Assert.That(deaths, Is.EqualTo(1), "Died debe dispararse una sola vez.");
         }
 
+        [Test]
+        public void Heal_ClampsToMax_ReportsSource_AndNeverRevives()
+        {
+            HealSource? reportedSource = null;
+            var reportedAmount = 0;
+            playerHealth.Healed += (amount, source) => { reportedAmount = amount; reportedSource = source; };
+            playerHealth.TryDamage(2, Vector3.zero);
+
+            Assert.That(playerHealth.Heal(10, HealSource.RestShrine), Is.EqualTo(2), "Solo recupera hasta el máximo.");
+            Assert.That(playerHealth.Current, Is.EqualTo(playerHealth.Max));
+            Assert.That(reportedAmount, Is.EqualTo(2));
+            Assert.That(reportedSource, Is.EqualTo(HealSource.RestShrine));
+            Assert.That(playerHealth.Heal(1, HealSource.Consumable), Is.EqualTo(0), "Con la vida llena no cura nada.");
+
+            typeof(Health).GetField("invulnerableUntil", PrivateField).SetValue(playerHealth, float.NegativeInfinity);
+            playerHealth.TryDamage(100, Vector3.zero);
+            Assert.That(playerHealth.Heal(5, HealSource.Ability), Is.EqualTo(0), "Heal no debe revivir.");
+            Assert.IsTrue(playerHealth.IsDead);
+        }
+
+        [Test]
+        public void ReviveFull_OnlyWorksWhenDead()
+        {
+            playerHealth.TryDamage(2, Vector3.zero);
+            LogAssert.Expect(LogType.Warning, new System.Text.RegularExpressions.Regex("ReviveFull"));
+            playerHealth.ReviveFull();
+            Assert.That(playerHealth.Current, Is.EqualTo(playerHealth.Max - 2), "ReviveFull no debe servir para curar.");
+
+            typeof(Health).GetField("invulnerableUntil", PrivateField).SetValue(playerHealth, float.NegativeInfinity);
+            playerHealth.TryDamage(100, Vector3.zero);
+            playerHealth.ReviveFull();
+            Assert.That(playerHealth.Current, Is.EqualTo(playerHealth.Max));
+        }
+
+        // Regla central (Diseno.md §9): nada recupera vida con el tiempo ni al acabar un combate.
+        [UnityTest]
+        public IEnumerator Health_DoesNotRegenerate_OverTime()
+        {
+            player.SetActive(false);
+            player.AddComponent<PlayerDamageResponse>();
+            player.SetActive(true);
+            yield return null;
+
+            playerHealth.TryDamage(2, Vector3.zero);
+            var afterHit = playerHealth.Current;
+            yield return new WaitForSeconds(2f);
+
+            Assert.That(playerHealth.Current, Is.EqualTo(afterHit), "La vida no debe regenerarse sola.");
+        }
+
         [UnityTest]
         public IEnumerator Attack_HitsTargetInFront_NotBehind_AndNeverItself()
         {
             var front = CreateDummy(new Vector3(0f, 0f, -1f), out var frontHealth);
             var behind = CreateDummy(new Vector3(0f, 0f, 1.5f), out var behindHealth);
-            yield return null;
 
-            Assert.That(attack.Strike(), Is.EqualTo(1), "Debe golpear exactamente a un objetivo.");
-            Assert.That(frontHealth.Current, Is.EqualTo(frontHealth.Max - 1), "El objetivo de delante debe recibir daño.");
-            Assert.That(behindHealth.Current, Is.EqualTo(behindHealth.Max), "El de detrás no debe recibir daño.");
-            Assert.That(playerHealth.Current, Is.EqualTo(playerHealth.Max), "El jugador no debe golpearse a sí mismo.");
+            try
+            {
+                // Los colliders nuevos entran en las consultas de física con el siguiente paso de simulación;
+                // un solo frame no basta si el juego va a más FPS que la física.
+                yield return new WaitForFixedUpdate();
 
-            Object.Destroy(front);
-            Object.Destroy(behind);
+                Assert.That(attack.Strike(), Is.EqualTo(1), "Debe golpear exactamente a un objetivo.");
+                Assert.That(frontHealth.Current, Is.EqualTo(frontHealth.Max - 1), "El objetivo de delante debe recibir daño.");
+                Assert.That(behindHealth.Current, Is.EqualTo(behindHealth.Max), "El de detrás no debe recibir daño.");
+                Assert.That(playerHealth.Current, Is.EqualTo(playerHealth.Max), "El jugador no debe golpearse a sí mismo.");
+            }
+            finally
+            {
+                // Si quedaran en la escena bloquearían a los personajes de las pruebas siguientes.
+                Object.Destroy(front);
+                Object.Destroy(behind);
+            }
         }
 
         [UnityTest]
@@ -126,8 +183,8 @@ namespace CronicasDeMexico.Tests
                 Assert.That(Vector3.Distance(enemy.transform.position, player.transform.position), Is.GreaterThan(beforeHit + 0.2f),
                     "El golpe debe empujar al enemigo hacia atrás.");
 
-                enemyHealth.Restore(); // quita la invulnerabilidad que dejó el golpe anterior
-                enemyHealth.TryDamage(100, player.transform.position);
+                yield return new WaitForSeconds(0.4f); // termina la invulnerabilidad (0.5 s) que dejó el golpe
+                Assert.IsTrue(enemyHealth.TryDamage(100, player.transform.position));
                 Assert.IsTrue(enemyHealth.IsDead);
                 Assert.IsFalse(enemy.GetComponent<CharacterController>().enabled, "Muerto no debe tener collider.");
             }

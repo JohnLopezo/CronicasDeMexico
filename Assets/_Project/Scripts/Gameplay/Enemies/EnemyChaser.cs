@@ -174,7 +174,7 @@ namespace CronicasDeMexico.Gameplay.Enemies
         {
             transform.position = home;
             SetPresent(true);
-            health.Restore();
+            health.ReviveFull();
             stunTimer = 0f;
         }
 

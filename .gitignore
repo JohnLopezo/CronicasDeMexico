@@ -8,6 +8,8 @@
 /[Uu]ser[Ss]ettings/
 /[Mm]emoryCaptures/
 /[Rr]ecordings/
+# Temporales de CMake/Gradle del build de Android
+/.utmp/
 
 # Asset Store y paquetes exportados
 /[Aa]ssets/AssetStoreTools*

@@ -1,0 +1,776 @@
+{
+  "Tile_Camino_Tierra_01": {
+    "lienzo": [
+      64,
+      64
+    ],
+    "pivote_px": [
+      32,
+      40
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Tile_Camino_Tierra_02": {
+    "lienzo": [
+      64,
+      64
+    ],
+    "pivote_px": [
+      32,
+      40
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Tile_Camino_Tierra_03": {
+    "lienzo": [
+      64,
+      64
+    ],
+    "pivote_px": [
+      32,
+      40
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Tile_Camino_Tierra_04": {
+    "lienzo": [
+      64,
+      64
+    ],
+    "pivote_px": [
+      32,
+      40
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Tile_Pasto_Selva_01": {
+    "lienzo": [
+      64,
+      64
+    ],
+    "pivote_px": [
+      32,
+      40
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Tile_Pasto_Selva_02": {
+    "lienzo": [
+      64,
+      64
+    ],
+    "pivote_px": [
+      32,
+      40
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Tile_Pasto_Selva_03": {
+    "lienzo": [
+      64,
+      64
+    ],
+    "pivote_px": [
+      32,
+      40
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Tile_Agua_Anim_01": {
+    "lienzo": [
+      64,
+      64
+    ],
+    "pivote_px": [
+      32,
+      40
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Tile_Agua_Anim_02": {
+    "lienzo": [
+      64,
+      64
+    ],
+    "pivote_px": [
+      32,
+      40
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Tile_Agua_Anim_03": {
+    "lienzo": [
+      64,
+      64
+    ],
+    "pivote_px": [
+      32,
+      40
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Tile_Agua_Anim_04": {
+    "lienzo": [
+      64,
+      64
+    ],
+    "pivote_px": [
+      32,
+      40
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Cerca_Basalto_01": {
+    "lienzo": [
+      64,
+      96
+    ],
+    "pivote_px": [
+      32,
+      14
+    ],
+    "ppu": 45.254833995939045,
+    "sombra": {
+      "lienzo": [
+        128,
+        64
+      ],
+      "pivote_px": [
+        40,
+        32
+      ]
+    }
+  },
+  "Cerca_Basalto_02": {
+    "lienzo": [
+      64,
+      96
+    ],
+    "pivote_px": [
+      32,
+      14
+    ],
+    "ppu": 45.254833995939045,
+    "sombra": {
+      "lienzo": [
+        128,
+        64
+      ],
+      "pivote_px": [
+        40,
+        32
+      ]
+    }
+  },
+  "Cerca_Basalto_03": {
+    "lienzo": [
+      64,
+      96
+    ],
+    "pivote_px": [
+      32,
+      14
+    ],
+    "ppu": 45.254833995939045,
+    "sombra": {
+      "lienzo": [
+        128,
+        64
+      ],
+      "pivote_px": [
+        40,
+        32
+      ]
+    }
+  },
+  "Palma_Corozo_01": {
+    "lienzo": [
+      64,
+      128
+    ],
+    "pivote_px": [
+      36,
+      12
+    ],
+    "ppu": 45.254833995939045,
+    "sombra": {
+      "lienzo": [
+        160,
+        64
+      ],
+      "pivote_px": [
+        50,
+        32
+      ]
+    }
+  },
+  "Palma_Corozo_02": {
+    "lienzo": [
+      64,
+      128
+    ],
+    "pivote_px": [
+      36,
+      12
+    ],
+    "ppu": 45.254833995939045,
+    "sombra": {
+      "lienzo": [
+        160,
+        64
+      ],
+      "pivote_px": [
+        50,
+        32
+      ]
+    }
+  },
+  "Arbusto_Selva_01": {
+    "lienzo": [
+      48,
+      48
+    ],
+    "pivote_px": [
+      24,
+      10
+    ],
+    "ppu": 45.254833995939045,
+    "sombra": {
+      "lienzo": [
+        96,
+        48
+      ],
+      "pivote_px": [
+        30,
+        24
+      ]
+    }
+  },
+  "Arbusto_Selva_02": {
+    "lienzo": [
+      48,
+      48
+    ],
+    "pivote_px": [
+      24,
+      10
+    ],
+    "ppu": 45.254833995939045,
+    "sombra": {
+      "lienzo": [
+        96,
+        48
+      ],
+      "pivote_px": [
+        30,
+        24
+      ]
+    }
+  },
+  "Matorral_Selva_01": {
+    "lienzo": [
+      64,
+      64
+    ],
+    "pivote_px": [
+      32,
+      16
+    ],
+    "ppu": 45.254833995939045,
+    "sombra": {
+      "lienzo": [
+        128,
+        64
+      ],
+      "pivote_px": [
+        40,
+        32
+      ]
+    }
+  },
+  "Matorral_Selva_02": {
+    "lienzo": [
+      64,
+      64
+    ],
+    "pivote_px": [
+      32,
+      16
+    ],
+    "ppu": 45.254833995939045,
+    "sombra": {
+      "lienzo": [
+        128,
+        64
+      ],
+      "pivote_px": [
+        40,
+        32
+      ]
+    }
+  },
+  "Matorral_Selva_03": {
+    "lienzo": [
+      64,
+      64
+    ],
+    "pivote_px": [
+      32,
+      16
+    ],
+    "ppu": 45.254833995939045,
+    "sombra": {
+      "lienzo": [
+        128,
+        64
+      ],
+      "pivote_px": [
+        40,
+        32
+      ]
+    }
+  },
+  "Pasto_Alto_01": {
+    "lienzo": [
+      32,
+      48
+    ],
+    "pivote_px": [
+      16,
+      8
+    ],
+    "ppu": 45.254833995939045,
+    "sombra": {
+      "lienzo": [
+        64,
+        40
+      ],
+      "pivote_px": [
+        20,
+        20
+      ]
+    }
+  },
+  "Pasto_Alto_02": {
+    "lienzo": [
+      32,
+      48
+    ],
+    "pivote_px": [
+      16,
+      8
+    ],
+    "ppu": 45.254833995939045,
+    "sombra": {
+      "lienzo": [
+        64,
+        40
+      ],
+      "pivote_px": [
+        20,
+        20
+      ]
+    }
+  },
+  "Helecho_01": {
+    "lienzo": [
+      48,
+      48
+    ],
+    "pivote_px": [
+      24,
+      12
+    ],
+    "ppu": 45.254833995939045,
+    "sombra": {
+      "lienzo": [
+        80,
+        40
+      ],
+      "pivote_px": [
+        26,
+        20
+      ]
+    }
+  },
+  "Helecho_02": {
+    "lienzo": [
+      48,
+      48
+    ],
+    "pivote_px": [
+      24,
+      12
+    ],
+    "ppu": 45.254833995939045,
+    "sombra": {
+      "lienzo": [
+        80,
+        40
+      ],
+      "pivote_px": [
+        26,
+        20
+      ]
+    }
+  },
+  "Roca_Basalto_01": {
+    "lienzo": [
+      48,
+      48
+    ],
+    "pivote_px": [
+      24,
+      14
+    ],
+    "ppu": 45.254833995939045,
+    "sombra": {
+      "lienzo": [
+        80,
+        40
+      ],
+      "pivote_px": [
+        26,
+        20
+      ]
+    }
+  },
+  "Roca_Basalto_02": {
+    "lienzo": [
+      48,
+      48
+    ],
+    "pivote_px": [
+      24,
+      14
+    ],
+    "ppu": 45.254833995939045,
+    "sombra": {
+      "lienzo": [
+        80,
+        40
+      ],
+      "pivote_px": [
+        26,
+        20
+      ]
+    }
+  },
+  "Roca_Basalto_03": {
+    "lienzo": [
+      48,
+      48
+    ],
+    "pivote_px": [
+      24,
+      14
+    ],
+    "ppu": 45.254833995939045,
+    "sombra": {
+      "lienzo": [
+        80,
+        40
+      ],
+      "pivote_px": [
+        26,
+        20
+      ]
+    }
+  },
+  "Nenufar_01": {
+    "lienzo": [
+      32,
+      32
+    ],
+    "pivote_px": [
+      16,
+      14
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Tule_01": {
+    "lienzo": [
+      32,
+      64
+    ],
+    "pivote_px": [
+      16,
+      8
+    ],
+    "ppu": 45.254833995939045,
+    "sombra": {
+      "lienzo": [
+        64,
+        40
+      ],
+      "pivote_px": [
+        20,
+        20
+      ]
+    }
+  },
+  "Sombra_Dosel_01": {
+    "lienzo": [
+      160,
+      96
+    ],
+    "pivote_px": [
+      80,
+      48
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Sombra_Dosel_02": {
+    "lienzo": [
+      160,
+      96
+    ],
+    "pivote_px": [
+      80,
+      48
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Tile_Camino_Trans_04": {
+    "lienzo": [
+      64,
+      64
+    ],
+    "pivote_px": [
+      32,
+      40
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Tile_Camino_Trans_05": {
+    "lienzo": [
+      64,
+      64
+    ],
+    "pivote_px": [
+      32,
+      40
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Tile_Camino_Trans_06": {
+    "lienzo": [
+      64,
+      64
+    ],
+    "pivote_px": [
+      32,
+      40
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Tile_Camino_Trans_08": {
+    "lienzo": [
+      64,
+      64
+    ],
+    "pivote_px": [
+      32,
+      40
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Tile_Camino_Trans_09": {
+    "lienzo": [
+      64,
+      64
+    ],
+    "pivote_px": [
+      32,
+      40
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Tile_Camino_Trans_10": {
+    "lienzo": [
+      64,
+      64
+    ],
+    "pivote_px": [
+      32,
+      40
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Tile_Camino_Trans_24": {
+    "lienzo": [
+      64,
+      64
+    ],
+    "pivote_px": [
+      32,
+      40
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Tile_Camino_Trans_32": {
+    "lienzo": [
+      64,
+      64
+    ],
+    "pivote_px": [
+      32,
+      40
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Tile_Camino_Trans_36": {
+    "lienzo": [
+      64,
+      64
+    ],
+    "pivote_px": [
+      32,
+      40
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Tile_Camino_Trans_64": {
+    "lienzo": [
+      64,
+      64
+    ],
+    "pivote_px": [
+      32,
+      40
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Tile_Camino_Trans_72": {
+    "lienzo": [
+      64,
+      64
+    ],
+    "pivote_px": [
+      32,
+      40
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Tile_Camino_Trans_132": {
+    "lienzo": [
+      64,
+      64
+    ],
+    "pivote_px": [
+      32,
+      40
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Tile_Orilla_04": {
+    "lienzo": [
+      64,
+      64
+    ],
+    "pivote_px": [
+      32,
+      40
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Tile_Orilla_05": {
+    "lienzo": [
+      64,
+      64
+    ],
+    "pivote_px": [
+      32,
+      40
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Tile_Orilla_06": {
+    "lienzo": [
+      64,
+      64
+    ],
+    "pivote_px": [
+      32,
+      40
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Tile_Orilla_08": {
+    "lienzo": [
+      64,
+      64
+    ],
+    "pivote_px": [
+      32,
+      40
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Tile_Orilla_09": {
+    "lienzo": [
+      64,
+      64
+    ],
+    "pivote_px": [
+      32,
+      40
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Tile_Orilla_10": {
+    "lienzo": [
+      64,
+      64
+    ],
+    "pivote_px": [
+      32,
+      40
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Tile_Orilla_16": {
+    "lienzo": [
+      64,
+      64
+    ],
+    "pivote_px": [
+      32,
+      40
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Tile_Orilla_32": {
+    "lienzo": [
+      64,
+      64
+    ],
+    "pivote_px": [
+      32,
+      40
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Tile_Orilla_64": {
+    "lienzo": [
+      64,
+      64
+    ],
+    "pivote_px": [
+      32,
+      40
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Tile_Orilla_128": {
+    "lienzo": [
+      64,
+      64
+    ],
+    "pivote_px": [
+      32,
+      40
+    ],
+    "ppu": 45.254833995939045
+  }
+}

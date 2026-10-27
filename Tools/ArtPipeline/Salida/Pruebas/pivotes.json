@@ -1,0 +1,151 @@
+{
+  "Tile_Camino_Tierra_01": {
+    "lienzo": [
+      64,
+      64
+    ],
+    "pivote_px": [
+      32,
+      40
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Tile_Camino_Tierra_02": {
+    "lienzo": [
+      64,
+      64
+    ],
+    "pivote_px": [
+      32,
+      40
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Tile_Camino_Tierra_03": {
+    "lienzo": [
+      64,
+      64
+    ],
+    "pivote_px": [
+      32,
+      40
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Tile_Camino_Tierra_04": {
+    "lienzo": [
+      64,
+      64
+    ],
+    "pivote_px": [
+      32,
+      40
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Cerca_Basalto_01": {
+    "lienzo": [
+      64,
+      96
+    ],
+    "pivote_px": [
+      32,
+      14
+    ],
+    "ppu": 45.254833995939045,
+    "sombra": {
+      "lienzo": [
+        128,
+        64
+      ],
+      "pivote_px": [
+        40,
+        32
+      ]
+    }
+  },
+  "Cerca_Basalto_02": {
+    "lienzo": [
+      64,
+      96
+    ],
+    "pivote_px": [
+      32,
+      14
+    ],
+    "ppu": 45.254833995939045,
+    "sombra": {
+      "lienzo": [
+        128,
+        64
+      ],
+      "pivote_px": [
+        40,
+        32
+      ]
+    }
+  },
+  "Cerca_Basalto_03": {
+    "lienzo": [
+      64,
+      96
+    ],
+    "pivote_px": [
+      32,
+      14
+    ],
+    "ppu": 45.254833995939045,
+    "sombra": {
+      "lienzo": [
+        128,
+        64
+      ],
+      "pivote_px": [
+        40,
+        32
+      ]
+    }
+  },
+  "Palma_Corozo_01": {
+    "lienzo": [
+      64,
+      128
+    ],
+    "pivote_px": [
+      36,
+      12
+    ],
+    "ppu": 45.254833995939045,
+    "sombra": {
+      "lienzo": [
+        160,
+        64
+      ],
+      "pivote_px": [
+        50,
+        32
+      ]
+    }
+  },
+  "Palma_Corozo_02": {
+    "lienzo": [
+      64,
+      128
+    ],
+    "pivote_px": [
+      36,
+      12
+    ],
+    "ppu": 45.254833995939045,
+    "sombra": {
+      "lienzo": [
+        160,
+        64
+      ],
+      "pivote_px": [
+        50,
+        32
+      ]
+    }
+  }
+}

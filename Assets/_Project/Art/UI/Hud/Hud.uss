@@ -1,0 +1,103 @@
+/* HUD del prototipo. Tamaños en px sobre la resolución de referencia de 1920×1080 (PanelSettings_Hud). */
+
+.hidden {
+    display: none;
+}
+
+.hud-root {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+}
+
+.hud-fps {
+    position: absolute;
+    left: 16px;
+    top: 12px;
+    font-size: 20px;
+    color: rgb(240, 232, 214);
+    -unity-text-outline-width: 1px;
+    -unity-text-outline-color: rgba(0, 0, 0, 0.8);
+}
+
+.hud-bottom {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 56px;
+    align-items: center;
+}
+
+.hud-message {
+    max-width: 960px;
+    margin-bottom: 16px;
+    padding: 18px 28px;
+    background-color: rgba(20, 16, 12, 0.88);
+    border-width: 2px;
+    border-color: rgb(190, 112, 44);
+    border-radius: 6px;
+    color: rgb(240, 232, 214);
+    font-size: 26px;
+    white-space: normal;
+    -unity-text-align: middle-left;
+}
+
+.hud-prompt {
+    padding: 8px 18px;
+    background-color: rgba(20, 16, 12, 0.75);
+    border-radius: 4px;
+    color: rgb(240, 232, 214);
+    font-size: 24px;
+}
+
+.hud-options {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(0, 0, 0, 0.55);
+}
+
+.hud-options__panel {
+    padding: 28px 40px;
+    background-color: rgba(20, 16, 12, 0.95);
+    border-width: 2px;
+    border-color: rgb(190, 112, 44);
+    border-radius: 8px;
+    align-items: center;
+}
+
+.hud-options__title {
+    margin-bottom: 20px;
+    color: rgb(240, 232, 214);
+    font-size: 32px;
+    -unity-font-style: bold;
+}
+
+.hud-options__buttons {
+    flex-direction: row;
+}
+
+.hud-options__button {
+    min-width: 170px;
+    height: 56px;
+    margin: 0 8px;
+    font-size: 24px;
+}
+
+.hud-options__button--selected {
+    border-width: 3px;
+    border-color: rgb(52, 138, 96);
+    -unity-font-style: bold;
+}
+
+.hud-options__hint {
+    margin-top: 20px;
+    color: rgb(170, 160, 140);
+    font-size: 20px;
+}

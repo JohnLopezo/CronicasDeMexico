@@ -1,7 +1,8 @@
 # Recursos Pixel Art del entorno olmeca (flujo Blender -> Pixel Art) y composición isométrica de prueba.
 # Uso (sin abrir Blender):
 #   "C:\Program Files\Blender Foundation\Blender 5.2\blender.exe" --background --factory-startup ^
-#       --python Tools\ArtPipeline\generar_pruebas.py -- Tools\ArtPipeline\Salida\Pruebas
+#       --python Tools\ArtPipeline\generar_olmeca.py -- Tools\ArtPipeline\Salida\Olmeca [--sin-unity]
+# Además de las salidas de revisión, copia los sprites del juego y Ciudad.json a Assets (ver exportar_unity).
 import json
 import math
 import os
@@ -11,7 +12,7 @@ import sys
 import zlib
 
 import bpy
-from mathutils import Euler, Vector, noise
+from mathutils import Euler, Matrix, Vector, noise
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import pixelart_comun as pa  # noqa: E402
@@ -204,6 +205,16 @@ def cerca_basalto(rng, variante):
     if variante != 1:
         helecho(v, f, c, (rng.uniform(-0.3, 0.45), -0.25, 0), 0.85, rng)
     pa.asignar(pa.malla("Plantas", v, f, c), pa.mat_color_vertice("Vegetal"))
+
+
+def cerca_basalto_y(rng, variante):
+    """La cerca de basalto girada 90°: corre a lo largo de Y (lados este y oeste de un recinto)."""
+    cerca_basalto(rng, variante)
+    bpy.context.view_layer.update()   # sin esto matrix_world no refleja la posición ni la escala recién asignadas
+    giro = Matrix.Rotation(math.radians(90), 4, 'Z')
+    for o in bpy.context.scene.objects:
+        if o.type == 'MESH':
+            o.matrix_world = giro @ o.matrix_world
 
 
 def fronda_cinta(v, f, c, base, azim, elev, largo, caida, ancho, colores, rng, muestras=13, dientes=True):
@@ -1207,6 +1218,8 @@ TIPOS = {
     "Fogon": (fogon, (48, 48), (22, 14), ("tierra", "basalto", "madera", "acentos"), "#1E2420", SOMBRA_CHICA, 0.5),
     "Escombros_Basalto": (escombros, (48, 48), (24, 14), ("basalto", "musgo", "verde_calido", "verde_frio"), "#1E2420",
                           SOMBRA_CHICA, 0.5),
+    "Cerca_Basalto_Y": (cerca_basalto_y, (64, 96), (32, 14),
+                        ("basalto", "musgo", "tierra", "verde_calido", "verde_frio"), "#1E2420", ((128, 64), (40, 32)), 0.5),
     "Plataforma_Arcilla": (plataforma_arcilla, (64, 96), (32, 18), ("tierra", "acentos", "basalto", "verde_calido", "verde_frio"),
                            None, None, 0.5),
 }
@@ -1214,7 +1227,7 @@ VARIANTES = {"Tile_Camino_Tierra": 4, "Tile_Pasto_Selva": 3, "Tile_Agua_Anim": 4
              "Palma_Corozo": 2, "Arbusto_Selva": 2, "Matorral_Selva": 3, "Pasto_Alto": 2, "Helecho": 2,
              "Roca_Basalto": 3, "Nenufar": 1, "Tule": 1, "Sombra_Dosel": 2, "Altar_Trono": 1,
              "Estela_Lisa": 1, "Estela_Grande": 3, "Rampa_Arcilla": 2, "Casa_Bajareque": 3, "Fogon": 1,
-             "Escombros_Basalto": 3}
+             "Escombros_Basalto": 3, "Cerca_Basalto_Y": 3}
 # Las transiciones y los módulos de plataforma se generan solo para las máscaras que usan las composiciones
 SIN_AVISO_BORDE = {"Tile_Camino_Tierra", "Tile_Pasto_Selva", "Tile_Agua_Anim", "Tile_Camino_Trans", "Tile_Orilla",
                    "Plataforma_Arcilla"}
@@ -1344,9 +1357,10 @@ def hoja_variantes(salida, nombres, archivo, k=4, por_fila=8):
 W_COMP, H_COMP = 640, 360
 
 
-def pantalla(X, Y, Z=0.0):
+def pantalla(X, Y, Z=0.0, centro=(W_COMP / 2, H_COMP / 2)):
+    """Píxel del lienzo de composición donde cae el punto del mundo; centro = píxel del origen."""
     p = Vector((X, Y, Z))
-    return round(W_COMP / 2 + pa.PPU * p.dot(pa.DERECHA)), round(H_COMP / 2 - pa.PPU * p.dot(pa.ARRIBA))
+    return round(centro[0] + pa.PPU * p.dot(pa.DERECHA)), round(centro[1] - pa.PPU * p.dot(pa.ARRIBA))
 
 
 def visible(X, Y, margen=80):
@@ -1463,9 +1477,236 @@ def planificar_ruinas():
     return {"suelo": suelo, "objetos": objetos, "dosel": []}, mascaras
 
 
-def componer(salida, metas, plan, cuadro_agua=1, archivo="Composicion"):
-    """Escena de prueba 640x360 con la proyección de la cámara del juego. No es una captura de Unity."""
-    lienzo = pa.sobre_fondo(pa.np.zeros((H_COMP, W_COMP, 4), dtype=pa.np.float32), "#13241A")
+def planificar_ciudad():
+    """Ciudad olmeca de unos 50×46 m inspirada en La Venta (§8). El norte apunta hacia la cámara (-Y), así que el Gran
+    Montículo (Complejo C, al sur) queda al fondo y el recinto de columnas (Complejo A, al norte) en primer plano.
+    Eje de la ciudad: X = 0. Aldea de casas de bajareque al este, junto al río; selva en el oeste y en los bordes.
+    Devuelve el plan de la composición, las máscaras que hay que generar y los datos de colisión para Unity."""
+    rng = random.Random(23)
+    X0, X1, Y0, Y1 = -24, 26, -20, 26
+
+    # ---- relieve: Gran Montículo de tres niveles con rampas (cada rampa necesita 3 celdas planas delante)
+    niveles = [
+        {(X, Y) for X in range(-6, 7) for Y in range(10, 23)},
+        {(X, Y) for X in range(-4, 5) for Y in range(13, 21)},
+        {(X, Y) for X in range(-2, 2) for Y in range(15, 19)},
+    ]
+    rampas = [("Rampa_Arcilla_01", 0, 8.5, 0.0), ("Rampa_Arcilla_01", 0, 11.5, 1.0), ("Rampa_Arcilla_02", 2.5, 16.5, 2.0)]
+    # Plataforma baja dentro del recinto (Complejo A), sin rampa: se rodea
+    niveles_a = [{(X, Y) for X in range(-2, 3) for Y in range(-12, -9)}]
+
+    # ---- suelo
+    rio = lambda X, Y: X > 21.5 + 1.8 * math.sin(Y * 0.23)
+    pantano = lambda X, Y: ((X - 15.5) ** 2) / 10 + ((Y + 15) ** 2) / 5 < 1
+    plaza = lambda X, Y: -6 <= X <= 6 and 0 <= Y <= 7
+    calzada = lambda X, Y: X in (-1, 0) and -17 <= Y <= 7
+    camino_aldea = lambda X, Y: (Y in (1, 2) and 7 <= X <= 20) or (X in (14, 15) and -12 <= Y <= 13)
+    bajo_plataforma = niveles[0] | niveles_a[0]
+    tipo_celda = {}
+    for X in range(X0, X1 + 1):
+        for Y in range(Y0, Y1 + 1):
+            if rio(X, Y) or pantano(X, Y):
+                t = "agua"
+            elif plaza(X, Y) or calzada(X, Y) or camino_aldea(X, Y):
+                t = "camino"
+            else:
+                t = "pasto"
+            tipo_celda[(X, Y)] = t
+
+    def mascara(X, Y, es_otro):
+        m = 0
+        for bit, (dx, dy) in DIR4.items():
+            if es_otro(tipo_celda.get((X + dx, Y + dy))):
+                m |= bit
+        for bit, (sx, sy, _, _) in DIAG.items():
+            if es_otro(tipo_celda.get((X + sx, Y + sy))):
+                m |= bit
+        return normalizar_mascara(m)
+
+    mascaras = {"Tile_Camino_Trans": set(), "Tile_Orilla": set(), "Plataforma_Arcilla": set()}
+    suelo = []
+    for X, Y in sorted(tipo_celda, key=lambda p: p[0] - p[1]):
+        if (X, Y) in bajo_plataforma:
+            continue   # los módulos de plataforma cubren la celda entera
+        t = tipo_celda[(X, Y)]
+        if t == "agua":
+            suelo.append(("AGUA", X, Y))
+            m = mascara(X, Y, lambda o: o in ("pasto", "camino"))
+            if m:
+                suelo.append((f"Tile_Orilla_{m:02d}", X, Y))
+                mascaras["Tile_Orilla"].add(m)
+        elif t == "camino":
+            m = mascara(X, Y, lambda o: o == "pasto")
+            if m:
+                suelo.append((f"Tile_Camino_Trans_{m:02d}", X, Y))
+                mascaras["Tile_Camino_Trans"].add(m)
+            else:
+                suelo.append((f"Tile_Camino_Tierra_{rng.choice([1, 1, 2, 4]):02d}", X, Y))
+        else:
+            suelo.append((f"Tile_Pasto_Selva_{rng.choice([1, 1, 2, 3]):02d}", X, Y))
+
+    objetos = []
+    for grupo in (niveles, niveles_a):
+        for z, nivel in enumerate(grupo):
+            for X, Y in nivel:
+                m = mascara_plataforma(nivel, X, Y)
+                mascaras["Plataforma_Arcilla"].add(m)
+                objetos.append((f"Plataforma_Arcilla_{m:02d}", X, Y, float(z)))
+    objetos += rampas
+
+    # ---- ocupación: celdas que no admiten objetos sueltos
+    ocupadas = set(bajo_plataforma)
+    for _, X, Y, _ in rampas:
+        for dx in (-1.5, -0.5, 0.5, 1.5):
+            for dy in (-1.5, -0.5, 0.5, 1.5):
+                ocupadas.add((round(X + dx * 0.7), round(Y + dy * 0.7)))
+    puntos = []   # (X, Y, radio libre) de objetos ya colocados
+
+    def libre(X, Y, r):
+        celda = (round(X), round(Y))
+        if celda not in tipo_celda or celda in ocupadas:
+            return False
+        return all((X - a) ** 2 + (Y - b) ** 2 >= (r + rb) ** 2 for a, b, rb in puntos)
+
+    def poner(nombre, X, Y, r, z=0.0):
+        objetos.append((nombre, X, Y, z))
+        puntos.append((X, Y, r))
+
+    # ---- Complejo A: recinto de columnas de basalto con entrada hacia el montículo
+    cercas = []
+    for i in range(10):
+        x = -4.95 + 1.1 * i
+        cercas.append((f"Cerca_Basalto_{[1, 2, 1, 3, 2][i % 5]:02d}", x, -15.0))
+        if abs(x) > 1.3:
+            cercas.append((f"Cerca_Basalto_{[2, 1, 2, 1, 3][i % 5]:02d}", x, -3.6))
+    for i in range(10):
+        y = -14.45 + 1.1 * i
+        for x in (-5.6, 5.6):
+            cercas.append((f"Cerca_Basalto_Y_{[1, 2, 1, 2, 3][(i + int(x > 0)) % 5]:02d}", x, y))
+    for n, X, Y in cercas:
+        if abs(X) < 1.3 and Y < -14:   # paso de la calzada por el lado norte
+            continue
+        poner(n, X, Y, 0.55)
+
+    # ---- monumentos (centro ceremonial)
+    for nombre, X, Y in [
+        ("Altar_Trono_01", -5.2, 7.8), ("Altar_Trono_01", 5.2, 7.8),                       # al pie del montículo
+        ("Estela_Grande_01", -2.4, 8.9), ("Estela_Grande_01", 2.4, 8.9),
+        ("Estela_Lisa_01", -1.6, 3.0), ("Estela_Lisa_01", 1.6, 3.0), ("Estela_Lisa_01", -1.6, -1.0), ("Estela_Lisa_01", 1.6, -1.0),
+        ("Estela_Grande_02", -3.6, -6.2), ("Estela_Grande_03", 3.4, -6.6), ("Estela_Grande_01", -3.2, -13.2),
+        ("Estela_Lisa_01", 3.6, -13.0),
+        ("Escombros_Basalto_01", 4.2, -8.6), ("Escombros_Basalto_02", -4.3, -9.4), ("Escombros_Basalto_03", 2.9, -4.8),
+        ("Escombros_Basalto_02", -6.6, 0.8), ("Escombros_Basalto_01", 7.8, 5.6), ("Escombros_Basalto_03", -7.9, -5.5),
+    ]:
+        poner(nombre, X, Y, 1.2 if nombre.startswith("Altar") else 0.5)
+
+    # ---- aldea: casas de bajareque, cada una con su fogón delante
+    junto_camino = lambda X, Y, d: any(tipo_celda.get((round(X + dx), round(Y + dy))) == "camino"
+                                      for dx in (-d, 0, d) for dy in (-d, 0, d))
+    casas = 0
+    for _ in range(900):
+        if casas == 14:
+            break
+        X, Y = rng.uniform(8.5, 20.5), rng.uniform(-17, 14)
+        if (tipo_celda.get((round(X), round(Y))) != "pasto" or junto_camino(X, Y, 1.6) or not libre(X, Y, 2.0)
+                or any(tipo_celda.get((round(X + dx), round(Y + dy))) == "agua" for dx in (-2, 0, 2) for dy in (-2, 0, 2))):
+            continue
+        poner(f"Casa_Bajareque_{rng.choice([1, 1, 2, 2, 3]):02d}", X, Y, 2.0)
+        casas += 1
+        if rng.random() < 0.7 and libre(X + 0.9, Y - 2.5, 0.3):   # delante de la puerta, fuera del radio de la casa
+            poner("Fogon_01", X + 0.9, Y - 2.5, 0.4)
+
+    # ---- vegetación
+    def zona(X, Y):
+        borde = min(X - X0, X1 - X, Y - Y0, Y1 - Y)
+        if borde < 4 or (X < -9 and Y < 9) or (Y > 23):
+            return "selva"
+        if X > 8:
+            return "aldea"
+        return "abierto"
+
+    def sembrar(nombres, cantidad, permitido, r, z=0.0, intentos=None):
+        for _ in range(intentos or cantidad * 30):
+            if cantidad == 0:
+                return
+            X, Y = rng.uniform(X0, X1), rng.uniform(Y0, Y1)
+            celda = (round(X), round(Y))
+            if celda in tipo_celda and permitido(celda, X, Y) and libre(X, Y, r):
+                poner(rng.choice(nombres), X, Y, r, z)
+                cantidad -= 1
+
+    es = lambda tipo, *zonas: (lambda celda, X, Y: tipo_celda[celda] == tipo and (not zonas or zona(X, Y) in zonas))
+    junto_a = lambda tipo: (lambda celda, X, Y: tipo_celda[celda] == "pasto" and any(
+        tipo_celda.get((celda[0] + dx, celda[1] + dy)) == tipo for dx, dy in ((1, 0), (-1, 0), (0, 1), (0, -1))))
+    matorrales = ["Matorral_Selva_01", "Matorral_Selva_02", "Matorral_Selva_03"]
+    palmas = ["Palma_Corozo_01", "Palma_Corozo_02"]
+    sembrar(palmas, 100, es("pasto", "selva"), 1.0)
+    sembrar(palmas, 14, es("pasto", "aldea"), 1.3)
+    sembrar(palmas, 6, es("pasto", "abierto"), 1.6)
+    sembrar(matorrales, 420, es("pasto", "selva"), 0.5)
+    sembrar(["Tule_01"], 26, junto_a("agua"), 0.3, intentos=6000)
+    sembrar(["Nenufar_01"], 14, lambda c_, X, Y: tipo_celda[c_] == "agua" and not junto_a("pasto")(c_, X, Y), 0.5, z=-0.06)
+    sembrar(matorrales, 24, junto_a("agua"), 0.6)
+    sembrar(["Arbusto_Selva_01", "Arbusto_Selva_01", "Arbusto_Selva_02"], 130, es("pasto", "selva", "aldea"), 0.55)
+    sembrar(["Helecho_01", "Helecho_02"], 260, es("pasto", "selva"), 0.4)
+    sembrar(["Helecho_01", "Helecho_02"], 25, es("pasto", "abierto", "aldea"), 0.5)
+    sembrar(["Pasto_Alto_01", "Pasto_Alto_02"], 60, junto_a("camino"), 0.4)
+    sembrar(["Pasto_Alto_01", "Pasto_Alto_02"], 160, es("pasto"), 0.35)
+    sembrar(["Roca_Basalto_01", "Roca_Basalto_02", "Roca_Basalto_03"], 26, es("pasto"), 0.7)
+    # Plantas sobre los niveles del montículo (la selva lo va cubriendo)
+    for z, nivel in enumerate(niveles):
+        arriba = [c for c in nivel if mascara_plataforma(nivel, *c) == 0 and
+                  (z + 1 >= len(niveles) or c not in niveles[z + 1])]
+        for X, Y in rng.sample(arriba, min(len(arriba), 6 - 2 * z)):
+            objetos.append((rng.choice(["Pasto_Alto_01", "Helecho_01", "Arbusto_Selva_01"]), X + rng.uniform(-0.3, 0.3),
+                            Y + rng.uniform(-0.3, 0.3), z + H_PLATAFORMA))
+
+    dosel_ = [(f"Sombra_Dosel_{1 + i % 2:02d}", rng.uniform(X0, X1), rng.uniform(Y0, Y1)) for i in range(160)]
+    dosel_ = [d for d in dosel_ if zona(d[1], d[2]) == "selva" and tipo_celda.get((round(d[1]), round(d[2]))) == "pasto"][:80]
+
+    colision = {
+        "niveles": [[list(c) for c in sorted(n)] for n in niveles],
+        "niveles_recinto": [[list(c) for c in sorted(n)] for n in niveles_a],
+        "rampas": [{"sprite": n, "x": X, "y": Y, "z": z} for n, X, Y, z in rampas],
+        "agua": [list(c) for c, t in sorted(tipo_celda.items()) if t == "agua"],
+        "limites": [X0, X1, Y0, Y1],
+    }
+    return {"suelo": suelo, "objetos": objetos, "dosel": dosel_}, mascaras, colision
+
+
+def exportar_ciudad(salida, plan, colision):
+    """ciudad.json para el generador de la escena de Unity (etapa D): sprites con posición en metros
+    (x, y del mundo del flujo; z hacia arriba) y los datos de colisión."""
+    datos = {
+        "nota": "Coordenadas del flujo Blender: +X derecha-abajo en pantalla, +Y derecha-arriba, Z arriba; 1 unidad = 1 m.",
+        "suelo": [{"sprite": n, "x": X, "y": Y} for n, X, Y in plan["suelo"]],
+        "dosel": [{"sprite": n, "x": round(X, 3), "y": round(Y, 3)} for n, X, Y in plan["dosel"]],
+        "objetos": [{"sprite": n, "x": round(X, 3), "y": round(Y, 3), "z": z} for n, X, Y, z in plan["objetos"]],
+        "colision": colision,
+    }
+    with open(os.path.join(salida, "ciudad.json"), "w", encoding="utf-8") as fh:
+        json.dump(datos, fh, ensure_ascii=False, indent=1)
+
+
+# Vista previa de la ciudad completa (sin ampliar) y recortes de 640×360 ampliados ×3
+TAM_CIUDAD = (3264, 1800)
+CENTRO_CIUDAD = (1508, 1000)
+RECORTES_CIUDAD = {"Plaza": (0, 5), "Montículo": (0, 16), "Recinto": (0, -9), "Aldea": (15, -2)}
+
+
+def componer_ciudad(salida, metas, plan):
+    lienzo = componer(salida, metas, plan, archivo="Ciudad", tam=TAM_CIUDAD, centro=CENTRO_CIUDAD, ampliar=False)
+    for nombre, (X, Y) in RECORTES_CIUDAD.items():
+        sx, sy = pantalla(X, Y, centro=CENTRO_CIUDAD)
+        x0, y0 = sx - W_COMP // 2, sy - H_COMP // 2
+        recorte = lienzo[y0:y0 + H_COMP, x0:x0 + W_COMP]
+        pa.guardar(pa.ampliar(recorte, 3), os.path.join(salida, f"Ciudad_{nombre}_1920x1080_x3.png"))
+
+
+def componer(salida, metas, plan, cuadro_agua=1, archivo="Composicion", tam=(W_COMP, H_COMP), centro=None, ampliar=True):
+    """Escena de prueba con la proyección de la cámara del juego (640x360 por defecto). No es una captura de Unity."""
+    centro = centro or (tam[0] / 2, tam[1] / 2)
+    lienzo = pa.sobre_fondo(pa.np.zeros((tam[1], tam[0], 4), dtype=pa.np.float32), "#13241A")
     cache = {}
 
     def img(n):
@@ -1476,7 +1717,7 @@ def componer(salida, metas, plan, cuadro_agua=1, archivo="Composicion"):
     def poner(n, X, Y, Z=0.0, sombra=False):
         meta = metas[n]["sombra"] if sombra else metas[n]
         i = img(n + "_Sombra") if sombra else img(n)
-        sx, sy = pantalla(X, Y, Z)
+        sx, sy = pantalla(X, Y, Z, centro)
         pegar(lienzo, i, sx - meta["pivote_px"][0], sy - (i.shape[0] - meta["pivote_px"][1]))
 
     for n, X, Y in plan["suelo"]:   # ya ordenado por profundidad; la orilla va justo después de su agua
@@ -1489,8 +1730,116 @@ def componer(salida, metas, plan, cuadro_agua=1, archivo="Composicion"):
     for n, X, Y, Z in sorted(plan["objetos"], key=lambda o: (o[1] - o[2], o[3])):   # a igual fondo, lo de abajo primero
         poner(n, X, Y, Z)
 
-    pa.guardar(lienzo, os.path.join(salida, f"{archivo}_640x360.png"))
-    pa.guardar(pa.ampliar(lienzo, 3), os.path.join(salida, f"{archivo}_1920x1080_x3.png"))
+    pa.guardar(lienzo, os.path.join(salida, f"{archivo}_{tam[0]}x{tam[1]}.png"))
+    if ampliar:
+        pa.guardar(pa.ampliar(lienzo, 3), os.path.join(salida, f"{archivo}_{tam[0] * 3}x{tam[1] * 3}_x3.png"))
+    return lienzo
+
+
+# ---------------------------------------------------------------- exportación a Unity (etapa C)
+
+RAIZ_PROYECTO = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", ".."))
+SPRITES_UNITY = os.path.join(RAIZ_PROYECTO, "Assets", "_Project", "Art", "Environment", "Olmeca", "Sprites")
+DATOS_UNITY = os.path.join(RAIZ_PROYECTO, "Assets", "_Project", "Data", "World", "Olmeca")
+TROZO_SUELO = 1024
+# Lo que se hornea en el suelo (no se exporta como sprite suelto)
+NO_EXPORTAR = ("Tile_Camino", "Tile_Pasto", "Tile_Orilla", "Sombra_Dosel")
+
+
+def capa_suelo_ciudad(salida, metas, plan):
+    """Suelo de la ciudad horneado en una sola imagen, en el mismo orden que la composición: tiles (sin el agua, que en
+    Unity va animada por debajo), sombras del dosel y sombras de los objetos. Lo transparente deja ver el agua."""
+    lienzo = pa.np.zeros((TAM_CIUDAD[1], TAM_CIUDAD[0], 4), dtype=pa.np.float32)
+    cache = {}
+
+    def img(n):
+        if n not in cache:
+            cache[n] = pa.cargar(os.path.join(salida, n + ".png"))
+        return cache[n]
+
+    def poner(n, X, Y, Z=0.0, sombra=False):
+        meta = metas[n]["sombra"] if sombra else metas[n]
+        i = img(n + "_Sombra") if sombra else img(n)
+        sx, sy = pantalla(X, Y, Z, CENTRO_CIUDAD)
+        pegar(lienzo, i, sx - meta["pivote_px"][0], sy - (i.shape[0] - meta["pivote_px"][1]))
+
+    for n, X, Y in plan["suelo"]:
+        if n != "AGUA":
+            poner(n, X, Y)
+    for n, X, Y in plan["dosel"]:
+        poner(n, X, Y)
+    for n, X, Y, Z in plan["objetos"]:
+        if "sombra" in metas[n]:
+            poner(n, X, Y, Z, sombra=True)
+    # La sombra semitransparente sobre un píxel vacío (agua) quedaría con alfa parcial: el material recorta a 0.5,
+    # así que se fuerza el alfa a 0 o 1 (sobre el agua no se ven sombras; en tierra ya son opacas tras mezclar)
+    lienzo[..., 3] = (lienzo[..., 3] >= 0.5).astype(pa.np.float32)
+    return lienzo
+
+
+def exportar_unity(salida, metas, plan, colision):
+    """Copia a Assets los sprites del juego y los datos de la ciudad. Conserva los .meta de los archivos que siguen
+    existiendo (GUID estables) y borra los que ya no se generan."""
+    destinos = {"Objetos": [], "Agua": [], "Suelo": []}
+    pivotes = []
+    for nombre, meta in sorted(metas.items()):
+        if nombre.startswith(NO_EXPORTAR):
+            continue
+        carpeta = "Agua" if nombre.startswith("Tile_Agua") else "Objetos"
+        destinos[carpeta].append((nombre, os.path.join(salida, nombre + ".png")))
+        pivotes.append({"nombre": nombre, "lienzo": list(meta["lienzo"]), "pivote": list(meta["pivote_px"])})
+
+    suelo = capa_suelo_ciudad(salida, metas, plan)
+    op = pa.np.argwhere(suelo[..., 3] > 0.5)
+    (y0, x0), (y1, x1) = op.min(0), op.max(0) + 1
+    trozos = []
+    tmp = os.path.join(salida, "_suelo")
+    os.makedirs(tmp, exist_ok=True)
+    for ty in range(y0, y1, TROZO_SUELO):
+        for tx in range(x0, x1, TROZO_SUELO):
+            t = suelo[ty:min(ty + TROZO_SUELO, y1), tx:min(tx + TROZO_SUELO, x1)]
+            if not (t[..., 3] > 0.5).any():
+                continue
+            nombre = f"Suelo_Ciudad_{len(trozos):02d}"
+            ruta = os.path.join(tmp, nombre + ".png")
+            pa.guardar(t, ruta)
+            h, w = t.shape[:2]
+            # Centro del trozo respecto al píxel del origen del mundo, en metros sobre el plano de la cámara
+            derecha = (tx + w / 2 - CENTRO_CIUDAD[0]) / pa.PPU
+            arriba = (CENTRO_CIUDAD[1] - (ty + h / 2)) / pa.PPU
+            trozos.append({"sprite": nombre, "derecha": round(derecha, 5), "arriba": round(arriba, 5)})
+            destinos["Suelo"].append((nombre, ruta))
+            pivotes.append({"nombre": nombre, "lienzo": [w, h], "pivote": [w / 2, h / 2]})
+
+    for carpeta, archivos in destinos.items():
+        dest = os.path.join(SPRITES_UNITY, carpeta)
+        os.makedirs(dest, exist_ok=True)
+        nuevos = {n + ".png" for n, _ in archivos}
+        for viejo in os.listdir(dest):
+            base = viejo[:-5] if viejo.endswith(".meta") else viejo
+            if base.endswith(".png") and base not in nuevos:
+                os.remove(os.path.join(dest, viejo))
+        for n, origen in archivos:
+            shutil.copyfile(origen, os.path.join(dest, n + ".png"))
+    shutil.rmtree(tmp)
+
+    with open(os.path.join(SPRITES_UNITY, "pivotes_unity.json"), "w", encoding="utf-8") as fh:
+        json.dump({"ppu": pa.PPU, "sprites": pivotes}, fh, ensure_ascii=False, indent=1)
+    os.makedirs(DATOS_UNITY, exist_ok=True)
+    with open(os.path.join(DATOS_UNITY, "Ciudad.json"), "w", encoding="utf-8") as fh:
+        json.dump({
+            "nota": "Coordenadas del flujo Blender (x, y en el suelo, z arriba; 1 unidad = 1 m). En Unity: (y, z, -x).",
+            "agua": [{"x": X, "y": Y} for n, X, Y in plan["suelo"] if n == "AGUA"],
+            "suelo": trozos,
+            "objetos": [{"sprite": n, "x": round(X, 3), "y": round(Y, 3), "z": z} for n, X, Y, z in plan["objetos"]],
+            "niveles": [{"celdas": [{"x": c[0], "y": c[1]} for c in nivel], "z": k}
+                        for k, nivel in enumerate(colision["niveles"])]
+                       + [{"celdas": [{"x": c[0], "y": c[1]} for c in nivel], "z": k}
+                          for k, nivel in enumerate(colision["niveles_recinto"])],
+            "rampas": colision["rampas"],
+            "limites": colision["limites"],
+        }, fh, ensure_ascii=False, indent=1)
+    print("Unity:", sum(len(a) for a in destinos.values()), "sprites en", SPRITES_UNITY)
 
 
 def main():
@@ -1501,6 +1850,9 @@ def main():
     os.makedirs(tmp)
     plan, mascaras = planificar()
     plan_ruinas, mascaras["Plataforma_Arcilla"] = planificar_ruinas()
+    plan_ciudad, mascaras_ciudad, colision = planificar_ciudad()
+    for tipo, ms in mascaras_ciudad.items():
+        mascaras[tipo] |= ms
     lotes = [(tipo, list(range(1, n + 1))) for tipo, n in VARIANTES.items()]
     lotes += [(tipo, sorted(ms)) for tipo, ms in mascaras.items()]
     metas = {}
@@ -1515,6 +1867,10 @@ def main():
         json.dump(metas, fh, indent=2)
     componer(salida, metas, plan)
     componer(salida, metas, plan_ruinas, archivo="Prueba_Ruinas")
+    exportar_ciudad(salida, plan_ciudad, colision)
+    componer_ciudad(salida, metas, plan_ciudad)
+    if "--sin-unity" not in sys.argv:
+        exportar_unity(salida, metas, plan_ciudad, colision)
     shutil.rmtree(tmp)
     print("LISTO", salida, len(metas), "sprites")
 

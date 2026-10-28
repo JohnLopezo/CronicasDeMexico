@@ -805,6 +805,91 @@
       ]
     }
   },
+  "Cerca_Basalto_Y_01": {
+    "lienzo": [
+      64,
+      96
+    ],
+    "pivote_px": [
+      32,
+      14
+    ],
+    "ppu": 45.254833995939045,
+    "sombra": {
+      "lienzo": [
+        128,
+        64
+      ],
+      "pivote_px": [
+        40,
+        32
+      ]
+    }
+  },
+  "Cerca_Basalto_Y_02": {
+    "lienzo": [
+      64,
+      96
+    ],
+    "pivote_px": [
+      32,
+      14
+    ],
+    "ppu": 45.254833995939045,
+    "sombra": {
+      "lienzo": [
+        128,
+        64
+      ],
+      "pivote_px": [
+        40,
+        32
+      ]
+    }
+  },
+  "Cerca_Basalto_Y_03": {
+    "lienzo": [
+      64,
+      96
+    ],
+    "pivote_px": [
+      32,
+      14
+    ],
+    "ppu": 45.254833995939045,
+    "sombra": {
+      "lienzo": [
+        128,
+        64
+      ],
+      "pivote_px": [
+        40,
+        32
+      ]
+    }
+  },
+  "Tile_Camino_Trans_01": {
+    "lienzo": [
+      64,
+      64
+    ],
+    "pivote_px": [
+      32,
+      40
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Tile_Camino_Trans_02": {
+    "lienzo": [
+      64,
+      64
+    ],
+    "pivote_px": [
+      32,
+      40
+    ],
+    "ppu": 45.254833995939045
+  },
   "Tile_Camino_Trans_04": {
     "lienzo": [
       64,
@@ -871,6 +956,17 @@
     ],
     "ppu": 45.254833995939045
   },
+  "Tile_Camino_Trans_16": {
+    "lienzo": [
+      64,
+      64
+    ],
+    "pivote_px": [
+      32,
+      40
+    ],
+    "ppu": 45.254833995939045
+  },
   "Tile_Camino_Trans_24": {
     "lienzo": [
       64,
@@ -926,7 +1022,51 @@
     ],
     "ppu": 45.254833995939045
   },
+  "Tile_Camino_Trans_128": {
+    "lienzo": [
+      64,
+      64
+    ],
+    "pivote_px": [
+      32,
+      40
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Tile_Camino_Trans_129": {
+    "lienzo": [
+      64,
+      64
+    ],
+    "pivote_px": [
+      32,
+      40
+    ],
+    "ppu": 45.254833995939045
+  },
   "Tile_Camino_Trans_132": {
+    "lienzo": [
+      64,
+      64
+    ],
+    "pivote_px": [
+      32,
+      40
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Tile_Orilla_01": {
+    "lienzo": [
+      64,
+      64
+    ],
+    "pivote_px": [
+      32,
+      40
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Tile_Orilla_02": {
     "lienzo": [
       64,
       64

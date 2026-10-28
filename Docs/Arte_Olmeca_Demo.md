@@ -4,7 +4,7 @@ Define el estilo de la escena de demostración `Olmeca_VisualDemo` (aún no crea
 
 ## 1. Referencia
 
-- **Referencia principal:** `Docs/Referencia_Visual_Olmeca.png` (1536×1024). `Referencia_Visual_Olmeca2.png` es un duplicado exacto (mismo MD5).
+- **Referencia principal:** `Docs/Referencia_Visual_Olmeca.png` (1536×1024). **Segunda hoja:** `Referencia_Visual_Olmeca2.png` (nueva desde el 2026-10-28: más vegetación, objetos de aldea, NPC y una escena integrada).
 - Se toma como objetivo de **densidad de vegetación, detalle, profundidad, caminos y composición**. No se copian sus recursos ni sus personajes: todo se produce con el flujo de la sección 10.
 - La referencia es una hoja de concepto: sus medidas (tile 64×64, palma 64×128, jaguar 32–40 px) se adoptan; algunos de sus elementos **no** se adoptan por criterio histórico (sección 8).
 
@@ -178,7 +178,7 @@ Ventaja: coherencia de luz y escala entre recursos y facilidad para generar vari
 - **Ruinas, etapa 3 (2026-10-28): estelas lisas**, aprobadas. Sin relieve; musgo en la cima y en la base.
   - `Estela_Lisa_01`.
   - `Estela_Grande_01` en pie, `_02` vencida hacia la cámara con tierra removida y `_03` rota con fractura irregular y el trozo superior caído.
-- **Ciudad jugable, etapa A (2026-10-28): recursos de la aldea**, pendientes de aprobación. El plan completo (A–E) está en «Siguiente».
+- **Ciudad jugable, etapa A (2026-10-28): recursos de la aldea**, aprobada. El plan completo (A–E) está en «Siguiente».
   - `Casa_Bajareque_01–03`: rectangular, absidal y pequeña redonda. Muros de barro con desconchones que dejan ver las varas, puerta con jambas al lado -Y, techo de palma con vetas y flecos, y basamento de tierra. Casas perecederas: D; la forma concreta: I.
   - `Fogon_01`: tres piedras, ceniza, tecomate (vasija esférica sin cuello) y dos vasijas más.
   - `Escombros_Basalto_01–03`: tramos de columna caídos, montón de fragmentos y tocón con su tramo. Es la antigua etapa 4.
@@ -196,13 +196,46 @@ Pedida el 2026-10-28; se hace en lugar de las etapas 4–6 de las ruinas.
 
 | Etapa | Contenido |
 |---|---|
-| A | Recursos de la aldea: casas, fogón, escombros y rampas (hecha, pendiente de aprobación) |
-| B | Trazado de unos 50×50 m en Python: Gran Montículo con rampa, plaza ceremonial con cerca de basalto, estelas y altares, calzada, aldea junto al río y pantano. Exporta `ciudad.json` y una vista previa |
-| C | Importación en Unity: AssetPostprocessor (PPU 45.2548, Point, pivotes de `pivotes.json`), materiales sin luz con recorte alfa y atlas |
+| A | Recursos de la aldea: casas, fogón, escombros y rampas (aprobada) |
+| B | Trazado en Python (`planificar_ciudad`), aprobado. Detalle debajo |
+| C | Importación en Unity, hecha el 2026-10-28 y pendiente de aprobación. Detalle debajo |
 | D | Escena `Olmeca_Ciudad` generada desde `ciudad.json`; no toca `Olmeca_Prototipo`. Cámara fija X30/Y45 a 640×360 escalada, colisiones invisibles, jugador actual con sprite de cara a la cámara y HUD |
 | E | Medición de FPS en build de desarrollo |
 
-Pendiente de decidir: dónde se exportan los sprites del juego (propuesta: `Assets/_Project/Art/Environment/Olmeca/Sprites/`, por LFS).
+**Etapa B: trazado de la ciudad.** Mapa de 51×47 m. El norte apunta hacia la cámara (-Y), así que el Gran Montículo (Complejo C, al sur) queda al fondo y el recinto de columnas (Complejo A, al norte) en primer plano: el orden se respeta (I).
+
+- Elementos:
+  - Gran Montículo de 3 niveles (3 m) con 3 rampas encadenadas.
+  - Plaza de tierra con 2 altares y 2 estelas al pie, y estelas lisas a lo largo de la calzada.
+  - Recinto de 11×11 m cercado por columnas, con entrada hacia el montículo, una plataforma baja, estelas y escombros.
+  - Aldea de 10 casas con fogones, caminos, río al este con tule y nenúfares, y pantano.
+  - Selva más densa al oeste y en los bordes.
+- Nuevo recurso: `Cerca_Basalto_Y_01–03`, la cerca girada para los lados este y oeste.
+- Vista previa: `Ciudad_3264x1800.png` y recortes ×3 `Ciudad_{Plaza,Montículo,Recinto,Aldea}_1920x1080_x3.png`.
+- Datos para Unity: `ciudad.json` (suelo, objetos con x, y, z; niveles de plataforma, rampas, celdas de agua y límites para las colisiones).
+- Límites conocidos:
+  - En las cimas grandes de las plataformas se nota la rejilla de módulos.
+  - El borde del mapa es un rombo recortado; en Unity habrá que limitar la cámara o cerrar el borde con selva.
+  - La referencia `Referencia_Visual_Olmeca2.png` (nueva, 2026-10-28) propone recursos para una etapa A2: ceiba, troncos, vasijas grandes, enramada, muelle y braseros.
+
+**Etapa C: importación en Unity.**
+
+- **Exportación:** `generar_olmeca.py` termina copiando los sprites del juego a `Assets/_Project/Art/Environment/Olmeca/Sprites/`:
+  - `Objetos/`: todo lo que no es suelo.
+  - `Agua/`: los 4 cuadros.
+  - `Suelo/`: el suelo de la ciudad horneado en trozos de hasta 1024 px, con sombras de dosel y de objetos y sin el agua.
+  - También escribe `pivotes_unity.json` y `Assets/_Project/Data/World/Olmeca/Ciudad.json`.
+  - Conserva los `.meta` de lo que sigue existiendo. `--sin-unity` omite este paso.
+- **Importación:** `PixelArtSpriteImporter` aplica PPU 45.2548, Point, sin mipmaps ni compresión y el pivote del flujo. Malla Tight en objetos y FullRect en el suelo.
+- **Shader** `Cronicas/Pixel Art Unlit`: sin iluminación (la luz va horneada), con recorte alfa.
+- **Materiales** en `Materials/PixelArt/`:
+  - `M_PixelArt_Agua`: cola 1900, sin profundidad.
+  - `M_PixelArt_Suelo`: cola 1950, sin profundidad.
+  - `M_PixelArt_Objeto`: cola 2450, con profundidad. Un sprite orientado al plano de la cámara escribe la profundidad de su pivote, lo que reproduce el orden por punto de apoyo sin ordenar los renderers.
+- **Atlas** `Atlas_Olmeca.spriteatlasv2`, con objetos y agua. El empaquetador del proyecto pasa a Sprite Atlas V2 (`EditorSettings`).
+- Menú **Crónicas → Pixel Art → Crear materiales y atlas**, o `-executeMethod CronicasDeMexico.Editor.PixelArt.PixelArtAssets.CreateAll`.
+- **Pruebas:** `PixelArtImportTests` (8). EditMode 36/36 y PlayMode 21/21, en batch en el i7 el 2026-10-28.
+- **Ejes:** el mundo del flujo (x, y, z) pasa a Unity como (y, z, -x) con la cámara en rotación (30°, 45°, 0°).
 
 ### Ruinas olmecas (opción b)
 

@@ -35,6 +35,17 @@
    ]
   },
   {
+   "nombre": "Canoa_01",
+   "lienzo": [
+    64,
+    48
+   ],
+   "pivote": [
+    32,
+    18
+   ]
+  },
+  {
    "nombre": "Casa_Bajareque_01",
    "lienzo": [
     160,
@@ -65,6 +76,17 @@
    "pivote": [
     80,
     40
+   ]
+  },
+  {
+   "nombre": "Ceiba_01",
+   "lienzo": [
+    192,
+    208
+   ],
+   "pivote": [
+    96,
+    28
    ]
   },
   {
@@ -131,6 +153,17 @@
    "pivote": [
     32,
     14
+   ]
+  },
+  {
+   "nombre": "Enramada_01",
+   "lienzo": [
+    160,
+    152
+   ],
+   "pivote": [
+    80,
+    40
    ]
   },
   {
@@ -274,6 +307,28 @@
    "pivote": [
     32,
     16
+   ]
+  },
+  {
+   "nombre": "Muelle_Madera_01",
+   "lienzo": [
+    64,
+    64
+   ],
+   "pivote": [
+    32,
+    22
+   ]
+  },
+  {
+   "nombre": "Muelle_Madera_02",
+   "lienzo": [
+    64,
+    64
+   ],
+   "pivote": [
+    32,
+    22
    ]
   },
   {
@@ -541,6 +596,28 @@
    ]
   },
   {
+   "nombre": "Tronco_Caido_01",
+   "lienzo": [
+    64,
+    48
+   ],
+   "pivote": [
+    32,
+    16
+   ]
+  },
+  {
+   "nombre": "Tronco_Caido_02",
+   "lienzo": [
+    64,
+    48
+   ],
+   "pivote": [
+    32,
+    16
+   ]
+  },
+  {
    "nombre": "Tule_01",
    "lienzo": [
     32,
@@ -549,6 +626,28 @@
    "pivote": [
     16,
     8
+   ]
+  },
+  {
+   "nombre": "Vasijas_01",
+   "lienzo": [
+    48,
+    48
+   ],
+   "pivote": [
+    24,
+    12
+   ]
+  },
+  {
+   "nombre": "Vasijas_02",
+   "lienzo": [
+    48,
+    48
+   ],
+   "pivote": [
+    24,
+    12
    ]
   },
   {

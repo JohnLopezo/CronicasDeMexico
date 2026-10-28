@@ -868,6 +868,165 @@
       ]
     }
   },
+  "Ceiba_01": {
+    "lienzo": [
+      192,
+      208
+    ],
+    "pivote_px": [
+      96,
+      28
+    ],
+    "ppu": 45.254833995939045,
+    "sombra": {
+      "lienzo": [
+        256,
+        128
+      ],
+      "pivote_px": [
+        48,
+        56
+      ]
+    }
+  },
+  "Tronco_Caido_01": {
+    "lienzo": [
+      64,
+      48
+    ],
+    "pivote_px": [
+      32,
+      16
+    ],
+    "ppu": 45.254833995939045,
+    "sombra": {
+      "lienzo": [
+        96,
+        48
+      ],
+      "pivote_px": [
+        30,
+        24
+      ]
+    }
+  },
+  "Tronco_Caido_02": {
+    "lienzo": [
+      64,
+      48
+    ],
+    "pivote_px": [
+      32,
+      16
+    ],
+    "ppu": 45.254833995939045,
+    "sombra": {
+      "lienzo": [
+        96,
+        48
+      ],
+      "pivote_px": [
+        30,
+        24
+      ]
+    }
+  },
+  "Vasijas_01": {
+    "lienzo": [
+      48,
+      48
+    ],
+    "pivote_px": [
+      24,
+      12
+    ],
+    "ppu": 45.254833995939045,
+    "sombra": {
+      "lienzo": [
+        80,
+        40
+      ],
+      "pivote_px": [
+        26,
+        20
+      ]
+    }
+  },
+  "Vasijas_02": {
+    "lienzo": [
+      48,
+      48
+    ],
+    "pivote_px": [
+      24,
+      12
+    ],
+    "ppu": 45.254833995939045,
+    "sombra": {
+      "lienzo": [
+        80,
+        40
+      ],
+      "pivote_px": [
+        26,
+        20
+      ]
+    }
+  },
+  "Enramada_01": {
+    "lienzo": [
+      160,
+      152
+    ],
+    "pivote_px": [
+      80,
+      40
+    ],
+    "ppu": 45.254833995939045,
+    "sombra": {
+      "lienzo": [
+        208,
+        112
+      ],
+      "pivote_px": [
+        76,
+        52
+      ]
+    }
+  },
+  "Muelle_Madera_01": {
+    "lienzo": [
+      64,
+      64
+    ],
+    "pivote_px": [
+      32,
+      22
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Muelle_Madera_02": {
+    "lienzo": [
+      64,
+      64
+    ],
+    "pivote_px": [
+      32,
+      22
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Canoa_01": {
+    "lienzo": [
+      64,
+      48
+    ],
+    "pivote_px": [
+      32,
+      18
+    ],
+    "ppu": 45.254833995939045
+  },
   "Tile_Camino_Trans_01": {
     "lienzo": [
       64,

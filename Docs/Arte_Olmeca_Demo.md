@@ -78,6 +78,12 @@ Reglas: sin negro puro (el más oscuro es `#0F2A17`/`#1E2420`); contorno exterio
 | Casa de bajareque | 160×152 (sombra aparte de 208×112; 3 variantes) | Muros de 2,0 × 1,4 m, cumbrera a ~2,4 m, basamento de 0,2 m | Centro de la base |
 | Fogón con vasijas | 48×48 | ~0,8 m | Centro del fogón |
 | Escombros de basalto | 48×48 (3 variantes) | 0,3–0,6 m | Centro |
+| Ceiba | 192×208 (sombra aparte de 256×128) | Altura comprimida a ~3,4 m, copa de ~3 m | Base del tronco |
+| Tronco caído / tocón | 64×48 (2 variantes) | 1,1 m / 0,35 m | Centro |
+| Vasijas grandes | 48×48 (2 variantes) | 0,2–0,45 m | Centro del grupo |
+| Enramada | 160×152 (sombra aparte de 208×112) | 2,5 × 1,9 m de techo | Centro de la huella |
+| Muelle de madera | 64×64 por módulo de 1 m (variante 1 a lo largo de X, 2 a lo largo de Y) | Tablero a 0,12 m sobre el suelo | Centro del módulo |
+| Canoa monóxila | 64×48 | 1,4 m | Centro, a la altura del agua (z = -0,06) |
 | Plataforma de arcilla | 64×96 por módulo y máscara de vecinos; se apila (nivel superior en Z = 1 m) | 1×1 m, 1 m de alto | Centro del tile a nivel del pie |
 
 Animación: 5 direcciones (N, NE, E, SE, S) y las 3 del oeste por espejo, como espera `DirectionalSpriteSet`. Jaguar: reposo, caminar/trotar, correr, ataque, recibir daño y derrota.
@@ -200,7 +206,8 @@ Pedida el 2026-10-28; se hace en lugar de las etapas 4–6 de las ruinas.
 | B | Trazado en Python (`planificar_ciudad`), aprobado. Detalle debajo |
 | C | Importación en Unity, aprobada. Detalle debajo |
 | D | Escena `Olmeca_Ciudad`, aprobada. Detalle debajo |
-| E | Rendimiento, hecho el 2026-10-28 y pendiente de aprobación. Detalle debajo y en `Docs/Rendimiento.md` |
+| E | Rendimiento, aprobado. Detalle debajo y en `Docs/Rendimiento.md` |
+| A2 | Recursos de la segunda referencia, hechos el 2026-10-28 y pendientes de aprobación. Detalle debajo |
 
 **Etapa B: trazado de la ciudad.** Mapa de 51×47 m. El norte apunta hacia la cámara (-Y), así que el Gran Montículo (Complejo C, al sur) queda al fondo y el recinto de columnas (Complejo A, al norte) en primer plano: el orden se respeta (I).
 
@@ -272,6 +279,22 @@ Pedida el 2026-10-28; se hace en lugar de las etapas 4–6 de las ruinas.
 - **Pendiente:**
   - Medir en el i5 / HD 530 y en Android.
   - En Alto, la cámara de fondo paga SSAO y HDR a 1080 p sin dibujar nada; se puede optimizar si hace falta.
+
+**Etapa A2: recursos adaptados de `Referencia_Visual_Olmeca2.png`.** Prueba en `Prueba_Aldea_1920x1080_x3.png`.
+
+- **Recursos:**
+  - `Ceiba_01`: árbol sagrado mesoamericano y nativo de Tabasco (D). Tronco gris con raíces tabulares y copa en pisos con núcleos rellenos.
+  - `Tronco_Caido_01–02`: tronco con musgo y hongos, y tocón con raíces.
+  - `Vasijas_01–02`: olla, tecomate y cántaro; tinaja oscura con un cajete blanco.
+  - `Enramada_01`: techo de palma sobre cuatro postes, con petate, vasijas y metate (I).
+  - `Muelle_Madera_01–02`: módulo de 1 m con pilotes que acaban en la superficie del agua (I/F).
+  - `Canoa_01`: monóxila (D); solo se modela lo que asoma del agua.
+- **No adaptado:**
+  - Glifos en columnas y plataformas de sillares (van contra §8).
+  - Palmas tipo cocotero.
+  - Braseros: no hay evidencia olmeca clara.
+  - Personajes y enemigos: arte a mano.
+- Ya se exportan a Unity (`Sprites/Objetos` y el atlas), pero todavía no están en el trazado de la ciudad.
 
 ### Ruinas olmecas (opción b)
 

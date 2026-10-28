@@ -56,13 +56,13 @@ namespace CronicasDeMexico.Editor.SceneGeneration
         const string AttackActionPath = "Player/Attack";
         const string SimpleLitShaderName = "Universal Render Pipeline/Simple Lit";
         const string EventsFolder = "Assets/_Project/Data/Events";
-        const string PromptChannelPath = EventsFolder + "/EVT_Interaccion_Aviso.asset";
-        const string MessageChannelPath = EventsFolder + "/EVT_Interaccion_Mensaje.asset";
-        const string PlayerHealthChannelPath = EventsFolder + "/EVT_Jugador_Vida.asset";
+        internal const string PromptChannelPath = EventsFolder + "/EVT_Interaccion_Aviso.asset";
+        internal const string MessageChannelPath = EventsFolder + "/EVT_Interaccion_Mensaje.asset";
+        internal const string PlayerHealthChannelPath = EventsFolder + "/EVT_Jugador_Vida.asset";
         const string HudLayoutPath = "Assets/_Project/Art/UI/Hud/Hud.uxml";
         const string HudThemePath = "Assets/_Project/Art/UI/Hud/HudTheme.tss";
         const string PanelSettingsPath = "Assets/_Project/Settings/UI/PanelSettings_Hud.asset";
-        const string InteractableLayerName = "Interactuable";
+        internal const string InteractableLayerName = "Interactuable";
         const string EnemyLayerName = "Enemigo";
 
         const string ColossalHeadText =
@@ -496,7 +496,7 @@ namespace CronicasDeMexico.Editor.SceneGeneration
 
         // ---------- HUD ----------
 
-        static void CreateHud(StringEventChannel promptChannel, StringEventChannel messageChannel, HealthEventChannel healthChannel)
+        internal static void CreateHud(StringEventChannel promptChannel, StringEventChannel messageChannel, HealthEventChannel healthChannel)
         {
             var theme = AssetDatabase.LoadAssetAtPath<ThemeStyleSheet>(HudThemePath)
                 ?? throw new System.InvalidOperationException($"No se encontró el tema {HudThemePath}.");

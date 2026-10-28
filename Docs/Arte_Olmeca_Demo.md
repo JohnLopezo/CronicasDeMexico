@@ -198,8 +198,8 @@ Pedida el 2026-10-28; se hace en lugar de las etapas 4–6 de las ruinas.
 |---|---|
 | A | Recursos de la aldea: casas, fogón, escombros y rampas (aprobada) |
 | B | Trazado en Python (`planificar_ciudad`), aprobado. Detalle debajo |
-| C | Importación en Unity, hecha el 2026-10-28 y pendiente de aprobación. Detalle debajo |
-| D | Escena `Olmeca_Ciudad` generada desde `ciudad.json`; no toca `Olmeca_Prototipo`. Cámara fija X30/Y45 a 640×360 escalada, colisiones invisibles, jugador actual con sprite de cara a la cámara y HUD |
+| C | Importación en Unity, aprobada. Detalle debajo |
+| D | Escena `Olmeca_Ciudad`, hecha el 2026-10-28 y pendiente de aprobación. Detalle debajo |
 | E | Medición de FPS en build de desarrollo |
 
 **Etapa B: trazado de la ciudad.** Mapa de 51×47 m. El norte apunta hacia la cámara (-Y), así que el Gran Montículo (Complejo C, al sur) queda al fondo y el recinto de columnas (Complejo A, al norte) en primer plano: el orden se respeta (I).
@@ -236,6 +236,27 @@ Pedida el 2026-10-28; se hace en lugar de las etapas 4–6 de las ruinas.
 - Menú **Crónicas → Pixel Art → Crear materiales y atlas**, o `-executeMethod CronicasDeMexico.Editor.PixelArt.PixelArtAssets.CreateAll`.
 - **Pruebas:** `PixelArtImportTests` (8). EditMode 36/36 y PlayMode 21/21, en batch en el i7 el 2026-10-28.
 - **Ejes:** el mundo del flujo (x, y, z) pasa a Unity como (y, z, -x) con la cámara en rotación (30°, 45°, 0°).
+
+**Etapa D: escena `Scenes/Regions/Olmeca/Olmeca_Ciudad.unity`.**
+
+- **Generación:** menú **Crónicas → Generar ciudad olmeca**, o `-executeMethod CronicasDeMexico.Editor.SceneGeneration.OlmecaCityGenerator.Generate`. Se deriva de `Ciudad.json` y regenerarla la reemplaza entera. `Olmeca_Prototipo` no se toca.
+- **Capas:**
+  - Suelo horneado: 6 trozos, cada uno con su material en `Materials/PixelArt/Suelo/`.
+  - Agua: 266 tiles animados por un solo `SpriteFrameCycler`.
+  - 1076 objetos y rampas orientados al plano de la cámara y alineados a la rejilla de píxeles.
+- **Colisiones (cajas invisibles):** suelo, bordes del mapa, agua, los niveles del montículo y del recinto (1 m cada uno), losas inclinadas para las 3 rampas, casas, altares, estelas, cercas, palmas, rocas, escombros y fogones. La vegetación baja se atraviesa.
+- **Interacción:** inscripciones en los 2 altares y las 10 estelas (`InscriptionInteractable`). El texto del altar dice que el nicho está vacío.
+- **Cámara** (`IsometricCameraFollow`): ortográfica, sigue con suavizado, se limita al mapa con 7 m de margen, usa escala entera (`IsometricProjection.OrthographicSize`: 3,977 a 1080 p) y se alinea a la rejilla de píxeles de pantalla. No hay post-procesado. **Cambio respecto al plan:** se renderiza a la resolución nativa con escala entera en lugar de a una RenderTexture de 640×360; si el rendimiento lo pide (etapa E), se puede añadir.
+- **Jugador:** el prefab actual escalado ×0,707 (32 → 45,25 px por unidad), con el sprite orientado al plano de la cámara (`CameraPlane`) y `PixelGridSnap`. Lo ilumina un sol sin sombras; el escenario es sin luz.
+- **Errores encontrados con capturas reales (`OlmecaCityCapture`, menú Crónicas → Capturar ciudad olmeca):**
+  - Con *GPU instancing* el jugador salía blanco. Se desactivó en los materiales.
+  - Con un material compartido, los 6 trozos de suelo se dibujaban con la textura del primero. Ahora cada trozo tiene su material y una prueba lo vigila.
+- **Pruebas:** EditMode 42/42 (`IsometricProjectionTests`, nueva) y PlayMode 25/25 (`OlmecaCiudadSceneTests`, nueva: carga, colisiones de cada nivel y rampa, subida por la primera rampa, alineación a píxeles, inscripciones, agua animada y texturas del suelo).
+- **Pendiente:**
+  - Probarla en el Editor con teclado.
+  - Medir FPS (etapa E).
+  - El jugador provisional desentona con el arte y no tiene sombra pintada.
+  - Faltan NPC y Jaguar.
 
 ### Ruinas olmecas (opción b)
 

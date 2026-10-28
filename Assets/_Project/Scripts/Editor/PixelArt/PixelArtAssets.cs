@@ -62,7 +62,8 @@ namespace CronicasDeMexico.Editor.PixelArt
             material.SetFloat("_ZWrite", zWrite ? 1f : 0f);
             material.SetFloat("_Cutoff", 0.5f);
             material.renderQueue = queue;
-            material.enableInstancing = true;
+            // Sin instancing: un SpriteRenderer instanciado comparte la malla de otro sprite de distinto tamaño.
+            material.enableInstancing = false;
             EditorUtility.SetDirty(material);
         }
 

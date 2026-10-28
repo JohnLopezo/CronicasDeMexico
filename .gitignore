@@ -46,3 +46,7 @@ crashlytics-buildsettings.json
 Thumbs.db
 Desktop.ini
 .DS_Store
+
+# Python (caché que crea Blender al importar los scripts de Tools/ArtPipeline)
+__pycache__/
+*.pyc

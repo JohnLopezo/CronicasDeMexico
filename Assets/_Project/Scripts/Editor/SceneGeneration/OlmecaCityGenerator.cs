@@ -10,6 +10,7 @@ using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
+using UnityEngine.UIElements;
 using Object = UnityEngine.Object;
 
 namespace CronicasDeMexico.Editor.SceneGeneration
@@ -29,6 +30,8 @@ namespace CronicasDeMexico.Editor.SceneGeneration
         public const string SceneName = "Olmeca_Ciudad";
         public const string ScenePath = "Assets/_Project/Scenes/Regions/Olmeca/" + SceneName + ".unity";
         public const string CityDataPath = "Assets/_Project/Data/World/Olmeca/Ciudad.json";
+        const string PresentationPanelSettingsPath = "Assets/_Project/Settings/UI/PanelSettings_PixelArt.asset";
+        const string HudThemePath = "Assets/_Project/Art/UI/Hud/HudTheme.tss";
 
         const float PlatformHeight = 1f;          // H_PLATAFORMA del flujo
         const float BoundsInset = 7f;             // la cámara no se acerca tanto al borde en rombo del mapa
@@ -387,6 +390,21 @@ namespace CronicasDeMexico.Editor.SceneGeneration
             cameraData.renderShadows = false;
             cameraObject.AddComponent<AudioListener>();
 
+            // Dibuja a la resolución del arte y un panel por debajo del HUD lo amplía (ver PixelArtScreen).
+            var presentationObject = new GameObject("Pantalla pixel art");
+            var presentation = presentationObject.AddComponent<UIDocument>();
+            presentation.panelSettings = PresentationPanelSettings();
+            cameraObject.AddComponent<PixelArtScreen>().Presentation = presentation;
+
+            // Con la cámara del escenario dibujando en una textura, esta limpia la pantalla bajo el panel. Va antes que
+            // la del escenario por si esta vuelve a dibujar en pantalla (PixelArtScreen desactivado).
+            var clearCamera = new GameObject("Cámara de fondo").AddComponent<Camera>();
+            clearCamera.cullingMask = 0;
+            clearCamera.depth = -10f;
+            clearCamera.clearFlags = CameraClearFlags.SolidColor;
+            clearCamera.backgroundColor = BackgroundColor;
+            clearCamera.gameObject.AddComponent<UniversalAdditionalCameraData>().renderPostProcessing = false;
+
             // Límites del punto que mira, en XZ de Unity: x = y del flujo, z = -x del flujo.
             var follow = cameraObject.AddComponent<IsometricCameraFollow>();
             follow.Target = player;
@@ -394,6 +412,25 @@ namespace CronicasDeMexico.Editor.SceneGeneration
                 property.vector2Value = new Vector2(limits[2] + BoundsInset, -limits[1] + BoundsInset));
             SetProperty(follow, "boundsMax", property =>
                 property.vector2Value = new Vector2(limits[3] - BoundsInset, -limits[0] - BoundsInset));
+        }
+
+        // Píxeles de pantalla sin escalar (la imagen ya llega al tamaño exacto) y por debajo del HUD.
+        static PanelSettings PresentationPanelSettings()
+        {
+            var panelSettings = AssetDatabase.LoadAssetAtPath<PanelSettings>(PresentationPanelSettingsPath);
+            if (panelSettings == null)
+            {
+                panelSettings = ScriptableObject.CreateInstance<PanelSettings>();
+                AssetDatabase.CreateAsset(panelSettings, PresentationPanelSettingsPath);
+            }
+
+            panelSettings.themeStyleSheet = AssetDatabase.LoadAssetAtPath<ThemeStyleSheet>(HudThemePath);
+            panelSettings.scaleMode = PanelScaleMode.ConstantPixelSize;
+            panelSettings.scale = 1f;
+            panelSettings.sortingOrder = -100;
+            panelSettings.clearColor = false;
+            EditorUtility.SetDirty(panelSettings);
+            return panelSettings;
         }
 
         // ---------- Utilidades ----------

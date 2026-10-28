@@ -25,6 +25,7 @@ namespace CronicasDeMexico.World.Rendering
         Vector2 boundsMax = new(1000f, 1000f);
 
         Camera cachedCamera;
+        PixelArtScreen pixelScreen;
         Vector3 focus;
         Vector3 velocity;
         int screenHeight;
@@ -38,6 +39,7 @@ namespace CronicasDeMexico.World.Rendering
         void Awake()
         {
             cachedCamera = GetComponent<Camera>();
+            pixelScreen = GetComponent<PixelArtScreen>();
             cachedCamera.orthographic = true;
             transform.rotation = IsometricProjection.CameraRotation;
         }
@@ -63,6 +65,21 @@ namespace CronicasDeMexico.World.Rendering
 
         void Apply()
         {
+            var desired = focus - transform.forward * distance;
+
+            // Con PixelArtScreen la cámara dibuja a la resolución del arte: se alinea a sus píxeles y el resto lo
+            // compensa la presentación en píxeles de pantalla. PixelArtScreen fija el tamaño ortográfico.
+            if (pixelScreen != null && pixelScreen.isActiveAndEnabled)
+            {
+                const float texel = 1f / IsometricProjection.PixelsPerUnit;
+                var snapped = IsometricProjection.SnapToPixelGrid(desired, texel);
+                transform.position = snapped;
+                var rest = desired - snapped;
+                pixelScreen.SetSubpixelOffset(new Vector2(
+                    Vector3.Dot(rest, transform.right) / texel, Vector3.Dot(rest, transform.up) / texel));
+                return;
+            }
+
             if (Screen.height != screenHeight)
             {
                 screenHeight = Screen.height;
@@ -70,7 +87,7 @@ namespace CronicasDeMexico.World.Rendering
             }
 
             var pixelSize = 1f / (IsometricProjection.PixelsPerUnit * IsometricProjection.IntegerScale(screenHeight));
-            transform.position = IsometricProjection.SnapToPixelGrid(focus - transform.forward * distance, pixelSize);
+            transform.position = IsometricProjection.SnapToPixelGrid(desired, pixelSize);
         }
     }
 }

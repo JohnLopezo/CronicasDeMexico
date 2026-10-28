@@ -61,6 +61,29 @@ namespace CronicasDeMexico.Tests
             yield return UnloadScene();
         }
 
+        // El escenario se dibuja a la resolución del arte y un panel lo amplía por un entero: el Render Scale de URP
+        // (0,75 en Bajo) no debe tocar el pixel art.
+        [UnityTest]
+        public IEnumerator Camera_RendersAtArtResolution_AndPanelScalesItByAnInteger()
+        {
+            yield return LoadScene();
+            yield return null;
+
+            var camera = Camera.main;
+            var screen = camera.GetComponent<PixelArtScreen>();
+            Assert.IsNotNull(screen, "La cámara no tiene PixelArtScreen.");
+            Assert.IsNotNull(screen.Target);
+            Assert.AreSame(screen.Target, camera.targetTexture);
+            Assert.AreEqual(FilterMode.Point, screen.Target.filterMode);
+            Assert.AreEqual(IsometricProjection.IntegerScale(Screen.height), screen.Scale);
+            Assert.GreaterOrEqual(screen.Target.height * screen.Scale, Screen.height);
+            Assert.GreaterOrEqual(screen.Target.width * screen.Scale, Screen.width);
+            Assert.AreEqual(screen.Target.height / (2f * IsometricProjection.PixelsPerUnit), camera.orthographicSize, 1e-4f);
+            Assert.IsNotNull(screen.Presentation.rootVisualElement.Q("pixel-art-screen"), "El panel no muestra la imagen.");
+
+            yield return UnloadScene();
+        }
+
         [UnityTest]
         public IEnumerator Colliders_FollowCityLayout()
         {

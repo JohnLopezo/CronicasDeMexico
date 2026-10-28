@@ -10,9 +10,23 @@ Procedimiento para trabajar en ambas PC: `Docs/DesarrolloMultiPC.md`.
 
 Se mide en un **build de desarrollo** (no en el Editor), en cada hito. En PC el V-Sync está activo: los FPS no superan la frecuencia del monitor, así que hay que fijarse en los **ms por frame** y en los mínimos. El HUD muestra FPS y ms (esquina superior derecha). **No se anotan resultados sin haberlos medido.**
 
-| Fecha | Hito | Equipo | Calidad | Resolución | Escena | FPS medio | FPS mín. | ms/frame | Notas |
+| Fecha | Hito | Equipo | Calidad | Resolución | Escena | FPS medio | FPS 1 % bajo | ms/frame | Notas |
 |---|---|---|---|---|---|---|---|---|---|
-| | | | | | | | | | |
+| 2026-10-28 | Ciudad jugable, etapa E | i7-10700 / UHD 630 | Bajo | 1920×1080 | Olmeca_Ciudad | 269–282 | 185–197 | 3,6 (p95 4,8) | PixelArtScreen 642×362 ×3; sin V-Sync; 5 puntos |
+| 2026-10-28 | Ciudad jugable, etapa E | i7-10700 / UHD 630 | Medio | 1920×1080 | Olmeca_Ciudad | 207–220 | 154–164 | 4,7 (p95 6,0) | Ídem |
+| 2026-10-28 | Ciudad jugable, etapa E | i7-10700 / UHD 630 | Alto | 1920×1080 | Olmeca_Ciudad | 106–109 | 70–94 | 9,3 (p95 10,6) | Ídem; Alto paga SSAO, Forward+ y HDR a 1080 p en la cámara de fondo |
+
+**Cómo se mide la ciudad** (`FrameTimeBenchmark`): build de desarrollo de Windows con menú **Crónicas → Build → Windows: medición de la ciudad**, o con `-executeMethod CronicasDeMexico.Editor.Build.WindowsBenchmarkBuild.Build`. Se ejecuta así:
+
+```
+Builds\Windows\Ciudad\CronicasDeMexico.exe -benchmark -benchmarkOutput <carpeta> -screen-width 1920 -screen-height 1080 -screen-fullscreen 0 -popupwindow
+```
+
+- Recorre 5 puntos (plaza, montículo, recinto, aldea y selva) en los 3 niveles, con 6 s por punto, la cámara en movimiento y sin V-Sync.
+- Escribe `resumen.txt`, `frames.csv` y una captura por punto, y se cierra sola.
+- `-sinPantallaPixel` desactiva PixelArtScreen para comparar. La comparación del 2026-10-28 **no es válida**: la ventana perdió el foco o se cerró durante las ejecuciones (frames de decenas de segundos y otros fijos en 16,7 ms). Los puntos limpios dan una idea, pero no son una medición: Bajo/Plaza 3,3 ms directo frente a 3,6 ms con PixelArtScreen; Medio/Plaza a Recinto 5,2–5,9 ms frente a 4,6–4,8. **La ventaja de PixelArtScreen es sobre todo de imagen**: sin él, Bajo dibuja a 0,75 y reescala con filtro bilineal, y el pixel art sale borroso (capturas del build). En el i7 la escena no está limitada por píxeles.
+- Para medir, no usar el PC mientras dura (unos 2 minutos): la ventana de 1920×1080 tapa la pantalla y, si pierde el foco, los datos se estropean.
+- **Falta medir en el i5-6500 / HD 530**, que es la referencia, y en Android.
 
 ## Calidad por defecto
 

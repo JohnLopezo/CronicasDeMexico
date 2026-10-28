@@ -199,8 +199,8 @@ Pedida el 2026-10-28; se hace en lugar de las etapas 4–6 de las ruinas.
 | A | Recursos de la aldea: casas, fogón, escombros y rampas (aprobada) |
 | B | Trazado en Python (`planificar_ciudad`), aprobado. Detalle debajo |
 | C | Importación en Unity, aprobada. Detalle debajo |
-| D | Escena `Olmeca_Ciudad`, hecha el 2026-10-28 y pendiente de aprobación. Detalle debajo |
-| E | Medición de FPS en build de desarrollo |
+| D | Escena `Olmeca_Ciudad`, aprobada. Detalle debajo |
+| E | Rendimiento, hecho el 2026-10-28 y pendiente de aprobación. Detalle debajo y en `Docs/Rendimiento.md` |
 
 **Etapa B: trazado de la ciudad.** Mapa de 51×47 m. El norte apunta hacia la cámara (-Y), así que el Gran Montículo (Complejo C, al sur) queda al fondo y el recinto de columnas (Complejo A, al norte) en primer plano: el orden se respeta (I).
 
@@ -246,7 +246,7 @@ Pedida el 2026-10-28; se hace en lugar de las etapas 4–6 de las ruinas.
   - 1076 objetos y rampas orientados al plano de la cámara y alineados a la rejilla de píxeles.
 - **Colisiones (cajas invisibles):** suelo, bordes del mapa, agua, los niveles del montículo y del recinto (1 m cada uno), losas inclinadas para las 3 rampas, casas, altares, estelas, cercas, palmas, rocas, escombros y fogones. La vegetación baja se atraviesa.
 - **Interacción:** inscripciones en los 2 altares y las 10 estelas (`InscriptionInteractable`). El texto del altar dice que el nicho está vacío.
-- **Cámara** (`IsometricCameraFollow`): ortográfica, sigue con suavizado, se limita al mapa con 7 m de margen, usa escala entera (`IsometricProjection.OrthographicSize`: 3,977 a 1080 p) y se alinea a la rejilla de píxeles de pantalla. No hay post-procesado. **Cambio respecto al plan:** se renderiza a la resolución nativa con escala entera en lugar de a una RenderTexture de 640×360; si el rendimiento lo pide (etapa E), se puede añadir.
+- **Cámara** (`IsometricCameraFollow`): ortográfica, sigue con suavizado y se limita al mapa con 7 m de margen. No hay post-procesado. Desde la etapa E dibuja a la resolución del arte mediante `PixelArtScreen` (ver más abajo).
 - **Jugador:** el prefab actual escalado ×0,707 (32 → 45,25 px por unidad), con el sprite orientado al plano de la cámara (`CameraPlane`) y `PixelGridSnap`. Lo ilumina un sol sin sombras; el escenario es sin luz.
 - **Errores encontrados con capturas reales (`OlmecaCityCapture`, menú Crónicas → Capturar ciudad olmeca):**
   - Con *GPU instancing* el jugador salía blanco. Se desactivó en los materiales.
@@ -257,6 +257,21 @@ Pedida el 2026-10-28; se hace en lugar de las etapas 4–6 de las ruinas.
   - Medir FPS (etapa E).
   - El jugador provisional desentona con el arte y no tiene sombra pintada.
   - Faltan NPC y Jaguar.
+
+**Etapa E: rendimiento y presentación nítida.**
+
+- **Defecto de la etapa D corregido:** el nivel Bajo (URP Render Scale 0,75 con filtro bilineal) dibujaba el pixel art borroso en Play. Las capturas en batch no lo mostraban porque dibujan en una RenderTexture, donde no se aplica el Render Scale.
+- **`PixelArtScreen`:**
+  - La cámara del escenario dibuja en una RenderTexture de unos 640×360 (642×362 a 1080 p, con un píxel de margen por lado) con filtro Point.
+  - Un panel de UI Toolkit por debajo del HUD (`Settings/UI/PanelSettings_PixelArt.asset`) la amplía ×3.
+  - La cámara avanza de píxel del arte en píxel del arte y el resto se compensa desplazando la imagen en píxeles de pantalla, para que el scroll no dé saltos.
+  - Una cámara de fondo limpia la pantalla.
+- **Medición** (i7-10700 / UHD 630, 1080 p, sin V-Sync, build de desarrollo): Bajo 3,6 ms (unos 275 FPS), Medio 4,7 ms y Alto 9,3 ms. Las capturas del build (`Build_*.png`) confirman que la imagen sale nítida.
+- **Herramientas:** `FrameTimeBenchmark` (argumento `-benchmark`) y `WindowsBenchmarkBuild`.
+- **Pruebas:** EditMode 42/42 y PlayMode 26/26 (nueva: `Camera_RendersAtArtResolution_AndPanelScalesItByAnInteger`).
+- **Pendiente:**
+  - Medir en el i5 / HD 530 y en Android.
+  - En Alto, la cámara de fondo paga SSAO y HDR a 1080 p sin dibujar nada; se puede optimizar si hace falta.
 
 ### Ruinas olmecas (opción b)
 

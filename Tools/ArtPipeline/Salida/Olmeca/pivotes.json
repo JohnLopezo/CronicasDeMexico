@@ -531,6 +531,280 @@
     ],
     "ppu": 45.254833995939045
   },
+  "Altar_Trono_01": {
+    "lienzo": [
+      136,
+      120
+    ],
+    "pivote_px": [
+      68,
+      36
+    ],
+    "ppu": 45.254833995939045,
+    "sombra": {
+      "lienzo": [
+        160,
+        88
+      ],
+      "pivote_px": [
+        70,
+        40
+      ]
+    }
+  },
+  "Estela_Lisa_01": {
+    "lienzo": [
+      32,
+      64
+    ],
+    "pivote_px": [
+      16,
+      12
+    ],
+    "ppu": 45.254833995939045,
+    "sombra": {
+      "lienzo": [
+        80,
+        56
+      ],
+      "pivote_px": [
+        26,
+        24
+      ]
+    }
+  },
+  "Estela_Grande_01": {
+    "lienzo": [
+      64,
+      88
+    ],
+    "pivote_px": [
+      32,
+      22
+    ],
+    "ppu": 45.254833995939045,
+    "sombra": {
+      "lienzo": [
+        112,
+        72
+      ],
+      "pivote_px": [
+        36,
+        30
+      ]
+    }
+  },
+  "Estela_Grande_02": {
+    "lienzo": [
+      64,
+      88
+    ],
+    "pivote_px": [
+      32,
+      22
+    ],
+    "ppu": 45.254833995939045,
+    "sombra": {
+      "lienzo": [
+        112,
+        72
+      ],
+      "pivote_px": [
+        36,
+        30
+      ]
+    }
+  },
+  "Estela_Grande_03": {
+    "lienzo": [
+      64,
+      88
+    ],
+    "pivote_px": [
+      32,
+      22
+    ],
+    "ppu": 45.254833995939045,
+    "sombra": {
+      "lienzo": [
+        112,
+        72
+      ],
+      "pivote_px": [
+        36,
+        30
+      ]
+    }
+  },
+  "Rampa_Arcilla_01": {
+    "lienzo": [
+      136,
+      112
+    ],
+    "pivote_px": [
+      68,
+      30
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Rampa_Arcilla_02": {
+    "lienzo": [
+      136,
+      112
+    ],
+    "pivote_px": [
+      68,
+      30
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Casa_Bajareque_01": {
+    "lienzo": [
+      160,
+      152
+    ],
+    "pivote_px": [
+      80,
+      40
+    ],
+    "ppu": 45.254833995939045,
+    "sombra": {
+      "lienzo": [
+        208,
+        112
+      ],
+      "pivote_px": [
+        76,
+        52
+      ]
+    }
+  },
+  "Casa_Bajareque_02": {
+    "lienzo": [
+      160,
+      152
+    ],
+    "pivote_px": [
+      80,
+      40
+    ],
+    "ppu": 45.254833995939045,
+    "sombra": {
+      "lienzo": [
+        208,
+        112
+      ],
+      "pivote_px": [
+        76,
+        52
+      ]
+    }
+  },
+  "Casa_Bajareque_03": {
+    "lienzo": [
+      160,
+      152
+    ],
+    "pivote_px": [
+      80,
+      40
+    ],
+    "ppu": 45.254833995939045,
+    "sombra": {
+      "lienzo": [
+        208,
+        112
+      ],
+      "pivote_px": [
+        76,
+        52
+      ]
+    }
+  },
+  "Fogon_01": {
+    "lienzo": [
+      48,
+      48
+    ],
+    "pivote_px": [
+      22,
+      14
+    ],
+    "ppu": 45.254833995939045,
+    "sombra": {
+      "lienzo": [
+        80,
+        40
+      ],
+      "pivote_px": [
+        26,
+        20
+      ]
+    }
+  },
+  "Escombros_Basalto_01": {
+    "lienzo": [
+      48,
+      48
+    ],
+    "pivote_px": [
+      24,
+      14
+    ],
+    "ppu": 45.254833995939045,
+    "sombra": {
+      "lienzo": [
+        80,
+        40
+      ],
+      "pivote_px": [
+        26,
+        20
+      ]
+    }
+  },
+  "Escombros_Basalto_02": {
+    "lienzo": [
+      48,
+      48
+    ],
+    "pivote_px": [
+      24,
+      14
+    ],
+    "ppu": 45.254833995939045,
+    "sombra": {
+      "lienzo": [
+        80,
+        40
+      ],
+      "pivote_px": [
+        26,
+        20
+      ]
+    }
+  },
+  "Escombros_Basalto_03": {
+    "lienzo": [
+      48,
+      48
+    ],
+    "pivote_px": [
+      24,
+      14
+    ],
+    "ppu": 45.254833995939045,
+    "sombra": {
+      "lienzo": [
+        80,
+        40
+      ],
+      "pivote_px": [
+        26,
+        20
+      ]
+    }
+  },
   "Tile_Camino_Trans_04": {
     "lienzo": [
       64,
@@ -770,6 +1044,116 @@
     "pivote_px": [
       32,
       40
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Plataforma_Arcilla_00": {
+    "lienzo": [
+      64,
+      96
+    ],
+    "pivote_px": [
+      32,
+      18
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Plataforma_Arcilla_01": {
+    "lienzo": [
+      64,
+      96
+    ],
+    "pivote_px": [
+      32,
+      18
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Plataforma_Arcilla_02": {
+    "lienzo": [
+      64,
+      96
+    ],
+    "pivote_px": [
+      32,
+      18
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Plataforma_Arcilla_04": {
+    "lienzo": [
+      64,
+      96
+    ],
+    "pivote_px": [
+      32,
+      18
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Plataforma_Arcilla_05": {
+    "lienzo": [
+      64,
+      96
+    ],
+    "pivote_px": [
+      32,
+      18
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Plataforma_Arcilla_06": {
+    "lienzo": [
+      64,
+      96
+    ],
+    "pivote_px": [
+      32,
+      18
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Plataforma_Arcilla_08": {
+    "lienzo": [
+      64,
+      96
+    ],
+    "pivote_px": [
+      32,
+      18
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Plataforma_Arcilla_09": {
+    "lienzo": [
+      64,
+      96
+    ],
+    "pivote_px": [
+      32,
+      18
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Plataforma_Arcilla_10": {
+    "lienzo": [
+      64,
+      96
+    ],
+    "pivote_px": [
+      32,
+      18
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Plataforma_Arcilla_32": {
+    "lienzo": [
+      64,
+      96
+    ],
+    "pivote_px": [
+      32,
+      18
     ],
     "ppu": 45.254833995939045
   }

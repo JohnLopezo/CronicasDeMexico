@@ -72,6 +72,13 @@ Reglas: sin negro puro (el más oscuro es `#0F2A17`/`#1E2420`); contorno exterio
 | Jaguar (Guardián) | Lienzo 64×48 por cuadro; cuerpo de 32–40 px de alto | ~0,7 m de altura a la cruz | Entre las patas |
 | NPC humano | Lienzo 48×64; 48–56 px de alto (proporciones algo compactas) | — | Entre los pies |
 | Cabeza colosal | ~96×96 a 128×128 | ~2,5–3 m de altura | Base |
+| Altar-trono | 136×120 (sombra aparte de 160×88) | 2,0 × 1,3 × 1,1 m (Altar 4 real: ~3,2 × 2 × 1,6 m, reducido para el juego) | Centro de la base |
+| Estela lisa | 32×64 (pequeña) y 64×88 (grande; 3 variantes) | 0,55 × 0,22 × 1,1 m y 0,9 × 0,3 × 1,35 m | Centro de la base |
+| Rampa de arcilla | 136×112 (2 variantes: lado -Y y lado +X) | 2 × 1 m, sube 1 m (~27°) | Centro de su huella |
+| Casa de bajareque | 160×152 (sombra aparte de 208×112; 3 variantes) | Muros de 2,0 × 1,4 m, cumbrera a ~2,4 m, basamento de 0,2 m | Centro de la base |
+| Fogón con vasijas | 48×48 | ~0,8 m | Centro del fogón |
+| Escombros de basalto | 48×48 (3 variantes) | 0,3–0,6 m | Centro |
+| Plataforma de arcilla | 64×96 por módulo y máscara de vecinos; se apila (nivel superior en Z = 1 m) | 1×1 m, 1 m de alto | Centro del tile a nivel del pie |
 
 Animación: 5 direcciones (N, NE, E, SE, S) y las 3 del oeste por espejo, como espera `DirectionalSpriteSet`. Jaguar: reposo, caminar/trotar, correr, ataque, recibir daño y derrota.
 
@@ -158,6 +165,24 @@ Ventaja: coherencia de luz y escala entre recursos y facilidad para generar vari
   - Arbustos, heliconia, matorrales, pasto alto, helechos, rocas, nenúfar y tule.
   - Sombras de dosel.
 - Composición de prueba: `Tools/ArtPipeline/Salida/Olmeca/Composicion_1920x1080_x3.png`.
+- **Ruinas, etapa 1 (2026-10-28): plataforma de arcilla**, aprobada. Módulos `Plataforma_Arcilla_<máscara>`; prueba en `Prueba_Ruinas_1920x1080_x3.png`.
+  - Módulos de 1 m × 1 m × 1 m. Bits 1/2/4/8: lado con talud. Bits 16–128: esquina cóncava. Solo se generan las máscaras que usa una composición.
+  - Corte con capas de arcillas de colores (solo colores de la paleta, rojo `#B16143` incluido), cárcavas, pasto en la cima y el labio, y terrones al pie.
+  - Los taludes traseros no se ven desde la cámara: se marca el borde con una línea `#1D2B1A`.
+  - Límites conocidos: todos los módulos de una misma máscara son iguales, así que las cárcavas se repiten cada metro; sin sombra proyectada al pie (va en la integración con Unity).
+- **Ruinas, etapa 2 (2026-10-28): altar-trono** (`Altar_Trono_01` y su sombra), aprobado.
+  - Bloque de basalto labrado con cornisa saliente, más pronunciada al frente, y nicho de arco rebajado en la cara -Y, la iluminada.
+  - Musgo en manchas en la cornisa y en la base; pasto, helechos y fragmentos al pie. Sin relieves.
+  - El nicho queda **vacío**: la figura sigue pendiente de decisión (arte a mano u omitirla).
+  - Para Unity: por su tamaño (2 × 1,3 m) conviene ordenarlo por su huella y no solo por el pivote, si hay objetos pegados a sus esquinas.
+- **Ruinas, etapa 3 (2026-10-28): estelas lisas**, aprobadas. Sin relieve; musgo en la cima y en la base.
+  - `Estela_Lisa_01`.
+  - `Estela_Grande_01` en pie, `_02` vencida hacia la cámara con tierra removida y `_03` rota con fractura irregular y el trozo superior caído.
+- **Ciudad jugable, etapa A (2026-10-28): recursos de la aldea**, pendientes de aprobación. El plan completo (A–E) está en «Siguiente».
+  - `Casa_Bajareque_01–03`: rectangular, absidal y pequeña redonda. Muros de barro con desconchones que dejan ver las varas, puerta con jambas al lado -Y, techo de palma con vetas y flecos, y basamento de tierra. Casas perecederas: D; la forma concreta: I.
+  - `Fogon_01`: tres piedras, ceniza, tecomate (vasija esférica sin cuello) y dos vasijas más.
+  - `Escombros_Basalto_01–03`: tramos de columna caídos, montón de fragmentos y tocón con su tramo. Es la antigua etapa 4.
+  - `Rampa_Arcilla_01–02`: único acceso a la cima de las plataformas. Límite conocido: la unión con el talud vecino deja un corte algo brusco.
 
 Regenerar todo (desde la carpeta del proyecto):
 
@@ -165,9 +190,23 @@ Regenerar todo (desde la carpeta del proyecto):
 "C:\Program Files\Blender Foundation\Blender 5.2\blender.exe" --background --factory-startup --python Tools\ArtPipeline\generar_olmeca.py -- Tools\ArtPipeline\Salida\Olmeca
 ```
 
-### Siguiente: opción b — ruinas olmecas
+### Siguiente: ciudad olmeca jugable (centro ceremonial y aldea)
 
-Crear con el mismo flujo, añadiendo constructores a `generar_olmeca.py` y a la composición. Todo sin labrar con glifos y con los criterios de §8:
+Pedida el 2026-10-28; se hace en lugar de las etapas 4–6 de las ruinas.
+
+| Etapa | Contenido |
+|---|---|
+| A | Recursos de la aldea: casas, fogón, escombros y rampas (hecha, pendiente de aprobación) |
+| B | Trazado de unos 50×50 m en Python: Gran Montículo con rampa, plaza ceremonial con cerca de basalto, estelas y altares, calzada, aldea junto al río y pantano. Exporta `ciudad.json` y una vista previa |
+| C | Importación en Unity: AssetPostprocessor (PPU 45.2548, Point, pivotes de `pivotes.json`), materiales sin luz con recorte alfa y atlas |
+| D | Escena `Olmeca_Ciudad` generada desde `ciudad.json`; no toca `Olmeca_Prototipo`. Cámara fija X30/Y45 a 640×360 escalada, colisiones invisibles, jugador actual con sprite de cara a la cámara y HUD |
+| E | Medición de FPS en build de desarrollo |
+
+Pendiente de decidir: dónde se exportan los sprites del juego (propuesta: `Assets/_Project/Art/Environment/Olmeca/Sprites/`, por LFS).
+
+### Ruinas olmecas (opción b)
+
+Etapas 4–6: escombros, mosaico (opcional) y composición. Crear con el mismo flujo, añadiendo constructores a `generar_olmeca.py` y a la composición. Todo sin labrar con glifos y con los criterios de §8:
 
 | Recurso | Idea | Lienzo previsto | Tipo (§8) |
 |---|---|---|---|

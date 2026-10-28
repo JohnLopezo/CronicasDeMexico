@@ -26,6 +26,7 @@ namespace CronicasDeMexico.Editor.SceneGeneration
             ("Monticulo", new Vector2(0f, 16f)),
             ("Recinto", new Vector2(0f, -9f)),
             ("Aldea", new Vector2(15f, -2f)),
+            ("Muelle", new Vector2(20f, -4f)),
         };
 
         [MenuItem("Crónicas/Capturar ciudad olmeca")]

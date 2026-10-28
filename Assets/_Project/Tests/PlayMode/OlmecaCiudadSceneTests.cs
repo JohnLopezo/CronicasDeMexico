@@ -100,6 +100,14 @@ namespace CronicasDeMexico.Tests
                 .First(box => box.transform.parent != null && box.transform.parent.name == "Agua");
             Assert.Greater(waterCell.bounds.max.y, 1f, "El agua debe bloquear el paso.");
 
+            // El muelle se camina: sobre su tablero no hay agua que bloquee.
+            var pier = Object.FindObjectsByType<BoxCollider>(FindObjectsSortMode.None)
+                .FirstOrDefault(box => box.transform.parent != null && box.transform.parent.name == "Muelles");
+            Assert.IsNotNull(pier, "Falta el muelle.");
+            var pierTop = pier.bounds.center + Vector3.up * 10f;
+            Assert.IsTrue(Physics.Raycast(pierTop, Vector3.down, out var pierHit, 20f));
+            Assert.That(pierHit.point.y, Is.EqualTo(0.14f).Within(0.02f), "El muelle debe poder caminarse.");
+
             yield return UnloadScene();
         }
 

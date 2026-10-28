@@ -1890,14 +1890,15 @@ def planificar_ciudad():
             return "aldea"
         return "abierto"
 
-    def sembrar(nombres, cantidad, permitido, r, z=0.0, intentos=None):
+    def sembrar(nombres, cantidad, permitido, r, z=0.0, intentos=None, azar=None):
+        azar = azar or rng
         for _ in range(intentos or cantidad * 30):
             if cantidad == 0:
                 return
-            X, Y = rng.uniform(X0, X1), rng.uniform(Y0, Y1)
+            X, Y = azar.uniform(X0, X1), azar.uniform(Y0, Y1)
             celda = (round(X), round(Y))
             if celda in tipo_celda and permitido(celda, X, Y) and libre(X, Y, r):
-                poner(rng.choice(nombres), X, Y, r, z)
+                poner(azar.choice(nombres), X, Y, r, z)
                 cantidad -= 1
 
     es = lambda tipo, *zonas: (lambda celda, X, Y: tipo_celda[celda] == tipo and (not zonas or zona(X, Y) in zonas))
@@ -1929,11 +1930,68 @@ def planificar_ciudad():
     dosel_ = [(f"Sombra_Dosel_{1 + i % 2:02d}", rng.uniform(X0, X1), rng.uniform(Y0, Y1)) for i in range(160)]
     dosel_ = [d for d in dosel_ if zona(d[1], d[2]) == "selva" and tipo_celda.get((round(d[1]), round(d[2]))) == "pasto"][:80]
 
+    # ---- recursos de la etapa A2, con su propio generador: lo anterior no cambia de sitio, salvo la vegetación baja
+    # que despejan los objetos grandes (la selva ya ocupa todo el espacio libre)
+    azar = random.Random(41)
+    VEGETACION = ("Matorral_Selva", "Helecho", "Pasto_Alto", "Arbusto_Selva", "Tule", "Roca_Basalto", "Palma_Corozo")
+
+    def despejar_y_poner(nombre, X, Y, r, z=0.0, forzar=False):
+        """Pone un objeto grande si no choca con nada que no sea vegetación; quita la vegetación a menos de r.
+        forzar: no comprueba los objetos fijos (piezas de un mismo conjunto, como los módulos del muelle)."""
+        celda = (round(X), round(Y))
+        if celda not in tipo_celda or (celda in ocupadas and not forzar):
+            return False
+        fijos = [(a, b, rb) for a, b, rb in puntos
+                 if not any(o[0].startswith(VEGETACION) and o[1] == a and o[2] == b for o in objetos)]
+        if not forzar and any((X - a) ** 2 + (Y - b) ** 2 < (r + rb) ** 2 for a, b, rb in fijos):
+            return False
+        quitar = [o for o in objetos if o[0].startswith(VEGETACION) and (o[1] - X) ** 2 + (o[2] - Y) ** 2 < r * r]
+        for o in quitar:
+            objetos.remove(o)
+            puntos[:] = [q for q in puntos if not (q[0] == o[1] and q[1] == o[2])]
+        poner(nombre, X, Y, r, z)
+        return True
+
+    def sembrar_grandes(nombre, cantidad, permitido, r, intentos=4000):
+        for _ in range(intentos):
+            if cantidad == 0:
+                return
+            X, Y = azar.uniform(X0, X1), azar.uniform(Y0, Y1)
+            celda = (round(X), round(Y))
+            if celda in tipo_celda and permitido(celda, X, Y) and despejar_y_poner(nombre, X, Y, r):
+                cantidad -= 1
+    # Muelle de 4 módulos desde la orilla de la aldea hacia el río, con dos canoas amarradas. Se busca la fila libre
+    # más cercana a y = -6; bajo el muelle el agua no bloquea (se camina por su tablero).
+    muelles, celdas_muelle = [], set()
+    for Y in sorted(range(-14, 12), key=lambda y: abs(y + 6)):
+        orilla = min((X for X in range(8, X1 + 1) if tipo_celda.get((X, Y)) == "agua"), default=None)
+        if orilla is None or not all(tipo_celda.get((orilla + i, Y)) == "agua" for i in range(4)):
+            continue
+        if not despejar_y_poner("Muelle_Madera_01", orilla - 0.4, Y, 1.0):
+            continue
+        for i in range(1, 4):
+            despejar_y_poner("Muelle_Madera_01", orilla - 0.4 + i, Y, 0.6, forzar=True)
+        for dx, dy in ((1.3, 0.95), (2.5, -0.95)):
+            if tipo_celda.get((round(orilla + dx), round(Y + dy))) == "agua":
+                despejar_y_poner("Canoa_01", orilla + dx, Y + dy, 0.6, -0.06, forzar=True)
+        muelles.append({"x0": orilla - 0.9, "x1": orilla + 3.1, "y": Y, "ancho": 0.8, "z": 0.14})
+        celdas_muelle = {(orilla + i, Y) for i in range(3)}
+        break
+
+    despejar_y_poner("Ceiba_01", -8.6, 5.0, 1.6)   # ceiba junto a la plaza
+    sembrar_grandes("Ceiba_01", 5, es("pasto", "selva"), 1.6)
+    sembrar_grandes("Enramada_01", 3, lambda c_, X, Y: es("pasto", "aldea")(c_, X, Y) and not junto_camino(X, Y, 1.2), 1.5)
+    sembrar(["Vasijas_01", "Vasijas_02"], 7, es("pasto", "aldea"), 0.45, azar=azar, intentos=3000)
+    sembrar_grandes("Tronco_Caido_01", 10, es("pasto", "selva"), 0.7)
+    sembrar_grandes("Tronco_Caido_02", 6, es("pasto", "selva", "abierto"), 0.5)
+
     colision = {
         "niveles": [[list(c) for c in sorted(n)] for n in niveles],
         "niveles_recinto": [[list(c) for c in sorted(n)] for n in niveles_a],
         "rampas": [{"sprite": n, "x": X, "y": Y, "z": z} for n, X, Y, z in rampas],
         "agua": [list(c) for c, t in sorted(tipo_celda.items()) if t == "agua"],
+        "agua_bloqueo": [list(c) for c, t in sorted(tipo_celda.items()) if t == "agua" and c not in celdas_muelle],
+        "muelles": muelles,
         "limites": [X0, X1, Y0, Y1],
     }
     return {"suelo": suelo, "objetos": objetos, "dosel": dosel_}, mascaras, colision
@@ -2102,6 +2160,8 @@ def exportar_unity(salida, metas, plan, colision):
                        + [{"celdas": [{"x": c[0], "y": c[1]} for c in nivel], "z": k}
                           for k, nivel in enumerate(colision["niveles_recinto"])],
             "rampas": colision["rampas"],
+            "agua_bloqueo": [{"x": c[0], "y": c[1]} for c in colision["agua_bloqueo"]],
+            "muelles": colision["muelles"],
             "limites": colision["limites"],
         }, fh, ensure_ascii=False, indent=1)
     print("Unity:", sum(len(a) for a in destinos.values()), "sprites en", SPRITES_UNITY)

@@ -53,6 +53,11 @@ namespace CronicasDeMexico.Editor.SceneGeneration
             ("Roca_Basalto", new Vector3(0.45f, 0.45f, 0.4f)),
             ("Escombros_Basalto", new Vector3(0.6f, 0.6f, 0.3f)),
             ("Fogon", new Vector3(0.6f, 0.6f, 0.3f)),
+            ("Ceiba", new Vector3(0.6f, 0.6f, 2.5f)),          // solo el tronco: bajo la copa se camina
+            ("Enramada", new Vector3(1.9f, 1.3f, 1.2f)),
+            ("Vasijas", new Vector3(0.5f, 0.5f, 0.4f)),
+            ("Tronco_Caido_01", new Vector3(0.9f, 0.5f, 0.35f)),
+            ("Tronco_Caido_02", new Vector3(0.45f, 0.45f, 0.35f)),
         };
 
         // Textos al examinar. D = documentado, I = interpretación (Docs/Arte_Olmeca_Demo.md §8).
@@ -68,6 +73,7 @@ namespace CronicasDeMexico.Editor.SceneGeneration
         [Serializable] sealed class GroundChunk { public string sprite; public float derecha, arriba; }
         [Serializable] sealed class Placement { public string sprite; public float x, y, z; }
         [Serializable] sealed class Level { public Cell[] celdas; public int z; }
+        [Serializable] sealed class Pier { public float x0, x1, y, ancho, z; }
 
         [Serializable]
         sealed class CityData
@@ -77,6 +83,8 @@ namespace CronicasDeMexico.Editor.SceneGeneration
             public Placement[] objetos;
             public Level[] niveles;
             public Placement[] rampas;
+            public Cell[] agua_bloqueo; // el agua sin las celdas bajo los muelles
+            public Pier[] muelles;
             public float[] limites; // x0, x1, y0, y1 del flujo
         }
 
@@ -261,8 +269,15 @@ namespace CronicasDeMexico.Editor.SceneGeneration
             Box("Limite_Este", parent, World(x1 + 0.5f, cy, wallHeight * 0.5f), new Vector3(sy + 2f, wallHeight, 1f));
 
             var water = Group("Agua", parent);
-            foreach (var (x, y, length) in Runs(data.agua))
+            var blockingWater = data.agua_bloqueo != null && data.agua_bloqueo.Length > 0 ? data.agua_bloqueo : data.agua;
+            foreach (var (x, y, length) in Runs(blockingWater))
                 Box($"Agua_{x}_{y}", water, World(x, y, 0.5f), new Vector3(1f, 2f, length));
+
+            // Tablero de los muelles: se camina sobre él (el agua de debajo no bloquea).
+            var piers = Group("Muelles", parent);
+            foreach (var pier in data.muelles ?? Array.Empty<Pier>())
+                Box($"Muelle_{pier.y}", piers, World((pier.x0 + pier.x1) * 0.5f, pier.y, pier.z - 0.1f),
+                    new Vector3(pier.ancho, 0.2f, pier.x1 - pier.x0));
 
             var levels = Group("Montículo", parent);
             foreach (var level in data.niveles)

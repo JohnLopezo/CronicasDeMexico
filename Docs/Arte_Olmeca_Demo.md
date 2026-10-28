@@ -207,7 +207,7 @@ Pedida el 2026-10-28; se hace en lugar de las etapas 4–6 de las ruinas.
 | C | Importación en Unity, aprobada. Detalle debajo |
 | D | Escena `Olmeca_Ciudad`, aprobada. Detalle debajo |
 | E | Rendimiento, aprobado. Detalle debajo y en `Docs/Rendimiento.md` |
-| A2 | Recursos de la segunda referencia, hechos el 2026-10-28 y pendientes de aprobación. Detalle debajo |
+| A2 | Recursos de la segunda referencia, aprobados. Ya están en la ciudad (pendiente de aprobación). Detalle debajo |
 
 **Etapa B: trazado de la ciudad.** Mapa de 51×47 m. El norte apunta hacia la cámara (-Y), así que el Gran Montículo (Complejo C, al sur) queda al fondo y el recinto de columnas (Complejo A, al norte) en primer plano: el orden se respeta (I).
 
@@ -294,7 +294,15 @@ Pedida el 2026-10-28; se hace en lugar de las etapas 4–6 de las ruinas.
   - Palmas tipo cocotero.
   - Braseros: no hay evidencia olmeca clara.
   - Personajes y enemigos: arte a mano.
-- Ya se exportan a Unity (`Sprites/Objetos` y el atlas), pero todavía no están en el trazado de la ciudad.
+- **En la ciudad (2026-10-28):**
+  - 6 ceibas: una junto a la plaza y el resto en la selva.
+  - 3 enramadas y 7 grupos de vasijas en la aldea.
+  - 16 troncos y tocones.
+  - Un muelle de 4 módulos con dos canoas en el río, frente a la aldea.
+  - Se colocan con un generador aleatorio propio (`Random(41)`), así que lo anterior no cambia de sitio. Los objetos grandes despejan solo la vegetación baja que tienen alrededor (`despejar_y_poner`).
+- **El muelle se camina:** `Ciudad.json` trae `agua_bloqueo` (el agua sin las celdas bajo el muelle) y `muelles` (el tablero a 0,14 m). El generador de Unity crea ahí su colisión.
+- **Colisiones nuevas:** el tronco de la ceiba (bajo la copa se pasa), la enramada, las vasijas y los troncos.
+- **Pruebas:** EditMode 42/42 y PlayMode 26/26 (nueva comprobación: el muelle se camina a 0,14 m). Hay capturas `Ciudad_Unity_*.png` en `Logs/Capturas`, con una vista nueva del muelle.
 
 ### Ruinas olmecas (opción b)
 

@@ -54,11 +54,32 @@ namespace CronicasDeMexico.Editor.SceneGeneration
             ("Escombros_Basalto", new Vector3(0.6f, 0.6f, 0.3f)),
             ("Fogon", new Vector3(0.6f, 0.6f, 0.3f)),
             ("Ceiba", new Vector3(0.6f, 0.6f, 2.5f)),          // solo el tronco: bajo la copa se camina
-            ("Enramada", new Vector3(1.9f, 1.3f, 1.2f)),
             ("Vasijas", new Vector3(0.5f, 0.5f, 0.4f)),
             ("Tronco_Caido_01", new Vector3(0.9f, 0.5f, 0.35f)),
             ("Tronco_Caido_02", new Vector3(0.45f, 0.45f, 0.35f)),
         };
+
+        // Obstáculos de varias piezas: centro (x, y del flujo, respecto al objeto), huella y altura de cada pieza. La
+        // enramada solo bloquea en los postes y los enseres: bajo el techo se camina.
+        static readonly (string sprite, (Vector2 offset, Vector3 size)[] parts)[] CompoundObstacles =
+        {
+            ("Enramada_01", new[]
+            {
+                (new Vector2(-0.9f, -0.6f), new Vector3(0.15f, 0.15f, 1.3f)),
+                (new Vector2(-0.9f, 0.6f), new Vector3(0.15f, 0.15f, 1.3f)),
+                (new Vector2(0.9f, -0.6f), new Vector3(0.15f, 0.15f, 1.3f)),
+                (new Vector2(0.9f, 0.6f), new Vector3(0.15f, 0.15f, 1.3f)),
+                (new Vector2(-0.39f, 0.36f), new Vector3(0.45f, 0.3f, 0.3f)),  // olla y tecomate
+                (new Vector2(0.45f, 0.38f), new Vector3(0.45f, 0.35f, 0.2f)),  // metate
+            }),
+        };
+
+        // Capas que comparten lienzo y pivote con su objeto pero se ordenan por la profundidad de otro punto (x, y del
+        // flujo, respecto al objeto): el poste delantero de la enramada (POSTE_FRENTE en generar_olmeca.py).
+        static readonly (string sprite, Vector2 anchor)[] DepthAnchors = { ("Enramada_Poste", new Vector2(0.9f, -0.6f)) };
+
+        // Techos bajo los que se pasa (RoofOverhead): media huella en x, y del flujo.
+        static readonly (string sprite, Vector2 halfExtents)[] Roofs = { ("Enramada_Techo", new Vector2(1.3f, 1f)) };
 
         // Textos al examinar. D = documentado, I = interpretación (Docs/Arte_Olmeca_Demo.md §8).
         const string AltarText =
@@ -124,6 +145,8 @@ namespace CronicasDeMexico.Editor.SceneGeneration
 
             ConfigureLighting();
             var player = PlacePlayer(scene);
+            foreach (var roof in root.GetComponentsInChildren<RoofOverhead>())
+                SetProperty(roof, "target", property => property.objectReferenceValue = player.transform);
             CreateCamera(player.transform, data.limites);
             OlmecaPrototypeGenerator.CreateHud(
                 AssetDatabase.LoadAssetAtPath<StringEventChannel>(OlmecaPrototypeGenerator.PromptChannelPath),
@@ -227,7 +250,18 @@ namespace CronicasDeMexico.Editor.SceneGeneration
 
                 var position = IsometricProjection.SnapToPixelGrid(World(placement.x, placement.y, placement.z),
                     1f / IsometricProjection.PixelsPerUnit);
+                // A lo largo de la mirada de la cámara: cambia la profundidad, no el sitio en pantalla
+                var forward = IsometricProjection.CameraRotation * Vector3.forward;
+                var anchor = DepthAnchors.FirstOrDefault(a => placement.sprite.StartsWith(a.sprite)).anchor;
+                position += forward * Vector3.Dot(World(anchor.x, anchor.y, 0f), forward);
                 var renderer = SpriteObject(placement.sprite, group, Require(sprites, placement.sprite), material, position);
+
+                var roof = Roofs.FirstOrDefault(r => placement.sprite.StartsWith(r.sprite)).halfExtents;
+                if (roof != Vector2.zero)
+                {
+                    var overhead = renderer.gameObject.AddComponent<RoofOverhead>();
+                    SetProperty(overhead, "halfExtents", property => property.vector2Value = new Vector2(roof.y, roof.x));
+                }
 
                 var text = placement.sprite.StartsWith("Altar_Trono") ? AltarText
                     : placement.sprite == "Estela_Grande_03" ? BrokenStelaText
@@ -296,6 +330,15 @@ namespace CronicasDeMexico.Editor.SceneGeneration
             {
                 if (placement.z > 0.01f)
                     continue; // plantas sobre el montículo
+                var parts = CompoundObstacles.FirstOrDefault(o => placement.sprite == o.sprite).parts;
+                if (parts != null)
+                {
+                    foreach (var (offset, partSize) in parts)
+                        Box(placement.sprite, obstacles,
+                            World(placement.x + offset.x, placement.y + offset.y, placement.z + partSize.z * 0.5f),
+                            new Vector3(partSize.y, partSize.z, partSize.x));
+                    continue;
+                }
                 var size = Obstacles.FirstOrDefault(o => placement.sprite.StartsWith(o.prefix)).size;
                 if (size == Vector3.zero)
                     continue; // vegetación baja y tiles: se atraviesan

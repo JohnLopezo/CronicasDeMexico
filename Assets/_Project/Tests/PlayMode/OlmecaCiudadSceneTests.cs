@@ -137,6 +137,51 @@ namespace CronicasDeMexico.Tests
             yield return UnloadScene();
         }
 
+        // Bajo la enramada se camina: solo bloquean los postes y los enseres, y el techo tapa al jugador que está debajo.
+        [UnityTest]
+        public IEnumerator Player_CanWalkUnderShelterRoof()
+        {
+            yield return LoadScene();
+
+            var roof = Object.FindObjectsByType<RoofOverhead>(FindObjectsSortMode.None).FirstOrDefault();
+            Assert.IsNotNull(roof, "La enramada no tiene techo.");
+            var player = Object.FindAnyObjectByType<PlayerMovement>();
+            Assert.AreSame(player.transform, roof.Target);
+            player.enabled = false;
+            var controller = player.GetComponent<CharacterController>();
+
+            // Cruza la enramada a lo largo de x del flujo, entre los postes delanteros y los enseres.
+            var center = roof.RestPosition;
+            controller.enabled = false;
+            player.transform.position = center + IsometricProjection.FromPipeline(-2f, -0.17f, 0.05f);
+            controller.enabled = true;
+            var across = IsometricProjection.FromPipeline(1f, 0f, 0f);
+            for (var t = 0f; t < 1.4f; t += Time.fixedDeltaTime)
+            {
+                controller.Move((across * 3f + Vector3.down * 2f) * Time.fixedDeltaTime);
+                yield return new WaitForFixedUpdate();
+            }
+            var crossed = Vector3.Dot(player.transform.position - center, across);
+            Assert.Greater(crossed, 1.5f, "Algo bloquea el paso bajo la enramada.");
+
+            // Debajo y por delante del centro, el techo debe quedar por delante del jugador.
+            controller.enabled = false;
+            player.transform.position = center + IsometricProjection.FromPipeline(0.5f, -0.3f, 0f);
+            yield return null;
+            yield return null;
+            var forward = IsometricProjection.CameraRotation * Vector3.forward;
+            Assert.Less(Vector3.Dot(roof.transform.position, forward), Vector3.Dot(player.transform.position, forward),
+                "El jugador se dibujaría encima del techo.");
+
+            // Fuera de la huella vuelve a su sitio.
+            player.transform.position = center + IsometricProjection.FromPipeline(4f, 0f, 0f);
+            yield return null;
+            yield return null;
+            Assert.That(Vector3.Distance(roof.transform.position, center), Is.LessThan(1e-4f));
+
+            yield return UnloadScene();
+        }
+
         [UnityTest]
         public IEnumerator Scenery_IsOnPixelGrid_AndAltarsCanBeExamined()
         {

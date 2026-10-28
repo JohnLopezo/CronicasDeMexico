@@ -81,9 +81,9 @@ Reglas: sin negro puro (el más oscuro es `#0F2A17`/`#1E2420`); contorno exterio
 | Ceiba | 192×208 (sombra aparte de 256×128) | Altura comprimida a ~3,4 m, copa de ~3 m | Base del tronco |
 | Tronco caído / tocón | 64×48 (2 variantes) | 1,1 m / 0,35 m | Centro |
 | Vasijas grandes | 48×48 (2 variantes) | 0,2–0,45 m | Centro del grupo |
-| Enramada | 160×152 (sombra aparte de 208×112) | 2,5 × 1,9 m de techo | Centro de la huella |
+| Enramada (base, poste delantero y techo) | 160×152 cada capa (sombra aparte de 208×112) | 2,5 × 1,9 m de techo | Centro de la huella, igual en las tres capas |
 | Muelle de madera | 64×64 por módulo de 1 m (variante 1 a lo largo de X, 2 a lo largo de Y) | Tablero a 0,12 m sobre el suelo | Centro del módulo |
-| Canoa monóxila | 64×48 | 1,4 m | Centro, a la altura del agua (z = -0,06) |
+| Canoa monóxila | 96×64 | 1,44 m | Centro, a la altura del agua (z = -0,06) |
 | Plataforma de arcilla | 64×96 por módulo y máscara de vecinos; se apila (nivel superior en Z = 1 m) | 1×1 m, 1 m de alto | Centro del tile a nivel del pie |
 
 Animación: 5 direcciones (N, NE, E, SE, S) y las 3 del oeste por espejo, como espera `DirectionalSpriteSet`. Jaguar: reposo, caminar/trotar, correr, ataque, recibir daño y derrota.
@@ -301,8 +301,16 @@ Pedida el 2026-10-28; se hace en lugar de las etapas 4–6 de las ruinas.
   - Un muelle de 4 módulos con dos canoas en el río, frente a la aldea.
   - Se colocan con un generador aleatorio propio (`Random(41)`), así que lo anterior no cambia de sitio. Los objetos grandes despejan solo la vegetación baja que tienen alrededor (`despejar_y_poner`).
 - **El muelle se camina:** `Ciudad.json` trae `agua_bloqueo` (el agua sin las celdas bajo el muelle) y `muelles` (el tablero a 0,14 m). El generador de Unity crea ahí su colisión.
-- **Colisiones nuevas:** el tronco de la ceiba (bajo la copa se pasa), la enramada, las vasijas y los troncos.
+- **Colisiones nuevas:** el tronco de la ceiba (bajo la copa se pasa), los postes y enseres de la enramada, las vasijas y los troncos.
 - **Pruebas:** EditMode 42/42 y PlayMode 26/26 (nueva comprobación: el muelle se camina a 0,14 m). Hay capturas `Ciudad_Unity_*.png` en `Logs/Capturas`, con una vista nueva del muelle.
+- **Ajustes (2026-10-28):**
+  - **Canoa:** se leía como un tronco. Ahora el casco es una malla con proa y popa en punta y algo levantadas, borda clara, interior hueco y oscuro, un remo con pala y un tecomate dentro.
+  - **Enramada, se puede pasar por debajo:**
+    - *Capas:* se exporta en tres capas con el mismo lienzo y pivote: `Enramada_01` (base), `Enramada_Poste_01` (poste delantero) y `Enramada_Techo_01`. `con_capas` las añade al plan.
+    - *Colisiones:* solo bloquean los cuatro postes, las vasijas y el metate (`CompoundObstacles`). Los enseres pasaron al lado +y para dejar un pasillo por el centro.
+    - *Orden de dibujo en Unity:* el poste delantero se ordena por su propia profundidad (`DepthAnchors`). El techo lleva `RoofOverhead`: con el jugador bajo la huella, el sprite se adelanta a lo largo de la mirada de la cámara hasta quedar delante de él, sin moverse en pantalla.
+    - *Límite:* bajo el techo, el jugador queda tapado salvo lo que asoma por debajo del alero; no se hace transparente.
+  - **Pruebas:** EditMode 42/42 y PlayMode 27/27 (nueva: `Player_CanWalkUnderShelterRoof`).
 
 ### Ruinas olmecas (opción b)
 

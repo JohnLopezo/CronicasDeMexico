@@ -7400,13 +7400,49 @@
    "z": 0.0
   },
   {
+   "sprite": "Enramada_Poste_01",
+   "x": 19.73,
+   "y": 14.563,
+   "z": 0.0
+  },
+  {
+   "sprite": "Enramada_Techo_01",
+   "x": 19.73,
+   "y": 14.563,
+   "z": 0.0
+  },
+  {
    "sprite": "Enramada_01",
    "x": 12.385,
    "y": 16.05,
    "z": 0.0
   },
   {
+   "sprite": "Enramada_Poste_01",
+   "x": 12.385,
+   "y": 16.05,
+   "z": 0.0
+  },
+  {
+   "sprite": "Enramada_Techo_01",
+   "x": 12.385,
+   "y": 16.05,
+   "z": 0.0
+  },
+  {
    "sprite": "Enramada_01",
+   "x": 16.14,
+   "y": 19.254,
+   "z": 0.0
+  },
+  {
+   "sprite": "Enramada_Poste_01",
+   "x": 16.14,
+   "y": 19.254,
+   "z": 0.0
+  },
+  {
+   "sprite": "Enramada_Techo_01",
    "x": 16.14,
    "y": 19.254,
    "z": 0.0

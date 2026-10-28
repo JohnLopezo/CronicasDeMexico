@@ -1274,23 +1274,34 @@ def vasijas(rng, variante):
     pa.asignar(pa.malla("Pasto", v, f, c), pa.mat_color_vertice("Vegetal"))
 
 
-def enramada(rng, variante):
-    """Enramada: techo de palma sobre cuatro postes, sin muros, con un petate, vasijas y un metate (I)."""
+CAPAS_ENRAMADA = ("Enramada_Poste_01", "Enramada_Techo_01")   # se colocan junto a cada Enramada_01
+POSTE_FRENTE = (0.9, -0.6)   # x, y del poste delantero respecto a la enramada (OlmecaCityGenerator usa el mismo)
+
+
+def enramada(rng, variante, capa="base"):
+    """Enramada: techo de palma sobre cuatro postes, sin muros, con un petate, vasijas y un metate (I).
+    Para poder pasar por debajo se exporta en tres capas con el mismo lienzo y pivote: la base (postes del fondo,
+    enseres y pasto), el poste delantero y el techo. En Unity, el poste se ordena por su propia profundidad y el techo
+    se adelanta cuando el jugador está debajo (RoofOverhead). Lo que no es de la capa solo se oculta a la cámara: sigue
+    dando sombra."""
+    rng = random.Random(zlib.crc32(b"Enramada_01"))   # las mismas pajas y matas en las tres capas
     mat_poste = pa.mat_ruido("Poste", ["#48331F", "#6D502E", "#9C7842"], escala=14, estirar=(1, 1, 0.2))
     for x in (-0.9, 0.9):
         for y in (-0.6, 0.6):
-            pa.asignar(caja("Poste", (x, y, 0.62), (0.08, 0.08, 1.24), 0), mat_poste)
+            nombre = "PosteFrente" if (x, y) == POSTE_FRENTE else "Poste"   # el más cercano a la cámara (+x, -y)
+            pa.asignar(caja(nombre, (x, y, 0.62), (0.08, 0.08, 1.24), 0), mat_poste)
         pa.asignar(caja("Viga", (x, 0, 1.22), (0.07, 1.35, 0.07), 0), mat_poste)
     techo_palma(rng, 1.25, 0.95, 0.1, 1.24, 2.15)
+    # Enseres hacia el lado +y: por el centro queda paso (OlmecaCityGenerator, CompoundObstacles)
     petate = caja("Petate", (0.1, -0.05, 0.006), (1.1, 0.75, 0.012), 0)
     pa.asignar(petate, pa.mat_ruido("Petate", ["#9C7842", "#C6925A", "#E3B47C", "#B6814C"], escala=6, estirar=(14, 1, 1)))
-    vasija("OllaEnramada", Vector((0.55, 0.3, 0.012)), 0.11, 0.22, ["#C6925A", "#B6814C", "#E3B47C"], cuello=0.05)
-    vasija("TecomateEnramada", Vector((0.3, 0.38, 0.012)), 0.08, 0.13, ["#B16143", "#9B713F"])
-    metate = caja("Metate", (-0.35, -0.2, 0.07), (0.38, 0.22, 0.07), 0.015)   # piedra de moler de basalto
+    vasija("OllaEnramada", Vector((-0.5, 0.33, 0.012)), 0.11, 0.22, ["#C6925A", "#B6814C", "#E3B47C"], cuello=0.05)
+    vasija("TecomateEnramada", Vector((-0.25, 0.42, 0.012)), 0.08, 0.13, ["#B16143", "#9B713F"])
+    metate = caja("Metate", (0.45, 0.38, 0.07), (0.38, 0.22, 0.07), 0.015)   # piedra de moler de basalto
     metate.rotation_euler = Euler((0, math.radians(-8), math.radians(15)))
     mat_basalto = pa.mat_ruido("Metate", ["#4A473B", "#615C48", "#7D745B"], escala=10)
     pa.asignar(metate, mat_basalto)
-    mano = caja("Mano", (-0.35, -0.2, 0.13), (0.06, 0.24, 0.05), 0.02)
+    mano = caja("Mano", (0.45, 0.38, 0.13), (0.06, 0.24, 0.05), 0.02)
     mano.rotation_euler.z = math.radians(15)
     pa.asignar(mano, mat_basalto)
     v, f, c = [], [], []
@@ -1298,6 +1309,16 @@ def enramada(rng, variante):
         ang = rng.uniform(-math.pi, 0.6)
         matas(v, f, c, (math.cos(ang) * 1.15, math.sin(ang) * 0.85, 0), rng.randint(7, 10), 0.15, 0.06, rng, grosor=0.022)
     pa.asignar(pa.malla("Pasto", v, f, c), pa.mat_color_vertice("Vegetal"))
+    propias = {"base": lambda n: n not in ("Techo", "PosteFrente"), "poste": lambda n: n == "PosteFrente",
+               "techo": lambda n: n == "Techo"}[capa]
+    for o in bpy.context.scene.objects:
+        if o.type == 'MESH' and not propias(o.name.split(".")[0]):
+            o.visible_camera = False
+
+
+def con_capas(objetos):
+    """Añade tras cada enramada su poste delantero y su techo (en la composición se dibujan en este orden)."""
+    return [o2 for o in objetos for o2 in [o] + [(n, *o[1:]) for n in (CAPAS_ENRAMADA if o[0] == "Enramada_01" else ())]]
 
 
 def muelle(rng, variante):
@@ -1327,24 +1348,42 @@ def muelle(rng, variante):
 
 def canoa(rng, variante):
     """Canoa monóxila (de un solo tronco), documentada en Mesoamérica (D). Solo se modela lo que asoma del agua:
-    el objeto se coloca a la altura de la superficie (z = -0,06). Con un remo atravesado."""
-    largo, ancho, alto = 0.7, 0.17, 0.12
-    giro = math.radians(20)
-    bpy.ops.mesh.primitive_uv_sphere_add(segments=24, ring_count=12, radius=1)
-    casco = bpy.context.active_object
-    for vt in casco.data.vertices:
-        z = min(vt.co.z, 0.0)   # media esfera inferior, borde plano arriba
-        vt.co = Vector((vt.co.x * largo, vt.co.y * ancho, (z + 1) * alto))
+    el objeto se coloca a la altura de la superficie (z = -0,06). Para que no se lea como un tronco: proa y popa en
+    punta y algo levantadas, borda clara, interior hueco y oscuro, un remo de pala y un tecomate dentro."""
+    largo, ancho, borda, grueso = 0.72, 0.2, 0.1, 0.035   # semilargo, semiancho, altura de la borda, pared
+    n = 32
+    # Sección de babor a estribor: línea de flotación, costado, borda exterior e interior, fondo del hueco
+    tonos = ["#48331F", "#6D502E", "#A28A6D", "#A28A6D", "#3A2A1A", "#3A2A1A", "#6D502E", "#A28A6D", "#9C7842", "#6D502E"]
+    verts, caras, cols = [], [], []
+    for i in range(n + 1):
+        s = -1 + 2 * i / n
+        x = s * largo
+        w = ancho * max(0.0, 1 - abs(s) ** 2.5) ** 0.6
+        wi = max(w - grueso, 0.0)
+        zr = borda + 0.07 * abs(s) ** 3   # la borda sube hacia las puntas
+        fondo = zr - 0.08
+        for k, (y, z) in enumerate([(-w * 0.9, 0), (-w, zr * 0.6), (-w, zr), (-wi, zr), (-wi * 0.6, fondo),
+                                    (wi * 0.6, fondo), (wi, zr), (w, zr), (w, zr * 0.6), (w * 0.9, 0)]):
+            verts.append(Vector((x, y, z)))
+            cols.append(tonos[k] if rng.random() > 0.15 else tonos[max(k - 1, 0)])   # algo de veta
+    m = len(tonos)
+    caras = [(i * m + k, i * m + k + 1, (i + 1) * m + k + 1, (i + 1) * m + k) for i in range(n) for k in range(m - 1)]
+    casco = pa.malla("Casco", verts, caras, cols)
+    pa.asignar(casco, pa.mat_color_vertice("Casco"))
+    giro = math.radians(12)
     casco.rotation_euler.z = giro
-    pa.asignar(casco, pa.mat_ruido("Casco", ["#48331F", "#6D502E", "#9C7842"], escala=10, estirar=(1, 4, 1)))
-    bpy.ops.mesh.primitive_uv_sphere_add(segments=24, ring_count=8, radius=1, location=(0, 0, alto + 0.003))
-    hueco = bpy.context.active_object   # interior: elipse oscura en el borde
-    hueco.scale = (largo * 0.86, ancho * 0.7, 0.004)
-    hueco.rotation_euler.z = giro
-    pa.asignar(hueco, pa.mat_ruido("Hueco", ["#3A2A1A", "#48331F"], escala=8))
-    remo = caja("Remo", (0.05, 0.02, alto + 0.02), (0.035, 0.55, 0.02), 0)
-    remo.rotation_euler.z = giro + math.radians(70)
-    pa.asignar(remo, pa.mat_ruido("Remo", ["#9C7842", "#A28A6D"], escala=12))
+    rot = lambda x, y, z: Vector((x * math.cos(giro) - y * math.sin(giro), x * math.sin(giro) + y * math.cos(giro), z))
+    # Remo atravesado sobre la borda: la pala asoma por el lado de la cámara
+    mat_remo = pa.mat_ruido("Remo", ["#9C7842", "#A28A6D"], escala=12)
+    ang = giro - math.radians(25)
+    centro = rot(0.12, 0.05, borda + 0.02)
+    hacia_pala = Vector((math.sin(ang), -math.cos(ang), 0))   # mitad del remo con la pala, hacia -y
+    for nombre, pos, medidas in (("Remo", centro, (0.025, 0.5, 0.02)),
+                                 ("Pala", centro + hacia_pala * 0.31 + Vector((0, 0, -0.01)), (0.09, 0.17, 0.012))):
+        p = caja(nombre, pos, medidas, 0.004)
+        p.rotation_euler.z = ang
+        pa.asignar(p, mat_remo)
+    vasija("TecomateCanoa", rot(-0.32, 0.0, borda - 0.08), 0.06, 0.1, ["#B16143", "#9B713F"])
 
 
 def planificar_aldea():
@@ -1371,7 +1410,7 @@ def planificar_aldea():
         else:
             suelo.append((f"Tile_Pasto_Selva_{rng.choice([1, 1, 2, 3]):02d}", X, Y))
     objetos = [("Muelle_Madera_02", 3, y, 0.0) for y in (-1.6, -2.6, -3.6)]
-    objetos += [("Canoa_01", 4.15, -3.1, -0.06), ("Nenufar_01", 1.6, -4.0, -0.06), ("Nenufar_01", 4.6, -4.7, -0.06),
+    objetos += [("Canoa_01", 4.4, -3.1, -0.06), ("Nenufar_01", 1.6, -4.0, -0.06), ("Nenufar_01", 4.6, -4.7, -0.06),
                 ("Tule_01", 6.1, -3.0, 0.0), ("Tule_01", 5.6, -4.9, 0.0), ("Tule_01", 0.3, -2.4, 0.0), ("Tule_01", 0.5, -4.4, 0.0),
                 ("Ceiba_01", 0.2, -7.0, 0.0), ("Enramada_01", -3.2, -1.2, 0.0), ("Vasijas_01", -1.4, -2.4, 0.0),
                 ("Vasijas_02", -4.6, -3.0, 0.0), ("Tronco_Caido_01", -5.6, -1.0, 0.0), ("Tronco_Caido_02", 6.6, 1.2, 0.0),
@@ -1380,7 +1419,7 @@ def planificar_aldea():
                 ("Matorral_Selva_01", -5.6, -5.2, 0.0), ("Matorral_Selva_02", 5.8, 4.4, 0.0), ("Matorral_Selva_03", -2.8, 3.6, 0.0),
                 ("Helecho_01", -1.8, -5.2, 0.0), ("Helecho_02", 2.4, -6.6, 0.0), ("Pasto_Alto_01", -5.4, 0.2, 0.0),
                 ("Arbusto_Selva_02", 4.6, 2.8, 0.0)]
-    return {"suelo": suelo, "objetos": objetos, "dosel": []}, mascaras
+    return {"suelo": suelo, "objetos": con_capas(objetos), "dosel": []}, mascaras
 
 
 # ---------------------------------------------------------------- sotobosque y dosel
@@ -1482,8 +1521,12 @@ TIPOS = {
     "Vasijas": (vasijas, (48, 48), (24, 12), ("tierra", "basalto", "acentos", "verde_calido"), "#3A2A1A", SOMBRA_CHICA, 0.5),
     "Enramada": (enramada, (160, 152), (80, 40), ("tierra", "madera", "verde_calido", "verde_frio", "basalto", "acentos"),
                  "#3A2A1A", ((208, 112), (76, 52)), 0.5),
+    "Enramada_Poste": (lambda rng, v: enramada(rng, v, "poste"), (160, 152), (80, 40), ("tierra", "madera", "verde_calido", "verde_frio", "basalto", "acentos"),
+                       "#3A2A1A", None, 0.5),
+    "Enramada_Techo": (lambda rng, v: enramada(rng, v, "techo"), (160, 152), (80, 40), ("tierra", "madera", "verde_calido", "verde_frio", "basalto", "acentos"),
+                       "#3A2A1A", None, 0.5),
     "Muelle_Madera": (muelle, (64, 64), (32, 22), ("madera", "tierra"), "#3A2A1A", None, 0.5),
-    "Canoa": (canoa, (64, 48), (32, 18), ("madera", "tierra"), "#3A2A1A", None, 0.5),
+    "Canoa": (canoa, (96, 64), (48, 26), ("madera", "tierra", "acentos"), "#3A2A1A", None, 0.5),
     "Plataforma_Arcilla": (plataforma_arcilla, (64, 96), (32, 18), ("tierra", "acentos", "basalto", "verde_calido", "verde_frio"),
                            None, None, 0.5),
 }
@@ -1492,7 +1535,7 @@ VARIANTES = {"Tile_Camino_Tierra": 4, "Tile_Pasto_Selva": 3, "Tile_Agua_Anim": 4
              "Roca_Basalto": 3, "Nenufar": 1, "Tule": 1, "Sombra_Dosel": 2, "Altar_Trono": 1,
              "Estela_Lisa": 1, "Estela_Grande": 3, "Rampa_Arcilla": 2, "Casa_Bajareque": 3, "Fogon": 1,
              "Escombros_Basalto": 3, "Cerca_Basalto_Y": 3, "Ceiba": 1, "Tronco_Caido": 2, "Vasijas": 2, "Enramada": 1,
-             "Muelle_Madera": 2, "Canoa": 1}
+             "Enramada_Poste": 1, "Enramada_Techo": 1, "Muelle_Madera": 2, "Canoa": 1}
 # Las transiciones y los módulos de plataforma se generan solo para las máscaras que usan las composiciones
 SIN_AVISO_BORDE = {"Tile_Camino_Tierra", "Tile_Pasto_Selva", "Tile_Agua_Anim", "Tile_Camino_Trans", "Tile_Orilla",
                    "Plataforma_Arcilla"}
@@ -1994,7 +2037,7 @@ def planificar_ciudad():
         "muelles": muelles,
         "limites": [X0, X1, Y0, Y1],
     }
-    return {"suelo": suelo, "objetos": objetos, "dosel": dosel_}, mascaras, colision
+    return {"suelo": suelo, "objetos": con_capas(objetos), "dosel": dosel_}, mascaras, colision
 
 
 def exportar_ciudad(salida, plan, colision):

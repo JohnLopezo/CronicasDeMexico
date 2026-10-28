@@ -37,12 +37,12 @@
   {
    "nombre": "Canoa_01",
    "lienzo": [
-    64,
-    48
+    96,
+    64
    ],
    "pivote": [
-    32,
-    18
+    48,
+    26
    ]
   },
   {
@@ -157,6 +157,28 @@
   },
   {
    "nombre": "Enramada_01",
+   "lienzo": [
+    160,
+    152
+   ],
+   "pivote": [
+    80,
+    40
+   ]
+  },
+  {
+   "nombre": "Enramada_Poste_01",
+   "lienzo": [
+    160,
+    152
+   ],
+   "pivote": [
+    80,
+    40
+   ]
+  },
+  {
+   "nombre": "Enramada_Techo_01",
    "lienzo": [
     160,
     152

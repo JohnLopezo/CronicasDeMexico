@@ -33,8 +33,10 @@ Plantilla:
   Commit `6f74768`. Después el usuario decidió: **Guardián del vertical slice = Jaguar**; el prólogo del GDD se sustituye por **tutorial en los primeros pisos olmecas**.
 - **Abierto:** epiclásico y tolteca dentro del arco III; afinidades de los arcos III–V.
 - **Hecho (fase narrativa 2, N1–N3):** `StoryState` (banderas y avisos), `NpcData` y `DialogueData` con ramas; `DialogueInteractable` las usa (conserva las líneas fijas); `QuestData`, `QuestCatalog` y `QuestService`; `InscriptionInteractable` con id, `ReportOnDefeat` y `ReportOnEnter`; objetivo de misión en el HUD; `SaveService` (JSON con versión y respaldo). Boot registra los tres servicios; nada guarda ni carga aún en juego.
-- **Estado:** EditMode 55/55 (nuevas: `NarrativeTests`, `SaveServiceTests`), PlayMode 29/29 (nueva: `HudObjectiveTests`; `BootTests` comprueba los servicios nuevos).
-- **Siguiente:** N4 (NPC del asentamiento en la ciudad, diálogos y `MP_OLM_02`) y N5 (despertar), con plan y capturas; escombros de basalto; medir en Android (corresponde a esta PC). Benchmark del i5 cuando se trabaje allí.
+  Commit `210265a`.
+- **Hecho (N4):** artesano, anciana, joven guerrero y comerciante en `Olmeca_Ciudad` con sprites provisionales (misma silueta, paletas propias), `NpcData` y `DialogueData`; misión `MP_OLM_02` jugable de principio a fin; catálogo de misiones en `Resources`; estelas con texto alternativo tras la misión. Los assets narrativos los crea `OlmecaNarrativeAssets` solo si faltan (después se editan en el Inspector). `OlmecaCityCapture` añade vistas de los habitantes.
+- **Estado:** EditMode 55/55, PlayMode 31/31 (nuevas: `Settlers_StandOnGround_WithTheirIdentityAndDialogue`, `SettlementQuest_IsCompletedByTalkingInOrder_AndChangesTheStelae`). Capturas revisadas a ojo; el diálogo y el HUD no se han probado jugando en el Editor.
+- **Siguiente:** N5 (despertar: orilla, reflejo, figura espiritual, `MP_OLM_01`, `GuardianData` del Jaguar); probar la misión jugando en el Editor; escombros de basalto; medir en Android (corresponde a esta PC). Benchmark del i5 cuando se trabaje allí.
 
 ## 2026-10-28 — i7-10700
 

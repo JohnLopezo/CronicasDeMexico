@@ -1,0 +1,46 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0f3a2dbe737f384da36cc4134724892, type: 3}
+  m_Name: DSS_Guerrero
+  m_EditorClassIdentifier: 
+  clips:
+  - idle: {fileID: 88093814, guid: a8e5520187727754c8e78f3b824ed881, type: 3}
+    walk:
+    - {fileID: -432169848, guid: a8e5520187727754c8e78f3b824ed881, type: 3}
+    - {fileID: -1891834905, guid: a8e5520187727754c8e78f3b824ed881, type: 3}
+    - {fileID: -1237518661, guid: a8e5520187727754c8e78f3b824ed881, type: 3}
+    - {fileID: -1566596413, guid: a8e5520187727754c8e78f3b824ed881, type: 3}
+  - idle: {fileID: 633887325, guid: a8e5520187727754c8e78f3b824ed881, type: 3}
+    walk:
+    - {fileID: -1991180183, guid: a8e5520187727754c8e78f3b824ed881, type: 3}
+    - {fileID: 874523196, guid: a8e5520187727754c8e78f3b824ed881, type: 3}
+    - {fileID: -2049579842, guid: a8e5520187727754c8e78f3b824ed881, type: 3}
+    - {fileID: -347042464, guid: a8e5520187727754c8e78f3b824ed881, type: 3}
+  - idle: {fileID: -388755168, guid: a8e5520187727754c8e78f3b824ed881, type: 3}
+    walk:
+    - {fileID: 1313585020, guid: a8e5520187727754c8e78f3b824ed881, type: 3}
+    - {fileID: -938968993, guid: a8e5520187727754c8e78f3b824ed881, type: 3}
+    - {fileID: 1889758629, guid: a8e5520187727754c8e78f3b824ed881, type: 3}
+    - {fileID: 478446778, guid: a8e5520187727754c8e78f3b824ed881, type: 3}
+  - idle: {fileID: 682334854, guid: a8e5520187727754c8e78f3b824ed881, type: 3}
+    walk:
+    - {fileID: 966879093, guid: a8e5520187727754c8e78f3b824ed881, type: 3}
+    - {fileID: -422342572, guid: a8e5520187727754c8e78f3b824ed881, type: 3}
+    - {fileID: -1798733601, guid: a8e5520187727754c8e78f3b824ed881, type: 3}
+    - {fileID: -1455350173, guid: a8e5520187727754c8e78f3b824ed881, type: 3}
+  - idle: {fileID: 231308449, guid: a8e5520187727754c8e78f3b824ed881, type: 3}
+    walk:
+    - {fileID: 1298625525, guid: a8e5520187727754c8e78f3b824ed881, type: 3}
+    - {fileID: 1241870335, guid: a8e5520187727754c8e78f3b824ed881, type: 3}
+    - {fileID: -1960754173, guid: a8e5520187727754c8e78f3b824ed881, type: 3}
+    - {fileID: -1396245583, guid: a8e5520187727754c8e78f3b824ed881, type: 3}
+  walkFramesPerSecond: 8

@@ -1,0 +1,50 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a33fe671ef33db241a91794b922ee781, type: 3}
+  m_Name: DLG_artesano_jade
+  m_EditorClassIdentifier: 
+  branches:
+  - requiredFlags:
+    - mision.MP_OLM_02.completada
+    forbiddenFlags: []
+    lines:
+    - speaker: {fileID: 0}
+      text: "As\xED que hay rastros en la selva... Yo seguir\xE9 con mi piedra. Alguien
+        tiene que recordar c\xF3mo se pule."
+    flagsOnFinish: []
+    questToStart: {fileID: 0}
+  - requiredFlags:
+    - mision.MP_OLM_02.activa
+    forbiddenFlags: []
+    lines:
+    - speaker: {fileID: 0}
+      text: "Ve con la anciana, junto a las enramadas. Y si ves al joven guerrero,
+        dile que no se esfuerce: a\xFAn no sana."
+    flagsOnFinish: []
+    questToStart: {fileID: 0}
+  - requiredFlags: []
+    forbiddenFlags: []
+    lines:
+    - speaker: {fileID: 0}
+      text: 'Un animal que escucha... Entonces es cierto lo que cuentan: a veces
+        la selva manda mensajeros.'
+    - speaker: {fileID: 0}
+      text: "Mira esta piedra verde. La traen de muy lejos y la pulo durante d\xEDas
+        con arena y agua."
+    - speaker: {fileID: 0}
+      text: "Pero las piedras grandes de la plaza est\xE1n perdiendo sus marcas.
+        No es la lluvia: ayer estaban y hoy ya no."
+    - speaker: {fileID: 0}
+      text: "La anciana que vive junto a las enramadas recuerda m\xE1s que nadie.
+        Habla con ella."
+    flagsOnFinish: []
+    questToStart: {fileID: 11400000, guid: 43c173dffbbffba4d8125d31f3c6ec90, type: 2}

@@ -32,6 +32,8 @@ Fuente: `Docs/Historia_Mundo.md` §6 (capítulo I), §9; GDD `Docs/Diseno.md` §
 
 ## Lo que ya existe en el proyecto
 
-- `Artesano` (prefab y `DSS_Artesano`), con `DialogueInteractable` y `NpcPatrol`, en la escena del prototipo (`Olmeca_Prototipo`). Arte provisional.
-- La ciudad (`Olmeca_Ciudad`) aún no tiene NPC; tiene aldea, enramadas y muelle donde ubicarlos.
-- Arte final de los NPC: **lo hace el autor** (Arte_Olmeca_Demo §12).
+- **En la ciudad (`Olmeca_Ciudad`, 2026-10-29):** el artesano de jade (patrulla corta junto a su casa), la anciana (junto a las enramadas), el joven guerrero (junto al fogón, cerca de la plaza) y el comerciante (junto al muelle). Los coloca `OlmecaCityGenerator` (`Settlers`, posiciones en x, y del flujo).
+- **Datos:** `Data/Narrative/Olmeca/NPC_*.asset` y `DLG_*.asset`, creados por `OlmecaNarrativeAssets` **solo si no existen**: se editan en el Inspector y regenerar la ciudad no los pisa. Para volver al texto del código, borrar el asset.
+- **Arte provisional:** la misma silueta de 32×48 con paletas distintas (`PlaceholderSpriteFactory`: Artisan, Elder, Warrior, Merchant). Incumple a propósito la regla de siluetas propias hasta que llegue el arte final, que **hace el autor** (Arte_Olmeca_Demo §12).
+- `Artesano` (prefab) sigue en el prototipo (`Olmeca_Prototipo`) con sus líneas fijas.
+- Falta la figura espiritual (N5) y los habitantes de ambiente.

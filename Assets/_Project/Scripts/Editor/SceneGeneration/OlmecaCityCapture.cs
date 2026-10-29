@@ -27,6 +27,10 @@ namespace CronicasDeMexico.Editor.SceneGeneration
             ("Recinto", new Vector2(0f, -9f)),
             ("Aldea", new Vector2(15f, -2f)),
             ("Muelle", new Vector2(20f, -4f)),
+            // Habitantes del asentamiento (OlmecaCityGenerator.Settlers).
+            ("Artesano", new Vector2(13.5f, 3.5f)),
+            ("Anciana", new Vector2(12.4f, 15f)),
+            ("Guerrero", new Vector2(11f, 9.5f)),
         };
 
         [MenuItem("Crónicas/Capturar ciudad olmeca")]

@@ -1,0 +1,61 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a33fe671ef33db241a91794b922ee781, type: 3}
+  m_Name: DLG_anciana
+  m_EditorClassIdentifier: 
+  branches:
+  - requiredFlags:
+    - mision.MP_OLM_02.completada
+    forbiddenFlags: []
+    lines:
+    - speaker: {fileID: 0}
+      text: "Si encuentras el final de mi relato, tr\xE1emelo. Todav\xEDa recuerdo
+        c\xF3mo empieza."
+    flagsOnFinish: []
+    questToStart: {fileID: 0}
+  - requiredFlags:
+    - olm.anciana_conto
+    forbiddenFlags: []
+    lines:
+    - speaker: {fileID: 0}
+      text: "Busca al joven guerrero junto al fog\xF3n, cerca de la plaza. Yo intentar\xE9
+        recordar."
+    flagsOnFinish: []
+    questToStart: {fileID: 0}
+  - requiredFlags:
+    - mision.MP_OLM_02.activa
+    forbiddenFlags: []
+    lines:
+    - speaker: {fileID: 0}
+      text: "As\xED que el artesano te mand\xF3. Ac\xE9rcate."
+    - speaker: {fileID: 0}
+      text: "Mi abuela me cont\xF3 un relato sobre el principio de las cosas. Yo
+        se lo contaba a los ni\xF1os cada temporada de lluvias."
+    - speaker: {fileID: 0}
+      text: "Ahora, cuando llego a la mitad, las palabras se me escapan. Y no soy
+        la \xFAnica: a todos nos falta un pedazo de algo."
+    - speaker: {fileID: 0}
+      text: "El joven guerrero volvi\xF3 herido de la selva. Vio algo all\xE1. Lo
+        encontrar\xE1s junto al fog\xF3n, cerca de la plaza."
+    flagsOnFinish:
+    - olm.anciana_conto
+    questToStart: {fileID: 0}
+  - requiredFlags: []
+    forbiddenFlags: []
+    lines:
+    - speaker: {fileID: 0}
+      text: "Las lluvias llegar\xE1n pronto. Hay que subir las vasijas antes de que
+        el r\xEDo crezca."
+    - speaker: {fileID: 0}
+      text: "\xBFUn jaguar tan tranquilo? Qu\xE9 tiempos tan raros."
+    flagsOnFinish: []
+    questToStart: {fileID: 0}

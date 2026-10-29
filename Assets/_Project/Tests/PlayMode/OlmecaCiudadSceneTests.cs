@@ -1,5 +1,11 @@
 using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
+using CronicasDeMexico.Core.Events;
+using CronicasDeMexico.Core.Narrative;
+using CronicasDeMexico.Core.Services;
+using CronicasDeMexico.Data.Narrative;
 using CronicasDeMexico.Gameplay.Interaction;
 using CronicasDeMexico.Gameplay.Player;
 using CronicasDeMexico.World.Rendering;
@@ -260,6 +266,110 @@ namespace CronicasDeMexico.Tests
             var cycler = Object.FindAnyObjectByType<SpriteFrameCycler>();
             Assert.IsNotNull(cycler, "El agua no está animada.");
             Assert.AreEqual(4, cycler.FrameCount);
+
+            yield return UnloadScene();
+        }
+
+        // ---------- Asentamiento (fase narrativa 2, N4) ----------
+
+        static readonly string[] SettlerIds = { "artesano_jade", "anciana", "guerrero_joven", "comerciante" };
+
+        static Dictionary<string, DialogueInteractable> FindSettlers()
+        {
+            var settlers = new Dictionary<string, DialogueInteractable>();
+            foreach (var dialogue in Object.FindObjectsByType<DialogueInteractable>(FindObjectsSortMode.None))
+            {
+                var npc = (NpcData)typeof(DialogueInteractable)
+                    .GetField("npc", BindingFlags.NonPublic | BindingFlags.Instance)!.GetValue(dialogue);
+                if (npc != null)
+                    settlers[npc.Id] = dialogue;
+            }
+            return settlers;
+        }
+
+        static void TalkUntilTheEnd(DialogueInteractable dialogue, Transform player)
+        {
+            dialogue.Interact(player);
+            var guard = 0;
+            while (dialogue.Advance())
+                Assert.Less(++guard, 20, "La conversación no termina.");
+            dialogue.End();
+        }
+
+        [UnityTest]
+        public IEnumerator Settlers_StandOnGround_WithTheirIdentityAndDialogue()
+        {
+            yield return LoadScene();
+            yield return new WaitForSeconds(1f); // si no hubiera suelo, caerían
+
+            var settlers = FindSettlers();
+            CollectionAssert.AreEquivalent(SettlerIds, settlers.Keys);
+            var dialogueField = typeof(DialogueInteractable).GetField("dialogue", BindingFlags.NonPublic | BindingFlags.Instance)!;
+            foreach (var (id, dialogue) in settlers)
+            {
+                Assert.IsNotNull(dialogueField.GetValue(dialogue), $"{id} no tiene DialogueData.");
+                var root = dialogue.GetComponentInParent<CharacterController>().transform;
+                Assert.That(root.position.y, Is.EqualTo(0f).Within(0.1f), $"{id} no está sobre el suelo.");
+                Assert.AreEqual(LayerMask.NameToLayer("Interactuable"), dialogue.gameObject.layer, id);
+            }
+
+            yield return UnloadScene();
+        }
+
+        // Recorre MP_OLM_02 con servicios propios, para no dejar la misión completada en los de Boot.
+        [UnityTest]
+        public IEnumerator SettlementQuest_IsCompletedByTalkingInOrder_AndChangesTheStelae()
+        {
+            yield return LoadScene();
+
+            ServiceLocator.TryGet(out StoryState bootStory);
+            ServiceLocator.TryGet(out QuestService bootQuests);
+            var story = new StoryState();
+            var quests = new QuestService(story, Resources.Load<QuestCatalog>(QuestCatalog.ResourcePath));
+            ServiceLocator.Register(story);
+            ServiceLocator.Register(quests);
+            try
+            {
+                Assert.IsNotNull(Resources.Load<QuestCatalog>(QuestCatalog.ResourcePath)?.Find("MP_OLM_02"),
+                    "MP_OLM_02 no está en el catálogo de misiones.");
+                var settlers = FindSettlers();
+                var player = Object.FindAnyObjectByType<PlayerMovement>().transform;
+
+                // Antes de la misión, el guerrero solo habla de lo suyo y no cuenta.
+                TalkUntilTheEnd(settlers["guerrero_joven"], player);
+                Assert.AreEqual(QuestStatus.NotStarted, quests.GetStatus("MP_OLM_02"));
+
+                TalkUntilTheEnd(settlers["artesano_jade"], player);
+                Assert.AreEqual(QuestStatus.Active, quests.GetStatus("MP_OLM_02"));
+
+                // Fuera de orden no avanza.
+                TalkUntilTheEnd(settlers["guerrero_joven"], player);
+                Assert.AreEqual(0, quests.GetStep("MP_OLM_02"));
+
+                TalkUntilTheEnd(settlers["anciana"], player);
+                Assert.AreEqual(1, quests.GetStep("MP_OLM_02"));
+                TalkUntilTheEnd(settlers["guerrero_joven"], player);
+
+                Assert.AreEqual(QuestStatus.Completed, quests.GetStatus("MP_OLM_02"));
+                Assert.IsTrue(story.HasFlag("olm.entrada_descubierta"));
+
+                var messages = new List<string>();
+                var stela = Object.FindObjectsByType<InscriptionInteractable>(FindObjectsSortMode.None)
+                    .First(i => i.name.Contains("Estela_Lisa"));
+                var channel = (StringEventChannel)typeof(InscriptionInteractable)
+                    .GetField("messageChannel", BindingFlags.NonPublic | BindingFlags.Instance)!.GetValue(stela);
+                channel.Subscribe(messages.Add);
+                stela.Interact(player);
+                channel.Unsubscribe(messages.Add);
+                StringAssert.Contains("como si las marcas nunca hubieran existido", messages.Single());
+            }
+            finally
+            {
+                if (bootStory != null)
+                    ServiceLocator.Register(bootStory);
+                if (bootQuests != null)
+                    ServiceLocator.Register(bootQuests);
+            }
 
             yield return UnloadScene();
         }

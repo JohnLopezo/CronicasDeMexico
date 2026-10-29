@@ -2,8 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using CronicasDeMexico.Core.Events;
+using CronicasDeMexico.Core.Narrative;
+using CronicasDeMexico.Data.Characters;
 using CronicasDeMexico.Editor.PixelArt;
 using CronicasDeMexico.Gameplay.Interaction;
+using CronicasDeMexico.Gameplay.Npc;
 using CronicasDeMexico.World.Rendering;
 using UnityEditor;
 using UnityEditor.SceneManagement;
@@ -87,6 +90,20 @@ namespace CronicasDeMexico.Editor.SceneGeneration
             "(Altar 4). Este nicho está vacío.";
         const string StelaText = "Una estela de basalto. Si tuvo relieves, la lluvia y el tiempo los borraron.";
         const string BrokenStelaText = "Una estela partida. Su parte superior yace en el suelo, cubierta de musgo.";
+        // Tras la misión del asentamiento: pista de que el borrado no es natural (se revela al cerrar el arco I).
+        const string StelaAfterSettlementText =
+            "Una estela de basalto. Desde que el artesano lo dijo, no puedes dejar de notarlo: la piedra no está " +
+            "gastada como las rocas del camino. Está lisa, como si las marcas nunca hubieran existido.";
+
+        // Habitantes del asentamiento (Docs/Personajes/NPC_Olmecas.md): sprite provisional y puntos de patrulla en
+        // x, y del flujo (uno = quieto en su sitio). Posiciones en tierra y lejos de obstáculos.
+        static readonly (string id, string sprites, Vector2[] points)[] Settlers =
+        {
+            (OlmecaNarrativeAssets.ArtisanId, "Artesano", new[] { new Vector2(13.5f, 2.8f), new Vector2(14.6f, 2.8f) }),
+            (OlmecaNarrativeAssets.ElderId, "Anciana", new[] { new Vector2(12.4f, 14.2f) }),
+            (OlmecaNarrativeAssets.WarriorId, "Guerrero", new[] { new Vector2(12.0f, 8.5f) }),
+            (OlmecaNarrativeAssets.MerchantId, "Comerciante", new[] { new Vector2(19.0f, -3.2f) }),
+        };
 
         // ---------- Datos (Ciudad.json) ----------
 
@@ -136,6 +153,8 @@ namespace CronicasDeMexico.Editor.SceneGeneration
 
             var scene = EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
             var messageChannel = AssetDatabase.LoadAssetAtPath<StringEventChannel>(OlmecaPrototypeGenerator.MessageChannelPath);
+            // Después de NewScene, que descarga los ScriptableObjects recién creados que nada referencia.
+            var narrative = OlmecaNarrativeAssets.EnsureAssets();
 
             var root = Group("--- Ciudad ---", null);
             BuildGround(Group("Suelo", root), data, sprites, groundMaterial);
@@ -147,6 +166,7 @@ namespace CronicasDeMexico.Editor.SceneGeneration
             var player = PlacePlayer(scene);
             foreach (var roof in root.GetComponentsInChildren<RoofOverhead>())
                 SetProperty(roof, "target", property => property.objectReferenceValue = player.transform);
+            PlaceSettlers(Group("--- Habitantes ---", null), narrative, messageChannel);
             CreateCamera(player.transform, data.limites);
             OlmecaPrototypeGenerator.CreateHud(
                 AssetDatabase.LoadAssetAtPath<StringEventChannel>(OlmecaPrototypeGenerator.PromptChannelPath),
@@ -263,17 +283,20 @@ namespace CronicasDeMexico.Editor.SceneGeneration
                     SetProperty(overhead, "halfExtents", property => property.vector2Value = new Vector2(roof.y, roof.x));
                 }
 
-                var text = placement.sprite.StartsWith("Altar_Trono") ? AltarText
-                    : placement.sprite == "Estela_Grande_03" ? BrokenStelaText
-                    : placement.sprite.StartsWith("Estela") ? StelaText
-                    : null;
-                if (text != null)
+                var isAltar = placement.sprite.StartsWith("Altar_Trono");
+                var isBrokenStela = placement.sprite == "Estela_Grande_03";
+                var isStela = !isBrokenStela && placement.sprite.StartsWith("Estela");
+                if (isAltar || isBrokenStela || isStela)
                     AddInscription(renderer.transform.parent, $"Inscripcion_{placement.sprite}",
-                        World(placement.x, placement.y, placement.z) + Vector3.up * 0.8f, text, messageChannel);
+                        World(placement.x, placement.y, placement.z) + Vector3.up * 0.8f,
+                        isAltar ? AltarText : isBrokenStela ? BrokenStelaText : StelaText, messageChannel,
+                        examineId: isAltar ? "altar_trono" : "estela",
+                        alternateText: isStela ? StelaAfterSettlementText : null);
             }
         }
 
-        static void AddInscription(Transform parent, string name, Vector3 position, string text, StringEventChannel messageChannel)
+        static void AddInscription(Transform parent, string name, Vector3 position, string text, StringEventChannel messageChannel,
+            string examineId = null, string alternateText = null)
         {
             var layer = LayerMask.NameToLayer(OlmecaPrototypeGenerator.InteractableLayerName);
             var inscriptionObject = new GameObject(name) { layer = layer };
@@ -286,6 +309,83 @@ namespace CronicasDeMexico.Editor.SceneGeneration
             var inscription = inscriptionObject.AddComponent<InscriptionInteractable>();
             SetProperty(inscription, "text", property => property.stringValue = text);
             SetProperty(inscription, "messageChannel", property => property.objectReferenceValue = messageChannel);
+            SetProperty(inscription, "examineId", property => property.stringValue = examineId);
+            if (alternateText != null)
+            {
+                SetProperty(inscription, "alternateFlag", property =>
+                    property.stringValue = StoryEvents.QuestCompletedFlag(OlmecaNarrativeAssets.SettlementQuestId));
+                SetProperty(inscription, "alternateText", property => property.stringValue = alternateText);
+            }
+        }
+
+        // ---------- Habitantes ----------
+
+        static void PlaceSettlers(Transform parent, OlmecaNarrativeAssets.Content narrative, StringEventChannel messageChannel)
+        {
+            var spriteMaterial = AssetDatabase.LoadAssetAtPath<Material>(OlmecaPrototypeGenerator.SpriteMaterialPath)
+                ?? throw new InvalidOperationException($"No se encontró {OlmecaPrototypeGenerator.SpriteMaterialPath}.");
+            var characters = new Dictionary<string, OlmecaNarrativeAssets.Character>
+            {
+                [OlmecaNarrativeAssets.ArtisanId] = narrative.Artisan,
+                [OlmecaNarrativeAssets.ElderId] = narrative.Elder,
+                [OlmecaNarrativeAssets.WarriorId] = narrative.Warrior,
+                [OlmecaNarrativeAssets.MerchantId] = narrative.Merchant,
+            };
+            var palettes = new Dictionary<string, PlaceholderSpriteFactory.CharacterPalette>
+            {
+                ["Artesano"] = PlaceholderSpriteFactory.Artisan,
+                ["Anciana"] = PlaceholderSpriteFactory.Elder,
+                ["Guerrero"] = PlaceholderSpriteFactory.Warrior,
+                ["Comerciante"] = PlaceholderSpriteFactory.Merchant,
+            };
+
+            foreach (var (id, spritesName, points) in Settlers)
+            {
+                var character = characters[id];
+                var spriteSet = OlmecaPrototypeGenerator.CreateSpriteSet(spritesName, palettes[spritesName]);
+                var settler = CreateSettler(parent, character, spriteSet, spriteMaterial, messageChannel);
+                var world = points.Select(point => World(point.x, point.y, 0f)).ToArray();
+                settler.transform.position = world[0];
+                if (world.Length > 1)
+                    SetProperty(settler.GetComponent<NpcPatrol>(), "patrolPoints", property =>
+                    {
+                        property.arraySize = world.Length;
+                        for (var i = 0; i < world.Length; i++)
+                            property.GetArrayElementAtIndex(i).vector3Value = world[i];
+                    });
+            }
+        }
+
+        // Como el artesano del prototipo, pero con su NpcData y su DialogueData, y a la escala del jugador de la ciudad.
+        static GameObject CreateSettler(Transform parent, OlmecaNarrativeAssets.Character character, DirectionalSpriteSet spriteSet,
+            Material spriteMaterial, StringEventChannel messageChannel)
+        {
+            var root = OlmecaPrototypeGenerator.CreateCharacterRoot($"NPC_{character.Npc.Id}", spriteSet, spriteMaterial,
+                out var spriteRenderer);
+            root.transform.SetParent(parent, false);
+            root.transform.localScale = Vector3.one * (PlaceholderPixelsPerUnit / IsometricProjection.PixelsPerUnit);
+            spriteRenderer.shadowCastingMode = ShadowCastingMode.Off;
+            var billboard = spriteRenderer.GetComponent<SpriteBillboard>();
+            SetProperty(billboard, "mode", property => property.enumValueIndex = (int)SpriteBillboard.BillboardMode.CameraPlane);
+            spriteRenderer.gameObject.AddComponent<PixelGridSnap>();
+
+            var patrol = root.AddComponent<NpcPatrol>();
+            OlmecaPrototypeGenerator.AddSpriteAnimator(root, patrol, spriteRenderer, spriteSet);
+
+            // El trigger va en un hijo: el CharacterController de la raíz queda en Default. Radio en unidades locales.
+            var talk = new GameObject("Conversacion") { layer = OlmecaPrototypeGenerator.Layer(OlmecaPrototypeGenerator.InteractableLayerName) };
+            talk.transform.SetParent(root.transform, false);
+            var trigger = talk.AddComponent<SphereCollider>();
+            trigger.isTrigger = true;
+            trigger.center = new Vector3(0f, 0.7f, 0f);
+            trigger.radius = 1.6f;
+
+            var dialogue = talk.AddComponent<DialogueInteractable>();
+            SetProperty(dialogue, "npc", property => property.objectReferenceValue = character.Npc);
+            SetProperty(dialogue, "dialogue", property => property.objectReferenceValue = character.Dialogue);
+            SetProperty(dialogue, "messageChannel", property => property.objectReferenceValue = messageChannel);
+            SetProperty(dialogue, "patrol", property => property.objectReferenceValue = patrol);
+            return root;
         }
 
         // ---------- Colisiones ----------

@@ -44,7 +44,7 @@ namespace CronicasDeMexico.Editor.SceneGeneration
 
         const string PlaceholderFolder = "Assets/_Project/Art/Characters/Placeholder";
         // El material de sprites lo comparten todos los personajes (el destello va por MaterialPropertyBlock).
-        const string SpriteMaterialPath = PlaceholderFolder + "/M_Jugador_Placeholder.mat";
+        internal const string SpriteMaterialPath = PlaceholderFolder + "/M_Jugador_Placeholder.mat";
         const string CharacterDataFolder = "Assets/_Project/Data/Characters";
         const string EnvironmentMaterialsFolder = "Assets/_Project/Art/Environment/Olmeca/Materials";
         const string SpriteShaderPath = "Assets/_Project/Art/Shaders/HD2D_SpriteLit.shader";
@@ -235,7 +235,7 @@ namespace CronicasDeMexico.Editor.SceneGeneration
         }
 
         // Hoja de sprites provisional y su DirectionalSpriteSet. El cuadro 0 es la pose quieta y el resto la caminata.
-        static DirectionalSpriteSet CreateSpriteSet(string characterName, PlaceholderSpriteFactory.CharacterPalette palette)
+        internal static DirectionalSpriteSet CreateSpriteSet(string characterName, PlaceholderSpriteFactory.CharacterPalette palette)
         {
             var sprites = PlaceholderSpriteFactory.CreateOrUpdate(
                 $"{PlaceholderFolder}/{characterName}_Placeholder.png", characterName, palette, PixelsPerUnit);
@@ -249,7 +249,7 @@ namespace CronicasDeMexico.Editor.SceneGeneration
             return spriteSet;
         }
 
-        static int Layer(string layerName)
+        internal static int Layer(string layerName)
         {
             var layer = LayerMask.NameToLayer(layerName);
             if (layer < 0)
@@ -258,7 +258,7 @@ namespace CronicasDeMexico.Editor.SceneGeneration
         }
 
         // Raíz con CharacterController y un hijo "Sprite" que mira a la cámara. Todos los personajes miden lo mismo.
-        static GameObject CreateCharacterRoot(string name, DirectionalSpriteSet spriteSet, Material spriteMaterial,
+        internal static GameObject CreateCharacterRoot(string name, DirectionalSpriteSet spriteSet, Material spriteMaterial,
             out SpriteRenderer spriteRenderer)
         {
             var root = new GameObject(name);
@@ -284,7 +284,7 @@ namespace CronicasDeMexico.Editor.SceneGeneration
             return root;
         }
 
-        static void AddSpriteAnimator(GameObject root, MonoBehaviour motionSource, SpriteRenderer spriteRenderer, DirectionalSpriteSet spriteSet)
+        internal static void AddSpriteAnimator(GameObject root, MonoBehaviour motionSource, SpriteRenderer spriteRenderer, DirectionalSpriteSet spriteSet)
         {
             var animator = root.AddComponent<DirectionalSpriteAnimator>();
             SetReference(animator, "motionSource", motionSource);
@@ -755,7 +755,7 @@ namespace CronicasDeMexico.Editor.SceneGeneration
             serializedObject.ApplyModifiedPropertiesWithoutUndo();
         }
 
-        static void EnsureFolder(string path)
+        internal static void EnsureFolder(string path)
         {
             if (AssetDatabase.IsValidFolder(path))
                 return;

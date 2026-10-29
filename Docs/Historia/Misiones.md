@@ -35,4 +35,14 @@ Misiones principales y secundarias. Solo el **arco I (olmeca)** está desarrolla
 
 **Sistemas listos (2026-10-29, etapas N1–N3):** `NpcData`, `DialogueData` (ramas por banderas, que al terminar activan banderas, empiezan una misión y avisan `hablar:id`), `QuestData` y `QuestService` (pasos por avisos `hablar:`, `examinar:`, `vencer:`, `llegar:`, con cuenta; banderas `mision.ID.activa` y `.completada`; recompensas una sola vez), objetivo en el HUD y `SaveService`. Resumen técnico en `CLAUDE.md` (Arquitectura).
 
-**Falta (N4–N5):** crear los assets de los diálogos y misiones de esta tabla, el catálogo `Resources/Narrativa/CatalogoMisiones`, los NPC en la ciudad y el inicio del despertar.
+**`MP_OLM_02` jugable (2026-10-29, N4)** en `Olmeca_Ciudad`:
+
+1. El **artesano** la empieza (rama sin misión) y dice que las piedras pierden sus marcas.
+2. Paso 1, `hablar:anciana`: su rama de misión activa `olm.anciana_conto`.
+3. Paso 2, `hablar:guerrero_joven`: su rama de misión solo aparece con `olm.anciana_conto`; antes, habla de lo suyo y no cuenta.
+4. Recompensa: `olm.entrada_descubierta`. Las estelas lisas cambian su texto al completarla (pista de que el borrado no es natural).
+5. El comerciante tiene diálogo de ambiente; su tienda y `MS_OLM_01` quedan para después.
+
+Assets en `Data/Narrative/Olmeca/` y catálogo en `Resources/Narrativa/CatalogoMisiones` (los crea `OlmecaNarrativeAssets` si faltan). Altares y estelas avisan `examinar:altar_trono` y `examinar:estela`.
+
+**Falta:** `MP_OLM_01` (despertar, N5); `MP_OLM_03` en adelante necesitan la selva y la mazmorra.

@@ -23,9 +23,12 @@ namespace CronicasDeMexico.Editor.SceneGeneration
         {
             public readonly Color32 Skin, Headgear, Cloth, Sash, Sandal;
             public readonly bool Spots; // manchas de jaguar en ropa y tocado
+            public readonly Color32? SpotColor; // vacío = manchas oscuras
 
-            public CharacterPalette(Color32 skin, Color32 headgear, Color32 cloth, Color32 sash, Color32 sandal, bool spots)
+            public CharacterPalette(Color32 skin, Color32 headgear, Color32 cloth, Color32 sash, Color32 sandal, bool spots,
+                Color32? spotColor = null)
             {
+                SpotColor = spotColor;
                 Skin = skin;
                 Headgear = headgear;
                 Cloth = cloth;
@@ -70,6 +73,12 @@ namespace CronicasDeMexico.Editor.SceneGeneration
         public static readonly CharacterPalette JaguarSpirit = new(
             new Color32(70, 52, 40, 255), new Color32(214, 160, 60, 255), new Color32(214, 160, 60, 255),
             new Color32(40, 30, 24, 255), new Color32(40, 30, 24, 255), true);
+
+        // Espíritu jaguar corrompido (MP_OLM_03): pelaje apagado y grietas violetas en lugar de manchas, un color ajeno
+        // a la selva (Docs/Enemigos/Olmeca.md, señales de corrupción). CorruptionPulse lo hace latir en el juego.
+        public static readonly CharacterPalette CorruptedJaguarSpirit = new(
+            new Color32(62, 52, 58, 255), new Color32(150, 128, 92, 255), new Color32(150, 128, 92, 255),
+            new Color32(36, 28, 40, 255), new Color32(36, 28, 40, 255), true, new Color32(190, 160, 250, 255));
 
         // Mismo orden que DirectionalSpriteSet.
         static readonly string[] DirectionNames = { "N", "NE", "E", "SE", "S" };
@@ -193,6 +202,7 @@ namespace CronicasDeMexico.Editor.SceneGeneration
 
             // Patrón fijo de manchas, separado para que se lean a 32 px.
             bool IsSpot(int x, int y) => palette.Spots && y % 2 == 0 && (x + 2 * y) % 5 == 0;
+            var spot = palette.SpotColor ?? Spot;
 
             var profile = direction == East;
             var threeQuarter = direction is NorthEast or SouthEast;
@@ -209,7 +219,7 @@ namespace CronicasDeMexico.Editor.SceneGeneration
             int torsoX0 = profile ? 12 : threeQuarter ? 11 : 10, torsoX1 = profile ? 19 : 21;
             for (var y = 13 + bob; y <= 27 + bob; y++)
             for (var x = torsoX0; x <= torsoX1; x++)
-                Pixel(x, y, IsSpot(x, y) ? Spot : palette.Cloth);
+                Pixel(x, y, IsSpot(x, y) ? spot : palette.Cloth);
             Fill(torsoX0, 18 + bob, torsoX1, 20 + bob, palette.Sash);
 
             // Brazos: de perfil se ve uno solo, por delante del torso.
@@ -237,7 +247,7 @@ namespace CronicasDeMexico.Editor.SceneGeneration
                 if (dx * dx + dy * dy > headRadius * headRadius)
                     continue;
 
-                var color = y < headgearFrom ? palette.Skin : IsSpot(x, y) ? Spot : palette.Headgear;
+                var color = y < headgearFrom ? palette.Skin : IsSpot(x, y) ? spot : palette.Headgear;
                 Pixel(x, y, color);
             }
 

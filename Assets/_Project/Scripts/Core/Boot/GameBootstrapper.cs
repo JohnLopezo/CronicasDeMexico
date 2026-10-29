@@ -1,13 +1,14 @@
 using CronicasDeMexico.Core.Narrative;
 using CronicasDeMexico.Core.Save;
 using CronicasDeMexico.Core.Services;
+using CronicasDeMexico.Core.Travel;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 namespace CronicasDeMexico.Core.Boot
 {
     /// <summary>
-    /// Vive en la escena Boot, que permanece cargada toda la partida. Registra los servicios globales (calidad,
+    /// Vive en la escena Boot, que permanece cargada toda la partida. Registra los servicios globales (calidad, viaje,
     /// historia, misiones y guardado) y, si no hay otra escena abierta, carga la escena inicial de forma aditiva.
     /// </summary>
     [DefaultExecutionOrder(-1000)]
@@ -19,6 +20,9 @@ namespace CronicasDeMexico.Core.Boot
         void Awake()
         {
             RegisterServices();
+            if (!TryGetComponent(out SceneTravel travel))
+                travel = gameObject.AddComponent<SceneTravel>();
+            ServiceLocator.Register(travel);
 
             // Si se pulsó Play desde una escena de juego, BootSceneLoader añadió Boot encima: no cargamos nada más.
             if (SceneManager.sceneCount == 1)

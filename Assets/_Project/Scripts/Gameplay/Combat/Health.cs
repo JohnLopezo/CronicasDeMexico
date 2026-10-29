@@ -89,6 +89,20 @@ namespace CronicasDeMexico.Gameplay.Combat
             Publish();
         }
 
+        /// <summary>
+        /// Al llegar de otra escena, toma la vida con la que salió. Nunca la sube: el personaje nuevo empieza con la
+        /// vida completa y esto solo la baja a la que traía (al menos 1).
+        /// </summary>
+        public void CarryOver(int carried)
+        {
+            var value = Mathf.Clamp(carried, 1, current);
+            if (value == current)
+                return;
+
+            current = value;
+            Publish();
+        }
+
         public void GrantInvulnerability(float seconds) =>
             invulnerableUntil = Mathf.Max(invulnerableUntil, Time.time + seconds);
 

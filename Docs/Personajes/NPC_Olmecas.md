@@ -37,4 +37,5 @@ Fuente: `Docs/Historia_Mundo.md` §6 (capítulo I), §9; GDD `Docs/Diseno.md` §
 - **Arte provisional:** la misma silueta de 32×48 con paletas distintas (`PlaceholderSpriteFactory`: Artisan, Elder, Warrior, Merchant). Incumple a propósito la regla de siluetas propias hasta que llegue el arte final, que **hace el autor** (Arte_Olmeca_Demo §12).
 - `Artesano` (prefab) sigue en el prototipo (`Olmeca_Prototipo`) con sus líneas fijas.
 - **Figura espiritual (N5):** en la orilla del despertar, con sprite provisional claro (`PlaceholderSpriteFactory.Spirit`), sin rasgos de deidad. Por ahora no desaparece tras el juramento.
+- **Joven guerrero en la selva (M1):** al dar `MP_OLM_03` se adelanta a la entrada de la estructura (`Olmeca_Selva`, con `DLG_guerrero_joven_entrada`). En la ciudad deja de estar al volver a cargarla (`ActiveWhenFlags` con `olm.guerrero_en_selva`).
 - Faltan los habitantes de ambiente.

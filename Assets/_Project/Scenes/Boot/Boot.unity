@@ -148,7 +148,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 851522bfea067074f92c72633632ab9a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  initialScene: Olmeca_Prototipo
+  initialScene: Olmeca_Ciudad
 --- !u!4 &1959549745
 Transform:
   m_ObjectHideFlags: 0

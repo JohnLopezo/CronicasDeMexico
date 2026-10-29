@@ -354,6 +354,9 @@ namespace CronicasDeMexico.Tests
 
                 Assert.AreEqual(QuestStatus.Completed, quests.GetStatus("MP_OLM_02"));
                 Assert.IsTrue(story.HasFlag("olm.entrada_descubierta"));
+                // En la misma conversación el guerrero manda a la selva y se adelanta a la entrada (MP_OLM_03).
+                Assert.AreEqual(QuestStatus.Active, quests.GetStatus("MP_OLM_03"));
+                Assert.IsTrue(story.HasFlag("olm.guerrero_en_selva"));
 
                 var messages = new List<string>();
                 var stela = Object.FindObjectsByType<InscriptionInteractable>(FindObjectsSortMode.None)

@@ -52,4 +52,14 @@ Assets en `Data/Narrative/Olmeca/` y catálogo en `Resources/Narrativa/CatalogoM
 3. Paso 2, `hablar:figura_espiritual`: explica el Mundo de las Memorias y pide el juramento; activa `olm.juramento`.
 4. Paso 3, `hablar:artesano_jade`: con el juramento, el artesano empieza `MP_OLM_02`; sin él, solo se sorprende de ver un jaguar tranquilo. Recompensa: `olm.despertar_completo`.
 
-**Falta:** `MP_OLM_03` en adelante necesitan la selva y la mazmorra.
+**`MP_OLM_03` jugable (2026-10-29, M1)**, entre `Olmeca_Ciudad` y la escena nueva `Olmeca_Selva`:
+
+1. **Empieza** en la misma conversación con el guerrero que cierra `MP_OLM_02`. Él manda al jugador por el sendero del oeste y se adelanta a la entrada (`olm.guerrero_en_selva`). En la ciudad desaparece al volver a cargarla, nunca en mitad de la conversación.
+2. Paso 1, `llegar:selva`: la zona está justo después de llegar a la selva. Cuenta cada vez que se entra, así que vale aunque la misión empiece después.
+3. Paso 2, `examinar:fragmento_menor` ×3: en cada claro acecha un **espíritu corrompido**. Al caer activa su bandera (`olm.selva.espiritu_N_vencido`), no vuelve y deja un **fragmento de memoria** que recuerda algo distinto. Recogerlo activa `olm.selva.fragmento_N` y lo retira. Como cada fragmento aparece solo al vencer a su espíritu, recoger tres implica haber vencido a tres, y ninguno se puede recoger "antes de tiempo" y perderse (los pasos cuentan en orden).
+4. Paso 3, `hablar:guerrero_joven`: ante la entrada, el guerrero reconoce el lugar si el jugador trae los tres fragmentos. Antes, solo le pide que los recoja. Recompensa: `olm.estructura_encontrada`.
+5. La zona `llegar:entrada_estructura` queda lista para la mazmorra (`MP_OLM_04`).
+
+Assets: `MIS_MP_OLM_03`, `DLG_guerrero_joven` (recreado con la rama nueva) y `DLG_guerrero_joven_entrada`. Textos de los fragmentos en `OlmecaNarrativeAssets.FragmentTexts`: el basalto llevado río abajo y la piedra verde pulida (D/I), y el nombre olvidado (F).
+
+**Falta:** `MP_OLM_04` en adelante necesitan la mazmorra (M2–M5, `Docs/Estado_y_Plan.md`).

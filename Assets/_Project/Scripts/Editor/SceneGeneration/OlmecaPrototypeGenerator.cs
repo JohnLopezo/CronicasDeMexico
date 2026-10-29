@@ -63,7 +63,7 @@ namespace CronicasDeMexico.Editor.SceneGeneration
         const string HudThemePath = "Assets/_Project/Art/UI/Hud/HudTheme.tss";
         const string PanelSettingsPath = "Assets/_Project/Settings/UI/PanelSettings_Hud.asset";
         internal const string InteractableLayerName = "Interactuable";
-        const string EnemyLayerName = "Enemigo";
+        internal const string EnemyLayerName = "Enemigo";
 
         const string ColossalHeadText =
             "Una cabeza colosal de basalto. Los olmecas tallaron estos retratos, probablemente de sus gobernantes, " +
@@ -292,7 +292,7 @@ namespace CronicasDeMexico.Editor.SceneGeneration
             SetReference(animator, "spriteSet", spriteSet);
         }
 
-        static Health AddHealth(GameObject root, int maxHealth, float invulnerabilityTime, SpriteRenderer spriteRenderer,
+        internal static Health AddHealth(GameObject root, int maxHealth, float invulnerabilityTime, SpriteRenderer spriteRenderer,
             HealthEventChannel changedChannel = null)
         {
             var health = root.AddComponent<Health>();

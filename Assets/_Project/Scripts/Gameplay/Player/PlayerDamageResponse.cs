@@ -33,6 +33,9 @@ namespace CronicasDeMexico.Gameplay.Player
             spawnPoint = transform.position;
         }
 
+        /// <summary>Dónde reaparece al morir (por defecto, donde empezó la escena).</summary>
+        public void SetRespawnPoint(Vector3 position) => spawnPoint = position;
+
         void OnEnable()
         {
             health.Damaged += OnDamaged;

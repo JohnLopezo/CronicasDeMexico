@@ -189,6 +189,17 @@
    ]
   },
   {
+   "nombre": "Entrada_Estructura_01",
+   "lienzo": [
+    192,
+    176
+   ],
+   "pivote": [
+    96,
+    64
+   ]
+  },
+  {
    "nombre": "Escombros_Basalto_01",
    "lienzo": [
     48,
@@ -274,6 +285,17 @@
    "pivote": [
     22,
     14
+   ]
+  },
+  {
+   "nombre": "Fragmento_Memoria_01",
+   "lienzo": [
+    32,
+    40
+   ],
+   "pivote": [
+    16,
+    10
    ]
   },
   {
@@ -736,6 +758,28 @@
    "pivote": [
     451.0,
     253.0
+   ]
+  },
+  {
+   "nombre": "Suelo_Selva_00",
+   "lienzo": [
+    1024,
+    938
+   ],
+   "pivote": [
+    512.0,
+    469.0
+   ]
+  },
+  {
+   "nombre": "Suelo_Selva_01",
+   "lienzo": [
+    832,
+    938
+   ],
+   "pivote": [
+    416.0,
+    469.0
    ]
   }
  ]

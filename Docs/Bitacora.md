@@ -21,6 +21,22 @@ Plantilla:
 
 ---
 
+## 2026-10-29 (tarde) — i7-10700
+
+- **Rama / último commit al empezar:** `feature/prototipo-olmeca` @ `cdccc66` (al día con origin, árbol limpio).
+- **Hecho:** Boot arranca en `Olmeca_Ciudad`.
+- **Hecho (M1, la selva):**
+  - **Viaje entre escenas:** `SceneTravel`, `ScenePortal`, `SpawnPoint` y `Health.CarryOver`.
+  - **Arte en Blender:** entrada a la estructura, grietas del olvido y fragmento de memoria; rampas de luz propia Olvido y Jade. Sendero oeste en la ciudad, sin mover ningún objeto.
+  - **Escenas:** `planificar_selva` y la escena `Olmeca_Selva`. `PixelArtSceneBuilder` reúne lo común a `OlmecaCityGenerator` y `OlmecaJungleGenerator`.
+  - **Misión `MP_OLM_03`:** el guerrero la encadena al cerrar `MP_OLM_02` y espera en la entrada. Tres espíritus corrompidos que no reaparecen y dejan fragmentos (`ActiveWhenFlags`, `MemoryFragmentInteractable`, `CorruptionPulse`).
+  - **Herramientas:** capturas y medición para la selva.
+- **Decisiones del usuario:** la selva va en una escena aparte; el guerrero espera en la entrada; 3 espíritus y 3 fragmentos.
+- **Estado:** EditMode 55/55, PlayMode 36/36. Las nuevas son `CarryOver_LowersToTheCarriedHealth_ButNeverRaisesIt` y, en `OlmecaSelvaSceneTests`, la escena, la misión y el viaje ciudad → selva → ciudad. Las capturas reales de Unity se revisaron a ojo. FPS de la selva en el i7, en `Docs/Rendimiento.md`. **No se ha jugado en el Editor.** Commit y push al cerrar la sesión.
+- **Siguiente:**
+  - Jugar el arco en el Editor y aprobar el arte de M1.
+  - Plan de M2, la base de la mazmorra.
+
 ## 2026-10-29 — i7-10700
 
 - **Rama / último commit al empezar:** `feature/prototipo-olmeca` @ `1d3eb5c` (al día con origin).

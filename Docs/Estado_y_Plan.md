@@ -1,13 +1,13 @@
 # Estado del proyecto y plan para continuar
 
-*Recopilación al 2026-10-29, al cerrar la sesión en el i7-10700. Rama `feature/prototipo-olmeca`.* Léela al retomar, junto con la última entrada de `Docs/Bitacora.md`.
+*Recopilación al 2026-10-29 (actualizada tras M1, la selva), en el i7-10700. Rama `feature/prototipo-olmeca`.* Léela al retomar, junto con la última entrada de `Docs/Bitacora.md`.
 
 ## 1. Cómo retomar (en cualquier PC)
 
 1. Cerrar Unity. `git status` limpio. `git pull`.
 2. Comprobar que `git log -1` coincide con el último commit anotado en `Docs/Bitacora.md`.
 3. Abrir Unity 6000.0.85f1 y esperar la importación.
-4. Para jugar lo nuevo: abrir **`Scenes/Regions/Olmeca/Olmeca_Ciudad.unity`** y pulsar Play. *Boot arranca todavía en el prototipo (`Olmeca_Prototipo`).*
+4. Para jugar: abrir `Scenes/Boot/Boot.unity` (arranca en **`Olmeca_Ciudad`**) o la propia ciudad, y pulsar Play. La selva (`Olmeca_Selva`) se alcanza por el sendero del oeste de la ciudad, o se abre directamente. El prototipo (`Olmeca_Prototipo`) se abre a mano.
 5. En Claude Code, abrirlo desde la carpeta del proyecto (lee `CLAUDE.md`) y decirle: "continuamos; lee `Docs/Estado_y_Plan.md` y la bitácora".
 
 Reglas de trabajo: Claude propone un plan por etapas y espera autorización; no hace commit ni push sin que se le pida (`CLAUDE.md`, `Docs/DesarrolloMultiPC.md`).
@@ -30,7 +30,9 @@ Reglas de trabajo: Claude propone un plan por etapas y espera autorización; no 
 
 ### Arte y escena
 - Dirección de arte en **pixel art isométrico** producido con scripts de Blender (`Tools/ArtPipeline/`).
-- Escena jugable **`Olmeca_Ciudad`**, generada por `OlmecaCityGenerator` desde `Ciudad.json`: centro ceremonial, montículo, recinto de columnas, aldea, enramadas que se cruzan por debajo, muelle y canoas. **No se edita a mano: se regenera.**
+- Escena jugable **`Olmeca_Ciudad`**, generada por `OlmecaCityGenerator` desde `Ciudad.json`: centro ceremonial, montículo, recinto de columnas, aldea, enramadas que se cruzan por debajo, muelle, canoas y un sendero al oeste hacia la selva. **No se edita a mano: se regenera.**
+- Escena jugable **`Olmeca_Selva`** (M1), generada por `OlmecaJungleGenerator` desde `Selva.json`: sendero entre tres claros, grietas del olvido y la entrada a la antigua estructura. Las piezas comunes de ambos generadores están en `PixelArtSceneBuilder`.
+- **Viaje entre escenas** (`SceneTravel`, `ScenePortal`, `SpawnPoint`): fundido a negro, una escena sustituye a la otra y el jugador conserva su vida.
 
 ### Rendimiento
 - La cámara de fondo usa un renderer sin efectos. En el i7, **Alto pasó de unos 105 a unos 290 FPS**.
@@ -60,12 +62,18 @@ Reglas de trabajo: Claude propone un plan por etapas y espera autorización; no 
 3. **Habitantes**: figura espiritual, artesano, anciana, guerrero y comerciante, con sprites provisionales (misma silueta, colores distintos).
 4. **Datos editables** en `Data/Narrative/Olmeca/`. El generador los crea **solo si faltan**, así que se editan en el Inspector. Para volver al texto del código, se borra el asset.
 
+### Selva (M1): `MP_OLM_03`, "Rastros en la selva"
+- El guerrero la da al cerrar `MP_OLM_02` y se adelanta a la entrada.
+- Tres espíritus corrompidos (arte provisional con grietas violetas que laten). No reaparecen, y cada uno deja un fragmento de memoria.
+- Con los tres fragmentos, el guerrero reconoce la entrada. Detalle en `Docs/Historia/Misiones.md`.
+- Rendimiento en el i7: unos 290 FPS en Bajo, 345 en Medio y 300 en Alto (`Docs/Rendimiento.md`).
+
 ### Pruebas
-EditMode 55/55 y PlayMode 32/32 (al 2026-10-29).
+EditMode 55/55 y PlayMode 36/36 (al 2026-10-29, tras M1).
 
 ## 4. Pendiente de decidir (por el autor)
 
-1. **¿Boot arranca en `Olmeca_Ciudad`** en lugar del prototipo? (Recomendado: sí. Es un cambio pequeño en `Boot.unity`.)
+1. ~~¿Boot arranca en `Olmeca_Ciudad`?~~ **Hecho (2026-10-29).**
 2. **Afinidad inicial del Jaguar.** Propuesta: oscuridad; el GDD sugería oscuridad o tierra.
 3. **Si el epiclásico y lo tolteca entran en el arco III**, y qué afinidades corresponden a los arcos III a V.
 4. **Si la figura espiritual desaparece** después del juramento.
@@ -74,20 +82,21 @@ EditMode 55/55 y PlayMode 32/32 (al 2026-10-29).
 
 - Sprites del **Jaguar** jugable. Hoy el jugador es un humano provisional, aunque el reflejo diga "jaguar".
 - Sprites de los **NPC**, con siluetas propias, y de la **figura espiritual**.
+- Sprites del **espíritu jaguar corrompido** (hoy, la silueta humana provisional con grietas violetas).
 - Cabeza colosal, enemigos animados y **Guardián de la Piedra Viva**.
 
 ## 6. Plan propuesto (cada etapa se presenta y espera autorización)
 
 ### Inmediato
-- **Probar el arco en el Editor** (abrir `Olmeca_Ciudad`) y anotar lo que se sienta mal: textos, posiciones, ritmo.
-- Según la decisión 1, hacer que Boot arranque en la ciudad.
+- **Probar en el Editor** el arco completo, de `MP_OLM_01` a `MP_OLM_03` (Boot → ciudad → selva), y anotar lo que se sienta mal: textos, posiciones, ritmo, combate en los claros.
+- Aprobar o corregir el arte de M1: la entrada, las grietas y el fragmento (`Docs/Arte_Olmeca_Demo.md` §12).
 
 ### Fase narrativa 2, continuación: selva y mazmorra (corresponde a las fases 5 y 6 del GDD)
 
 | Etapa | Contenido |
 |---|---|
-| **M1. Rastros en la selva** (`MP_OLM_03`) | Zona de selva al oeste de la ciudad, con espíritus jaguar corrompidos (`ReportOnDefeat`), fragmentos de memoria menores y la entrada a la estructura (`ReportOnEnter`). Señales visuales de corrupción. |
-| **M2. Base de mazmorra** | Escena por piso; transición entre pisos; santuario de **Memoria** (punto de control y **primer uso real de `SaveService`**) y de **Vida** (curación limitada); derrota → volver al último santuario sin perder el progreso principal. |
+| ~~**M1. Rastros en la selva**~~ | **Hecha (2026-10-29).** Viaje entre escenas, arte nuevo, escena `Olmeca_Selva`, `MP_OLM_03` y medición. |
+| **M2. Base de mazmorra** | Escena por piso; transición entre pisos (reutiliza `SceneTravel`; la entrada de la selva llevará al piso 1); santuario de **Memoria** (punto de control y **primer uso real de `SaveService`**) y de **Vida** (curación limitada); derrota → volver al último santuario sin perder el progreso principal. |
 | **M3. Pisos 1 y 2** | El Umbral (tutorial de combate) y El Pantano (terreno que ralentiza, eco borrado). Mini-jefe **Jaguar de Piedra**. |
 | **M4. Piso 3 y jefe** | Arena del **Guardián de la Piedra Viva** en tres fases (`Docs/Enemigos/Olmeca.md`). |
 | **M5. Recompensas y cierre** | Fragmento de la Primera Memoria, habilidad de tierra (propuesta: golpe que rompe basalto agrietado), elección de Bendición, `MP_OLM_06` (restaurar una inscripción) y conexión al arco II. |

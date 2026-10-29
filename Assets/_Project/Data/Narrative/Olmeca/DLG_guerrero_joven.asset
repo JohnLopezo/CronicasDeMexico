@@ -14,12 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   branches:
   - requiredFlags:
-    - mision.MP_OLM_02.completada
+    - olm.guerrero_en_selva
     forbiddenFlags: []
     lines:
     - speaker: {fileID: 0}
-      text: "Esas criaturas cuidaban la entrada. Cuando sane, ir\xE9 contigo. Por
-        ahora, ten cuidado."
+      text: Sal de la plaza por el sendero del oeste, el que se mete entre las palmas.
+        Te alcanzo en la entrada.
     flagsOnFinish: []
     questToStart: {fileID: 0}
   - requiredFlags:
@@ -37,8 +37,15 @@ MonoBehaviour:
     - speaker: {fileID: 0}
       text: "M\xE1s all\xE1 de las ceibas, entre las ra\xEDces, encontr\xE9 una entrada
         de piedra que no recordaba. Y conozco bien esa parte de la selva."
-    flagsOnFinish: []
-    questToStart: {fileID: 0}
+    - speaker: {fileID: 0}
+      text: "\xBFVas a ir? Entonces sal de la plaza por el sendero del oeste. Cuando
+        ca\xEDan, esas criaturas dejaban una piedrecita con luz. Yo no me atrev\xED
+        a tocarlas."
+    - speaker: {fileID: 0}
+      text: Te alcanzo en la entrada. Conozco un atajo, aunque sea cojeando.
+    flagsOnFinish:
+    - olm.guerrero_en_selva
+    questToStart: {fileID: 11400000, guid: c4617763dfcdcd045905b1c871019ea2, type: 2}
   - requiredFlags: []
     forbiddenFlags: []
     lines:

@@ -10,7 +10,7 @@ Define el estilo de la escena de demostración `Olmeca_VisualDemo` (aún no crea
 
 ## 2. Paleta
 
-Paleta maestra de **41 colores en rampas**. Los colores marcados con ★ se extrajeron de la sección 5 de la referencia; el resto, del análisis de color (k-means) de sus paneles de tierra, basalto y palma. Todo sprite se cuantiza a esta paleta (o a un subconjunto de rampas) al final del flujo.
+Paleta maestra de **51 colores en rampas** (41 de la referencia y 10 de luz propia, añadidos el 2026-10-29). Los colores marcados con ★ se extrajeron de la sección 5 de la referencia; el resto, del análisis de color (k-means) de sus paneles de tierra, basalto y palma. Todo sprite se cuantiza a esta paleta (o a un subconjunto de rampas) al final del flujo.
 
 | Rampa | Oscuro → claro | Uso |
 |---|---|---|
@@ -22,6 +22,8 @@ Paleta maestra de **41 colores en rampas**. Los colores marcados con ★ se extr
 | Madera | `#48331F` `#6D502E` `#9C7842` `#A28A6D`★ | Troncos, raíces, muelles |
 | Agua | `#0B4F4A` `#0C7265` `#168787`★ `#489187`★ `#7FC3B5` | Pantano, río, orillas |
 | Acentos | `#B16143`★ `#B24232`★ `#994F66`★ `#F47588`★ | Flores (heliconias), frutos; uso escaso |
+| Olvido | `#2A1838` `#4B2A6B` `#7B4FB0` `#A98BE8` `#D9CCFF` | Luz propia de la corrupción (grietas del olvido): un violeta ajeno a la selva, a propósito (F) |
+| Jade | `#1F5148` `#2E7D6B` `#4FB39A` `#9BE3C8` `#E2FFF2` | Luz propia de los fragmentos de memoria (piedra verde pulida; jade y serpentina en La Venta: D) |
 
 Reglas: sin negro puro (el más oscuro es `#0F2A17`/`#1E2420`); contorno exterior con el color más oscuro de la rampa del objeto; los acentos no superan ~3 % de la pantalla para no competir con el jugador.
 
@@ -189,6 +191,17 @@ Ventaja: coherencia de luz y escala entre recursos y facilidad para generar vari
   - `Fogon_01`: tres piedras, ceniza, tecomate (vasija esférica sin cuello) y dos vasijas más.
   - `Escombros_Basalto_01–03`: tramos de columna caídos, montón de fragmentos y tocón con su tramo. Es la antigua etapa 4.
   - `Rampa_Arcilla_01–02`: único acceso a la cima de las plataformas. Límite conocido: la unión con el talud vecino deja un corte algo brusco.
+
+- **Selva, M1 (2026-10-29), pendiente de aprobación:** recursos de `MP_OLM_03` y la escena `Olmeca_Selva`.
+  - `Entrada_Estructura_01`: montículo de tierra cubierto de selva, con una abertura oscura entre dos pares de columnas de basalto y dos dinteles, y una columna caída delante. Se inspira en la Tumba A de La Venta, un recinto de columnas naturales de basalto (D); que sea la entrada a una mazmorra es ficción (F). La abertura mira a +X, hacia la cámara.
+  - `Grieta_Olvido_01–02`: mancha de tierra apagada con grietas violetas de luz propia (rampa Olvido). Va horneada en el suelo, como las sombras del dosel.
+  - `Fragmento_Memoria_01`: lasca de piedra verde que brilla (rampa Jade) sobre una piedra; la deja cada espíritu corrompido.
+  - Los materiales de luz propia (`mat_emision`) tienen base negra y fuerza 1, para que el color salga exacto (con más fuerza se saturaba a blanco).
+  - Trazado `planificar_selva` (36×20 m): sendero sinuoso de este a oeste, tres claros, explanada ante la entrada y dos ceibas que flanquean el sendero ("más allá de las ceibas", dice el guerrero). Las grietas se espesan hacia la entrada. Exporta `Selva.json`, con los puntos de juego.
+  - **Ciudad:** sendero del oeste desde la plaza hasta el borde del mapa. Va al final de `planificar_ciudad` con su propio generador aleatorio: ningún objeto cambia de sitio y solo se quitan 17 plantas y troncos que caían encima.
+  - `exportar_unity` exporta ahora todas las regiones a la vez (`Suelo_<Región>_NN`, `<Región>.json`), porque cada carpeta se limpia de lo que ya no se genera.
+  - Vistas previas: `Selva_2048x1216.png` y recortes ×3 `Selva_{Llegada,Claro,Entrada}_1920x1080_x3.png`. Capturas reales de Unity: menú **Crónicas → Capturar selva olmeca** (`Selva_Unity_*.png`).
+  - El flujo completo tarda unos 3 minutos en el i7 y es determinista: regenerar no cambia los sprites que ya existían.
 
 Regenerar todo (desde la carpeta del proyecto):
 

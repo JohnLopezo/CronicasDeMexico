@@ -1049,6 +1049,70 @@
     ],
     "ppu": 45.254833995939045
   },
+  "Grieta_Olvido_01": {
+    "lienzo": [
+      96,
+      64
+    ],
+    "pivote_px": [
+      48,
+      32
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Grieta_Olvido_02": {
+    "lienzo": [
+      96,
+      64
+    ],
+    "pivote_px": [
+      48,
+      32
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Fragmento_Memoria_01": {
+    "lienzo": [
+      32,
+      40
+    ],
+    "pivote_px": [
+      16,
+      10
+    ],
+    "ppu": 45.254833995939045,
+    "sombra": {
+      "lienzo": [
+        80,
+        40
+      ],
+      "pivote_px": [
+        26,
+        20
+      ]
+    }
+  },
+  "Entrada_Estructura_01": {
+    "lienzo": [
+      192,
+      176
+    ],
+    "pivote_px": [
+      96,
+      64
+    ],
+    "ppu": 45.254833995939045,
+    "sombra": {
+      "lienzo": [
+        256,
+        160
+      ],
+      "pivote_px": [
+        100,
+        56
+      ]
+    }
+  },
   "Tile_Camino_Trans_01": {
     "lienzo": [
       64,
@@ -1203,6 +1267,17 @@
     ],
     "ppu": 45.254833995939045
   },
+  "Tile_Camino_Trans_96": {
+    "lienzo": [
+      64,
+      64
+    ],
+    "pivote_px": [
+      32,
+      40
+    ],
+    "ppu": 45.254833995939045
+  },
   "Tile_Camino_Trans_128": {
     "lienzo": [
       64,
@@ -1226,6 +1301,17 @@
     "ppu": 45.254833995939045
   },
   "Tile_Camino_Trans_132": {
+    "lienzo": [
+      64,
+      64
+    ],
+    "pivote_px": [
+      32,
+      40
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Tile_Camino_Trans_144": {
     "lienzo": [
       64,
       64

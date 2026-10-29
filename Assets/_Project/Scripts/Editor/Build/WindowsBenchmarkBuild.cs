@@ -7,24 +7,30 @@ using UnityEngine;
 namespace CronicasDeMexico.Editor.Build
 {
     /// <summary>
-    /// Build de desarrollo de Windows para medir el rendimiento de la ciudad olmeca. La primera escena es Olmeca_Ciudad
-    /// (Boot se añade sola, ver BootSceneLoader). Se ejecuta con -benchmark (ver FrameTimeBenchmark).
-    /// El ejecutable queda en Builds/Windows/Ciudad/, ignorado por Git. Desde consola:
+    /// Build de desarrollo de Windows para medir el rendimiento de la ciudad olmeca (o de la selva, BuildJungle). La
+    /// primera escena es la que se mide (Boot se añade sola, ver BootSceneLoader). Se ejecuta con -benchmark (ver
+    /// FrameTimeBenchmark). El ejecutable queda en Builds/Windows/Ciudad/ o Selva/, ignorado por Git. Desde consola:
     /// Unity.exe -batchmode -quit -projectPath . -executeMethod CronicasDeMexico.Editor.Build.WindowsBenchmarkBuild.Build
     /// </summary>
     public static class WindowsBenchmarkBuild
     {
         public const string OutputPath = "Builds/Windows/Ciudad/CronicasDeMexico.exe";
+        public const string JungleOutputPath = "Builds/Windows/Selva/CronicasDeMexico.exe";
         const string BootScenePath = "Assets/_Project/Scenes/Boot/Boot.unity";
 
         [MenuItem("Crónicas/Build/Windows: medición de la ciudad (desarrollo)")]
-        public static void Build()
+        public static void Build() => Build(OlmecaCityGenerator.ScenePath, OutputPath);
+
+        [MenuItem("Crónicas/Build/Windows: medición de la selva (desarrollo)")]
+        public static void BuildJungle() => Build(OlmecaJungleGenerator.ScenePath, JungleOutputPath);
+
+        static void Build(string scenePath, string outputPath)
         {
-            Directory.CreateDirectory(Path.GetDirectoryName(OutputPath));
+            Directory.CreateDirectory(Path.GetDirectoryName(outputPath));
             var options = new BuildPlayerOptions
             {
-                scenes = new[] { OlmecaCityGenerator.ScenePath, BootScenePath },
-                locationPathName = OutputPath,
+                scenes = new[] { scenePath, BootScenePath },
+                locationPathName = outputPath,
                 target = BuildTarget.StandaloneWindows64,
                 targetGroup = BuildTargetGroup.Standalone,
                 options = BuildOptions.Development,
@@ -33,7 +39,7 @@ namespace CronicasDeMexico.Editor.Build
             var report = BuildPipeline.BuildPlayer(options);
             var summary = report.summary;
             var message = $"[Build Windows] {summary.result}: {summary.totalErrors} errores, {summary.totalWarnings} avisos, " +
-                          $"{summary.totalSize / (1024f * 1024f):0.0} MB, {summary.totalTime:mm\\:ss}. {OutputPath}";
+                          $"{summary.totalSize / (1024f * 1024f):0.0} MB, {summary.totalTime:mm\\:ss}. {outputPath}";
             if (summary.result != BuildResult.Succeeded)
             {
                 Debug.LogError(message);

@@ -1157,7 +1157,7 @@
    "y": 26
   },
   {
-   "sprite": "Tile_Pasto_Selva_02",
+   "sprite": "Tile_Camino_Trans_04",
    "x": -24,
    "y": 5
   },
@@ -1267,12 +1267,12 @@
    "y": 26
   },
   {
-   "sprite": "Tile_Pasto_Selva_02",
+   "sprite": "Tile_Camino_Trans_08",
    "x": -24,
    "y": 4
   },
   {
-   "sprite": "Tile_Pasto_Selva_03",
+   "sprite": "Tile_Camino_Trans_04",
    "x": -23,
    "y": 5
   },
@@ -1382,12 +1382,12 @@
    "y": 3
   },
   {
-   "sprite": "Tile_Pasto_Selva_02",
+   "sprite": "Tile_Camino_Trans_08",
    "x": -23,
    "y": 4
   },
   {
-   "sprite": "Tile_Pasto_Selva_01",
+   "sprite": "Tile_Camino_Trans_04",
    "x": -22,
    "y": 5
   },
@@ -1497,12 +1497,12 @@
    "y": 3
   },
   {
-   "sprite": "Tile_Pasto_Selva_01",
+   "sprite": "Tile_Camino_Trans_08",
    "x": -22,
    "y": 4
   },
   {
-   "sprite": "Tile_Pasto_Selva_01",
+   "sprite": "Tile_Camino_Trans_04",
    "x": -21,
    "y": 5
   },
@@ -1612,12 +1612,12 @@
    "y": 3
   },
   {
-   "sprite": "Tile_Pasto_Selva_03",
+   "sprite": "Tile_Camino_Trans_08",
    "x": -21,
    "y": 4
   },
   {
-   "sprite": "Tile_Pasto_Selva_01",
+   "sprite": "Tile_Camino_Trans_04",
    "x": -20,
    "y": 5
   },
@@ -1727,12 +1727,12 @@
    "y": 3
   },
   {
-   "sprite": "Tile_Pasto_Selva_01",
+   "sprite": "Tile_Camino_Trans_08",
    "x": -20,
    "y": 4
   },
   {
-   "sprite": "Tile_Pasto_Selva_02",
+   "sprite": "Tile_Camino_Trans_05",
    "x": -19,
    "y": 5
   },
@@ -1842,7 +1842,7 @@
    "y": 3
   },
   {
-   "sprite": "Tile_Pasto_Selva_01",
+   "sprite": "Tile_Camino_Trans_24",
    "x": -19,
    "y": 4
   },
@@ -1957,7 +1957,7 @@
    "y": 3
   },
   {
-   "sprite": "Tile_Pasto_Selva_03",
+   "sprite": "Tile_Camino_Trans_132",
    "x": -18,
    "y": 4
   },
@@ -2067,12 +2067,12 @@
    "y": 2
   },
   {
-   "sprite": "Tile_Pasto_Selva_02",
+   "sprite": "Tile_Camino_Trans_10",
    "x": -18,
    "y": 3
   },
   {
-   "sprite": "Tile_Pasto_Selva_01",
+   "sprite": "Tile_Camino_Trans_05",
    "x": -17,
    "y": 4
   },
@@ -2182,7 +2182,7 @@
    "y": 2
   },
   {
-   "sprite": "Tile_Pasto_Selva_01",
+   "sprite": "Tile_Camino_Trans_24",
    "x": -17,
    "y": 3
   },
@@ -2297,7 +2297,7 @@
    "y": 2
   },
   {
-   "sprite": "Tile_Pasto_Selva_01",
+   "sprite": "Tile_Camino_Trans_132",
    "x": -16,
    "y": 3
   },
@@ -2407,12 +2407,12 @@
    "y": 1
   },
   {
-   "sprite": "Tile_Pasto_Selva_03",
+   "sprite": "Tile_Camino_Trans_10",
    "x": -16,
    "y": 2
   },
   {
-   "sprite": "Tile_Pasto_Selva_01",
+   "sprite": "Tile_Camino_Trans_04",
    "x": -15,
    "y": 3
   },
@@ -2522,12 +2522,12 @@
    "y": 1
   },
   {
-   "sprite": "Tile_Pasto_Selva_03",
+   "sprite": "Tile_Camino_Trans_08",
    "x": -15,
    "y": 2
   },
   {
-   "sprite": "Tile_Pasto_Selva_01",
+   "sprite": "Tile_Camino_Trans_04",
    "x": -14,
    "y": 3
   },
@@ -2637,12 +2637,12 @@
    "y": 1
   },
   {
-   "sprite": "Tile_Pasto_Selva_01",
+   "sprite": "Tile_Camino_Trans_08",
    "x": -14,
    "y": 2
   },
   {
-   "sprite": "Tile_Pasto_Selva_01",
+   "sprite": "Tile_Camino_Trans_04",
    "x": -13,
    "y": 3
   },
@@ -2752,12 +2752,12 @@
    "y": 1
   },
   {
-   "sprite": "Tile_Pasto_Selva_01",
+   "sprite": "Tile_Camino_Trans_08",
    "x": -13,
    "y": 2
   },
   {
-   "sprite": "Tile_Pasto_Selva_01",
+   "sprite": "Tile_Camino_Trans_04",
    "x": -12,
    "y": 3
   },
@@ -2877,12 +2877,12 @@
    "y": 1
   },
   {
-   "sprite": "Tile_Pasto_Selva_02",
+   "sprite": "Tile_Camino_Trans_08",
    "x": -12,
    "y": 2
   },
   {
-   "sprite": "Tile_Pasto_Selva_02",
+   "sprite": "Tile_Camino_Trans_04",
    "x": -11,
    "y": 3
   },
@@ -3012,12 +3012,12 @@
    "y": 1
   },
   {
-   "sprite": "Tile_Pasto_Selva_01",
+   "sprite": "Tile_Camino_Trans_08",
    "x": -11,
    "y": 2
   },
   {
-   "sprite": "Tile_Pasto_Selva_01",
+   "sprite": "Tile_Camino_Trans_04",
    "x": -10,
    "y": 3
   },
@@ -3157,17 +3157,17 @@
    "y": 1
   },
   {
-   "sprite": "Tile_Pasto_Selva_03",
+   "sprite": "Tile_Camino_Trans_08",
    "x": -10,
    "y": 2
   },
   {
-   "sprite": "Tile_Pasto_Selva_01",
+   "sprite": "Tile_Camino_Trans_36",
    "x": -9,
    "y": 3
   },
   {
-   "sprite": "Tile_Pasto_Selva_01",
+   "sprite": "Tile_Camino_Trans_06",
    "x": -8,
    "y": 4
   },
@@ -3312,17 +3312,17 @@
    "y": 1
   },
   {
-   "sprite": "Tile_Pasto_Selva_01",
+   "sprite": "Tile_Camino_Trans_09",
    "x": -9,
    "y": 2
   },
   {
-   "sprite": "Tile_Pasto_Selva_01",
+   "sprite": "Tile_Camino_Trans_72",
    "x": -8,
    "y": 3
   },
   {
-   "sprite": "Tile_Pasto_Selva_01",
+   "sprite": "Tile_Camino_Trans_04",
    "x": -7,
    "y": 4
   },
@@ -3482,12 +3482,12 @@
    "y": 2
   },
   {
-   "sprite": "Tile_Pasto_Selva_02",
+   "sprite": "Tile_Camino_Trans_08",
    "x": -7,
    "y": 3
   },
   {
-   "sprite": "Tile_Camino_Trans_02",
+   "sprite": "Tile_Camino_Trans_64",
    "x": -6,
    "y": 4
   },
@@ -3657,7 +3657,7 @@
    "y": 2
   },
   {
-   "sprite": "Tile_Camino_Trans_02",
+   "sprite": "Tile_Camino_Trans_128",
    "x": -6,
    "y": 3
   },
@@ -13867,12 +13867,6 @@
   },
   {
    "sprite": "Palma_Corozo_01",
-   "x": -13.844,
-   "y": 2.353,
-   "z": 0.0
-  },
-  {
-   "sprite": "Palma_Corozo_01",
    "x": -11.504,
    "y": 23.07,
    "z": 0.0
@@ -14049,12 +14043,6 @@
    "sprite": "Palma_Corozo_01",
    "x": 2.473,
    "y": 25.965,
-   "z": 0.0
-  },
-  {
-   "sprite": "Palma_Corozo_01",
-   "x": -11.648,
-   "y": 2.894,
    "z": 0.0
   },
   {
@@ -14325,12 +14313,6 @@
    "sprite": "Palma_Corozo_02",
    "x": -15.962,
    "y": 7.383,
-   "z": 0.0
-  },
-  {
-   "sprite": "Palma_Corozo_01",
-   "x": -16.205,
-   "y": 2.767,
    "z": 0.0
   },
   {
@@ -14748,12 +14730,6 @@
    "z": 0.0
   },
   {
-   "sprite": "Matorral_Selva_01",
-   "x": -19.45,
-   "y": 5.056,
-   "z": 0.0
-  },
-  {
    "sprite": "Matorral_Selva_03",
    "x": -15.606,
    "y": -8.084,
@@ -15084,12 +15060,6 @@
    "z": 0.0
   },
   {
-   "sprite": "Matorral_Selva_01",
-   "x": -18.099,
-   "y": 2.191,
-   "z": 0.0
-  },
-  {
    "sprite": "Matorral_Selva_03",
    "x": -23.764,
    "y": 18.829,
@@ -15229,12 +15199,6 @@
   },
   {
    "sprite": "Matorral_Selva_02",
-   "x": -23.803,
-   "y": 4.737,
-   "z": 0.0
-  },
-  {
-   "sprite": "Matorral_Selva_02",
    "x": -21.423,
    "y": 13.343,
    "z": 0.0
@@ -15255,12 +15219,6 @@
    "sprite": "Matorral_Selva_01",
    "x": -7.316,
    "y": 25.965,
-   "z": 0.0
-  },
-  {
-   "sprite": "Matorral_Selva_03",
-   "x": -12.492,
-   "y": 1.408,
    "z": 0.0
   },
   {
@@ -15553,12 +15511,6 @@
   },
   {
    "sprite": "Matorral_Selva_03",
-   "x": -18.413,
-   "y": 5.301,
-   "z": 0.0
-  },
-  {
-   "sprite": "Matorral_Selva_03",
    "x": -18.537,
    "y": -0.009,
    "z": 0.0
@@ -15639,12 +15591,6 @@
    "sprite": "Matorral_Selva_01",
    "x": -13.433,
    "y": -11.062,
-   "z": 0.0
-  },
-  {
-   "sprite": "Matorral_Selva_02",
-   "x": -19.508,
-   "y": 3.875,
    "z": 0.0
   },
   {
@@ -16494,12 +16440,6 @@
    "z": 0.0
   },
   {
-   "sprite": "Helecho_01",
-   "x": -9.961,
-   "y": 2.291,
-   "z": 0.0
-  },
-  {
    "sprite": "Helecho_02",
    "x": -20.685,
    "y": -16.775,
@@ -16513,20 +16453,8 @@
   },
   {
    "sprite": "Helecho_01",
-   "x": -15.24,
-   "y": 1.718,
-   "z": 0.0
-  },
-  {
-   "sprite": "Helecho_01",
    "x": -14.096,
    "y": 3.945,
-   "z": 0.0
-  },
-  {
-   "sprite": "Helecho_02",
-   "x": -15.966,
-   "y": 1.245,
    "z": 0.0
   },
   {
@@ -17035,12 +16963,6 @@
   },
   {
    "sprite": "Pasto_Alto_01",
-   "x": -6.6,
-   "y": 2.483,
-   "z": 0.0
-  },
-  {
-   "sprite": "Pasto_Alto_01",
    "x": -8.726,
    "y": -0.44,
    "z": 0.0
@@ -17337,12 +17259,6 @@
    "sprite": "Pasto_Alto_02",
    "x": -8.422,
    "y": 10.367,
-   "z": 0.0
-  },
-  {
-   "sprite": "Pasto_Alto_01",
-   "x": -11.579,
-   "y": 1.449,
    "z": 0.0
   },
   {
@@ -18139,12 +18055,6 @@
   },
   {
    "sprite": "Tronco_Caido_01",
-   "x": -20.777,
-   "y": 3.944,
-   "z": 0.0
-  },
-  {
-   "sprite": "Tronco_Caido_01",
    "x": -17.532,
    "y": -16.922,
    "z": 0.0
@@ -18153,12 +18063,6 @@
    "sprite": "Tronco_Caido_01",
    "x": 23.347,
    "y": -17.754,
-   "z": 0.0
-  },
-  {
-   "sprite": "Tronco_Caido_01",
-   "x": -22.733,
-   "y": 5.364,
    "z": 0.0
   },
   {
@@ -18177,12 +18081,6 @@
    "sprite": "Tronco_Caido_01",
    "x": 22.74,
    "y": 6.085,
-   "z": 0.0
-  },
-  {
-   "sprite": "Tronco_Caido_01",
-   "x": -17.931,
-   "y": 3.543,
    "z": 0.0
   },
   {
@@ -18223,6 +18121,16 @@
   }
  ],
  "colision": {
+  "puntos": {
+   "salida_selva": {
+    "x": -23.7,
+    "y": 4.5
+   },
+   "llegada_selva": {
+    "x": -21.0,
+    "y": 4.5
+   }
+  },
   "niveles": [
    [
     [

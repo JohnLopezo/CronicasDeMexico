@@ -28,6 +28,10 @@ RAMPAS = {
     "madera": ["#48331F", "#6D502E", "#9C7842", "#A28A6D"],
     "agua": ["#0B4F4A", "#0C7265", "#168787", "#489187", "#7FC3B5"],
     "acentos": ["#B16143", "#B24232", "#994F66", "#F47588"],
+    # Luz propia: la corrupción de la Sombra del Olvido usa un violeta ajeno a la selva y los fragmentos de memoria,
+    # el verde de la piedra pulida (Docs/Arte_Olmeca_Demo.md §2)
+    "olvido": ["#2A1838", "#4B2A6B", "#7B4FB0", "#A98BE8", "#D9CCFF"],
+    "jade": ["#1F5148", "#2E7D6B", "#4FB39A", "#9BE3C8", "#E2FFF2"],
 }
 
 

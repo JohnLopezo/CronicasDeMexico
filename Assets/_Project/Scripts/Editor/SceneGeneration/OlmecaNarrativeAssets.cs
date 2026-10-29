@@ -24,7 +24,15 @@ namespace CronicasDeMexico.Editor.SceneGeneration
         public const string SpiritId = "figura_espiritual";
         public const string AwakeningQuestId = "MP_OLM_01";
         public const string SettlementQuestId = "MP_OLM_02";
+        public const string JungleQuestId = "MP_OLM_03";
         public const string ReflectionId = "reflejo"; // aviso "examinar:reflejo" en la orilla
+        // Selva (MP_OLM_03): avisos "llegar:selva", "vencer:espiritu_corrompido", "examinar:fragmento_menor" y
+        // "llegar:entrada_estructura".
+        public const string JungleZoneId = "selva";
+        public const string EntranceZoneId = "entrada_estructura";
+        public const string CorruptedSpiritId = "espiritu_corrompido";
+        public const string FragmentId = "fragmento_menor";
+        public const int JungleSpiritCount = 3;
         public const string GuardianPath = "Assets/_Project/Data/Characters/GUA_jaguar.asset";
         const string PlayerSpriteSetPath = "Assets/_Project/Data/Characters/DSS_Jugador.asset";
 
@@ -33,8 +41,27 @@ namespace CronicasDeMexico.Editor.SceneGeneration
         public const string AwakeningDoneFlag = "olm.despertar_completo";
         public const string ElderToldFlag = "olm.anciana_conto";
         public const string EntranceFoundFlag = "olm.entrada_descubierta";
+        public const string WarriorInJungleFlag = "olm.guerrero_en_selva";
+        public const string StructureFoundFlag = "olm.estructura_encontrada";
         static readonly string QuestActive = StoryEvents.QuestActiveFlag(SettlementQuestId);
         static readonly string QuestDone = StoryEvents.QuestCompletedFlag(SettlementQuestId);
+        static readonly string JungleQuestDone = StoryEvents.QuestCompletedFlag(JungleQuestId);
+
+        /// <summary>Este espíritu corrompido ya fue vencido (no vuelve y deja su fragmento). i empieza en 1.</summary>
+        public static string SpiritDefeatedFlag(int i) => $"olm.selva.espiritu_{i}_vencido";
+
+        /// <summary>Este fragmento de memoria ya se recogió. i empieza en 1.</summary>
+        public static string FragmentFlag(int i) => $"olm.selva.fragmento_{i}";
+
+        // Lo que recuerda cada fragmento al tocarlo. D/I: el basalto se llevó a La Venta desde los Tuxtlas y la piedra
+        // verde se pulía con arena y agua; el resto es ficción del juego.
+        public static readonly string[] FragmentTexts =
+        {
+            "Un fragmento de memoria, tibio como una piedra al sol. Al tocarlo oyes voces que cantan mientras arrastran " +
+            "una piedra enorme río abajo, desde montañas que no conoces.",
+            "Otro fragmento. Ves unas manos que pulen una piedra verde con arena y agua, día tras día, sin prisa.",
+            "El último fragmento. Por un instante la selva entera recuerda un nombre... y lo olvida otra vez.",
+        };
 
         // Al asomarse al agua (Historia_Mundo §2.1–2.2): recuerdos rotos de la vida anterior y el reflejo animal.
         public const string ReflectionText =
@@ -56,7 +83,9 @@ namespace CronicasDeMexico.Editor.SceneGeneration
         public sealed class Content
         {
             public Character Spirit, Artisan, Elder, Warrior, Merchant;
-            public QuestData AwakeningQuest, SettlementQuest;
+            /// <summary>El joven guerrero en la entrada de la estructura (mismo NpcData, otro diálogo).</summary>
+            public Character WarriorAtEntrance;
+            public QuestData AwakeningQuest, SettlementQuest, JungleQuest;
             public GuardianData Guardian;
         }
 
@@ -85,10 +114,24 @@ namespace CronicasDeMexico.Editor.SceneGeneration
                     new QuestStep(StoryEvents.Talk(ElderId), "Habla con la anciana, junto a las enramadas"),
                     new QuestStep(StoryEvents.Talk(WarriorId), "Busca al joven guerrero junto al fogón, cerca de la plaza"),
                 }, EntranceFoundFlag));
+            // Cada fragmento solo aparece al vencer a su espíritu, así que recoger tres implica haber vencido a tres; y
+            // como los pasos cuentan en orden, ningún fragmento se puede recoger "antes de tiempo" y perderse.
+            var jungle = LoadOrCreate($"{Folder}/MIS_{JungleQuestId}.asset", () => QuestData.Create(
+                JungleQuestId, "Rastros en la selva", new[]
+                {
+                    new QuestStep(StoryEvents.Reach(JungleZoneId), "Sal de la plaza por el sendero del oeste, hacia la selva"),
+                    new QuestStep(StoryEvents.Examine(FragmentId),
+                        "Vence a los espíritus corrompidos y recoge los fragmentos de memoria que dejan", JungleSpiritCount),
+                    new QuestStep(StoryEvents.Talk(WarriorId), "Sigue el sendero hasta la entrada de piedra; el joven guerrero te espera"),
+                }, StructureFoundFlag));
             EnsureInCatalog(awakening);
             EnsureInCatalog(quest);
+            EnsureInCatalog(jungle);
 
-            var content = new Content { AwakeningQuest = awakening, SettlementQuest = quest, Guardian = guardian };
+            var content = new Content
+            {
+                AwakeningQuest = awakening, SettlementQuest = quest, JungleQuest = jungle, Guardian = guardian,
+            };
 
             // Historia_Mundo §2.2–2.4. No es un dios ni un enemigo; no tiene rasgos de ninguna deidad.
             content.Spirit = CreateCharacter(SpiritId, "Figura espiritual", "guía", new[]
@@ -146,20 +189,43 @@ namespace CronicasDeMexico.Editor.SceneGeneration
                         "¿Un jaguar tan tranquilo? Qué tiempos tan raros.")),
             });
 
+            // Al terminar MP_OLM_02 encadena MP_OLM_03 y se adelanta a la entrada (en la selva, DLG_guerrero_joven_entrada).
             content.Warrior = CreateCharacter(WarriorId, "Joven guerrero", "guerrero", new[]
             {
                 new DialogueBranch(Lines(
-                        "Esas criaturas cuidaban la entrada. Cuando sane, iré contigo. Por ahora, ten cuidado."),
-                    requiredFlags: new[] { QuestDone }),
+                        "Sal de la plaza por el sendero del oeste, el que se mete entre las palmas. Te alcanzo en la entrada."),
+                    requiredFlags: new[] { WarriorInJungleFlag }),
                 new DialogueBranch(Lines(
                         "No me mires así. Es solo un rasguño... bueno, uno grande.",
                         "Fuimos tres a revisar los caminos de la selva. Los animales no huían de nosotros: nos esperaban.",
                         "Tenían algo raro. Grietas que brillaban en la piel, como si les faltaran pedazos.",
-                        "Más allá de las ceibas, entre las raíces, encontré una entrada de piedra que no recordaba. Y conozco bien esa parte de la selva."),
-                    requiredFlags: new[] { ElderToldFlag }),
+                        "Más allá de las ceibas, entre las raíces, encontré una entrada de piedra que no recordaba. Y conozco bien esa parte de la selva.",
+                        "¿Vas a ir? Entonces sal de la plaza por el sendero del oeste. Cuando caían, esas criaturas dejaban una piedrecita con luz. Yo no me atreví a tocarlas.",
+                        "Te alcanzo en la entrada. Conozco un atajo, aunque sea cojeando."),
+                    requiredFlags: new[] { ElderToldFlag },
+                    flagsOnFinish: new[] { WarriorInJungleFlag },
+                    questToStart: jungle),
                 new DialogueBranch(Lines(
                         "Me dijeron que descansara. Descansar es más difícil que pelear.")),
             });
+
+            // En la entrada: reconoce el lugar cuando el jugador trae los tres fragmentos (el paso 3 de MP_OLM_03).
+            var allFragments = Enumerable.Range(1, JungleSpiritCount).Select(FragmentFlag).ToArray();
+            var warriorAtEntrance = LoadOrCreate($"{Folder}/DLG_{WarriorId}_entrada.asset", () => DialogueData.Create(
+                $"DLG_{WarriorId}_entrada",
+                new DialogueBranch(Lines(
+                        "Yo vigilo aquí afuera. Lo que borra las piedras está ahí abajo, y tú eres quien puede entrar."),
+                    requiredFlags: new[] { JungleQuestDone }),
+                new DialogueBranch(Lines(
+                        "Llegaste. Y traes esas piedrecitas con luz... ¿las sientes? Son pedazos de algo que alguien recordó.",
+                        "Mira las columnas: son de basalto, como las del recinto de la plaza. Mi abuela decía que bajo los montículos así descansaba alguien importante.",
+                        "Pero yo crecí en esta selva y nunca vi esta entrada. No estaba aquí... o no la recordábamos.",
+                        "Algo allá abajo se está comiendo los recuerdos. Si alguien puede detenerlo, es quien vino de fuera."),
+                    requiredFlags: allFragments),
+                new DialogueBranch(Lines(
+                        "Aquí es, entre las raíces. Llegué antes que tú: conozco los atajos.",
+                        "No entres todavía. Las criaturas corrompidas siguen en el sendero, y lo que dejan al caer hay que recogerlo antes de que se apague."))));
+            content.WarriorAtEntrance = new Character(content.Warrior.Npc, warriorAtEntrance);
 
             content.Merchant = CreateCharacter(MerchantId, "Comerciante", "comerciante", new[]
             {

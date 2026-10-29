@@ -5,6 +5,7 @@ using System.IO;
 using System.Text;
 using CronicasDeMexico.World.Rendering;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace CronicasDeMexico.World.Diagnostics
 {
@@ -29,6 +30,16 @@ namespace CronicasDeMexico.World.Diagnostics
             ("Recinto", new Vector2(0f, -9f)),
             ("Aldea", new Vector2(15f, -2f)),
             ("Selva", new Vector2(-14f, -6f)),
+        };
+
+        // En Olmeca_Selva (planificar_selva): llegada, un claro, la entrada y selva densa.
+        const string JungleSceneName = "Olmeca_Selva";
+        static readonly (string name, Vector2 point)[] JungleViews =
+        {
+            ("Llegada", new Vector2(15f, 0f)),
+            ("Claro", new Vector2(2f, 0.5f)),
+            ("Entrada", new Vector2(-11f, -2f)),
+            ("SelvaDensa", new Vector2(6f, -6f)),
         };
 
         readonly float[] samples = new float[MaxSamples];
@@ -91,7 +102,8 @@ namespace CronicasDeMexico.World.Diagnostics
                 Application.targetFrameRate = -1;
                 var levelName = QualitySettings.names[level];
 
-                foreach (var (viewName, point) in Views)
+                var views = SceneManager.GetActiveScene().name == JungleSceneName ? JungleViews : Views;
+                foreach (var (viewName, point) in views)
                 {
                     Debug.Log($"[Benchmark] {levelName} / {viewName}");
                     var center = IsometricProjection.FromPipeline(point.x, point.y, 0f);

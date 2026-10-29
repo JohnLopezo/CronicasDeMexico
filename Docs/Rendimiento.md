@@ -21,12 +21,15 @@ Se mide en un **build de desarrollo** (no en el Editor), en cada hito. En PC el 
 | 2026-10-29 | Cámara de fondo sin efectos | i7-10700 / UHD 630 | Bajo | 1920×1080 | Olmeca_Ciudad | 263–290 | 140–199 | 3,5–3,8 (p95 4,2–6,0) | Sin cambio, como se esperaba |
 | 2026-10-29 | Cámara de fondo sin efectos | i7-10700 / UHD 630 | Medio | 1920×1080 | Olmeca_Ciudad | 271–349 | 136–221 | 2,9–3,7 (p95 3,5–5,3) | −1,6 ms |
 | 2026-10-29 | Cámara de fondo sin efectos | i7-10700 / UHD 630 | Alto | 1920×1080 | Olmeca_Ciudad | 286–300 | 159–206 | 3,3–3,5 (p95 4,0–4,3) | −6,2 ms; casi todo el coste de Alto era la cámara vacía |
+| 2026-10-29 | Selva (M1) | i7-10700 / UHD 630 | Bajo | 1920×1080 | Olmeca_Selva | 263–289 | 129–203 | 3,5–3,8 (p95 4,4–5,9) | 4 puntos (llegada, claro, entrada, selva densa); la selva densa es la más cara |
+| 2026-10-29 | Selva (M1) | i7-10700 / UHD 630 | Medio | 1920×1080 | Olmeca_Selva | 342–350 | 220–263 | 2,9 (p95 3,4–3,7) | Ídem |
+| 2026-10-29 | Selva (M1) | i7-10700 / UHD 630 | Alto | 1920×1080 | Olmeca_Selva | 299–302 | 227–230 | 3,3 (p95 3,9–4,0) | Ídem |
 
 **Cámara de fondo (2026-10-29):** la cámara que limpia la pantalla bajo `PixelArtScreen` no dibuja nada, pero URP le aplicaba a 1920×1080 lo que pide el nivel: en Alto, HDR, texturas de profundidad y color, y el SSAO de `Renderer_Calidad`; en Medio, HDR y profundidad. Ahora usa el renderer 1 de cada URP Asset (`Renderer_Rendimiento`, sin efectos; `PixelArtScreen.ClearRendererIndex`) y desactiva HDR, MSAA, sombras y texturas. La cámara del escenario conserva el SSAO a la resolución del arte. Lo comprueba `ClearCamera_UsesRendererWithoutEffects_InEveryQualityLevel`.
 
 - Medio y Alto quedan ahora algo por encima de Bajo. Probablemente porque el Render Scale 0,75 de Bajo obliga a la cámara de fondo a usar una textura intermedia y un reescalado a 1080 p, que no aporta nada con `PixelArtScreen`. Es una hipótesis sin comprobar (unos 0,3 ms en el i7).
 
-**Cómo se mide la ciudad** (`FrameTimeBenchmark`): build de desarrollo de Windows con menú **Crónicas → Build → Windows: medición de la ciudad**, o con `-executeMethod CronicasDeMexico.Editor.Build.WindowsBenchmarkBuild.Build`. Se ejecuta así:
+**Cómo se mide la ciudad** (`FrameTimeBenchmark`): build de desarrollo de Windows con menú **Crónicas → Build → Windows: medición de la ciudad**, o con `-executeMethod CronicasDeMexico.Editor.Build.WindowsBenchmarkBuild.Build`. Para la selva, **medición de la selva** (`BuildJungle`, en `Builds\Windows\Selva\`); la medición usa los puntos de la escena activa. Se ejecuta así:
 
 ```
 Builds\Windows\Ciudad\CronicasDeMexico.exe -benchmark -benchmarkOutput <carpeta> -screen-width 1920 -screen-height 1080 -screen-fullscreen 0 -popupwindow

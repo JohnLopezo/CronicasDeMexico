@@ -105,6 +105,18 @@ namespace CronicasDeMexico.Tests
             Assert.IsTrue(playerHealth.IsDead);
         }
 
+        // Al cambiar de escena el jugador nuevo toma la vida con la que salió: nunca sube (Diseno.md §9).
+        [Test]
+        public void CarryOver_LowersToTheCarriedHealth_ButNeverRaisesIt()
+        {
+            playerHealth.CarryOver(2);
+            Assert.That(playerHealth.Current, Is.EqualTo(2));
+            playerHealth.CarryOver(playerHealth.Max);
+            Assert.That(playerHealth.Current, Is.EqualTo(2), "CarryOver no debe curar.");
+            playerHealth.CarryOver(0);
+            Assert.That(playerHealth.Current, Is.EqualTo(1), "Llega con al menos 1 de vida.");
+        }
+
         [Test]
         public void ReviveFull_OnlyWorksWhenDead()
         {

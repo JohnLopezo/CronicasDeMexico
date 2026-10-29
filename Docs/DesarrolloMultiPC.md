@@ -54,14 +54,16 @@ Las dos GPU son integradas de la misma generación y potencia parecida, y compar
 2. `git status` → debe estar limpio. Si no lo está, son cambios sin subir de una sesión anterior en esta PC: revisarlos antes de seguir.
 3. `git pull` (con rebase, por `setup-git.ps1`).
 4. Abrir Unity y esperar la importación.
+5. Leer la última entrada de `Docs/Bitacora.md` y comprobar que su último commit coincide con `git log -1`.
 
 **Al terminar (o antes de cambiar de PC):**
 
 1. Guardar escenas y proyecto (**File → Save Project**, para que se escriban los `.asset` modificados).
 2. Cerrar Unity (así `ProjectSettings/` queda escrito en disco y nada lo sobrescribe después).
 3. `git status` y `git diff --stat`: confirmar que solo cambió lo esperado y que cada asset nuevo tiene su `.meta`.
-4. Commit con mensaje descriptivo en español y `git push`.
-5. En GitHub o con `git log origin/<rama> -1` comprobar que el commit está arriba.
+4. Añadir la entrada de la sesión en `Docs/Bitacora.md` (fecha, PC, rama, qué se hizo, estado y siguiente paso).
+5. Commit con mensaje descriptivo en español y `git push`.
+6. En GitHub o con `git log origin/<rama> -1` comprobar que el commit está arriba.
 
 **Al usar Claude Code:** Claude no hace commits ni push sin autorización. Antes de cambiar de PC, pedirle explícitamente el commit y el push, o hacerlo a mano.
 
@@ -108,6 +110,6 @@ Antes de dar por terminado un cambio que se va a abrir en la otra PC:
 
 ## 10. Pendientes detectados (no aplicados; requieren autorización)
 
-- **Cambios de la Fase 1 sin commit en el i7-10700** (rama `feature/prototipo-olmeca`, 15 archivos modificados y 3 nuevos al 2026-10-27). Hasta que se haga commit y push, **esos avances solo existen en esta PC**.
+- ~~Cambios de la Fase 1 sin commit en el i7-10700~~ **Resuelto:** la Fase 1 y el trabajo posterior están subidos a `origin/feature/prototipo-olmeca` (hasta `1d3eb5c`, 2026-10-28). El estado de cada sesión se lleva en `Docs/Bitacora.md`.
 - `.gitattributes` trata todos los `*.asset` como texto YAML, pero `LightingData.asset` (y otros datos horneados) son binarios. Antes del primer horneado de luces conviene añadir una regla `LightingData.asset binary` (o enviarlo por LFS) para que Git no lo corrompa al normalizar finales de línea.
 - La configuración global de Git en el i7 tiene `core.autocrlf true` y `pull.rebase false`; `setup-git.ps1` lo corrige a nivel de repositorio. En el i5 hay que ejecutarlo igualmente.

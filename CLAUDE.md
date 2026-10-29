@@ -8,7 +8,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 **El documento de diseño de referencia es `Docs/Diseno.md` (GDD).** Leerlo antes de proponer cambios y contrastar cada requisito con el repositorio. Plataforma objetivo: **Android en horizontal** (arquitectura preparada para iOS); el PC se usa para desarrollo y pruebas con teclado y ratón.
 
-Se desarrolla en dos PC Windows con gráficos integrados: **i5-6500 / Intel HD 530 / 12 GB** (referencia de rendimiento) e **i7-10700 / Intel UHD 630 / 16 GB** (desarrollo principal, horneado de luces y builds de Android). Ambas usan exactamente Unity 6000.0.85f1 y se sincronizan solo por Git. Requisitos, rutina diaria y reglas de conflicto: **`Docs/DesarrolloMultiPC.md`**. Antes de que el usuario cambie de PC, recordarle que haga commit y push (o pedir autorización para hacerlo).
+Se desarrolla en dos PC Windows con gráficos integrados: **i5-6500 / Intel HD 530 / 12 GB** (referencia de rendimiento) e **i7-10700 / Intel UHD 630 / 16 GB** (desarrollo principal, horneado de luces y builds de Android). Ambas usan exactamente Unity 6000.0.85f1 y se sincronizan solo por Git. Requisitos, rutina diaria y reglas de conflicto: **`Docs/DesarrolloMultiPC.md`**. Antes de que el usuario cambie de PC, recordarle que haga commit y push (o pedir autorización para hacerlo). **El estado de cada sesión (fecha, PC, rama, qué se hizo y qué sigue) se lleva en `Docs/Bitacora.md`:** leer la última entrada al empezar y añadir una al terminar, porque la memoria de Claude Code no viaja entre PC.
 
 ## Forma de trabajo
 

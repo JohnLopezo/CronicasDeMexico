@@ -160,7 +160,7 @@ Ventaja: coherencia de luz y escala entre recursos y facilidad para generar vari
 
 ## 12. Estado y siguiente sesión
 
-*Actualizado: 2026-10-27, al cerrar la sesión en el i7-10700.*
+*Actualizado: 2026-10-28, al cerrar la sesión en el i7-10700. Registro por sesión y PC: `Docs/Bitacora.md`.*
 
 ### Hecho y aprobado
 
@@ -328,9 +328,9 @@ Después: una composición que integre las ruinas con el entorno ya aprobado y l
 
 ### Pendientes (necesitan autorización)
 
-1. **Commit y push.** Todo el trabajo (Fase 1, documentación, flujo de arte y salidas) **solo existe en el i7-10700**. En el i5 no aparecerá hasta subirlo (`Docs/DesarrolloMultiPC.md` §5).
+1. ~~Commit y push.~~ **Resuelto:** todo el trabajo está subido a `origin/feature/prototipo-olmeca` (hasta `1d3eb5c`, 2026-10-28) y aparece en el i5 con `git pull`. Estado por sesión: `Docs/Bitacora.md`.
 2. Borrar `Tools/ArtPipeline/Salida/Pruebas/` (duplica la ronda anterior) y `Docs/Referencia_Visual_Olmeca2.png` (copia exacta de la referencia).
-3. Decidir si `Tools/ArtPipeline/Salida/` se versiona (por LFS) o se regenera en cada PC. El i5 necesitaría Blender 5.2 para regenerar.
+3. ~~Decidir si `Tools/ArtPipeline/Salida/` se versiona~~ **Resuelto en la práctica:** `Salida/` ya se versiona (203 archivos, los PNG por LFS), así que el i5 no necesita Blender salvo para regenerar.
 4. Detalles menores: la variante 3 de la cerca toca 1 px el borde del lienzo, y el conjunto completo de transiciones (~47 por tipo) se genera cuando se integre en Unity.
 5. Después de las ruinas: opción c, integrar en Unity (`Olmeca_VisualDemo.unity`, cámara ortográfica y captura real de la pestaña Game).
 6. Siguen pendientes de ti la cabeza colosal, el Jaguar animado y el NPC.

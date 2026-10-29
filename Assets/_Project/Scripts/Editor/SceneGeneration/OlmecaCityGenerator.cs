@@ -461,7 +461,17 @@ namespace CronicasDeMexico.Editor.SceneGeneration
             clearCamera.depth = -10f;
             clearCamera.clearFlags = CameraClearFlags.SolidColor;
             clearCamera.backgroundColor = BackgroundColor;
-            clearCamera.gameObject.AddComponent<UniversalAdditionalCameraData>().renderPostProcessing = false;
+            // No dibuja nada, pero URP le aplicaría a 1080 p lo que pida el nivel de calidad (en Alto, HDR, texturas de
+            // profundidad y color, y el SSAO del renderer): se le quita todo y usa el renderer sin efectos.
+            clearCamera.allowHDR = false;
+            clearCamera.allowMSAA = false;
+            var clearCameraData = clearCamera.gameObject.AddComponent<UniversalAdditionalCameraData>();
+            clearCameraData.SetRenderer(PixelArtScreen.ClearRendererIndex);
+            clearCameraData.renderPostProcessing = false;
+            clearCameraData.renderShadows = false;
+            clearCameraData.antialiasing = AntialiasingMode.None;
+            clearCameraData.requiresDepthOption = CameraOverrideOption.Off;
+            clearCameraData.requiresColorOption = CameraOverrideOption.Off;
 
             // Límites del punto que mira, en XZ de Unity: x = y del flujo, z = -x del flujo.
             var follow = cameraObject.AddComponent<IsometricCameraFollow>();

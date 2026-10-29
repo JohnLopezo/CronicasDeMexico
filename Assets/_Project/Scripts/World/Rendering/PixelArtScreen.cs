@@ -14,6 +14,12 @@ namespace CronicasDeMexico.World.Rendering
     [RequireComponent(typeof(Camera))]
     public sealed class PixelArtScreen : MonoBehaviour
     {
+        /// <summary>
+        /// Renderer sin efectos (Renderer_Rendimiento) en los tres URP Assets. Lo usa la cámara que limpia la pantalla
+        /// bajo el panel, que no dibuja nada y no debe pagar el SSAO ni el HDR del nivel Alto a resolución completa.
+        /// </summary>
+        public const int ClearRendererIndex = 1;
+
         [SerializeField, Tooltip("Documento a pantalla completa, con orden menor que el HUD.")]
         UIDocument presentation;
 

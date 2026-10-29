@@ -15,6 +15,16 @@ Se mide en un **build de desarrollo** (no en el Editor), en cada hito. En PC el 
 | 2026-10-28 | Ciudad jugable, etapa E | i7-10700 / UHD 630 | Bajo | 1920×1080 | Olmeca_Ciudad | 269–282 | 185–197 | 3,6 (p95 4,8) | PixelArtScreen 642×362 ×3; sin V-Sync; 5 puntos |
 | 2026-10-28 | Ciudad jugable, etapa E | i7-10700 / UHD 630 | Medio | 1920×1080 | Olmeca_Ciudad | 207–220 | 154–164 | 4,7 (p95 6,0) | Ídem |
 | 2026-10-28 | Ciudad jugable, etapa E | i7-10700 / UHD 630 | Alto | 1920×1080 | Olmeca_Ciudad | 106–109 | 70–94 | 9,3 (p95 10,6) | Ídem; Alto paga SSAO, Forward+ y HDR a 1080 p en la cámara de fondo |
+| 2026-10-29 | Antes de aligerar la cámara de fondo | i7-10700 / UHD 630 | Bajo | 1920×1080 | Olmeca_Ciudad | 263–290 | 141–198 | 3,4–3,8 (p95 4,2–6,0) | Con la aldea A2; ejecución limpia (`runInBackground` en la medición) |
+| 2026-10-29 | Antes de aligerar la cámara de fondo | i7-10700 / UHD 630 | Medio | 1920×1080 | Olmeca_Ciudad | 202–222 | 93–172 | 4,5–4,9 (p95 5,3–7,0) | Ídem |
+| 2026-10-29 | Antes de aligerar la cámara de fondo | i7-10700 / UHD 630 | Alto | 1920×1080 | Olmeca_Ciudad | 99–114 | 36–99 | 8,7–10,1 (p95 9,5–11,9) | Ídem |
+| 2026-10-29 | Cámara de fondo sin efectos | i7-10700 / UHD 630 | Bajo | 1920×1080 | Olmeca_Ciudad | 263–290 | 140–199 | 3,5–3,8 (p95 4,2–6,0) | Sin cambio, como se esperaba |
+| 2026-10-29 | Cámara de fondo sin efectos | i7-10700 / UHD 630 | Medio | 1920×1080 | Olmeca_Ciudad | 271–349 | 136–221 | 2,9–3,7 (p95 3,5–5,3) | −1,6 ms |
+| 2026-10-29 | Cámara de fondo sin efectos | i7-10700 / UHD 630 | Alto | 1920×1080 | Olmeca_Ciudad | 286–300 | 159–206 | 3,3–3,5 (p95 4,0–4,3) | −6,2 ms; casi todo el coste de Alto era la cámara vacía |
+
+**Cámara de fondo (2026-10-29):** la cámara que limpia la pantalla bajo `PixelArtScreen` no dibuja nada, pero URP le aplicaba a 1920×1080 lo que pide el nivel: en Alto, HDR, texturas de profundidad y color, y el SSAO de `Renderer_Calidad`; en Medio, HDR y profundidad. Ahora usa el renderer 1 de cada URP Asset (`Renderer_Rendimiento`, sin efectos; `PixelArtScreen.ClearRendererIndex`) y desactiva HDR, MSAA, sombras y texturas. La cámara del escenario conserva el SSAO a la resolución del arte. Lo comprueba `ClearCamera_UsesRendererWithoutEffects_InEveryQualityLevel`.
+
+- Medio y Alto quedan ahora algo por encima de Bajo. Probablemente porque el Render Scale 0,75 de Bajo obliga a la cámara de fondo a usar una textura intermedia y un reescalado a 1080 p, que no aporta nada con `PixelArtScreen`. Es una hipótesis sin comprobar (unos 0,3 ms en el i7).
 
 **Cómo se mide la ciudad** (`FrameTimeBenchmark`): build de desarrollo de Windows con menú **Crónicas → Build → Windows: medición de la ciudad**, o con `-executeMethod CronicasDeMexico.Editor.Build.WindowsBenchmarkBuild.Build`. Se ejecuta así:
 
@@ -25,7 +35,7 @@ Builds\Windows\Ciudad\CronicasDeMexico.exe -benchmark -benchmarkOutput <carpeta>
 - Recorre 5 puntos (plaza, montículo, recinto, aldea y selva) en los 3 niveles, con 6 s por punto, la cámara en movimiento y sin V-Sync.
 - Escribe `resumen.txt`, `frames.csv` y una captura por punto, y se cierra sola.
 - `-sinPantallaPixel` desactiva PixelArtScreen para comparar. La comparación del 2026-10-28 **no es válida**: la ventana perdió el foco o se cerró durante las ejecuciones (frames de decenas de segundos y otros fijos en 16,7 ms). Los puntos limpios dan una idea, pero no son una medición: Bajo/Plaza 3,3 ms directo frente a 3,6 ms con PixelArtScreen; Medio/Plaza a Recinto 5,2–5,9 ms frente a 4,6–4,8. **La ventaja de PixelArtScreen es sobre todo de imagen**: sin él, Bajo dibuja a 0,75 y reescala con filtro bilineal, y el pixel art sale borroso (capturas del build). En el i7 la escena no está limitada por píxeles.
-- Para medir, no usar el PC mientras dura (unos 2 minutos): la ventana de 1920×1080 tapa la pantalla y, si pierde el foco, los datos se estropean.
+- Para medir, no usar el PC mientras dura (unos 2 minutos): la ventana de 1920×1080 tapa la pantalla. Desde el 2026-10-29 la medición activa `Application.runInBackground`, así que ya no se pausa si la ventana pierde el foco (antes daba frames de minutos), pero otro programa en primer plano sigue alterando los tiempos.
 - **Falta medir en el i5-6500 / HD 530**, que es la referencia, y en Android.
 
 ## Calidad por defecto

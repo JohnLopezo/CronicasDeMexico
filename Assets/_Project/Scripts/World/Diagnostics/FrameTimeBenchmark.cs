@@ -41,6 +41,9 @@ namespace CronicasDeMexico.World.Diagnostics
             if (Array.IndexOf(args, "-benchmark") < 0)
                 return;
 
+            // Sin esto el juego se pausa si la ventana pierde el foco y la medición queda con frames de minutos.
+            Application.runInBackground = true;
+
             var benchmark = new GameObject("FrameTimeBenchmark").AddComponent<FrameTimeBenchmark>();
             var index = Array.IndexOf(args, "-benchmarkOutput");
             benchmark.outputFolder = index >= 0 && index + 1 < args.Length

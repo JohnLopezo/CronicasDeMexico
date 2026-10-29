@@ -5,6 +5,7 @@ using CronicasDeMexico.Gameplay.Player;
 using CronicasDeMexico.World.Rendering;
 using NUnit.Framework;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 using UnityEngine.SceneManagement;
 using UnityEngine.TestTools;
 using UnityEngine.UIElements;
@@ -80,6 +81,50 @@ namespace CronicasDeMexico.Tests
             Assert.GreaterOrEqual(screen.Target.width * screen.Scale, Screen.width);
             Assert.AreEqual(screen.Target.height / (2f * IsometricProjection.PixelsPerUnit), camera.orthographicSize, 1e-4f);
             Assert.IsNotNull(screen.Presentation.rootVisualElement.Q("pixel-art-screen"), "El panel no muestra la imagen.");
+
+            yield return UnloadScene();
+        }
+
+        // La cámara que limpia la pantalla no dibuja nada: en ningún nivel debe pagar HDR, texturas de profundidad o
+        // color ni los efectos del renderer (el SSAO de Alto) a resolución completa.
+        [UnityTest]
+        public IEnumerator ClearCamera_UsesRendererWithoutEffects_InEveryQualityLevel()
+        {
+            yield return LoadScene();
+
+            var clearCamera = Object.FindObjectsByType<Camera>(FindObjectsSortMode.None)
+                .SingleOrDefault(camera => camera.cullingMask == 0);
+            Assert.IsNotNull(clearCamera, "La escena no tiene la cámara de fondo.");
+            Assert.IsFalse(clearCamera.allowHDR);
+            Assert.IsFalse(clearCamera.allowMSAA);
+            var cameraData = clearCamera.GetUniversalAdditionalCameraData();
+            Assert.AreEqual(CameraOverrideOption.Off, cameraData.requiresDepthOption);
+            Assert.AreEqual(CameraOverrideOption.Off, cameraData.requiresColorOption);
+            Assert.IsFalse(cameraData.renderPostProcessing);
+            Assert.IsFalse(cameraData.renderShadows);
+
+            var originalLevel = QualitySettings.GetQualityLevel();
+            try
+            {
+                for (var level = 0; level < QualitySettings.names.Length; level++)
+                {
+                    var asset = QualitySettings.GetRenderPipelineAssetAt(level) as UniversalRenderPipelineAsset;
+                    Assert.IsNotNull(asset, $"El nivel {QualitySettings.names[level]} no tiene URP Asset.");
+                    Assert.Greater(asset.rendererDataList.Length, PixelArtScreen.ClearRendererIndex,
+                        $"{asset.name} no tiene el renderer de la cámara de fondo.");
+                    var renderer = asset.rendererDataList[PixelArtScreen.ClearRendererIndex];
+                    Assert.IsEmpty(renderer.rendererFeatures, $"{asset.name}: el renderer de la cámara de fondo tiene efectos.");
+
+                    QualitySettings.SetQualityLevel(level, applyExpensiveChanges: true);
+                    yield return null;
+                    Assert.AreSame(asset.GetRenderer(PixelArtScreen.ClearRendererIndex), cameraData.scriptableRenderer,
+                        $"En {QualitySettings.names[level]} la cámara de fondo no usa el renderer sin efectos.");
+                }
+            }
+            finally
+            {
+                QualitySettings.SetQualityLevel(originalLevel, applyExpensiveChanges: true);
+            }
 
             yield return UnloadScene();
         }

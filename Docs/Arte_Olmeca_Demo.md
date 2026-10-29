@@ -278,7 +278,7 @@ Pedida el 2026-10-28; se hace en lugar de las etapas 4–6 de las ruinas.
 - **Pruebas:** EditMode 42/42 y PlayMode 26/26 (nueva: `Camera_RendersAtArtResolution_AndPanelScalesItByAnInteger`).
 - **Pendiente:**
   - Medir en el i5 / HD 530 y en Android.
-  - En Alto, la cámara de fondo paga SSAO y HDR a 1080 p sin dibujar nada; se puede optimizar si hace falta.
+  - ~~En Alto, la cámara de fondo paga SSAO y HDR a 1080 p sin dibujar nada.~~ **Resuelto (2026-10-29):** usa el renderer sin efectos; Alto pasa de ~105 a ~290 FPS en el i7 (`Docs/Rendimiento.md`).
 
 **Etapa A2: recursos adaptados de `Referencia_Visual_Olmeca2.png`.** Prueba en `Prueba_Aldea_1920x1080_x3.png`.
 

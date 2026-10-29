@@ -14,11 +14,15 @@ La inspiración funcional combina viaje entre asentamientos y rutas regionales c
 
 ## 2. Historia, mundo y tono
 
+> **Alineado con `Docs/Historia_Mundo.md` (2026-10-29), que es la referencia narrativa.** Cambia: *Mundo de la Memoria* → **Mundo de las Memorias**; *El Olvido* → **Sombra del Olvido**; el protagonista es **una persona sin género definido** que muere en un accidente durante una expedición arqueológica (el "objeto antiguo" queda como posible detalle). El texto siguiente se conserva como antecedente.
+
 Un joven muere tras una expedición vinculada a un objeto antiguo. Su conciencia despierta en el **Mundo de la Memoria**, una dimensión fantástica que conserva ecos de comunidades y civilizaciones de México. No vuelve como humano: su alma se vincula al animal Guardián que el jugador elige. Una fuerza denominada provisionalmente **El Olvido** altera recuerdos, lugares y guardianes espirituales. El protagonista recupera Fragmentos de Memoria y aprende que las culturas no son piezas congeladas: nacen, se transforman, conviven e influyen unas en otras. Su misión es impedir la destrucción de esas memorias, no borrar el cambio histórico.
 
 Tono: aventura colorida, misteriosa, emotiva y ocasionalmente solemne; los dioses o entidades importantes deben tener presencia y motivaciones, no ser simples monstruos. La revelación final enfrenta al protagonista con El Olvido y una decisión sobre la preservación de las memorias. Los finales y diálogos definitivos están pendientes de guion.
 
 ## 3. Estructura histórica y capítulos
+
+> **Alineado con `Docs/Historia_Mundo.md` §6 (2026-10-29):** los capítulos son **cinco arcos** — I olmeca; II maya; III altiplano (teotihuacana, zapoteca y, como propuesta, epiclásico y tolteca); IV sur y occidente (mixteca, purépecha, totonaca, huasteca…); V mexica — más el Corazón de las Memorias como cierre. Las culturas de la lista siguiente se reparten dentro de esos arcos; el prólogo de primeras comunidades agrícolas está pendiente de decidir. Detalle en `Docs/Historia/Capitulos.md`. La lista se conserva como antecedente.
 
 Ruta jugable **provisional**, NO cronología lineal de reemplazo entre culturas:
 
@@ -36,6 +40,8 @@ Ruta jugable **provisional**, NO cronología lineal de reemplazo entre culturas:
 Las culturas coexistieron durante periodos extensos. La transición entre capítulos ocurre mediante **memorias/eras**, no mediante la afirmación de que una sociedad desapareció cuando surgió la siguiente. Investigar fechas, regiones, arquitectura, iconografía, lenguas, organización social y fuentes por capítulo. Incluir otras culturas cuando corresponda. Separar explícitamente arqueología documentada, interpretaciones y ficción. No inventar dioses históricos: cuando la atribución sea incierta, usar una entidad ficticia claramente identificada.
 
 ## 4. Personaje y Guardianes
+
+> **Alineado con `Docs/Historia_Mundo.md` §2.3 (2026-10-29):** la **Mariposa monarca** pasa a ser Guardián inicial (velocidad, evasión, luz); la **Vaquita marina** se conserva como Guardián posible a futuro. Ficha completa en `Docs/Personajes/Protagonista.md`.
 
 El jugador define un nombre y elige **un Guardián inicial**, que puede mantener durante la aventura. Cada Guardián tiene silueta, personalidad, movimiento, estadísticas, ataque básico, ataque pesado, tres habilidades activas, definitiva y pasiva; evolución espiritual cosmética y funcional en etapas posteriores. Los elementos base son **Agua, Tierra, Fuego, Viento, Luz y Oscuridad**. Las afinidades no determinan la personalidad.
 
@@ -87,6 +93,8 @@ Tipos de sala: combate, tesoro, acertijo, historia, descanso, santuario, secreto
 
 ### 7.1 Mazmorra olmeca — «La ciudad bajo la selva» (provisional)
 
+> **Alineado con `Docs/Historia_Mundo.md` (2026-10-29):** el jefe final se llama **Guardián de la Piedra Viva** (antes «Guardián de la Primera Piedra») y el fragmento, **Fragmento de la Primera Memoria** (antes «Piedra del Primer Recuerdo»). El segundo mini-jefe pasa a **Centinela de basalto** para no confundirse con el jefe. Vertical slice de 3 pisos y meta de 8. Detalle en `Docs/Mazmorras/Olmeca.md` y `Docs/Enemigos/Olmeca.md`.
+
 1. **El Umbral:** entrada selvática, combate y exploración tutorial.
 2. **El Pantano:** terreno húmedo y zonas que ralentizan.
 3. **Las Piedras del Jaguar:** acertijos de activación e indicios narrativos.
@@ -128,6 +136,8 @@ Arquetipos: melee, rápido, tanque, distancia, mágico/apoyo, volador, control, 
 **Jefe olmeca:** arena circular con piedra, vegetación y agua. Fase 1: zarpazo, embestida y golpe de tierra. Fase 2 (~60% HP): sube el agua y aparecen ondas, rugido y fragmentos. Fase 3 (~25% HP): secuencias combinadas y «Furia de la Primera Piedra», con zonas de impacto anunciadas. Todos los ataques importantes tienen telegráficos y oportunidades de respuesta. La victoria purifica al Guardián, otorga el Fragmento de Memoria y presenta tres Bendiciones posibles.
 
 ## 11. Bendiciones, habilidades y progresión
+
+> **Alineado con `Docs/Historia_Mundo.md` §7.3 (2026-10-29):** cada jefe principal da **fragmento de memoria + habilidad elemental fija** (tierra en el arco I, agua en el II) **+ acceso narrativo**, y **además** la elección de una Bendición entre tres descrita aquí.
 
 Cada jefe de capítulo concede una **elección entre tres Bendiciones**, de la cual el jugador toma una; la Bendición acompaña al personaje a capítulos posteriores. Ejemplos olmecas: **Fuerza de la Tierra** (defensa), **Instinto del Jaguar** (daño cercano/movilidad) y **Memoria del Agua** (mejora limitada de recuperación). Números y efectos definitivos pendientes de balance.
 

@@ -62,6 +62,11 @@ namespace CronicasDeMexico.Editor.SceneGeneration
             new Color32(140, 96, 66, 255), new Color32(196, 164, 104, 255), new Color32(70, 112, 116, 255),
             new Color32(214, 186, 132, 255), new Color32(96, 64, 42, 255), false);
 
+        // Figura espiritual: forma clara y luminosa, sin rasgos de ninguna deidad.
+        public static readonly CharacterPalette Spirit = new(
+            new Color32(196, 232, 222, 255), new Color32(236, 248, 240, 255), new Color32(222, 242, 236, 255),
+            new Color32(150, 214, 200, 255), new Color32(196, 232, 222, 255), false);
+
         public static readonly CharacterPalette JaguarSpirit = new(
             new Color32(70, 52, 40, 255), new Color32(214, 160, 60, 255), new Color32(214, 160, 60, 255),
             new Color32(40, 30, 24, 255), new Color32(40, 30, 24, 255), true);

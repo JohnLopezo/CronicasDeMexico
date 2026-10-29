@@ -6,6 +6,7 @@ using CronicasDeMexico.Core.Narrative;
 using CronicasDeMexico.Data.Characters;
 using CronicasDeMexico.Editor.PixelArt;
 using CronicasDeMexico.Gameplay.Interaction;
+using CronicasDeMexico.Gameplay.Narrative;
 using CronicasDeMexico.Gameplay.Npc;
 using CronicasDeMexico.World.Rendering;
 using UnityEditor;
@@ -39,7 +40,10 @@ namespace CronicasDeMexico.Editor.SceneGeneration
         const float PlatformHeight = 1f;          // H_PLATAFORMA del flujo
         const float BoundsInset = 7f;             // la cámara no se acerca tanto al borde en rombo del mapa
         const float PlaceholderPixelsPerUnit = 32f;
-        static readonly Vector2 PlayerStart = new(0f, 1.5f); // en la plaza, coordenadas del flujo
+        // El despertar (MP_OLM_01): el jugador aparece en la orilla noreste del río, cerca de la figura espiritual, y
+        // se asoma al agua en ReflectionPoint. Coordenadas del flujo, en tierra y lejos de obstáculos.
+        static readonly Vector2 PlayerStart = new(17.4f, 22.8f);
+        static readonly Vector2 ReflectionPoint = new(19.3f, 22.6f);
         static readonly Color BackgroundColor = new(0.075f, 0.141f, 0.102f); // #13241A, el fondo de las vistas previas
 
         // Huella (x, y del flujo) y altura de los obstáculos. El primer prefijo que coincide gana.
@@ -99,6 +103,7 @@ namespace CronicasDeMexico.Editor.SceneGeneration
         // x, y del flujo (uno = quieto en su sitio). Posiciones en tierra y lejos de obstáculos.
         static readonly (string id, string sprites, Vector2[] points)[] Settlers =
         {
+            (OlmecaNarrativeAssets.SpiritId, "Figura", new[] { new Vector2(18.6f, 23.6f) }),
             (OlmecaNarrativeAssets.ArtisanId, "Artesano", new[] { new Vector2(13.5f, 2.8f), new Vector2(14.6f, 2.8f) }),
             (OlmecaNarrativeAssets.ElderId, "Anciana", new[] { new Vector2(12.4f, 14.2f) }),
             (OlmecaNarrativeAssets.WarriorId, "Guerrero", new[] { new Vector2(12.0f, 8.5f) }),
@@ -167,6 +172,7 @@ namespace CronicasDeMexico.Editor.SceneGeneration
             foreach (var roof in root.GetComponentsInChildren<RoofOverhead>())
                 SetProperty(roof, "target", property => property.objectReferenceValue = player.transform);
             PlaceSettlers(Group("--- Habitantes ---", null), narrative, messageChannel);
+            BuildAwakening(Group("--- Despertar ---", null), narrative, messageChannel);
             CreateCamera(player.transform, data.limites);
             OlmecaPrototypeGenerator.CreateHud(
                 AssetDatabase.LoadAssetAtPath<StringEventChannel>(OlmecaPrototypeGenerator.PromptChannelPath),
@@ -296,7 +302,7 @@ namespace CronicasDeMexico.Editor.SceneGeneration
         }
 
         static void AddInscription(Transform parent, string name, Vector3 position, string text, StringEventChannel messageChannel,
-            string examineId = null, string alternateText = null)
+            string examineId = null, string alternateText = null, string prompt = null)
         {
             var layer = LayerMask.NameToLayer(OlmecaPrototypeGenerator.InteractableLayerName);
             var inscriptionObject = new GameObject(name) { layer = layer };
@@ -310,6 +316,8 @@ namespace CronicasDeMexico.Editor.SceneGeneration
             SetProperty(inscription, "text", property => property.stringValue = text);
             SetProperty(inscription, "messageChannel", property => property.objectReferenceValue = messageChannel);
             SetProperty(inscription, "examineId", property => property.stringValue = examineId);
+            if (prompt != null)
+                SetProperty(inscription, "prompt", property => property.stringValue = prompt);
             if (alternateText != null)
             {
                 SetProperty(inscription, "alternateFlag", property =>
@@ -320,12 +328,22 @@ namespace CronicasDeMexico.Editor.SceneGeneration
 
         // ---------- Habitantes ----------
 
+        // El reflejo es una inscripción sin sprite en la orilla; la misión empieza sola al cargar si no se empezó.
+        static void BuildAwakening(Transform parent, OlmecaNarrativeAssets.Content narrative, StringEventChannel messageChannel)
+        {
+            AddInscription(parent, "Reflejo", World(ReflectionPoint.x, ReflectionPoint.y, 0f) + Vector3.up * 0.5f,
+                OlmecaNarrativeAssets.ReflectionText, messageChannel, examineId: OlmecaNarrativeAssets.ReflectionId,
+                prompt: "Mirar el agua");
+            parent.gameObject.AddComponent<StartQuestOnLoad>().Quest = narrative.AwakeningQuest;
+        }
+
         static void PlaceSettlers(Transform parent, OlmecaNarrativeAssets.Content narrative, StringEventChannel messageChannel)
         {
             var spriteMaterial = AssetDatabase.LoadAssetAtPath<Material>(OlmecaPrototypeGenerator.SpriteMaterialPath)
                 ?? throw new InvalidOperationException($"No se encontró {OlmecaPrototypeGenerator.SpriteMaterialPath}.");
             var characters = new Dictionary<string, OlmecaNarrativeAssets.Character>
             {
+                [OlmecaNarrativeAssets.SpiritId] = narrative.Spirit,
                 [OlmecaNarrativeAssets.ArtisanId] = narrative.Artisan,
                 [OlmecaNarrativeAssets.ElderId] = narrative.Elder,
                 [OlmecaNarrativeAssets.WarriorId] = narrative.Warrior,
@@ -333,6 +351,7 @@ namespace CronicasDeMexico.Editor.SceneGeneration
             };
             var palettes = new Dictionary<string, PlaceholderSpriteFactory.CharacterPalette>
             {
+                ["Figura"] = PlaceholderSpriteFactory.Spirit,
                 ["Artesano"] = PlaceholderSpriteFactory.Artisan,
                 ["Anciana"] = PlaceholderSpriteFactory.Elder,
                 ["Guerrero"] = PlaceholderSpriteFactory.Warrior,

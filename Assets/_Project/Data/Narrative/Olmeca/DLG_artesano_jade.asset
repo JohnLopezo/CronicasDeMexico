@@ -31,7 +31,8 @@ MonoBehaviour:
         dile que no se esfuerce: a\xFAn no sana."
     flagsOnFinish: []
     questToStart: {fileID: 0}
-  - requiredFlags: []
+  - requiredFlags:
+    - olm.juramento
     forbiddenFlags: []
     lines:
     - speaker: {fileID: 0}
@@ -48,3 +49,12 @@ MonoBehaviour:
         Habla con ella."
     flagsOnFinish: []
     questToStart: {fileID: 11400000, guid: 43c173dffbbffba4d8125d31f3c6ec90, type: 2}
+  - requiredFlags: []
+    forbiddenFlags: []
+    lines:
+    - speaker: {fileID: 0}
+      text: "\xA1Quieto ah\xED! ...Un jaguar que no ataca. Qu\xE9 cosa tan rara."
+    - speaker: {fileID: 0}
+      text: "Si de verdad entiendes lo que digo, vuelve cuando sepas a qu\xE9 vienes."
+    flagsOnFinish: []
+    questToStart: {fileID: 0}

@@ -31,6 +31,7 @@ namespace CronicasDeMexico.Editor.SceneGeneration
             ("Artesano", new Vector2(13.5f, 3.5f)),
             ("Anciana", new Vector2(12.4f, 15f)),
             ("Guerrero", new Vector2(11f, 9.5f)),
+            ("Despertar", new Vector2(18f, 22.5f)), // orilla del río: jugador, figura espiritual y reflejo
         };
 
         [MenuItem("Crónicas/Capturar ciudad olmeca")]

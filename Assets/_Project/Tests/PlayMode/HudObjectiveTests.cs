@@ -19,6 +19,7 @@ namespace CronicasDeMexico.Tests
         {
             yield return SceneManager.LoadSceneAsync(SceneName, LoadSceneMode.Additive);
             yield return null;
+            yield return null; // StartQuestOnLoad empieza el despertar en el primer Update: esta misión va después
 
             Assert.IsTrue(ServiceLocator.TryGet(out StoryState story), "Boot no registró StoryState.");
             Assert.IsTrue(ServiceLocator.TryGet(out QuestService quests), "Boot no registró QuestService.");
@@ -38,7 +39,9 @@ namespace CronicasDeMexico.Tests
 
                 story.Report(StoryEvents.Talk("artesano_prueba"));
                 yield return null;
-                Assert.IsTrue(objective.ClassListContains("hidden"), "Sin misiones activas, el objetivo se oculta.");
+                // Al completarla vuelve el objetivo anterior (en la ciudad, el despertar) o se oculta si no hay ninguno.
+                Assert.IsTrue(objective.ClassListContains("hidden") || objective.Q<Label>("objective-title").text != "Piedra verde",
+                    "El objetivo de una misión completada sigue en pantalla.");
             }
             finally
             {

@@ -39,6 +39,8 @@ El juego distinguirá **endémico**, **nativo** y **emblemático** (§2.3). La t
 
 Se implementa **un** Guardián completo para el vertical slice (GDD §4, §17): **el Jaguar** (decidido el 2026-10-29). Los demás quedan como diseño. Conviene diferenciarlo visual y narrativamente de los **espíritus jaguar** enemigos del prototipo (o renombrar a estos), para no confundir al jugador.
 
+**Datos (N5):** `Data/Characters/GUA_jaguar.asset` (`GuardianData`: id `jaguar`, nativo, afinidad inicial **oscuridad**, que es la propuesta del GDD; la tierra la concede el jefe olmeca). Usa todavía el sprite provisional humano del jugador, aunque el reflejo diga "te mira un jaguar": falta el arte del Jaguar, que hace el autor. Sin pantalla de elección mientras haya un solo Guardián; `SaveData.guardianId` se rellenará cuando exista.
+
 ## Reglas (Historia_Mundo §16)
 
 - El protagonista conserva siempre la forma animal elegida (regla 1). La silueta humana solo asoma en recuerdos y en el epílogo.

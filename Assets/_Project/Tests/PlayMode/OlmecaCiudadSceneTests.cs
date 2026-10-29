@@ -272,7 +272,7 @@ namespace CronicasDeMexico.Tests
 
         // ---------- Asentamiento (fase narrativa 2, N4) ----------
 
-        static readonly string[] SettlerIds = { "artesano_jade", "anciana", "guerrero_joven", "comerciante" };
+        static readonly string[] SettlerIds = { "figura_espiritual", "artesano_jade", "anciana", "guerrero_joven", "comerciante" };
 
         static Dictionary<string, DialogueInteractable> FindSettlers()
         {
@@ -335,6 +335,8 @@ namespace CronicasDeMexico.Tests
                 var settlers = FindSettlers();
                 var player = Object.FindAnyObjectByType<PlayerMovement>().transform;
 
+                story.SetFlag("olm.juramento"); // el despertar (MP_OLM_01) ya terminó
+
                 // Antes de la misión, el guerrero solo habla de lo suyo y no cuenta.
                 TalkUntilTheEnd(settlers["guerrero_joven"], player);
                 Assert.AreEqual(QuestStatus.NotStarted, quests.GetStatus("MP_OLM_02"));
@@ -362,6 +364,59 @@ namespace CronicasDeMexico.Tests
                 stela.Interact(player);
                 channel.Unsubscribe(messages.Add);
                 StringAssert.Contains("como si las marcas nunca hubieran existido", messages.Single());
+            }
+            finally
+            {
+                if (bootStory != null)
+                    ServiceLocator.Register(bootStory);
+                if (bootQuests != null)
+                    ServiceLocator.Register(bootQuests);
+            }
+
+            yield return UnloadScene();
+        }
+
+        // MP_OLM_01 (N5): empieza sola al cargar, con el jugador en la orilla; se cumple asomándose al agua,
+        // escuchando a la figura y hablando con el artesano, que entonces empieza MP_OLM_02.
+        [UnityTest]
+        public IEnumerator Awakening_StartsOnLoad_AndLeadsToTheSettlementQuest()
+        {
+            ServiceLocator.TryGet(out StoryState bootStory);
+            ServiceLocator.TryGet(out QuestService bootQuests);
+            var story = new StoryState();
+            var quests = new QuestService(story, Resources.Load<QuestCatalog>(QuestCatalog.ResourcePath));
+            ServiceLocator.Register(story);
+            ServiceLocator.Register(quests);
+            try
+            {
+                yield return LoadScene();
+                yield return null;
+                Assert.AreEqual(QuestStatus.Active, quests.GetStatus("MP_OLM_01"), "El despertar no empezó al cargar.");
+
+                var settlers = FindSettlers();
+                var player = Object.FindAnyObjectByType<PlayerMovement>().transform;
+                var spirit = settlers["figura_espiritual"].transform;
+                Assert.Less(Vector3.Distance(player.position, spirit.position), 3f, "El jugador no despierta junto a la figura.");
+
+                // Sin el juramento, el artesano no empieza nada.
+                TalkUntilTheEnd(settlers["artesano_jade"], player);
+                Assert.AreEqual(QuestStatus.NotStarted, quests.GetStatus("MP_OLM_02"));
+
+                var reflection = Object.FindObjectsByType<InscriptionInteractable>(FindObjectsSortMode.None)
+                    .Single(i => i.name == "Reflejo");
+                reflection.Interact(player);
+                Assert.AreEqual(1, quests.GetStep("MP_OLM_01"));
+
+                TalkUntilTheEnd(settlers["figura_espiritual"], player);
+                Assert.IsTrue(story.HasFlag("olm.juramento"));
+                Assert.AreEqual(2, quests.GetStep("MP_OLM_01"));
+
+                TalkUntilTheEnd(settlers["artesano_jade"], player);
+                Assert.AreEqual(QuestStatus.Completed, quests.GetStatus("MP_OLM_01"));
+                Assert.IsTrue(story.HasFlag("olm.despertar_completo"));
+                Assert.AreEqual(QuestStatus.Active, quests.GetStatus("MP_OLM_02"));
+                Assert.IsTrue(quests.TryGetCurrentObjective(out var title, out _));
+                Assert.AreEqual("El asentamiento inquieto", title);
             }
             finally
             {

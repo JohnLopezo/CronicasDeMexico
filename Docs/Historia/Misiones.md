@@ -45,4 +45,11 @@ Misiones principales y secundarias. Solo el **arco I (olmeca)** está desarrolla
 
 Assets en `Data/Narrative/Olmeca/` y catálogo en `Resources/Narrativa/CatalogoMisiones` (los crea `OlmecaNarrativeAssets` si faltan). Altares y estelas avisan `examinar:altar_trono` y `examinar:estela`.
 
-**Falta:** `MP_OLM_01` (despertar, N5); `MP_OLM_03` en adelante necesitan la selva y la mazmorra.
+**`MP_OLM_01` jugable (2026-10-29, N5)** en `Olmeca_Ciudad`:
+
+1. Empieza sola al cargar la escena (`StartQuestOnLoad`). El jugador aparece en la orilla noreste del río, junto a la figura espiritual.
+2. Paso 1, `examinar:reflejo`: al asomarse al agua llegan los recuerdos rotos (una voz, una luz, piedras que se derrumban, la caída) y el reflejo del jaguar.
+3. Paso 2, `hablar:figura_espiritual`: explica el Mundo de las Memorias y pide el juramento; activa `olm.juramento`.
+4. Paso 3, `hablar:artesano_jade`: con el juramento, el artesano empieza `MP_OLM_02`; sin él, solo se sorprende de ver un jaguar tranquilo. Recompensa: `olm.despertar_completo`.
+
+**Falta:** `MP_OLM_03` en adelante necesitan la selva y la mazmorra.

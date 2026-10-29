@@ -4,7 +4,7 @@ Registro corto de cada sesión de trabajo, para retomar en cualquiera de las dos
 
 **Cómo se usa:**
 
-- **Al empezar:** leer la última entrada, `git pull` y comprobar que el último commit coincide con el anotado.
+- **Al empezar:** leer `Docs/Estado_y_Plan.md` (recopilación y plan) y la última entrada, `git pull` y comprobar que el último commit coincide con el anotado.
 - **Al terminar:** añadir una entrada **arriba** (la más reciente primero) y subirla en el mismo push que el trabajo. Así la otra PC ve el estado real al hacer `git pull`.
 - Cada entrada es breve; el detalle técnico vive en los documentos de cada área (por ejemplo, `Docs/Arte_Olmeca_Demo.md` §12) y en los commits.
 
@@ -36,7 +36,10 @@ Plantilla:
   Commit `210265a`.
 - **Hecho (N4):** artesano, anciana, joven guerrero y comerciante en `Olmeca_Ciudad` con sprites provisionales (misma silueta, paletas propias), `NpcData` y `DialogueData`; misión `MP_OLM_02` jugable de principio a fin; catálogo de misiones en `Resources`; estelas con texto alternativo tras la misión. Los assets narrativos los crea `OlmecaNarrativeAssets` solo si faltan (después se editan en el Inspector). `OlmecaCityCapture` añade vistas de los habitantes.
 - **Estado:** EditMode 55/55, PlayMode 31/31 (nuevas: `Settlers_StandOnGround_WithTheirIdentityAndDialogue`, `SettlementQuest_IsCompletedByTalkingInOrder_AndChangesTheStelae`). Capturas revisadas a ojo; el diálogo y el HUD no se han probado jugando en el Editor.
-- **Siguiente:** N5 (despertar: orilla, reflejo, figura espiritual, `MP_OLM_01`, `GuardianData` del Jaguar); probar la misión jugando en el Editor; escombros de basalto; medir en Android (corresponde a esta PC). Benchmark del i5 cuando se trabaje allí.
+  Commit `58da8ea`.
+- **Hecho (N5):** despertar en la orilla noreste del río. El jugador empieza ahí; `MP_OLM_01` arranca sola (`StartQuestOnLoad`): asomarse al agua (recuerdos y reflejo), escuchar a la figura espiritual (juramento) y hablar con el artesano, que ahora exige el juramento para empezar `MP_OLM_02`. `GuardianData` y `GUA_jaguar` (afinidad inicial oscuridad, propuesta). Se recreó `DLG_artesano_jade` (no tenía ediciones a mano).
+- **Estado:** EditMode 55/55, PlayMode 32/32 (nueva: `Awakening_StartsOnLoad_AndLeadsToTheSettlementQuest`). Capturas revisadas a ojo; no se ha jugado en el Editor.
+- **Siguiente:** jugar el arco en el Editor (abrir `Olmeca_Ciudad`: Boot sigue cargando el prototipo); decidir si Boot arranca en la ciudad; arte del Jaguar y de los NPC (autor); después, plan de selva y mazmorra (`MP_OLM_03`+); escombros de basalto; medir en Android (corresponde a esta PC). Benchmark del i5 cuando se trabaje allí.
 
 ## 2026-10-28 — i7-10700
 

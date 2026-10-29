@@ -36,4 +36,5 @@ Fuente: `Docs/Historia_Mundo.md` §6 (capítulo I), §9; GDD `Docs/Diseno.md` §
 - **Datos:** `Data/Narrative/Olmeca/NPC_*.asset` y `DLG_*.asset`, creados por `OlmecaNarrativeAssets` **solo si no existen**: se editan en el Inspector y regenerar la ciudad no los pisa. Para volver al texto del código, borrar el asset.
 - **Arte provisional:** la misma silueta de 32×48 con paletas distintas (`PlaceholderSpriteFactory`: Artisan, Elder, Warrior, Merchant). Incumple a propósito la regla de siluetas propias hasta que llegue el arte final, que **hace el autor** (Arte_Olmeca_Demo §12).
 - `Artesano` (prefab) sigue en el prototipo (`Olmeca_Prototipo`) con sus líneas fijas.
-- Falta la figura espiritual (N5) y los habitantes de ambiente.
+- **Figura espiritual (N5):** en la orilla del despertar, con sprite provisional claro (`PlaceholderSpriteFactory.Spirit`), sin rasgos de deidad. Por ahora no desaparece tras el juramento.
+- Faltan los habitantes de ambiente.

@@ -21,7 +21,7 @@ QualitySettings:
     skinWeights: 4
     globalTextureMipmapLimit: 0
     textureMipmapLimitSettings: []
-    anisotropicTextures: 2
+    anisotropicTextures: 1
     antiAliasing: 0
     softParticles: 0
     softVegetation: 1
@@ -164,7 +164,7 @@ QualitySettings:
     excludedTargetPlatforms: []
   m_TextureMipmapLimitGroupNames: []
   m_PerPlatformDefaultQuality:
-    Android: 1
+    Android: 0
     GameCoreScarlett: 1
     GameCoreXboxOne: 1
     Lumin: 0
@@ -174,7 +174,7 @@ QualitySettings:
     PS5: 1
     Server: 1
     Stadia: 0
-    Standalone: 1
+    Standalone: 0
     WebGL: 1
     Windows Store Apps: 1
     XboxOne: 0

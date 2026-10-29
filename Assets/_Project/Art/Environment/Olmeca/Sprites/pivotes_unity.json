@@ -1,0 +1,742 @@
+{
+ "ppu": 45.254833995939045,
+ "sprites": [
+  {
+   "nombre": "Altar_Trono_01",
+   "lienzo": [
+    136,
+    120
+   ],
+   "pivote": [
+    68,
+    36
+   ]
+  },
+  {
+   "nombre": "Arbusto_Selva_01",
+   "lienzo": [
+    48,
+    48
+   ],
+   "pivote": [
+    24,
+    10
+   ]
+  },
+  {
+   "nombre": "Arbusto_Selva_02",
+   "lienzo": [
+    48,
+    48
+   ],
+   "pivote": [
+    24,
+    10
+   ]
+  },
+  {
+   "nombre": "Canoa_01",
+   "lienzo": [
+    96,
+    64
+   ],
+   "pivote": [
+    48,
+    26
+   ]
+  },
+  {
+   "nombre": "Casa_Bajareque_01",
+   "lienzo": [
+    160,
+    152
+   ],
+   "pivote": [
+    80,
+    40
+   ]
+  },
+  {
+   "nombre": "Casa_Bajareque_02",
+   "lienzo": [
+    160,
+    152
+   ],
+   "pivote": [
+    80,
+    40
+   ]
+  },
+  {
+   "nombre": "Casa_Bajareque_03",
+   "lienzo": [
+    160,
+    152
+   ],
+   "pivote": [
+    80,
+    40
+   ]
+  },
+  {
+   "nombre": "Ceiba_01",
+   "lienzo": [
+    192,
+    208
+   ],
+   "pivote": [
+    96,
+    28
+   ]
+  },
+  {
+   "nombre": "Cerca_Basalto_01",
+   "lienzo": [
+    64,
+    96
+   ],
+   "pivote": [
+    32,
+    14
+   ]
+  },
+  {
+   "nombre": "Cerca_Basalto_02",
+   "lienzo": [
+    64,
+    96
+   ],
+   "pivote": [
+    32,
+    14
+   ]
+  },
+  {
+   "nombre": "Cerca_Basalto_03",
+   "lienzo": [
+    64,
+    96
+   ],
+   "pivote": [
+    32,
+    14
+   ]
+  },
+  {
+   "nombre": "Cerca_Basalto_Y_01",
+   "lienzo": [
+    64,
+    96
+   ],
+   "pivote": [
+    32,
+    14
+   ]
+  },
+  {
+   "nombre": "Cerca_Basalto_Y_02",
+   "lienzo": [
+    64,
+    96
+   ],
+   "pivote": [
+    32,
+    14
+   ]
+  },
+  {
+   "nombre": "Cerca_Basalto_Y_03",
+   "lienzo": [
+    64,
+    96
+   ],
+   "pivote": [
+    32,
+    14
+   ]
+  },
+  {
+   "nombre": "Enramada_01",
+   "lienzo": [
+    160,
+    152
+   ],
+   "pivote": [
+    80,
+    40
+   ]
+  },
+  {
+   "nombre": "Enramada_Poste_01",
+   "lienzo": [
+    160,
+    152
+   ],
+   "pivote": [
+    80,
+    40
+   ]
+  },
+  {
+   "nombre": "Enramada_Techo_01",
+   "lienzo": [
+    160,
+    152
+   ],
+   "pivote": [
+    80,
+    40
+   ]
+  },
+  {
+   "nombre": "Escombros_Basalto_01",
+   "lienzo": [
+    48,
+    48
+   ],
+   "pivote": [
+    24,
+    14
+   ]
+  },
+  {
+   "nombre": "Escombros_Basalto_02",
+   "lienzo": [
+    48,
+    48
+   ],
+   "pivote": [
+    24,
+    14
+   ]
+  },
+  {
+   "nombre": "Escombros_Basalto_03",
+   "lienzo": [
+    48,
+    48
+   ],
+   "pivote": [
+    24,
+    14
+   ]
+  },
+  {
+   "nombre": "Estela_Grande_01",
+   "lienzo": [
+    64,
+    88
+   ],
+   "pivote": [
+    32,
+    22
+   ]
+  },
+  {
+   "nombre": "Estela_Grande_02",
+   "lienzo": [
+    64,
+    88
+   ],
+   "pivote": [
+    32,
+    22
+   ]
+  },
+  {
+   "nombre": "Estela_Grande_03",
+   "lienzo": [
+    64,
+    88
+   ],
+   "pivote": [
+    32,
+    22
+   ]
+  },
+  {
+   "nombre": "Estela_Lisa_01",
+   "lienzo": [
+    32,
+    64
+   ],
+   "pivote": [
+    16,
+    12
+   ]
+  },
+  {
+   "nombre": "Fogon_01",
+   "lienzo": [
+    48,
+    48
+   ],
+   "pivote": [
+    22,
+    14
+   ]
+  },
+  {
+   "nombre": "Helecho_01",
+   "lienzo": [
+    48,
+    48
+   ],
+   "pivote": [
+    24,
+    12
+   ]
+  },
+  {
+   "nombre": "Helecho_02",
+   "lienzo": [
+    48,
+    48
+   ],
+   "pivote": [
+    24,
+    12
+   ]
+  },
+  {
+   "nombre": "Matorral_Selva_01",
+   "lienzo": [
+    64,
+    64
+   ],
+   "pivote": [
+    32,
+    16
+   ]
+  },
+  {
+   "nombre": "Matorral_Selva_02",
+   "lienzo": [
+    64,
+    64
+   ],
+   "pivote": [
+    32,
+    16
+   ]
+  },
+  {
+   "nombre": "Matorral_Selva_03",
+   "lienzo": [
+    64,
+    64
+   ],
+   "pivote": [
+    32,
+    16
+   ]
+  },
+  {
+   "nombre": "Muelle_Madera_01",
+   "lienzo": [
+    64,
+    64
+   ],
+   "pivote": [
+    32,
+    22
+   ]
+  },
+  {
+   "nombre": "Muelle_Madera_02",
+   "lienzo": [
+    64,
+    64
+   ],
+   "pivote": [
+    32,
+    22
+   ]
+  },
+  {
+   "nombre": "Nenufar_01",
+   "lienzo": [
+    32,
+    32
+   ],
+   "pivote": [
+    16,
+    14
+   ]
+  },
+  {
+   "nombre": "Palma_Corozo_01",
+   "lienzo": [
+    64,
+    128
+   ],
+   "pivote": [
+    36,
+    12
+   ]
+  },
+  {
+   "nombre": "Palma_Corozo_02",
+   "lienzo": [
+    64,
+    128
+   ],
+   "pivote": [
+    36,
+    12
+   ]
+  },
+  {
+   "nombre": "Pasto_Alto_01",
+   "lienzo": [
+    32,
+    48
+   ],
+   "pivote": [
+    16,
+    8
+   ]
+  },
+  {
+   "nombre": "Pasto_Alto_02",
+   "lienzo": [
+    32,
+    48
+   ],
+   "pivote": [
+    16,
+    8
+   ]
+  },
+  {
+   "nombre": "Plataforma_Arcilla_00",
+   "lienzo": [
+    64,
+    96
+   ],
+   "pivote": [
+    32,
+    18
+   ]
+  },
+  {
+   "nombre": "Plataforma_Arcilla_01",
+   "lienzo": [
+    64,
+    96
+   ],
+   "pivote": [
+    32,
+    18
+   ]
+  },
+  {
+   "nombre": "Plataforma_Arcilla_02",
+   "lienzo": [
+    64,
+    96
+   ],
+   "pivote": [
+    32,
+    18
+   ]
+  },
+  {
+   "nombre": "Plataforma_Arcilla_04",
+   "lienzo": [
+    64,
+    96
+   ],
+   "pivote": [
+    32,
+    18
+   ]
+  },
+  {
+   "nombre": "Plataforma_Arcilla_05",
+   "lienzo": [
+    64,
+    96
+   ],
+   "pivote": [
+    32,
+    18
+   ]
+  },
+  {
+   "nombre": "Plataforma_Arcilla_06",
+   "lienzo": [
+    64,
+    96
+   ],
+   "pivote": [
+    32,
+    18
+   ]
+  },
+  {
+   "nombre": "Plataforma_Arcilla_08",
+   "lienzo": [
+    64,
+    96
+   ],
+   "pivote": [
+    32,
+    18
+   ]
+  },
+  {
+   "nombre": "Plataforma_Arcilla_09",
+   "lienzo": [
+    64,
+    96
+   ],
+   "pivote": [
+    32,
+    18
+   ]
+  },
+  {
+   "nombre": "Plataforma_Arcilla_10",
+   "lienzo": [
+    64,
+    96
+   ],
+   "pivote": [
+    32,
+    18
+   ]
+  },
+  {
+   "nombre": "Plataforma_Arcilla_32",
+   "lienzo": [
+    64,
+    96
+   ],
+   "pivote": [
+    32,
+    18
+   ]
+  },
+  {
+   "nombre": "Rampa_Arcilla_01",
+   "lienzo": [
+    136,
+    112
+   ],
+   "pivote": [
+    68,
+    30
+   ]
+  },
+  {
+   "nombre": "Rampa_Arcilla_02",
+   "lienzo": [
+    136,
+    112
+   ],
+   "pivote": [
+    68,
+    30
+   ]
+  },
+  {
+   "nombre": "Roca_Basalto_01",
+   "lienzo": [
+    48,
+    48
+   ],
+   "pivote": [
+    24,
+    14
+   ]
+  },
+  {
+   "nombre": "Roca_Basalto_02",
+   "lienzo": [
+    48,
+    48
+   ],
+   "pivote": [
+    24,
+    14
+   ]
+  },
+  {
+   "nombre": "Roca_Basalto_03",
+   "lienzo": [
+    48,
+    48
+   ],
+   "pivote": [
+    24,
+    14
+   ]
+  },
+  {
+   "nombre": "Tile_Agua_Anim_01",
+   "lienzo": [
+    64,
+    64
+   ],
+   "pivote": [
+    32,
+    40
+   ]
+  },
+  {
+   "nombre": "Tile_Agua_Anim_02",
+   "lienzo": [
+    64,
+    64
+   ],
+   "pivote": [
+    32,
+    40
+   ]
+  },
+  {
+   "nombre": "Tile_Agua_Anim_03",
+   "lienzo": [
+    64,
+    64
+   ],
+   "pivote": [
+    32,
+    40
+   ]
+  },
+  {
+   "nombre": "Tile_Agua_Anim_04",
+   "lienzo": [
+    64,
+    64
+   ],
+   "pivote": [
+    32,
+    40
+   ]
+  },
+  {
+   "nombre": "Tronco_Caido_01",
+   "lienzo": [
+    64,
+    48
+   ],
+   "pivote": [
+    32,
+    16
+   ]
+  },
+  {
+   "nombre": "Tronco_Caido_02",
+   "lienzo": [
+    64,
+    48
+   ],
+   "pivote": [
+    32,
+    16
+   ]
+  },
+  {
+   "nombre": "Tule_01",
+   "lienzo": [
+    32,
+    64
+   ],
+   "pivote": [
+    16,
+    8
+   ]
+  },
+  {
+   "nombre": "Vasijas_01",
+   "lienzo": [
+    48,
+    48
+   ],
+   "pivote": [
+    24,
+    12
+   ]
+  },
+  {
+   "nombre": "Vasijas_02",
+   "lienzo": [
+    48,
+    48
+   ],
+   "pivote": [
+    24,
+    12
+   ]
+  },
+  {
+   "nombre": "Suelo_Ciudad_00",
+   "lienzo": [
+    1024,
+    1024
+   ],
+   "pivote": [
+    512.0,
+    512.0
+   ]
+  },
+  {
+   "nombre": "Suelo_Ciudad_01",
+   "lienzo": [
+    1024,
+    1024
+   ],
+   "pivote": [
+    512.0,
+    512.0
+   ]
+  },
+  {
+   "nombre": "Suelo_Ciudad_02",
+   "lienzo": [
+    902,
+    1024
+   ],
+   "pivote": [
+    451.0,
+    512.0
+   ]
+  },
+  {
+   "nombre": "Suelo_Ciudad_03",
+   "lienzo": [
+    1024,
+    506
+   ],
+   "pivote": [
+    512.0,
+    253.0
+   ]
+  },
+  {
+   "nombre": "Suelo_Ciudad_04",
+   "lienzo": [
+    1024,
+    506
+   ],
+   "pivote": [
+    512.0,
+    253.0
+   ]
+  },
+  {
+   "nombre": "Suelo_Ciudad_05",
+   "lienzo": [
+    902,
+    506
+   ],
+   "pivote": [
+    451.0,
+    253.0
+   ]
+  }
+ ]
+}

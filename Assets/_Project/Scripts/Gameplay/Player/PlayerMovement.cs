@@ -9,11 +9,8 @@ namespace CronicasDeMexico.Gameplay.Player
     /// Usa CharacterController: las colisiones con el escenario no requieren Rigidbody ni simulación física.
     /// </summary>
     [RequireComponent(typeof(CharacterController))]
-    public sealed class PlayerMovement : MonoBehaviour
+    public sealed class PlayerMovement : MonoBehaviour, IPlanarMotion
     {
-        // Mantiene al controlador pegado al suelo para que isGrounded no parpadee en rampas.
-        const float GroundedVerticalSpeed = -2f;
-
         [SerializeField, Tooltip("Acción Vector2 de movimiento (Player/Move).")]
         InputActionReference moveAction;
 
@@ -57,7 +54,15 @@ namespace CronicasDeMexico.Gameplay.Player
         {
             if (moveAction != null)
                 moveAction.action.Disable();
+
+            // Desactivado (p. ej. al morir) queda quieto: el sprite no debe seguir caminando.
+            planarVelocity = Vector3.zero;
         }
+
+        /// <summary>
+        /// Suma una velocidad horizontal instantánea (retroceso al recibir daño). La aceleración normal la frena.
+        /// </summary>
+        public void AddImpulse(Vector3 velocity) => planarVelocity += Vector3.ProjectOnPlane(velocity, Vector3.up);
 
         void Update()
         {
@@ -71,9 +76,7 @@ namespace CronicasDeMexico.Gameplay.Player
             if (desiredVelocity.sqrMagnitude > 0.0001f)
                 FacingDirection = desiredVelocity.normalized;
 
-            if (controller.isGrounded && verticalSpeed < 0f)
-                verticalSpeed = GroundedVerticalSpeed;
-            verticalSpeed += gravity * deltaTime;
+            verticalSpeed = PlanarMovement.ApplyGravity(verticalSpeed, controller.isGrounded, gravity, deltaTime);
 
             var flags = controller.Move((planarVelocity + Vector3.up * verticalSpeed) * deltaTime);
 

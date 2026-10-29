@@ -11,6 +11,8 @@ Shader "Cronicas/HD2D Sprite Lit"
         _NormalUp ("Normal hacia arriba", Range(0, 1)) = 0.6
         _LightWrap ("Envoltura de luz", Range(0, 1)) = 0.5
         _ShadowSampleOffset ("Desfase de muestreo de sombra (m)", Range(0, 1)) = 0.3
+        // Lo cambia DamageFlash por renderer (MaterialPropertyBlock) al recibir daño.
+        _FlashAmount ("Destello", Range(0, 1)) = 0
     }
 
     SubShader
@@ -39,6 +41,7 @@ Shader "Cronicas/HD2D Sprite Lit"
             half _NormalUp;
             half _LightWrap;
             half _ShadowSampleOffset;
+            half _FlashAmount;
         CBUFFER_END
 
         // Aplica flipX/flipY del SpriteRenderer, que se resuelve en el shader y no en la malla.
@@ -46,7 +49,7 @@ Shader "Cronicas/HD2D Sprite Lit"
         {
             SetUpSpriteInstanceProperties();
             // URP no entrega unity_SpriteProps a las pasadas de sombra y profundidad: llega en 0 y aplastaría
-            // la geometría. Se trata como "sin volteo" (CharacterSpriteFacing voltea con la escala, no con flipX).
+            // la geometría. Se trata como "sin volteo" (DirectionalSpriteAnimator voltea con la escala, no con flipX).
             float2 flip = unity_SpriteProps.xy;
             flip = lerp(float2(1, 1), flip, step(0.5, abs(flip)));
             return UnityFlipSprite(positionOS, flip);
@@ -175,7 +178,8 @@ Shader "Cronicas/HD2D Sprite Lit"
                 LIGHT_LOOP_END
                 #endif
 
-                half3 color = MixFog(albedo.rgb * lighting, input.fogFactorAndVertexLight.x);
+                half3 litColor = lerp(albedo.rgb * lighting, half3(1, 1, 1), _FlashAmount);
+                half3 color = MixFog(litColor, input.fogFactorAndVertexLight.x);
                 return half4(color, 1.0h);
             }
             ENDHLSL

@@ -77,7 +77,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 7bb3951d454964f4e9ab29bfab231706, type: 3}
+  m_Sprite: {fileID: 903000659, guid: 7bb3951d454964f4e9ab29bfab231706, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -113,10 +113,15 @@ GameObject:
   - component: {fileID: 6563147803131534840}
   - component: {fileID: 4844504375349180849}
   - component: {fileID: 1840376728134561718}
-  - component: {fileID: 3990842696675814373}
+  - component: {fileID: 1161331672111561633}
+  - component: {fileID: 8155768554170281419}
+  - component: {fileID: 2411634717844578205}
+  - component: {fileID: 4475566719306281092}
+  - component: {fileID: 7485052137595017428}
+  - component: {fileID: 2855715814293587335}
   m_Layer: 0
   m_Name: Jugador
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -179,7 +184,7 @@ MonoBehaviour:
   moveSpeed: 4
   acceleration: 40
   gravity: -20
---- !u!114 &3990842696675814373
+--- !u!114 &1161331672111561633
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -188,10 +193,96 @@ MonoBehaviour:
   m_GameObject: {fileID: 3936822071325029381}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 36b38559bd30f634ab42db25031d2689, type: 3}
+  m_Script: {fileID: 11500000, guid: c68618b5b0792364e8857d5cb013f769, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  movement: {fileID: 1840376728134561718}
+  motionSource: {fileID: 1840376728134561718}
   spriteRenderer: {fileID: 3110209773335240238}
+  spriteSet: {fileID: 11400000, guid: 4ab5056b146b7ab438643131a533fd3c, type: 2}
   cameraTransform: {fileID: 0}
-  artFacesLeft: 0
+--- !u!114 &8155768554170281419
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3936822071325029381}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d383a9e1ebb3e0c40801508f37fbf573, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  interactAction: {fileID: -5548793354506133487, guid: 052faaac586de48259a63d0c4782560b, type: 3}
+  interactableLayers:
+    serializedVersion: 2
+    m_Bits: 64
+  detectionRadius: 1
+  detectionHeight: 0.7
+  promptChannel: {fileID: 11400000, guid: 220e96fbd08fbf845998c0c3e97cea20, type: 2}
+  messageChannel: {fileID: 11400000, guid: 40479bdc95cd83c49b8e1e2d4a300ec4, type: 2}
+--- !u!114 &2411634717844578205
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3936822071325029381}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6cdbadb8a24748f44a3b79c71791fd67, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 5
+  invulnerabilityTime: 1
+  changedChannel: {fileID: 11400000, guid: 1b48d06bc819bd249a9b071dd1b11c69, type: 2}
+--- !u!114 &4475566719306281092
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3936822071325029381}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cb32829a4afe76c448a1be99bc9ec617, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  health: {fileID: 2411634717844578205}
+  spriteRenderer: {fileID: 3110209773335240238}
+  duration: 0.12
+--- !u!114 &7485052137595017428
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3936822071325029381}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6c3a8ab6b84ef6a4589c95330d6f9a8d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  knockbackSpeed: 6
+  respawnDelay: 1.5
+  respawnInvulnerability: 2
+--- !u!114 &2855715814293587335
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3936822071325029381}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9ea1bca6b6134ce46875e659e43a5e92, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  attackAction: {fileID: 1120369429361536294, guid: 052faaac586de48259a63d0c4782560b, type: 3}
+  targetLayers:
+    serializedVersion: 2
+    m_Bits: 128
+  damage: 1
+  reach: 0.8
+  radius: 0.7
+  cooldown: 0.35
+  height: 0.7

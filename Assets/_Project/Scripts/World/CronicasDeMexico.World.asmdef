@@ -1,7 +1,7 @@
 {
     "name": "CronicasDeMexico.World",
     "rootNamespace": "CronicasDeMexico.World",
-    "references": ["CronicasDeMexico.Core", "CronicasDeMexico.Data"],
+    "references": ["CronicasDeMexico.Core", "CronicasDeMexico.Data", "Unity.RenderPipelines.Universal.Runtime"],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,

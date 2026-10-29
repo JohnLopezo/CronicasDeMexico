@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Reflection;
+using CronicasDeMexico.Data.Characters;
 using CronicasDeMexico.Gameplay.Player;
 using NUnit.Framework;
 using UnityEngine;
@@ -109,32 +110,67 @@ namespace CronicasDeMexico.Tests
         }
 
         [UnityTest]
-        public IEnumerator SpriteFacing_FlipsWithScale_WhenMovingLeft_AndKeepsSide_WhenMovingUp()
+        public IEnumerator SpriteAnimator_MirrorsEastSprites_WhenMovingLeft_AndKeepsSide_WhenMovingDown()
         {
-            var sprite = new GameObject("SpritePrueba").AddComponent<SpriteRenderer>();
-            sprite.transform.SetParent(player.transform, false);
+            const int east = 2, south = 4; // orden de DirectionalSpriteSet: N, NE, E, SE, S
+            var spriteSet = CreateSpriteSet(out var sprites);
+            var spriteRenderer = new GameObject("SpritePrueba").AddComponent<SpriteRenderer>();
+            spriteRenderer.transform.SetParent(player.transform, false);
 
             // Se añade con el objeto inactivo para asignar las referencias antes de Awake.
             player.SetActive(false);
-            var facing = player.AddComponent<CharacterSpriteFacing>();
+            var animator = player.AddComponent<DirectionalSpriteAnimator>();
             const BindingFlags privateField = BindingFlags.NonPublic | BindingFlags.Instance;
-            typeof(CharacterSpriteFacing).GetField("movement", privateField).SetValue(facing, player.GetComponent<PlayerMovement>());
-            typeof(CharacterSpriteFacing).GetField("spriteRenderer", privateField).SetValue(facing, sprite);
+            typeof(DirectionalSpriteAnimator).GetField("motionSource", privateField).SetValue(animator, player.GetComponent<PlayerMovement>());
+            typeof(DirectionalSpriteAnimator).GetField("spriteRenderer", privateField).SetValue(animator, spriteRenderer);
+            typeof(DirectionalSpriteAnimator).GetField("spriteSet", privateField).SetValue(animator, spriteSet);
             player.SetActive(true);
 
-            InputSystem.QueueStateEvent(keyboard, new KeyboardState(Key.A));
-            yield return new WaitForSeconds(0.2f);
-            Assert.That(sprite.transform.localScale.x, Is.EqualTo(-1f), "No se volteó al ir a la izquierda.");
-            Assert.IsFalse(sprite.flipX, "Debe voltear con la escala, no con flipX.");
+            try
+            {
+                InputSystem.QueueStateEvent(keyboard, new KeyboardState(Key.A));
+                yield return new WaitForSeconds(0.2f);
+                Assert.That(sprites[east], Has.Member(spriteRenderer.sprite), "Al ir a la izquierda debe usar los sprites del Este.");
+                Assert.That(spriteRenderer.sprite, Is.Not.SameAs(sprites[east][0]), "Caminando no debe mostrar la pose quieta.");
+                Assert.That(spriteRenderer.transform.localScale.x, Is.EqualTo(-1f), "No se volteó al ir a la izquierda.");
+                Assert.IsFalse(spriteRenderer.flipX, "Debe voltear con la escala, no con flipX.");
 
-            InputSystem.QueueStateEvent(keyboard, new KeyboardState(Key.S));
-            yield return new WaitForSeconds(0.2f);
-            Assert.That(sprite.transform.localScale.x, Is.EqualTo(-1f), "Al moverse en vertical debe conservar el lado.");
+                InputSystem.QueueStateEvent(keyboard, new KeyboardState());
+                yield return new WaitForSeconds(0.3f);
+                Assert.That(spriteRenderer.sprite, Is.SameAs(sprites[east][0]), "Detenido debe mostrar la pose quieta.");
 
-            InputSystem.QueueStateEvent(keyboard, new KeyboardState(Key.D));
-            yield return new WaitForSeconds(0.2f);
-            InputSystem.QueueStateEvent(keyboard, new KeyboardState());
-            Assert.That(sprite.transform.localScale.x, Is.EqualTo(1f), "No volvió a mirar a la derecha.");
+                InputSystem.QueueStateEvent(keyboard, new KeyboardState(Key.S));
+                yield return new WaitForSeconds(0.2f);
+                Assert.That(sprites[south], Has.Member(spriteRenderer.sprite), "Al ir hacia abajo debe usar los sprites del Sur.");
+                Assert.That(spriteRenderer.transform.localScale.x, Is.EqualTo(-1f), "Al moverse en vertical debe conservar el lado.");
+
+                InputSystem.QueueStateEvent(keyboard, new KeyboardState(Key.D));
+                yield return new WaitForSeconds(0.2f);
+                InputSystem.QueueStateEvent(keyboard, new KeyboardState());
+                Assert.That(spriteRenderer.transform.localScale.x, Is.EqualTo(1f), "No volvió a mirar a la derecha.");
+            }
+            finally
+            {
+                Object.Destroy(spriteSet);
+            }
+        }
+
+        // Tres sprites por dirección: pose quieta y dos pasos.
+        static DirectionalSpriteSet CreateSpriteSet(out Sprite[][] sprites)
+        {
+            sprites = new Sprite[DirectionalSpriteSet.DirectionCount][];
+            var clips = new DirectionalSpriteSet.DirectionClip[DirectionalSpriteSet.DirectionCount];
+            for (var direction = 0; direction < clips.Length; direction++)
+            {
+                sprites[direction] = new Sprite[3];
+                for (var frame = 0; frame < 3; frame++)
+                    sprites[direction][frame] = Sprite.Create(Texture2D.whiteTexture, new Rect(0f, 0f, 4f, 4f), new Vector2(0.5f, 0f));
+                clips[direction] = new DirectionalSpriteSet.DirectionClip(sprites[direction][0], new[] { sprites[direction][1], sprites[direction][2] });
+            }
+
+            var spriteSet = ScriptableObject.CreateInstance<DirectionalSpriteSet>();
+            spriteSet.SetClips(clips);
+            return spriteSet;
         }
     }
 }

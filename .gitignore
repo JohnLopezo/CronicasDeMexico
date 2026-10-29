@@ -8,6 +8,8 @@
 /[Uu]ser[Ss]ettings/
 /[Mm]emoryCaptures/
 /[Rr]ecordings/
+# Temporales de CMake/Gradle del build de Android
+/.utmp/
 
 # Asset Store y paquetes exportados
 /[Aa]ssets/AssetStoreTools*
@@ -44,3 +46,7 @@ crashlytics-buildsettings.json
 Thumbs.db
 Desktop.ini
 .DS_Store
+
+# Python (caché que crea Blender al importar los scripts de Tools/ArtPipeline)
+__pycache__/
+*.pyc

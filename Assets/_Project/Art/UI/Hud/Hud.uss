@@ -44,6 +44,31 @@
     -unity-text-outline-color: rgba(0, 0, 0, 0.8);
 }
 
+/* Objetivo de la misión activa, bajo la vida. */
+.hud-objective {
+    position: absolute;
+    left: 24px;
+    top: 64px;
+    max-width: 520px;
+    padding: 8px 14px;
+    background-color: rgba(20, 16, 12, 0.7);
+    border-left-width: 3px;
+    border-color: rgb(190, 112, 44);
+    border-radius: 2px;
+}
+
+.hud-objective__title {
+    color: rgb(226, 170, 96);
+    font-size: 18px;
+    -unity-font-style: bold;
+}
+
+.hud-objective__text {
+    color: rgb(240, 232, 214);
+    font-size: 20px;
+    white-space: normal;
+}
+
 .hud-fps {
     position: absolute;
     right: 16px;

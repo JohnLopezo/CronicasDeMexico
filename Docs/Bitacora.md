@@ -30,9 +30,11 @@ Plantilla:
   Commit `6144f3f`.
 - **Hecho (narrativa, fase 1):** la biblia del autor queda en `Docs/Historia_Mundo.md` (texto íntegro y decisiones de integración al inicio). Derivados del arco olmeca: `Docs/Historia/` (Capitulos, Misiones, Glosario), `Docs/Personajes/` (Protagonista, NPC_Olmecas), `Docs/Culturas/Olmeca.md`, `Docs/Enemigos/Olmeca.md`, `Docs/Mazmorras/Olmeca.md`. `Diseno.md` §2, §3, §4, §7.1 y §11 llevan notas de alineación (lo anterior se conserva como antecedente) y `CLAUDE.md` apunta a la biblia.
 - **Decisiones:** nombres de la biblia; protagonista sin género; Mariposa monarca como Guardián y Vaquita a futuro; cinco arcos con las culturas del GDD dentro; vertical slice de 3 pisos y meta de 8; jefe = fragmento + habilidad fija + acceso + Bendición a elegir.
-- **Abierto:** el prólogo del GDD; epiclásico y tolteca dentro del arco III; afinidades de los arcos III–V; Guardián del vertical slice (recomendado: Jaguar).
-- **Estado:** EditMode 42/42, PlayMode 28/28 (nueva: `ClearCamera_UsesRendererWithoutEffects_InEveryQualityLevel`).
-- **Siguiente:** plan de la fase narrativa 2 (sistemas de diálogo, misiones y guardado para el arco olmeca); escombros de basalto; medir en Android (corresponde a esta PC). Benchmark del i5 cuando se trabaje allí.
+  Commit `6f74768`. Después el usuario decidió: **Guardián del vertical slice = Jaguar**; el prólogo del GDD se sustituye por **tutorial en los primeros pisos olmecas**.
+- **Abierto:** epiclásico y tolteca dentro del arco III; afinidades de los arcos III–V.
+- **Hecho (fase narrativa 2, N1–N3):** `StoryState` (banderas y avisos), `NpcData` y `DialogueData` con ramas; `DialogueInteractable` las usa (conserva las líneas fijas); `QuestData`, `QuestCatalog` y `QuestService`; `InscriptionInteractable` con id, `ReportOnDefeat` y `ReportOnEnter`; objetivo de misión en el HUD; `SaveService` (JSON con versión y respaldo). Boot registra los tres servicios; nada guarda ni carga aún en juego.
+- **Estado:** EditMode 55/55 (nuevas: `NarrativeTests`, `SaveServiceTests`), PlayMode 29/29 (nueva: `HudObjectiveTests`; `BootTests` comprueba los servicios nuevos).
+- **Siguiente:** N4 (NPC del asentamiento en la ciudad, diálogos y `MP_OLM_02`) y N5 (despertar), con plan y capturas; escombros de basalto; medir en Android (corresponde a esta PC). Benchmark del i5 cuando se trabaje allí.
 
 ## 2026-10-28 — i7-10700
 

@@ -37,7 +37,7 @@ El juego distinguirá **endémico**, **nativo** y **emblemático** (§2.3). La t
 
 ## Alcance inicial
 
-Se implementa **un** Guardián completo para el vertical slice (GDD §4, §17); el GDD recomienda el Jaguar. Los demás quedan como diseño. Si se elige el Jaguar, conviene diferenciarlo visual y narrativamente de los **espíritus jaguar** enemigos del prototipo (o renombrar a estos), para no confundir al jugador.
+Se implementa **un** Guardián completo para el vertical slice (GDD §4, §17): **el Jaguar** (decidido el 2026-10-29). Los demás quedan como diseño. Conviene diferenciarlo visual y narrativamente de los **espíritus jaguar** enemigos del prototipo (o renombrar a estos), para no confundir al jugador.
 
 ## Reglas (Historia_Mundo §16)
 

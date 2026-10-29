@@ -15,7 +15,7 @@ Secuencia narrativa y jugable de Crónicas de México. Fuente: `Docs/Historia_Mu
 
 **Notas de integración:**
 
-- El **prólogo** del GDD ("primeras comunidades agrícolas", mazmorra de 5 pisos) no aparece en la biblia: el juego empieza con el despertar en la selva olmeca. **Pendiente de decidir:** descartarlo o usar los primeros pisos olmecas como tutorial (propuesta: lo segundo).
+- El **prólogo** del GDD ("primeras comunidades agrícolas", mazmorra de 5 pisos) no aparece en la biblia: el juego empieza con el despertar en la selva olmeca. **Decidido (2026-10-29):** no hay prólogo aparte; los primeros pisos olmecas hacen de tutorial.
 - **Epiclásico y tolteca** no los nombra la biblia. Se proponen dentro del arco III porque son del altiplano y la biblia deja abierto "otras sociedades mesoamericanas según la organización final del mapa". Pendiente de confirmar.
 - La biblia fija tierra (I) y agua (II); las cuatro afinidades restantes (fuego, viento, luz, oscuridad) se reparten entre III–V cuando se diseñen sus mazmorras.
 - La asignación de los fragmentos 3–5 a los arcos III–V es una propuesta por afinidad temática; la biblia solo los ordena.

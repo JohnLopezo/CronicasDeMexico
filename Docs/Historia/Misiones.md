@@ -31,6 +31,8 @@ Misiones principales y secundarias. Solo el **arco I (olmeca)** está desarrolla
 - **Artesano de jade** con diálogo y patrulla (prototipo `OlmecaPrototypeGenerator`) y **espíritus jaguar** perseguidores (`EnemyChaser`).
 - La aldea con enramadas, vasijas, muelle y canoas sirve como escenario de `MS_OLM_03`.
 
-## Pendiente para la implementación (fase narrativa 2 y 3)
+## Implementación
 
-El proyecto solo tiene `DialogueInteractable` (líneas fijas). Para estas misiones hacen falta, como datos y no en un único script (Historia_Mundo §17): identificadores persistentes de NPC y misiones, estados de misión, condiciones de diálogo, recompensas que se entregan una sola vez y guardado. Se propondrá por etapas antes de implementarse.
+**Sistemas listos (2026-10-29, etapas N1–N3):** `NpcData`, `DialogueData` (ramas por banderas, que al terminar activan banderas, empiezan una misión y avisan `hablar:id`), `QuestData` y `QuestService` (pasos por avisos `hablar:`, `examinar:`, `vencer:`, `llegar:`, con cuenta; banderas `mision.ID.activa` y `.completada`; recompensas una sola vez), objetivo en el HUD y `SaveService`. Resumen técnico en `CLAUDE.md` (Arquitectura).
+
+**Falta (N4–N5):** crear los assets de los diálogos y misiones de esta tabla, el catálogo `Resources/Narrativa/CatalogoMisiones`, los NPC en la ciudad y el inicio del despertar.

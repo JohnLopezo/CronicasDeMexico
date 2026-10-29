@@ -1,12 +1,15 @@
 using CronicasDeMexico.Core.Events;
+using CronicasDeMexico.Core.Narrative;
+using CronicasDeMexico.Core.Services;
 using UnityEngine;
 using UnityEngine.UIElements;
 
 namespace CronicasDeMexico.UI.Hud
 {
     /// <summary>
-    /// Muestra la vida del jugador, el aviso de interacción, los mensajes y, opcionalmente, un contador de FPS.
-    /// No conoce al jugador: recibe los datos por canales de eventos.
+    /// Muestra la vida del jugador, el objetivo de la misión activa, el aviso de interacción, los mensajes y,
+    /// opcionalmente, un contador de FPS. No conoce al jugador: recibe los datos por canales de eventos, y el
+    /// objetivo, de QuestService.
     /// </summary>
     [RequireComponent(typeof(UIDocument))]
     public sealed class HudController : MonoBehaviour
@@ -28,6 +31,10 @@ namespace CronicasDeMexico.UI.Hud
         VisualElement health;
         VisualElement healthFill;
         Label healthText;
+        VisualElement objective;
+        Label objectiveTitle;
+        Label objectiveText;
+        QuestService quests;
         int frameCount;
         float fpsTimer;
 
@@ -40,10 +47,14 @@ namespace CronicasDeMexico.UI.Hud
             health = root.Q("health");
             healthFill = root.Q("health-fill");
             healthText = root.Q<Label>("health-text");
+            objective = root.Q("objective");
+            objectiveTitle = root.Q<Label>("objective-title");
+            objectiveText = root.Q<Label>("objective-text");
 
             ShowPrompt(null);
             ShowMessage(null);
             fps.EnableInClassList(HiddenClass, !showFps);
+            ConnectQuests();
 
             if (promptChannel != null)
                 promptChannel.Subscribe(ShowPrompt);
@@ -61,10 +72,17 @@ namespace CronicasDeMexico.UI.Hud
                 messageChannel.Unsubscribe(ShowMessage);
             if (healthChannel != null)
                 healthChannel.Unsubscribe(ShowHealth);
+            if (quests != null)
+                quests.Changed -= ShowObjective;
+            quests = null;
         }
 
         void Update()
         {
+            // Al pulsar Play desde una escena de juego, Boot (que registra QuestService) se carga después.
+            if (quests == null)
+                ConnectQuests();
+
             if (!showFps)
                 return;
 
@@ -76,6 +94,29 @@ namespace CronicasDeMexico.UI.Hud
             fps.text = $"{frameCount / fpsTimer:0} FPS  ·  {fpsTimer * 1000f / frameCount:0.0} ms";
             frameCount = 0;
             fpsTimer = 0f;
+        }
+
+        void ConnectQuests()
+        {
+            if (!ServiceLocator.TryGet(out quests))
+            {
+                objective.AddToClassList(HiddenClass);
+                return;
+            }
+
+            quests.Changed += ShowObjective;
+            ShowObjective();
+        }
+
+        void ShowObjective()
+        {
+            var visible = quests.TryGetCurrentObjective(out var title, out var description);
+            if (visible)
+            {
+                objectiveTitle.text = title;
+                objectiveText.text = description;
+            }
+            objective.EnableInClassList(HiddenClass, !visible);
         }
 
         void ShowPrompt(string text) => SetText(prompt, text);

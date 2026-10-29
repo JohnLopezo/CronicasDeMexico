@@ -7,6 +7,10 @@
             </ui:VisualElement>
             <ui:Label name="health-text" class="hud-health__text" picking-mode="Ignore" />
         </ui:VisualElement>
+        <ui:VisualElement name="objective" class="hud-objective hidden" picking-mode="Ignore">
+            <ui:Label name="objective-title" class="hud-objective__title" picking-mode="Ignore" />
+            <ui:Label name="objective-text" class="hud-objective__text" picking-mode="Ignore" />
+        </ui:VisualElement>
         <ui:Label name="fps" class="hud-fps" picking-mode="Ignore" />
         <ui:VisualElement class="hud-bottom" picking-mode="Ignore">
             <ui:Label name="message" class="hud-message hidden" picking-mode="Ignore" />

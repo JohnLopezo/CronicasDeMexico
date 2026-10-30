@@ -9,11 +9,11 @@ using UnityEngine;
 namespace CronicasDeMexico.Editor.SceneGeneration
 {
     /// <summary>
-    /// Capturas a 1920×1080 de la cámara real de Olmeca_Ciudad y Olmeca_Selva en varios puntos, para revisar el
-    /// resultado en Unity sin abrir el Editor (orden de dibujo, alineación de píxeles). Desde consola:
-    /// Unity.exe -batchmode -quit -projectPath . -executeMethod
+    /// Capturas a 1920×1080 de la cámara real de Olmeca_Ciudad, Olmeca_Selva y los pisos de la mazmorra en varios
+    /// puntos, para revisar el resultado en Unity sin abrir el Editor (orden de dibujo, alineación de píxeles). Desde
+    /// consola: Unity.exe -batchmode -quit -projectPath . -executeMethod
     /// CronicasDeMexico.Editor.SceneGeneration.OlmecaCityCapture.Capture -capturePath &lt;carpeta&gt;
-    /// (CaptureJungle para la selva). Sin -capturePath se guardan en Logs/Capturas.
+    /// (CaptureJungle para la selva, CaptureDungeon para los pisos). Sin -capturePath se guardan en Logs/Capturas.
     /// </summary>
     public static class OlmecaCityCapture
     {
@@ -51,6 +51,21 @@ namespace CronicasDeMexico.Editor.SceneGeneration
 
         [MenuItem("Crónicas/Capturar selva olmeca")]
         public static void CaptureJungle() => CaptureScene(OlmecaJungleGenerator.ScenePath, "Selva", JungleViews);
+
+        // Pisos de la mazmorra (PISOS en generar_olmeca.py): llegada y santuarios, sala central y escalera de bajada.
+        static readonly (string name, Vector2 focus)[][] DungeonViews =
+        {
+            new[] { ("Llegada", new Vector2(-11.5f, -1f)), ("Sala", new Vector2(0f, 0f)), ("Bajada", new Vector2(11f, -1f)) },
+            new[] { ("Llegada", new Vector2(-11.5f, 1f)), ("Sala", new Vector2(0f, 0.5f)), ("Vida", new Vector2(0f, -7f)) },
+            new[] { ("Llegada", new Vector2(-7f, 0f)), ("Antesala", new Vector2(3.5f, 0.5f)) },
+        };
+
+        [MenuItem("Crónicas/Capturar mazmorra olmeca")]
+        public static void CaptureDungeon()
+        {
+            for (var floor = 1; floor <= OlmecaDungeonGenerator.FloorCount; floor++)
+                CaptureScene(OlmecaDungeonGenerator.ScenePath(floor), $"Mazmorra_P{floor}", DungeonViews[floor - 1]);
+        }
 
         static void CaptureScene(string scenePath, string prefix, (string name, Vector2 focus)[] views)
         {

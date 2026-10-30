@@ -149,5 +149,28 @@ namespace CronicasDeMexico.Tests
             Assert.AreEqual(QuestStatus.NotStarted, loadedQuests.GetStatus("MS_BORRADA"));
             Assert.AreEqual(QuestStatus.Active, loadedQuests.GetStatus("MP_TEST"));
         }
+
+        // M2: el santuario de Memoria fija el punto de control; se guarda con la partida y se recupera al cargar.
+        [Test]
+        public void Checkpoint_IsSavedAndRestored_WithTheStory()
+        {
+            var (save, story, _) = NewGame();
+            var checkpoint = new PlayerCheckpoint();
+            save.Register(checkpoint);
+            Assert.IsFalse(checkpoint.HasCheckpoint);
+            checkpoint.Set("Olmeca_Mazmorra_P1", "memoria_p1", 3);
+            story.SetFlag("santuario_memoria.memoria_p1");
+            Assert.IsTrue(save.Save());
+
+            var (load, loadedStory, _) = NewGame();
+            var loaded = new PlayerCheckpoint();
+            load.Register(loaded);
+            Assert.IsTrue(load.Load());
+            Assert.IsTrue(loaded.HasCheckpoint);
+            Assert.AreEqual("Olmeca_Mazmorra_P1", loaded.Scene);
+            Assert.AreEqual("memoria_p1", loaded.SpawnId);
+            Assert.AreEqual(3, loaded.Health);
+            Assert.IsTrue(loadedStory.HasFlag("santuario_memoria.memoria_p1"));
+        }
     }
 }

@@ -1,7 +1,9 @@
 using System.Collections.Generic;
 using CronicasDeMexico.Core.Events;
+using CronicasDeMexico.Core.Narrative;
 using CronicasDeMexico.Data.Characters;
 using CronicasDeMexico.Gameplay.Combat;
+using CronicasDeMexico.Gameplay.Dungeon;
 using CronicasDeMexico.Gameplay.Enemies;
 using CronicasDeMexico.Gameplay.Interaction;
 using CronicasDeMexico.Gameplay.Narrative;
@@ -30,6 +32,8 @@ namespace CronicasDeMexico.Editor.SceneGeneration
         public const string JungleDataPath = "Assets/_Project/Data/World/Olmeca/Selva.json";
         /// <summary>Punto de llegada al venir de la ciudad (SpawnPoint).</summary>
         public const string FromCitySpawnId = "desde_ciudad";
+        /// <summary>Punto de llegada al subir del piso 1 de la mazmorra.</summary>
+        public const string FromDungeonSpawnId = "desde_mazmorra";
         const string FragmentSprite = "Fragmento_Memoria_01";
 
         const string EntranceText =
@@ -101,6 +105,17 @@ namespace CronicasDeMexico.Editor.SceneGeneration
                 OlmecaCityGenerator.SceneName, OlmecaCityGenerator.FromJungleSpawnId);
             // Cuenta cada vez que se entra: así vale aunque la misión empiece después de pasar por aquí.
             AddZone(parent, OlmecaNarrativeAssets.JungleZoneId, points.zona_selva.Value, new Vector3(1.5f, 4f, 2f));
+
+            // La abertura de la entrada lleva al piso 1 cuando el guerrero ya reconoció el lugar (MP_OLM_03 completada).
+            // Volver aquí termina la incursión: los santuarios de Vida se reencienden.
+            AddSpawnPoint(parent, FromDungeonSpawnId, points.desde_mazmorra.Value);
+            var dungeon = Group("Entrada_Mazmorra", parent);
+            var portal = AddPortal(dungeon, "Portal_Mazmorra", points.mazmorra.Value, new Vector3(0.4f, 1.4f, 2f),
+                OlmecaDungeonGenerator.SceneName(1), OlmecaDungeonGenerator.FromAboveSpawnId);
+            portal.gameObject.SetActive(false); // hasta que ActiveWhenFlags vea la bandera
+            ShowWhen(portal.gameObject, new[] { StoryEvents.QuestCompletedFlag(OlmecaNarrativeAssets.JungleQuestId) }, null,
+                liveUpdate: true);
+            parent.gameObject.AddComponent<IncursionReset>();
         }
 
         // ---------- Espíritus corrompidos y fragmentos ----------
@@ -127,7 +142,15 @@ namespace CronicasDeMexico.Editor.SceneGeneration
 
         // Como el espíritu jaguar del prototipo (EnemyChaser), con arte corrompido, a la escala de esta escena y sin
         // reaparecer: al caer activa su bandera, que lo retira.
-        static GameObject CreateSpirit(Transform parent, string name, DirectionalSpriteSet spriteSet, Vector2 home, string defeatedFlag)
+        static GameObject CreateSpirit(Transform parent, string name, DirectionalSpriteSet spriteSet, Vector2 home, string defeatedFlag) =>
+            CreateCorruptedSpirit(parent, name, spriteSet, home, defeatedFlag);
+
+        /// <summary>
+        /// Espíritu corrompido a la escala de las escenas de pixel art. Con bandera, al caer la activa; sin ella (en la
+        /// mazmorra) queda vencido hasta que se vuelva a cargar la escena.
+        /// </summary>
+        internal static GameObject CreateCorruptedSpirit(Transform parent, string name, DirectionalSpriteSet spriteSet, Vector2 home,
+            string defeatedFlag)
         {
             var root = CreateCharacter(name, spriteSet, out var spriteRenderer);
             root.transform.SetParent(parent, false);
@@ -138,6 +161,8 @@ namespace CronicasDeMexico.Editor.SceneGeneration
             var chaser = root.AddComponent<EnemyChaser>();
             SetProperty(chaser, "detectionRadius", property => property.floatValue = 4.5f); // a la medida de un claro
             SetProperty(chaser, "loseRadius", property => property.floatValue = 7f);
+            if (defeatedFlag == null)
+                SetProperty(chaser, "respawns", property => property.boolValue = false);
             OlmecaPrototypeGenerator.AddSpriteAnimator(root, chaser, spriteRenderer, spriteSet);
 
             var report = root.AddComponent<ReportOnDefeat>();

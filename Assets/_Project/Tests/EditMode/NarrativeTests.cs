@@ -64,6 +64,23 @@ namespace CronicasDeMexico.Tests
             CollectionAssert.AreEqual(new[] { "a", "a" }, changes);
         }
 
+        // Al salir de la mazmorra se borran las banderas de la incursión (santuarios de Vida) y nada más.
+        [Test]
+        public void StoryState_ClearFlagsWithPrefix_RemovesOnlyThoseFlags()
+        {
+            var story = new StoryState();
+            story.SetFlag("incursion.santuario_vida.vida_p2");
+            story.SetFlag("incursion.otra");
+            story.SetFlag("santuario_memoria.memoria_p1");
+            var cleared = new List<string>();
+            story.FlagChanged += cleared.Add;
+
+            story.ClearFlagsWithPrefix("incursion.");
+
+            CollectionAssert.AreEquivalent(new[] { "incursion.santuario_vida.vida_p2", "incursion.otra" }, cleared);
+            CollectionAssert.AreEqual(new[] { "santuario_memoria.memoria_p1" }, story.Flags);
+        }
+
         // --- DialogueData ---
 
         [Test]

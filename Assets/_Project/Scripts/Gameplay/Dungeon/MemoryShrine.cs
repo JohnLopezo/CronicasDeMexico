@@ -1,0 +1,62 @@
+using CronicasDeMexico.Core.Events;
+using CronicasDeMexico.Core.Narrative;
+using CronicasDeMexico.Core.Save;
+using CronicasDeMexico.Core.Services;
+using CronicasDeMexico.Gameplay.Combat;
+using CronicasDeMexico.Gameplay.Interaction;
+using UnityEngine;
+
+namespace CronicasDeMexico.Gameplay.Dungeon
+{
+    /// <summary>
+    /// Santuario de Memoria (Diseno.md §9): al descansar fija el punto de control en su punto de aparición, con la vida
+    /// que tiene el jugador, y guarda la partida. No cura (eso es el santuario de Vida). La primera vez despierta su
+    /// bandera, que enciende el jade (ActiveWhenFlags cambia el sprite).
+    /// </summary>
+    public sealed class MemoryShrine : MonoBehaviour, IInteractable
+    {
+        [SerializeField] string prompt = "Descansar";
+
+        [SerializeField, Tooltip("Id del santuario, único en el juego.")]
+        string shrineId;
+
+        [SerializeField, Tooltip("Id del SpawnPoint de esta escena donde se reaparece (delante del santuario).")]
+        string spawnId;
+
+        [SerializeField, TextArea(2, 6)]
+        string restText = "Tocas el hacha de jade y la piedra se aquieta. Este lugar te recordará.";
+
+        [SerializeField, TextArea(2, 6)]
+        string saveFailedText = "Tocas el hacha de jade, pero la piedra no responde. (No se pudo guardar la partida.)";
+
+        [SerializeField, Tooltip("Canal por el que el HUD recibe el mensaje.")]
+        StringEventChannel messageChannel;
+
+        public string Prompt => prompt;
+
+        public string ShrineId
+        {
+            get => shrineId;
+            set => shrineId = value;
+        }
+
+        public string SpawnId
+        {
+            get => spawnId;
+            set => spawnId = value;
+        }
+
+        public void Interact(Transform interactor)
+        {
+            var health = interactor != null ? interactor.GetComponentInParent<Health>() : null;
+            if (ServiceLocator.TryGet(out PlayerCheckpoint checkpoint))
+                checkpoint.Set(gameObject.scene.name, spawnId, health != null ? health.Current : 0);
+            if (ServiceLocator.TryGet(out StoryState story))
+                story.SetFlag(DungeonFlags.MemoryShrineAwake(shrineId));
+
+            var saved = ServiceLocator.TryGet(out SaveService save) && save.Save();
+            if (messageChannel != null)
+                messageChannel.Raise(saved ? restText : saveFailedText);
+        }
+    }
+}

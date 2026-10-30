@@ -24,12 +24,15 @@ Se mide en un **build de desarrollo** (no en el Editor), en cada hito. En PC el 
 | 2026-10-29 | Selva (M1) | i7-10700 / UHD 630 | Bajo | 1920×1080 | Olmeca_Selva | 263–289 | 129–203 | 3,5–3,8 (p95 4,4–5,9) | 4 puntos (llegada, claro, entrada, selva densa); la selva densa es la más cara |
 | 2026-10-29 | Selva (M1) | i7-10700 / UHD 630 | Medio | 1920×1080 | Olmeca_Selva | 342–350 | 220–263 | 2,9 (p95 3,4–3,7) | Ídem |
 | 2026-10-29 | Selva (M1) | i7-10700 / UHD 630 | Alto | 1920×1080 | Olmeca_Selva | 299–302 | 227–230 | 3,3 (p95 3,9–4,0) | Ídem |
+| 2026-10-30 | Mazmorra, piso 2 (M2) | i7-10700 / UHD 630 | Bajo | 1920×1080 | Olmeca_Mazmorra_P2 | 280–298 | 146–176 | 3,4–3,6 (p95 4,8–5,1) | 4 puntos (llegada, sala, santuario de Vida, bajada); el piso con más muros y espíritus |
+| 2026-10-30 | Mazmorra, piso 2 (M2) | i7-10700 / UHD 630 | Medio | 1920×1080 | Olmeca_Mazmorra_P2 | 304–373 | 198–247 | 2,7–3,3 (p95 3,4–4,4) | Ídem |
+| 2026-10-30 | Mazmorra, piso 2 (M2) | i7-10700 / UHD 630 | Alto | 1920×1080 | Olmeca_Mazmorra_P2 | 281–314 | 174–196 | 3,2–3,6 (p95 4,1–4,7) | Ídem |
 
 **Cámara de fondo (2026-10-29):** la cámara que limpia la pantalla bajo `PixelArtScreen` no dibuja nada, pero URP le aplicaba a 1920×1080 lo que pide el nivel: en Alto, HDR, texturas de profundidad y color, y el SSAO de `Renderer_Calidad`; en Medio, HDR y profundidad. Ahora usa el renderer 1 de cada URP Asset (`Renderer_Rendimiento`, sin efectos; `PixelArtScreen.ClearRendererIndex`) y desactiva HDR, MSAA, sombras y texturas. La cámara del escenario conserva el SSAO a la resolución del arte. Lo comprueba `ClearCamera_UsesRendererWithoutEffects_InEveryQualityLevel`.
 
 - Medio y Alto quedan ahora algo por encima de Bajo. Probablemente porque el Render Scale 0,75 de Bajo obliga a la cámara de fondo a usar una textura intermedia y un reescalado a 1080 p, que no aporta nada con `PixelArtScreen`. Es una hipótesis sin comprobar (unos 0,3 ms en el i7).
 
-**Cómo se mide la ciudad** (`FrameTimeBenchmark`): build de desarrollo de Windows con menú **Crónicas → Build → Windows: medición de la ciudad**, o con `-executeMethod CronicasDeMexico.Editor.Build.WindowsBenchmarkBuild.Build`. Para la selva, **medición de la selva** (`BuildJungle`, en `Builds\Windows\Selva\`); la medición usa los puntos de la escena activa. Se ejecuta así:
+**Cómo se mide la ciudad** (`FrameTimeBenchmark`): build de desarrollo de Windows con menú **Crónicas → Build → Windows: medición de la ciudad**, o con `-executeMethod CronicasDeMexico.Editor.Build.WindowsBenchmarkBuild.Build`. Para la selva, **medición de la selva** (`BuildJungle`, en `Builds\Windows\Selva\`), y para la mazmorra, **medición de la mazmorra, piso 2** (`BuildDungeon`, en `Builds\Windows\Mazmorra\`); la medición usa los puntos de la escena activa. Se ejecuta así:
 
 ```
 Builds\Windows\Ciudad\CronicasDeMexico.exe -benchmark -benchmarkOutput <carpeta> -screen-width 1920 -screen-height 1080 -screen-fullscreen 0 -popupwindow

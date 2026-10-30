@@ -1603,6 +1603,235 @@ def entrada_estructura(rng, variante):
     pa.asignar(pa.malla("Vegetacion", v, f, c), pa.mat_color_vertice("Vegetal"))
 
 
+# ---------------------------------------------------------------- mazmorra (M2): «La ciudad bajo la selva»
+
+BASALTO_LOSA = ["#2C302A", "#36382F", "#4A473B", "#615C48", "#7D745B"]
+BASALTO_COLUMNA = ["#2C302A", "#36382F", "#4A473B", "#615C48", "#7D745B", "#9C8B75"]
+ALTO_PISO = 0.4   # grueso del piso que asoma sobre el vacío en los bordes delanteros
+
+
+def holdout(obj):
+    """El objeto tapa lo que hay detrás pero sale transparente (p. ej. el piso alrededor de un hueco)."""
+    obj.is_holdout = True
+    return obj
+
+
+def tile_losa(rng, variante):
+    """Tile del piso de la antigua estructura: cuatro losas de basalto asentadas en arcilla oscura, con juntas. Que el
+    interior sea un piso de losas es ficción (F); en La Venta los pisos eran de arcillas de colores y hay mosaicos de
+    serpentina enterrados (D). Variantes: 1 y 2 losas (2 con una partida y cascajo) y 3 húmeda con musgo en las juntas
+    (El Pantano)."""
+    bpy.ops.mesh.primitive_cube_add(size=1, location=(0, 0, -ALTO_PISO / 2))
+    base = bpy.context.active_object
+    base.scale = (0.999, 0.999, ALTO_PISO)
+    pa.asignar(base, pa.mat_ruido("ArcillaPiso", ["#1E2420", "#2C302A", "#3A2A1A", "#644B2A"], escala=5, estirar=(1, 1, 7)))
+
+    humeda = variante == 3
+    colores = ["#2C302A", "#36382F", "#36382F", "#4A473B", "#615C48"] if humeda else BASALTO_LOSA   # más oscura
+    mat = pa.mat_ruido("Losa", colores, escala=6)
+    mat.node_tree.nodes['Mapping'].inputs['Location'].default_value = (rng.uniform(0, 100), 0, 0)
+    junta = 0.04
+    lado = 0.5 - junta
+    partida = rng.randrange(4) if variante == 2 else -1
+    for k, (i, j) in enumerate(((0, 0), (0, 1), (1, 0), (1, 1))):
+        cx, cy = -0.25 + 0.5 * i, -0.25 + 0.5 * j
+        piezas = [((cx, cy), (lado, lado))]
+        if k == partida:   # losa partida en dos
+            piezas = [((cx - 0.12, cy), (lado / 2 - 0.02, lado)), ((cx + 0.13, cy), (lado / 2 - 0.02, lado))]
+        for (px, py), (sx, sy) in piezas:
+            alto = rng.uniform(0.03, 0.045)
+            losa = caja("Losa", (px, py, alto / 2 - 0.02), (sx, sy, alto), 0.012)
+            losa.rotation_euler = Euler((rng.uniform(-0.02, 0.02), rng.uniform(-0.02, 0.02), rng.uniform(-0.03, 0.03)))
+            pa.asignar(losa, mat)
+
+    if variante == 2:
+        guijarros(rng, 5, 0.02, 0.035, ["#36382F", "#4A473B", "#615C48"], 0.4)
+    if humeda:
+        v, f, c = [], [], []
+        for _ in range(rng.randint(3, 5)):   # musgo en las juntas, no sobre las losas
+            if rng.random() < 0.5:
+                centro = (rng.choice((-0.5, 0.0, 0.5)) * 0.98, rng.uniform(-0.45, 0.45), 0)
+            else:
+                centro = (rng.uniform(-0.45, 0.45), rng.choice((-0.5, 0.0, 0.5)) * 0.98, 0)
+            matas(v, f, c, centro, rng.randint(5, 8), 0.06, 0.05, rng, base="#1D2B1A",
+                  puntas=("#3E5F27", "#5A8732", "#387022"), grosor=0.016)
+        pa.asignar(pa.malla("Musgo", v, f, c), pa.mat_color_vertice("Vegetal"))
+
+
+def muro_basalto(rng, variante):
+    """Módulo de 1 m de muro interior: columnas de basalto apretadas sobre una banqueta de arcilla. Recuerda el
+    recinto de columnas de La Venta (D), aquí cerrado y bajo tierra (F). Sin plantas: es el interior de la estructura.
+    Variantes: 1 y 2 completas, 3 con luz del olvido que se filtra entre las columnas."""
+    bpy.ops.mesh.primitive_cube_add(size=1, location=(0, 0, 0.06))
+    muro = bpy.context.active_object
+    muro.name = "Muro"
+    muro.scale = (1.0, 0.3, 0.12)
+    pa.asignar(muro, pa.mat_ruido("Banqueta", ["#2C302A", "#3A2A1A", "#644B2A", "#7B5B33"], escala=9))
+
+    mat = pa.mat_piedra_musgo("BasaltoMuro", BASALTO_COLUMNA, ["#3E5F27", "#5A8732"], escala=8, estirar=(1, 1, 0.5),
+                              altura_musgo=0.15, umbral_musgo=0.5)
+    for i in range(5):
+        col = prisma_basalto(f"Columna{i}", rng, rng.uniform(1.35, 1.6), rng.uniform(0.1, 0.115))
+        col.location = (-0.4 + 0.2 * i + rng.uniform(-0.015, 0.015), rng.uniform(-0.03, 0.03), 0.1)
+        col.rotation_euler = Euler((rng.uniform(-0.02, 0.02), rng.uniform(-0.02, 0.02), 0))
+        pa.asignar(col, mat)
+    if variante == 3:   # una rendija entre la 2.ª y la 3.ª columna, en la cara que ve la cámara (-Y)
+        v, f = [], []
+        x, z = -0.1, 0.2
+        while z < 1.2:
+            dz = rng.uniform(0.12, 0.2)
+            dx = rng.uniform(-0.03, 0.03)
+            i0 = len(v)
+            v += [Vector((x - 0.02, -0.14, z)), Vector((x + 0.02, -0.14, z)),
+                  Vector((x + dx + 0.015, -0.14, z + dz)), Vector((x + dx - 0.015, -0.14, z + dz))]
+            f.append((i0, i0 + 1, i0 + 2, i0 + 3))
+            x, z = x + dx, z + dz
+        pa.asignar(pa.malla("Rendija", v, f), mat_emision("Olvido", "#A98BE8"))
+
+
+def muro_basalto_y(rng, variante):
+    """El muro girado 90°: corre a lo largo de Y (lado -X de una sala) y muestra su cara +X a la cámara."""
+    muro_basalto(rng, variante)
+    bpy.context.view_layer.update()
+    giro = Matrix.Rotation(math.radians(90), 4, 'Z')
+    for o in bpy.context.scene.objects:
+        if o.type == 'MESH':
+            o.matrix_world = giro @ o.matrix_world
+
+
+def portico(rng, ancho, alto, mat, x=0.0):
+    """Dos columnas de basalto y un dintel que cruza a lo largo de Y, con un hueco negro detrás. Mira a +X."""
+    bpy.ops.mesh.primitive_cube_add(size=1, location=(x - 0.2, 0, alto / 2))
+    hueco = bpy.context.active_object
+    hueco.scale = (0.3, ancho, alto)
+    negro = bpy.data.materials.new("Hueco")
+    _, bsdf = pa._bsdf(negro)
+    bsdf.inputs['Base Color'].default_value = (0, 0, 0, 1)
+    pa.asignar(hueco, negro)
+    for y in (-ancho / 2 - 0.1, ancho / 2 + 0.1):
+        col = prisma_basalto("Jamba", rng, alto + 0.05, 0.12)
+        col.location = (x, y, 0)
+        pa.asignar(col, mat)
+    dintel = prisma_basalto("Dintel", rng, ancho + 0.55, 0.11)
+    dintel.rotation_euler = Euler((math.radians(90), 0, 0))   # crece hacia -Y
+    dintel.location = (x, ancho / 2 + 0.27, alto + 0.08)
+    pa.asignar(dintel, mat)
+
+
+def santuario_memoria(rng, variante):
+    """Santuario de Memoria (punto de control): un nicho de basalto con una hacha votiva de jade en pie sobre una losa.
+    Las hachas de jade y serpentina como ofrenda están documentadas en La Venta (D); que guarden la memoria del lugar
+    es ficción (F). Variantes: 1 dormido (jade apagado) y 2 despierto (el jade brilla). Mira a +X."""
+    mat = pa.mat_piedra_musgo("BasaltoNicho", BASALTO_COLUMNA, ["#3E5F27", "#5A8732"], escala=8, estirar=(1, 1, 0.5),
+                              altura_musgo=0.12, umbral_musgo=0.5)
+    base = caja("Banqueta", (0.05, 0, 0.06), (0.9, 1.3, 0.12), 0.02)
+    pa.asignar(base, pa.mat_ruido("ArcillaNicho", ["#3A2A1A", "#644B2A", "#7B5B33", "#B16143"], escala=8))
+    respaldo = caja("Respaldo", (-0.35, 0, 0.75), (0.2, 1.2, 1.4), 0.02)
+    pa.asignar(respaldo, mat)
+    portico(rng, 0.7, 1.15, mat, x=-0.12)
+
+    losa = caja("Altar", (0.18, 0, 0.2), (0.34, 0.5, 0.16), 0.02)
+    pa.asignar(losa, pa.mat_ruido("LosaAltar", BASALTO_LOSA, escala=10))
+    v, f, c = [], [], []
+    prisma_color(v, f, c, Vector((0, 0, 0)), 0.05, 0.3, "#4FB39A", 4)
+    hacha = pa.malla("Hacha", v, f, c)
+    hacha.scale = (0.6, 1.3, 1.0)   # plana y ancha, como una hacha votiva
+    hacha.location = (0.18, 0, 0.28)
+    if variante == 2:
+        pa.asignar(hacha, mat_emision("Jade", "#4FB39A", 1.2))
+        bpy.ops.mesh.primitive_circle_add(vertices=24, radius=0.24, fill_type='NGON', location=(0.18, 0, 0.285))
+        pa.asignar(bpy.context.active_object, mat_emision("Halo", "#2E7D6B", 0.8))
+    else:
+        pa.asignar(hacha, pa.mat_ruido("JadeApagado", ["#1F5148", "#2E7D6B", "#36382F"], escala=14))
+
+
+def santuario_vida(rng, variante):
+    """Santuario de Vida (curación limitada): un fogón de tres piedras sobre una banqueta de arcilla, con una olla de
+    agua y leña. El fogón de tres piedras es doméstico y documentado en el Golfo (D); que su fuego cure es ficción (F).
+    Variantes: 1 encendido y 2 apagado (ya se usó en esta incursión)."""
+    bpy.ops.mesh.primitive_cylinder_add(vertices=24, radius=0.42, depth=0.1, location=(0, 0, 0.05))
+    pa.asignar(bpy.context.active_object, pa.mat_ruido("ArcillaFogon", ["#3A2A1A", "#644B2A", "#7B5B33", "#B16143"], escala=8))
+    bpy.ops.mesh.primitive_cylinder_add(vertices=20, radius=0.2, depth=0.012, location=(0, 0, 0.106))
+    pa.asignar(bpy.context.active_object, pa.mat_ruido("Ceniza", ["#4A473B", "#7D745B", "#9C8B75", "#C9C0AB"], escala=16))
+    mat_piedra = pa.mat_ruido("PiedraFogon", ["#2C302A", "#36382F", "#4A473B"], escala=12)
+    for k in range(3):
+        ang = -math.pi / 2 + 2 * math.pi * k / 3
+        bpy.ops.mesh.primitive_ico_sphere_add(subdivisions=2, radius=0.08,
+                                              location=(math.cos(ang) * 0.17, math.sin(ang) * 0.17, 0.17))
+        g = bpy.context.active_object
+        g.scale = (1, 0.85, 1.2)
+        pa.asignar(g, mat_piedra)
+    mat_lena = pa.mat_ruido("Lena", ["#48331F", "#6D502E", "#9C7842"], escala=20)
+    for giro in (20, 80, 140):
+        o = caja("Lena", (0, 0, 0.13), (0.3, 0.04, 0.04), 0)
+        o.rotation_euler.z = math.radians(giro)
+        pa.asignar(o, mat_lena)
+    vasija("Olla", Vector((0.3, 0.26, 0.1)), 0.11, 0.22, ["#C6925A", "#E3B47C", "#B6814C"], cuello=0.05)
+
+    if variante == 1:
+        for (dx, dy, alto, radio, color, fuerza) in ((0, 0, 0.36, 0.09, "#D8642A", 1.0),
+                                                       (0.04, -0.03, 0.26, 0.06, "#F2A541", 1.1),
+                                                       (-0.04, 0.03, 0.22, 0.05, "#F2A541", 1.1),
+                                                       (0.0, 0.0, 0.16, 0.04, "#FFE08A", 1.2)):
+            bpy.ops.mesh.primitive_cone_add(vertices=7, radius1=radio, radius2=0, depth=alto,
+                                            location=(dx, dy, 0.13 + alto / 2))
+            llama = bpy.context.active_object
+            llama.rotation_euler = Euler((rng.uniform(-0.15, 0.15), rng.uniform(-0.15, 0.15), 0))
+            pa.asignar(llama, mat_emision("Llama", color, fuerza))
+    else:
+        for _ in range(4):   # brasas casi apagadas
+            bpy.ops.mesh.primitive_ico_sphere_add(subdivisions=1, radius=0.025,
+                                                  location=(rng.uniform(-0.08, 0.08), rng.uniform(-0.08, 0.08), 0.13))
+            pa.asignar(bpy.context.active_object, mat_emision("Brasa", "#9A3A1C", 0.7))
+
+
+def escalera_subida(rng, variante):
+    """Escalera que sube hacia la salida (al piso de arriba o a la selva): tres peldaños hacia -X hasta un pórtico de
+    basalto con el hueco negro. Va contra el muro del lado -X de una sala y mira a +X."""
+    mat = pa.mat_piedra_musgo("BasaltoPortico", BASALTO_COLUMNA, ["#3E5F27", "#5A8732", "#84B345"], escala=8,
+                              estirar=(1, 1, 0.5), altura_musgo=0.2, umbral_musgo=0.45)
+    respaldo = caja("Respaldo", (-0.75, 0, 0.9), (0.3, 1.9, 1.8), 0.02)
+    pa.asignar(respaldo, mat)
+    mat_losa = pa.mat_ruido("Peldano", BASALTO_LOSA, escala=9)
+    for k in range(3):
+        peldano = caja("Peldano", (0.25 - 0.25 * k, 0, 0.075 * (k + 1) / 2), (0.25, 1.0, 0.075 * (k + 1)), 0.01)
+        pa.asignar(peldano, mat_losa)
+    portico(rng, 0.9, 1.35, mat, x=-0.45)
+
+
+def escalera_bajada(rng, variante):
+    """Escalera que baja al piso siguiente: un hueco de 1 × 1,4 m en el piso con un marco de losas y peldaños de basalto
+    que bajan hacia la cámara (+X) y se pierden en la oscuridad bajo el borde cercano: con la cámara a 30° solo se ve
+    el fondo de un pozo si baja hacia ella. Va horneada en el suelo. El piso que rodea el hueco solo tapa (sale
+    transparente) para que no se vea el pozo por fuera."""
+    sx, sy = 0.5, 0.7
+    for (cx, cy, ax, ay) in ((0, sy + 1.5, 4, 3), (0, -sy - 1.5, 4, 3), (sx + 1.5, 0, 3, 2 * sy), (-sx - 1.5, 0, 3, 2 * sy)):
+        bpy.ops.mesh.primitive_cube_add(size=1, location=(cx, cy, -0.01))
+        tapa = bpy.context.active_object
+        tapa.scale = (ax, ay, 0.02)
+        holdout(tapa)
+
+    mat_marco = pa.mat_ruido("Marco", BASALTO_LOSA, escala=9)
+    for (cx, cy, ax, ay) in ((0, sy + 0.08, 2 * sx + 0.32, 0.16), (0, -sy - 0.08, 2 * sx + 0.32, 0.16),
+                             (sx + 0.08, 0, 0.16, 2 * sy), (-sx - 0.08, 0, 0.16, 2 * sy)):
+        pa.asignar(caja("Marco", (cx, cy, 0.015), (ax, ay, 0.05), 0.01), mat_marco)
+
+    # Paredes del pozo y peldaños, más oscuros cuanto más hondo
+    pared = pa.mat_ruido("ParedPozo", ["#1E2420", "#2C302A", "#36382F"], escala=8)
+    for (cx, cy, ax, ay) in ((0, sy + 0.05, 2 * sx, 0.1), (0, -sy - 0.05, 2 * sx, 0.1), (-sx - 0.05, 0, 0.1, 2 * sy)):
+        pa.asignar(caja("Pared", (cx, cy, -0.6), (ax, ay, 1.2), 0), pared)
+    tonos = (["#615C48", "#7D745B", "#9C8B75"], ["#4A473B", "#615C48", "#7D745B"], ["#36382F", "#4A473B", "#615C48"],
+             ["#2C302A", "#36382F", "#4A473B"])
+    for k in range(4):
+        z = -0.13 * (k + 1)
+        x = -sx + 0.25 * k + 0.125
+        pa.asignar(caja("Peldano", (x, 0, z - 0.6), (0.25, 2 * sy, 1.2), 0.008), pa.mat_ruido(f"Peldano{k}", tonos[k], escala=9))
+    fondo = bpy.data.materials.new("Fondo")
+    _, bsdf = pa._bsdf(fondo)
+    bsdf.inputs['Base Color'].default_value = (0, 0, 0, 1)
+    pa.asignar(caja("Fondo", (sx + 0.3, 0, -1.0), (0.6, 2 * sy, 1.0), 0), fondo)   # la escalera sigue bajo el borde
+
+
 # ---------------------------------------------------------------- producción
 
 SOMBRA_CHICA = ((80, 40), (26, 20))
@@ -1664,6 +1893,19 @@ TIPOS = {
                           SOMBRA_CHICA, 0.5),
     "Entrada_Estructura": (entrada_estructura, (192, 176), (96, 64),
                            ("tierra", "basalto", "musgo", "verde_calido", "verde_frio"), "#1E2420", ((256, 160), (100, 56)), 0.5),
+    # Mazmorra (M2)
+    "Tile_Losa_Basalto": (tile_losa, (64, 64), (32, 40), ("basalto", "tierra", "musgo", "verde_frio", "olvido"), None, None, 0.5),
+    "Muro_Basalto": (muro_basalto, (64, 112), (32, 18), ("basalto", "tierra", "musgo", "olvido"), "#1E2420",
+                     ((192, 112), (64, 48)), 0.5),
+    "Muro_Basalto_Y": (muro_basalto_y, (64, 112), (32, 18), ("basalto", "tierra", "musgo", "olvido"), "#1E2420",
+                       ((192, 112), (64, 48)), 0.5),
+    "Santuario_Memoria": (santuario_memoria, (96, 128), (48, 30), ("basalto", "tierra", "acentos", "jade", "musgo"),
+                          "#1E2420", ((160, 96), (56, 44)), 0.5),
+    "Santuario_Vida": (santuario_vida, (64, 72), (32, 20), ("tierra", "basalto", "fuego", "madera"), "#1E2420",
+                       SOMBRA_CHICA, 0.5),
+    "Escalera_Subida": (escalera_subida, (128, 160), (64, 40), ("basalto", "tierra", "musgo"), "#1E2420",
+                        ((192, 112), (70, 48)), 0.5),
+    "Escalera_Bajada": (escalera_bajada, (96, 80), (48, 40), ("basalto",), None, None, 0.5),
 }
 VARIANTES = {"Tile_Camino_Tierra": 4, "Tile_Pasto_Selva": 3, "Tile_Agua_Anim": 4, "Cerca_Basalto": 3,
              "Palma_Corozo": 2, "Arbusto_Selva": 2, "Matorral_Selva": 3, "Pasto_Alto": 2, "Helecho": 2,
@@ -1671,10 +1913,12 @@ VARIANTES = {"Tile_Camino_Tierra": 4, "Tile_Pasto_Selva": 3, "Tile_Agua_Anim": 4
              "Estela_Lisa": 1, "Estela_Grande": 3, "Rampa_Arcilla": 2, "Casa_Bajareque": 3, "Fogon": 1,
              "Escombros_Basalto": 3, "Cerca_Basalto_Y": 3, "Ceiba": 1, "Tronco_Caido": 2, "Vasijas": 2, "Enramada": 1,
              "Enramada_Poste": 1, "Enramada_Techo": 1, "Muelle_Madera": 2, "Canoa": 1,
-             "Grieta_Olvido": 2, "Fragmento_Memoria": 1, "Entrada_Estructura": 1}
+             "Grieta_Olvido": 2, "Fragmento_Memoria": 1, "Entrada_Estructura": 1,
+             "Tile_Losa_Basalto": 3, "Muro_Basalto": 3, "Muro_Basalto_Y": 3, "Santuario_Memoria": 2, "Santuario_Vida": 2,
+             "Escalera_Subida": 1, "Escalera_Bajada": 1}
 # Las transiciones y los módulos de plataforma se generan solo para las máscaras que usan las composiciones
 SIN_AVISO_BORDE = {"Tile_Camino_Tierra", "Tile_Pasto_Selva", "Tile_Agua_Anim", "Tile_Camino_Trans", "Tile_Orilla",
-                   "Plataforma_Arcilla"}
+                   "Plataforma_Arcilla", "Tile_Losa_Basalto"}
 ELEVACION = {"Plataforma_Arcilla": H_PLATAFORMA}   # altura de la cara superior de los módulos que se empalman
 
 
@@ -2321,9 +2565,104 @@ def planificar_selva():
             "fragmentos": [punto(c[0] + 0.9, c[1] + 0.7) for c in claros],
             "entrada": punto(*explanada),                        # aviso llegar:entrada_estructura
             "guerrero": punto(-11.6, -0.4),
+            "mazmorra": punto(entrada[0] + 1.65, entrada[1]),     # portal en la abertura, al piso 1 (M2)
+            "desde_mazmorra": punto(-11.4, -2.9),                # al subir del piso 1
         },
     }
     return {"suelo": suelo, "objetos": con_capas(objetos), "dosel": dosel_, "marcas": marcas}, mascaras, colision
+
+
+# ---------------------------------------------------------------- pisos de la mazmorra (M2)
+
+def rect(x0, x1, y0, y1):
+    return {(X, Y) for X in range(x0, x1 + 1) for Y in range(y0, y1 + 1)}
+
+
+# Por piso: límites, celdas con piso, escalera de subida (centro y celdas de Y donde reemplaza al muro), punto de
+# llegada al bajar, escalera de bajada y su llegada al subir, santuarios, enemigos, adornos, variantes de losa y del
+# muro (pesos) y la losa sellada del piso 3. Coordenadas del flujo: la cámara mira desde +X, -Y.
+PISOS = {
+    1: {"limites": (-16, 16, -10, 10),
+        "celdas": rect(-14, -9, -3, 3) | rect(-8, -5, -1, 1) | rect(-4, 4, -5, 5) | rect(5, 8, -2, 0) | rect(9, 14, -4, 2),
+        "subida": (-13.6, 0.0), "llegada_arriba": (-12.2, 0.0),
+        "bajada": (12.0, -1.0), "llegada_abajo": (10.4, -1.0),
+        "memoria": (-13.95, -2.3), "memoria_llegada": (-12.7, -2.3),
+        "enemigos": [(-1.0, 2.0), (2.0, -2.5)],
+        "adornos": [("Escombros_Basalto_01", -3.0, 4.0), ("Escombros_Basalto_03", 3.2, 4.2),
+                    ("Escombros_Basalto_02", 13.5, 1.5), ("Estela_Lisa_01", -3.2, -4.3)],
+        "losas": [1, 1, 1, 2, 2], "muros": [1, 2, 1, 2, 1, 2, 3]},
+    2: {"limites": (-16, 16, -10, 10),
+        "celdas": rect(-14, -9, -2, 4) | rect(-8, -5, 0, 2) | rect(-4, 5, -4, 5) | rect(-1, 0, -6, -5)
+                  | rect(-3, 2, -9, -7) | rect(6, 9, 0, 2) | rect(10, 14, -3, 3),
+        "subida": (-13.6, 1.0), "llegada_arriba": (-12.2, 1.0),
+        "bajada": (12.5, 0.0), "llegada_abajo": (10.9, 0.0),
+        "vida": (1.2, -8.2),
+        "enemigos": [(-1.5, 3.0), (3.0, 1.0), (0.5, -2.5)],
+        "adornos": [("Escombros_Basalto_02", 4.5, 4.5), ("Escombros_Basalto_01", -3.5, -3.5),
+                    ("Estela_Lisa_01", 13.8, 2.6), ("Vasijas_01", -2.6, -7.4)],
+        "losas": [3, 3, 3, 1, 2], "muros": [1, 2, 1, 2, 3]},
+    3: {"limites": (-12, 12, -9, 9),
+        "celdas": rect(-10, -6, -2, 2) | rect(-5, -2, -1, 1) | rect(-1, 8, -4, 4),
+        "subida": (-9.6, 0.0), "llegada_arriba": (-8.2, 0.0),
+        "memoria": (-0.95, 2.6), "memoria_llegada": (0.3, 2.6),
+        "sello": (5.0, 3.6),
+        "enemigos": [],
+        "adornos": [("Vasijas_01", -0.6, -3.4), ("Vasijas_02", 6.5, -3.2), ("Escombros_Basalto_03", 7.2, 2.0)],
+        "losas": [1, 1, 2], "muros": [1, 2, 3]},
+}
+
+
+def planificar_piso(piso):
+    """Un piso de la mazmorra olmeca, «La ciudad bajo la selva» (M2: la base; el contenido de cada piso llega en M3 y
+    M4). Salas de losas sobre el vacío unidas por pasillos, con muros de columnas en los bordes traseros (lados -X y +Y,
+    lejos de la cámara); en los delanteros asoma el grueso del piso. Se sube por la escalera del muro -X de la primera
+    sala y se baja por la horneada en el suelo. colision["vacio"] son las celdas sin piso (en Unity, cajas que no se
+    atraviesan) y colision["puntos"], los puntos de juego. Mismo formato que planificar_selva."""
+    datos = PISOS[piso]
+    rng = random.Random(70 + piso)
+    X0, X1, Y0, Y1 = datos["limites"]
+    celdas = datos["celdas"]
+    sx, sy = datos["subida"]
+    bx, by = datos.get("sello", (99, 99))
+
+    suelo = []
+    for X, Y in sorted(celdas, key=lambda p: p[0] - p[1]):
+        suelo.append((f"Tile_Losa_Basalto_{rng.choice(datos['losas']):02d}", X, Y))
+
+    # Muros en los bordes traseros; la escalera de subida ocupa tres módulos del muro -X
+    objetos = []
+    muro = lambda: rng.choice(datos["muros"])
+    for X, Y in sorted(celdas):
+        if (X - 1, Y) not in celdas and not (abs(X - 0.5 - (sx - 0.9)) < 0.6 and abs(Y - sy) < 1.5):
+            objetos.append((f"Muro_Basalto_Y_{muro():02d}", X - 0.5, Y, 0.0))
+        if (X, Y + 1) not in celdas:
+            objetos.append((f"Muro_Basalto_{muro():02d}", X, Y + 0.5, 0.0))
+
+    objetos.append(("Escalera_Subida_01", sx, sy, 0.0))
+    if "memoria" in datos:
+        objetos.append(("Santuario_Memoria_01", *datos["memoria"], 0.0))
+    if "vida" in datos:
+        objetos.append(("Santuario_Vida_01", *datos["vida"], 0.0))
+    if "sello" in datos:
+        objetos.append(("Estela_Grande_01", bx, by, 0.0))
+    for nombre, X, Y in datos["adornos"]:
+        objetos.append((nombre, X, Y, 0.0))
+    marcas = [("Escalera_Bajada_01", *datos["bajada"])] if "bajada" in datos else []
+    if "sello" in datos:   # la corrupción sale de debajo de la losa sellada
+        marcas += [("Grieta_Olvido_02", bx - 1.0, by - 1.3), ("Grieta_Olvido_01", bx + 1.2, by - 1.0)]
+
+    punto = lambda p: {"x": round(p[0], 2), "y": round(p[1], 2)}
+    puntos = {clave: punto(datos[clave]) for clave in
+              ("subida", "llegada_arriba", "bajada", "llegada_abajo", "memoria", "memoria_llegada", "vida", "sello")
+              if clave in datos}
+    puntos["enemigos"] = [punto(p) for p in datos["enemigos"]]
+    colision = {
+        "niveles": [], "niveles_recinto": [], "rampas": [], "agua": [], "agua_bloqueo": [], "muelles": [],
+        "limites": [X0, X1, Y0, Y1],
+        "vacio": sorted((X, Y) for X in range(X0, X1 + 1) for Y in range(Y0, Y1 + 1) if (X, Y) not in celdas),
+        "puntos": puntos,
+    }
+    return {"suelo": suelo, "objetos": objetos, "dosel": [], "marcas": marcas}, colision
 
 
 def exportar_ciudad(salida, plan, colision):
@@ -2351,10 +2690,16 @@ TAM_SELVA = (2048, 1216)
 CENTRO_SELVA = (1024, 712)
 RECORTES_SELVA = {"Llegada": (14, 0), "Claro": (2, 0.5), "Entrada": (-11, -2)}
 
+# Los pisos de la mazmorra caben en el lienzo de la selva; fondo casi negro (el vacío bajo el piso)
+FONDO_MAZMORRA = "#0B0D0B"
+RECORTES_PISO = {1: {"Llegada": (-11.5, -1), "Sala": (0, 0), "Bajada": (11, -1)},
+                 2: {"Llegada": (-11.5, 0), "Sala": (0, 0), "Vida": (0, -7)},
+                 3: {"Llegada": (-7, 0), "Antesala": (3.5, 0.5)}}
 
-def componer_region(salida, metas, plan, archivo, tam, centro, recortes):
+
+def componer_region(salida, metas, plan, archivo, tam, centro, recortes, fondo="#13241A"):
     """Vista previa de una región completa (sin ampliar) y recortes de 640×360 ampliados ×3."""
-    lienzo = componer(salida, metas, plan, archivo=archivo, tam=tam, centro=centro, ampliar=False)
+    lienzo = componer(salida, metas, plan, archivo=archivo, tam=tam, centro=centro, ampliar=False, fondo=fondo)
     for nombre, (X, Y) in recortes.items():
         sx, sy = pantalla(X, Y, centro=centro)
         x0, y0 = sx - W_COMP // 2, sy - H_COMP // 2
@@ -2366,10 +2711,11 @@ def componer_ciudad(salida, metas, plan):
     componer_region(salida, metas, plan, "Ciudad", TAM_CIUDAD, CENTRO_CIUDAD, RECORTES_CIUDAD)
 
 
-def componer(salida, metas, plan, cuadro_agua=1, archivo="Composicion", tam=(W_COMP, H_COMP), centro=None, ampliar=True):
+def componer(salida, metas, plan, cuadro_agua=1, archivo="Composicion", tam=(W_COMP, H_COMP), centro=None, ampliar=True,
+             fondo="#13241A"):
     """Escena de prueba con la proyección de la cámara del juego (640x360 por defecto). No es una captura de Unity."""
     centro = centro or (tam[0] / 2, tam[1] / 2)
-    lienzo = pa.sobre_fondo(pa.np.zeros((tam[1], tam[0], 4), dtype=pa.np.float32), "#13241A")
+    lienzo = pa.sobre_fondo(pa.np.zeros((tam[1], tam[0], 4), dtype=pa.np.float32), fondo)
     cache = {}
 
     def img(n):
@@ -2406,7 +2752,7 @@ SPRITES_UNITY = os.path.join(RAIZ_PROYECTO, "Assets", "_Project", "Art", "Enviro
 DATOS_UNITY = os.path.join(RAIZ_PROYECTO, "Assets", "_Project", "Data", "World", "Olmeca")
 TROZO_SUELO = 1024
 # Lo que se hornea en el suelo (no se exporta como sprite suelto)
-NO_EXPORTAR = ("Tile_Camino", "Tile_Pasto", "Tile_Orilla", "Sombra_Dosel", "Grieta_Olvido")
+NO_EXPORTAR = ("Tile_Camino", "Tile_Pasto", "Tile_Orilla", "Sombra_Dosel", "Grieta_Olvido", "Tile_Losa", "Escalera_Bajada")
 
 
 def capa_suelo(salida, metas, plan, tam, centro):
@@ -2498,6 +2844,8 @@ def exportar_unity(salida, metas, regiones):
             "limites": colision["limites"],
             "puntos": colision["puntos"],
         }
+        if "vacio" in colision:   # pisos de la mazmorra
+            datos[region]["vacio"] = [{"x": c[0], "y": c[1]} for c in colision["vacio"]]
 
     for carpeta, archivos in destinos.items():
         dest = os.path.join(SPRITES_UNITY, carpeta)
@@ -2534,8 +2882,13 @@ def main():
     mascaras["Tile_Orilla"] |= mascaras_aldea
     for tipo, ms in list(mascaras_ciudad.items()) + list(mascaras_selva.items()):
         mascaras[tipo] |= ms
+    pisos = [(f"Mazmorra_P{n}", *planificar_piso(n)) for n in sorted(PISOS)]
     lotes = [(tipo, list(range(1, n + 1))) for tipo, n in VARIANTES.items()]
     lotes += [(tipo, sorted(ms)) for tipo, ms in mascaras.items()]
+    solo_mazmorra = "--solo-mazmorra" in sys.argv   # para revisar el arte de los pisos sin rehacer todo (no exporta)
+    if solo_mazmorra:
+        usados = {n.rsplit("_", 1)[0] for _, plan_, _ in pisos for n, *_ in plan_["suelo"] + plan_["objetos"] + plan_["marcas"]}
+        lotes = [(tipo, vs) for tipo, vs in lotes if tipo in usados]
     metas = {}
     for tipo, variantes in lotes:
         nombres = []
@@ -2546,6 +2899,13 @@ def main():
         hoja_variantes(salida, nombres, f"{tipo}_variantes_x4.png")
     with open(os.path.join(salida, "pivotes.json"), "w", encoding="utf-8") as fh:
         json.dump(metas, fh, indent=2)
+    for region, plan_piso, _ in pisos:
+        n = int(region[-1])
+        componer_region(salida, metas, plan_piso, region, TAM_SELVA, CENTRO_SELVA, RECORTES_PISO[n], fondo=FONDO_MAZMORRA)
+    if solo_mazmorra:
+        shutil.rmtree(tmp)
+        print("LISTO (solo mazmorra)", salida, len(metas), "sprites")
+        return
     componer(salida, metas, plan)
     componer(salida, metas, plan_ruinas, archivo="Prueba_Ruinas")
     componer(salida, metas, plan_aldea, archivo="Prueba_Aldea")
@@ -2554,7 +2914,9 @@ def main():
     componer_region(salida, metas, plan_selva, "Selva", TAM_SELVA, CENTRO_SELVA, RECORTES_SELVA)
     if "--sin-unity" not in sys.argv:
         exportar_unity(salida, metas, [("Ciudad", plan_ciudad, colision, TAM_CIUDAD, CENTRO_CIUDAD),
-                                       ("Selva", plan_selva, colision_selva, TAM_SELVA, CENTRO_SELVA)])
+                                       ("Selva", plan_selva, colision_selva, TAM_SELVA, CENTRO_SELVA)]
+                       + [(region, plan_piso, colision_piso, TAM_SELVA, CENTRO_SELVA)
+                          for region, plan_piso, colision_piso in pisos])
     shutil.rmtree(tmp)
     print("LISTO", salida, len(metas), "sprites")
 

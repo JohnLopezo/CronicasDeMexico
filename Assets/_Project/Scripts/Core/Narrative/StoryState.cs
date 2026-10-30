@@ -35,6 +35,19 @@ namespace CronicasDeMexico.Core.Narrative
                 FlagChanged?.Invoke(flag);
         }
 
+        /// <summary>Quita todas las banderas que empiezan por <paramref name="prefix"/> (p. ej. las de una incursión).</summary>
+        public void ClearFlagsWithPrefix(string prefix)
+        {
+            if (string.IsNullOrEmpty(prefix))
+                return;
+            var matching = new List<string>();
+            foreach (var flag in flags)
+                if (flag.StartsWith(prefix, StringComparison.Ordinal))
+                    matching.Add(flag);
+            foreach (var flag in matching)
+                ClearFlag(flag);
+        }
+
         /// <summary>Avisa de algo que acaba de pasar. No se guarda: solo lo oyen quienes escuchan ahora.</summary>
         public void Report(string happening)
         {

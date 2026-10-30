@@ -32,6 +32,8 @@ RAMPAS = {
     # el verde de la piedra pulida (Docs/Arte_Olmeca_Demo.md §2)
     "olvido": ["#2A1838", "#4B2A6B", "#7B4FB0", "#A98BE8", "#D9CCFF"],
     "jade": ["#1F5148", "#2E7D6B", "#4FB39A", "#9BE3C8", "#E2FFF2"],
+    # El fuego del santuario de Vida (mazmorra, M2)
+    "fuego": ["#5A2412", "#9A3A1C", "#D8642A", "#F2A541", "#FFE08A"],
 }
 
 

@@ -36,6 +36,12 @@ namespace CronicasDeMexico.Gameplay.Player
         /// <summary>Dónde reaparece al morir (por defecto, donde empezó la escena).</summary>
         public void SetRespawnPoint(Vector3 position) => spawnPoint = position;
 
+        /// <summary>
+        /// Si es false, al morir no reaparece aquí: se encarga otro componente (DefeatReturn lo lleva al santuario de
+        /// Memoria). Si vuelve a true estando muerto, reaparece en cuanto pase el tiempo de espera.
+        /// </summary>
+        public bool RespawnInPlace { get; set; } = true;
+
         void OnEnable()
         {
             health.Damaged += OnDamaged;
@@ -54,7 +60,7 @@ namespace CronicasDeMexico.Gameplay.Player
                 return;
 
             respawnTimer -= Time.deltaTime;
-            if (respawnTimer <= 0f)
+            if (respawnTimer <= 0f && RespawnInPlace)
                 Respawn();
         }
 

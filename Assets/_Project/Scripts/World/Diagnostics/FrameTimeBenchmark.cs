@@ -42,6 +42,17 @@ namespace CronicasDeMexico.World.Diagnostics
             ("SelvaDensa", new Vector2(6f, -6f)),
         };
 
+        // En Olmeca_Mazmorra_P2 (planificar_piso, el piso con más muros y espíritus): llegada, sala central, santuario de
+        // Vida y bajada.
+        const string DungeonSceneName = "Olmeca_Mazmorra_P2";
+        static readonly (string name, Vector2 point)[] DungeonViews =
+        {
+            ("Llegada", new Vector2(-11.5f, 1f)),
+            ("Sala", new Vector2(0f, 0.5f)),
+            ("Vida", new Vector2(0f, -7f)),
+            ("Bajada", new Vector2(12f, 0f)),
+        };
+
         readonly float[] samples = new float[MaxSamples];
         string outputFolder;
 
@@ -102,7 +113,12 @@ namespace CronicasDeMexico.World.Diagnostics
                 Application.targetFrameRate = -1;
                 var levelName = QualitySettings.names[level];
 
-                var views = SceneManager.GetActiveScene().name == JungleSceneName ? JungleViews : Views;
+                var views = SceneManager.GetActiveScene().name switch
+                {
+                    JungleSceneName => JungleViews,
+                    DungeonSceneName => DungeonViews,
+                    _ => Views,
+                };
                 foreach (var (viewName, point) in views)
                 {
                     Debug.Log($"[Benchmark] {levelName} / {viewName}");

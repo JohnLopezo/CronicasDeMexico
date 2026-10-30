@@ -45,6 +45,9 @@ namespace CronicasDeMexico.Gameplay.Enemies
         [SerializeField, Min(0f), Tooltip("Segundos hasta reaparecer en su sitio tras morir.")]
         float respawnDelay = 8f;
 
+        [SerializeField, Tooltip("Si no reaparece, queda vencido hasta que se vuelva a cargar la escena (mazmorra).")]
+        bool respawns = true;
+
         [SerializeField, Tooltip("Gravedad en m/s² (negativa).")]
         float gravity = -20f;
 
@@ -167,7 +170,7 @@ namespace CronicasDeMexico.Gameplay.Enemies
             SetPresent(false);
             planarVelocity = Vector3.zero;
             IsChasing = false;
-            respawnTimer = respawnDelay;
+            respawnTimer = respawns ? respawnDelay : float.PositiveInfinity;
         }
 
         void Respawn()

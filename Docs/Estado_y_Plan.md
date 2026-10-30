@@ -1,13 +1,18 @@
 # Estado del proyecto y plan para continuar
 
-*Recopilación al 2026-10-29 (actualizada tras M1, la selva), en el i7-10700. Rama `feature/prototipo-olmeca`.* Léela al retomar, junto con la última entrada de `Docs/Bitacora.md`.
+*Recopilación al 2026-10-29, actualizada el 2026-10-30 tras M2 (la base de la mazmorra), en el i7-10700. Rama `feature/prototipo-olmeca`.* Léela al retomar, junto con la última entrada de `Docs/Bitacora.md`.
 
 ## 1. Cómo retomar (en cualquier PC)
 
 1. Cerrar Unity. `git status` limpio. `git pull`.
 2. Comprobar que `git log -1` coincide con el último commit anotado en `Docs/Bitacora.md`.
 3. Abrir Unity 6000.0.85f1 y esperar la importación.
-4. Para jugar: abrir `Scenes/Boot/Boot.unity` (arranca en **`Olmeca_Ciudad`**) o la propia ciudad, y pulsar Play. La selva (`Olmeca_Selva`) se alcanza por el sendero del oeste de la ciudad, o se abre directamente. El prototipo (`Olmeca_Prototipo`) se abre a mano.
+4. Para jugar: abrir `Scenes/Boot/Boot.unity` y pulsar Play.
+   - Sin partida guardada arranca en **`Olmeca_Ciudad`**. Con partida guardada aparece en su santuario de Memoria; se borra con **Crónicas → Borrar partida guardada**.
+   - La selva (`Olmeca_Selva`) se alcanza por el sendero del oeste de la ciudad.
+   - Los pisos `Olmeca_Mazmorra_P1` a `P3` se alcanzan por la entrada de la selva, que se abre al completar `MP_OLM_03`.
+   - Cualquier escena también se puede abrir directamente; al pulsar Play así no se carga la partida.
+   - El prototipo (`Olmeca_Prototipo`) se abre a mano.
 5. En Claude Code, abrirlo desde la carpeta del proyecto (lee `CLAUDE.md`) y decirle: "continuamos; lee `Docs/Estado_y_Plan.md` y la bitácora".
 
 Reglas de trabajo: Claude propone un plan por etapas y espera autorización; no hace commit ni push sin que se le pida (`CLAUDE.md`, `Docs/DesarrolloMultiPC.md`).
@@ -68,8 +73,19 @@ Reglas de trabajo: Claude propone un plan por etapas y espera autorización; no 
 - Con los tres fragmentos, el guerrero reconoce la entrada. Detalle en `Docs/Historia/Misiones.md`.
 - Rendimiento en el i7: unos 290 FPS en Bajo, 345 en Medio y 300 en Alto (`Docs/Rendimiento.md`).
 
+### Mazmorra (M2): la base, 2026-10-30
+Detalle en `Docs/Mazmorras/Olmeca.md`.
+- **Pisos:** `Olmeca_Mazmorra_P1` a `P3`, generados por `OlmecaDungeonGenerator`. Son salas de losas sobre el vacío, con muros de columnas de basalto, unidas por escaleras. La entrada de la selva lleva al piso 1 cuando `MP_OLM_03` está completada.
+- **Santuario de Memoria** (pisos 1 y 3): fija el punto de control y **guarda la partida**.
+- **Santuario de Vida** (piso 2): cura la mitad de la vida, una vez por incursión. Se reenciende al volver a la selva.
+- **Derrota:** con punto de control se vuelve a él con la vida completa; los enemigos normales del piso vuelven y la historia se conserva. Sin punto de control se reaparece en el sitio.
+- **Continuar:** Boot carga la partida y aparece en el santuario.
+- **Contenido provisional:** 2 y 3 espíritus en los pisos 1 y 2, y en el piso 3 una antesala con la losa sellada del Guardián.
+- **Arte nuevo en Blender**, pendiente de tu aprobación (`Docs/Arte_Olmeca_Demo.md` §12).
+- **Rendimiento en el i7, piso 2:** unos 290 FPS en Bajo, 300–370 en Medio y 280–310 en Alto.
+
 ### Pruebas
-EditMode 55/55 y PlayMode 36/36 (al 2026-10-29, tras M1).
+EditMode 57/57 y PlayMode 42/42 (al 2026-10-30, tras M2).
 
 ## 4. Pendiente de decidir (por el autor)
 
@@ -88,21 +104,26 @@ EditMode 55/55 y PlayMode 36/36 (al 2026-10-29, tras M1).
 ## 6. Plan propuesto (cada etapa se presenta y espera autorización)
 
 ### Inmediato
-- **Probar en el Editor** el arco completo, de `MP_OLM_01` a `MP_OLM_03` (Boot → ciudad → selva), y anotar lo que se sienta mal: textos, posiciones, ritmo, combate en los claros.
-- Aprobar o corregir el arte de M1: la entrada, las grietas y el fragmento (`Docs/Arte_Olmeca_Demo.md` §12).
+- **Probar en el Editor** el arco completo, de `MP_OLM_01` a `MP_OLM_03` (Boot → ciudad → selva), y después la mazmorra:
+  - Bajar del piso 1 al 3.
+  - Descansar en el santuario de Memoria, caer en combate y volver al santuario.
+  - Usar el santuario de Vida.
+  - Cerrar el juego y continuar desde Boot.
+  - Anotar lo que se sienta mal: textos, posiciones, ritmo y combate.
+- Aprobar o corregir el arte de M1 (la entrada, las grietas y el fragmento) y el de M2 (losas, muros, santuarios y escaleras). Ver `Docs/Arte_Olmeca_Demo.md` §12.
 
 ### Fase narrativa 2, continuación: selva y mazmorra (corresponde a las fases 5 y 6 del GDD)
 
 | Etapa | Contenido |
 |---|---|
 | ~~**M1. Rastros en la selva**~~ | **Hecha (2026-10-29).** Viaje entre escenas, arte nuevo, escena `Olmeca_Selva`, `MP_OLM_03` y medición. |
-| **M2. Base de mazmorra** | Escena por piso; transición entre pisos (reutiliza `SceneTravel`; la entrada de la selva llevará al piso 1); santuario de **Memoria** (punto de control y **primer uso real de `SaveService`**) y de **Vida** (curación limitada); derrota → volver al último santuario sin perder el progreso principal. |
+| ~~**M2. Base de mazmorra**~~ | **Hecha (2026-10-30).** Tres pisos y sus escaleras, santuarios de Memoria (guardado) y de Vida, regreso al santuario tras la derrota y continuar desde Boot. |
 | **M3. Pisos 1 y 2** | El Umbral (tutorial de combate) y El Pantano (terreno que ralentiza, eco borrado). Mini-jefe **Jaguar de Piedra**. |
 | **M4. Piso 3 y jefe** | Arena del **Guardián de la Piedra Viva** en tres fases (`Docs/Enemigos/Olmeca.md`). |
 | **M5. Recompensas y cierre** | Fragmento de la Primera Memoria, habilidad de tierra (propuesta: golpe que rompe basalto agrietado), elección de Bendición, `MP_OLM_06` (restaurar una inscripción) y conexión al arco II. |
 
 ### Otros pendientes técnicos
-- Menú de inicio con **Continuar o Nueva partida**, para usar `SaveService`.
+- Menú de inicio con **Continuar o Nueva partida**. Hoy Boot continúa solo si hay partida guardada, y para empezar de nuevo se borra con **Crónicas → Borrar partida guardada**.
 - Pantalla de elección de Guardián, cuando haya más de uno.
 - Misiones secundarias del arco I (`MS_OLM_01` a `MS_OLM_05`, en `Docs/Historia/Misiones.md`) y la tienda del comerciante.
 - Arte de las ruinas que falta: escombros de basalto y mosaico de serpentina (`Arte_Olmeca_Demo.md` §12).

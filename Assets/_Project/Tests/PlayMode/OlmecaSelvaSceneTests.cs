@@ -94,10 +94,10 @@ namespace CronicasDeMexico.Tests
             Assert.IsTrue(fragments.All(f => !f.gameObject.activeInHierarchy), "Los fragmentos aparecen al vencer a su espíritu.");
             Assert.IsNull(FindWarrior(), "Sin MP_OLM_03 el guerrero sigue en la ciudad.");
 
+            // Sin MP_OLM_03 completada, la abertura de la entrada no lleva a la mazmorra.
             var portal = Object.FindObjectsByType<ScenePortal>(FindObjectsSortMode.None).Single();
             Assert.AreEqual(CityScene, portal.TargetScene);
-            var spawn = Object.FindObjectsByType<SpawnPoint>(FindObjectsSortMode.None).Single();
-            Assert.AreEqual("desde_ciudad", spawn.SpawnId);
+            var spawn = Object.FindObjectsByType<SpawnPoint>(FindObjectsSortMode.None).Single(s => s.SpawnId == "desde_ciudad");
             Assert.Less(Vector3.Distance(player.transform.position, spawn.transform.position), 0.5f,
                 "Al pulsar Play en la selva el jugador empieza donde llega desde la ciudad.");
 

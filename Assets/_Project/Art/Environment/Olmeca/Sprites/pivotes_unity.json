@@ -200,6 +200,17 @@
    ]
   },
   {
+   "nombre": "Escalera_Subida_01",
+   "lienzo": [
+    128,
+    160
+   ],
+   "pivote": [
+    64,
+    40
+   ]
+  },
+  {
    "nombre": "Escombros_Basalto_01",
    "lienzo": [
     48,
@@ -373,6 +384,72 @@
    "pivote": [
     32,
     22
+   ]
+  },
+  {
+   "nombre": "Muro_Basalto_01",
+   "lienzo": [
+    64,
+    112
+   ],
+   "pivote": [
+    32,
+    18
+   ]
+  },
+  {
+   "nombre": "Muro_Basalto_02",
+   "lienzo": [
+    64,
+    112
+   ],
+   "pivote": [
+    32,
+    18
+   ]
+  },
+  {
+   "nombre": "Muro_Basalto_03",
+   "lienzo": [
+    64,
+    112
+   ],
+   "pivote": [
+    32,
+    18
+   ]
+  },
+  {
+   "nombre": "Muro_Basalto_Y_01",
+   "lienzo": [
+    64,
+    112
+   ],
+   "pivote": [
+    32,
+    18
+   ]
+  },
+  {
+   "nombre": "Muro_Basalto_Y_02",
+   "lienzo": [
+    64,
+    112
+   ],
+   "pivote": [
+    32,
+    18
+   ]
+  },
+  {
+   "nombre": "Muro_Basalto_Y_03",
+   "lienzo": [
+    64,
+    112
+   ],
+   "pivote": [
+    32,
+    18
    ]
   },
   {
@@ -596,6 +673,50 @@
    ]
   },
   {
+   "nombre": "Santuario_Memoria_01",
+   "lienzo": [
+    96,
+    128
+   ],
+   "pivote": [
+    48,
+    30
+   ]
+  },
+  {
+   "nombre": "Santuario_Memoria_02",
+   "lienzo": [
+    96,
+    128
+   ],
+   "pivote": [
+    48,
+    30
+   ]
+  },
+  {
+   "nombre": "Santuario_Vida_01",
+   "lienzo": [
+    64,
+    72
+   ],
+   "pivote": [
+    32,
+    20
+   ]
+  },
+  {
+   "nombre": "Santuario_Vida_02",
+   "lienzo": [
+    64,
+    72
+   ],
+   "pivote": [
+    32,
+    20
+   ]
+  },
+  {
    "nombre": "Tile_Agua_Anim_01",
    "lienzo": [
     64,
@@ -780,6 +901,61 @@
    "pivote": [
     416.0,
     469.0
+   ]
+  },
+  {
+   "nombre": "Suelo_Mazmorra_P1_00",
+   "lienzo": [
+    1024,
+    612
+   ],
+   "pivote": [
+    512.0,
+    306.0
+   ]
+  },
+  {
+   "nombre": "Suelo_Mazmorra_P1_01",
+   "lienzo": [
+    96,
+    612
+   ],
+   "pivote": [
+    48.0,
+    306.0
+   ]
+  },
+  {
+   "nombre": "Suelo_Mazmorra_P2_00",
+   "lienzo": [
+    1024,
+    612
+   ],
+   "pivote": [
+    512.0,
+    306.0
+   ]
+  },
+  {
+   "nombre": "Suelo_Mazmorra_P2_01",
+   "lienzo": [
+    96,
+    612
+   ],
+   "pivote": [
+    48.0,
+    306.0
+   ]
+  },
+  {
+   "nombre": "Suelo_Mazmorra_P3_00",
+   "lienzo": [
+    832,
+    436
+   ],
+   "pivote": [
+    416.0,
+    218.0
    ]
   }
  ]

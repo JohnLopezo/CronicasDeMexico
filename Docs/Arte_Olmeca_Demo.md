@@ -203,6 +203,16 @@ Ventaja: coherencia de luz y escala entre recursos y facilidad para generar vari
   - Vistas previas: `Selva_2048x1216.png` y recortes ×3 `Selva_{Llegada,Claro,Entrada}_1920x1080_x3.png`. Capturas reales de Unity: menú **Crónicas → Capturar selva olmeca** (`Selva_Unity_*.png`).
   - El flujo completo tarda unos 3 minutos en el i7 y es determinista: regenerar no cambia los sprites que ya existían.
 
+- **Mazmorra, M2 (2026-10-30), pendiente de aprobación:** piezas del interior de «La ciudad bajo la selva» y el trazado de los pisos 1 a 3.
+  - `Tile_Losa_Basalto_01–03`: cuatro losas de basalto sobre arcilla oscura, con 0,4 m de grueso que asoma sobre el vacío en los bordes delanteros. La 2 tiene una losa partida y la 3 es húmeda, con musgo en las juntas (El Pantano). Va horneado en el suelo. Que el interior tenga piso de losas es ficción (F).
+  - `Muro_Basalto_01–03` y `Muro_Basalto_Y_01–03`: módulos de 1 m de columnas de basalto apretadas, sin plantas. La 3 deja ver la luz del olvido por una rendija. Solo van en los bordes traseros de cada sala (lados -X y +Y): los delanteros quedan abiertos para no tapar al jugador. Recuerdan el recinto de columnas (D), aquí cerrado y bajo tierra (F).
+  - `Santuario_Memoria_01–02`: nicho de basalto con una hacha votiva de jade sobre una losa, dormido (01) o despierto (02, el jade brilla). Las hachas de jade como ofrenda están documentadas en La Venta (D); su función de punto de control es ficción (F).
+  - `Santuario_Vida_01–02`: fogón de tres piedras sobre una banqueta de arcilla, encendido (01) o apagado (02). Usa la rampa nueva `fuego` de `pixelart_comun.py`. El fogón es doméstico (D); su fuego que cura es ficción (F).
+  - `Escalera_Subida_01`: tres peldaños hasta un pórtico de basalto con el hueco negro, contra el muro -X. `Escalera_Bajada_01`: hueco en el piso con marco de losas y peldaños que bajan hacia la cámara, horneado en el suelo. El piso que lo rodea se renderiza como *holdout*, para que no se vea el pozo por fuera.
+  - Trazado `planificar_piso` (tabla `PISOS`): salas rectangulares unidas por pasillos, sobre fondo casi negro (`#0B0D0B`). Exporta `Mazmorra_P1–3.json` con `vacio`, las celdas sin piso que en Unity son cajas que no se atraviesan. En el piso 3, dos `Grieta_Olvido` horneadas salen de la losa sellada (`Estela_Grande_01`).
+  - Vistas previas: `Mazmorra_P<n>_2048x1216.png` y recortes ×3. Para revisar solo los pisos sin exportar: `--solo-mazmorra` (≈1,5 min). Capturas reales de Unity: menú **Crónicas → Capturar mazmorra olmeca**.
+  - Pendiente: el arte definitivo del sello del Guardián (hoy una estela grande, provisional hasta M4) y la luz propia de los interiores. Los sprites se renderizan con el mismo sol que el exterior, y solo los personajes se oscurecen en la escena.
+
 Regenerar todo (desde la carpeta del proyecto):
 
 ```

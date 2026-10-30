@@ -46,6 +46,36 @@ La recompensa es consecuencia de entender qué protegía el guardián (§7.4): e
 
 Tipos del GDD §9: Vida (curación parcial, limitada por incursión), Memoria (checkpoint y guardado), Espiritual (Bendiciones), Sabiduría (Códice) y Artesano (mejoras). Identidad visual olmeca: por ejemplo, un fogón bajo una enramada o un nicho de basalto (I).
 
+**Implementado en M2 (2026-10-30):**
+
+- **Memoria** (`MemoryShrine`): un nicho de basalto con una hacha votiva de jade. Hay uno en el piso 1, junto a la escalera de llegada, y otro en la antesala del piso 3.
+  - Al descansar fija el punto de control (`PlayerCheckpoint`: escena, punto de aparición y vida actual) y guarda la partida (`SaveService`).
+  - No cura. La primera vez, el jade se enciende (bandera `santuario_memoria.<id>`).
+- **Vida** (`LifeShrine`): un fogón de tres piedras en la sala lateral del piso 2.
+  - Cura la mitad de la vida máxima, redondeada hacia arriba, **una vez por incursión**. Con la vida llena no se gasta.
+  - El uso queda en la bandera `incursion.santuario_vida.<id>`, que apaga el fuego. Las banderas `incursion.*` se borran al volver a la selva (`IncursionReset`): salir de la mazmorra termina la incursión.
+
 ## Derrota
 
-Regreso al último santuario de Memoria con una penalización moderada configurable, **sin perder el progreso principal** (§8.4; GDD §9). Qué persiste dentro de una incursión se decide antes de programarlo.
+Regreso al último santuario de Memoria con una penalización moderada configurable, **sin perder el progreso principal** (§8.4; GDD §9).
+
+**Decidido e implementado en M2 (2026-10-30), en `DefeatReturn`:**
+
+- **Con punto de control**, al caer se vuelve al último santuario de Memoria, aunque esté en otro piso, con la vida completa.
+  - La penalización es configurable (`returnHealthFraction`) y por ahora vale 0.
+  - El viaje recarga el piso. Los enemigos normales vuelven, mientras que la historia, las misiones y las banderas (por ejemplo, los jefes vencidos) se conservan.
+  - No se recarga la partida guardada.
+- **Sin punto de control** se reaparece en el sitio, como fuera de la mazmorra.
+- Los enemigos de la mazmorra no reaparecen mientras se está en el piso (`EnemyChaser.respawns = false`). Vuelven al cargarlo de nuevo.
+
+## Base implementada (M2, 2026-10-30)
+
+- **Escenas** `Olmeca_Mazmorra_P1` a `P3`, generadas por `OlmecaDungeonGenerator` desde `Mazmorra_P<n>.json` (`planificar_piso`): salas de losas sobre el vacío, unidas por pasillos.
+  - Cada piso tiene su escalera de subida (en el piso 1, a la selva) y su escalera de bajada (salvo el 3).
+  - La abertura de la entrada de la selva lleva al piso 1 solo cuando `MP_OLM_03` está completada.
+- **Contenido provisional**:
+  - El piso 1 tiene 2 espíritus corrompidos y una estela con rastros de la expedición del guerrero.
+  - El piso 2 tiene 3 espíritus y una estela borrada.
+  - El piso 3 es una antesala sin enemigos, con la losa sellada del Guardián.
+  - El tutorial de combate, el terreno del Pantano, el Jaguar de Piedra y la arena del jefe llegan en M3 y M4.
+- **Continuar:** al arrancar desde Boot con una partida guardada, el juego aparece en su santuario de Memoria (`GameBootstrapper.ContinueSavedGame`). Hasta que exista el menú de inicio, la partida se borra con **Crónicas → Borrar partida guardada**.

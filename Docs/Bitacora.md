@@ -21,6 +21,30 @@ Plantilla:
 
 ---
 
+## 2026-10-30 — i7-10700
+
+- **Rama / último commit al empezar:** `feature/prototipo-olmeca` @ `a8759bc` (al día con origin, árbol limpio salvo `Docs/Desarrollo juego México.html` y su carpeta, una conversación guardada que no se tocó).
+- **Decisiones del usuario (M2):**
+  - Al caer se conservan la historia, las misiones y los jefes vencidos, y los enemigos normales reaparecen.
+  - El santuario de Vida cura el 50 %, una vez por santuario y por incursión, y se reenciende al salir de la mazmorra.
+  - Boot continúa la partida guardada directamente, sin menú todavía.
+  - El arte nuevo va dentro de M2.
+- **Hecho (M2, base de la mazmorra):**
+  - **Arte en Blender:** losas, muros de columnas, santuarios de Memoria y de Vida (dos estados cada uno) y escaleras de subida y bajada.
+  - **Trazado:** `planificar_piso` exporta `Mazmorra_P1–3.json`, con las celdas de vacío. La opción `--solo-mazmorra` sirve para revisar sin exportar.
+  - **Escenas:** `OlmecaDungeonGenerator` crea `Olmeca_Mazmorra_P1–3`. Selva regenerada con el portal al piso 1 (abre con `MP_OLM_03` completada) e `IncursionReset`.
+  - **Sistemas:** `PlayerCheckpoint` (participante del guardado), `MemoryShrine`, `LifeShrine`, `DefeatReturn` y `DungeonFlags`.
+  - **Cambios en lo existente:** `StoryState.ClearFlagsWithPrefix`, `PlayerDamageResponse.RespawnInPlace`, `EnemyChaser.respawns` y `GameBootstrapper.ContinueSavedGame`.
+  - **Menús nuevos:** Crónicas → Generar mazmorra / Capturar mazmorra / Borrar partida guardada / Build de medición de la mazmorra.
+- **Estado:**
+  - Pruebas: EditMode 57/57 y PlayMode 42/42. Las nuevas son `Checkpoint_IsSavedAndRestored_WithTheStory`, `StoryState_ClearFlagsWithPrefix_RemovesOnlyThoseFlags` y las 6 de `OlmecaMazmorraSceneTests`: pisos, viaje selva ↔ piso 3, santuario y derrota, derrota sin punto de control, santuario de Vida e incursión, y continuar desde Boot.
+  - Capturas reales de Unity revisadas a ojo.
+  - FPS del piso 2 anotados en `Docs/Rendimiento.md`.
+  - **No se ha jugado en el Editor.** Commit y push al cerrar la sesión.
+- **Siguiente:**
+  - Jugar el arco y la mazmorra en el Editor, y aprobar el arte de M1 y M2.
+  - Plan de M3: El Umbral, El Pantano y el Jaguar de Piedra.
+
 ## 2026-10-29 (tarde) — i7-10700
 
 - **Rama / último commit al empezar:** `feature/prototipo-olmeca` @ `cdccc66` (al día con origin, árbol limpio).

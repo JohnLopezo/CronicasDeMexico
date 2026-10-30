@@ -52,6 +52,11 @@ namespace CronicasDeMexico.Editor.SceneGeneration
             ("Tronco_Caido_01", new Vector3(0.9f, 0.5f, 0.35f)),
             ("Tronco_Caido_02", new Vector3(0.45f, 0.45f, 0.35f)),
             ("Entrada_Estructura", new Vector3(2.9f, 3.8f, 1.5f)), // el montículo con sus columnas
+            // Mazmorra (los bordes de cada sala ya los cierra el vacío; el muro solo evita pisar sus columnas)
+            ("Muro_Basalto_Y", new Vector3(0.3f, 1f, 1.7f)),
+            ("Muro_Basalto", new Vector3(1f, 0.3f, 1.7f)),
+            ("Santuario_Memoria", new Vector3(0.9f, 1.3f, 1.4f)),
+            ("Santuario_Vida", new Vector3(0.8f, 0.8f, 0.4f)),
         };
 
         // Obstáculos de varias piezas: centro (x, y del flujo, respecto al objeto), huella y altura de cada pieza. La
@@ -67,6 +72,8 @@ namespace CronicasDeMexico.Editor.SceneGeneration
                 (new Vector2(-0.39f, 0.36f), new Vector3(0.45f, 0.3f, 0.3f)),  // olla y tecomate
                 (new Vector2(0.45f, 0.38f), new Vector3(0.45f, 0.35f, 0.2f)),  // metate
             }),
+            // La escalera de subida bloquea en el pórtico; los peldaños quedan libres para pisar el portal.
+            ("Escalera_Subida_01", new[] { (new Vector2(-0.65f, 0f), new Vector3(0.5f, 2f, 2f)) }),
         };
 
         // Capas que comparten lienzo y pivote con su objeto pero se ordenan por la profundidad de otro punto (x, y del
@@ -92,6 +99,13 @@ namespace CronicasDeMexico.Editor.SceneGeneration
             public Point salida_selva, llegada_selva;                    // ciudad
             public Point llegada, salida, zona_selva, entrada, guerrero; // selva
             public Point[] claros, fragmentos;
+            public Point mazmorra, desde_mazmorra;                       // selva: entrada al piso 1
+            public Point subida, llegada_arriba, bajada, llegada_abajo;  // pisos de la mazmorra
+            public Point memoria, memoria_llegada, vida, sello;
+            public Point[] enemigos;
+
+            /// <summary>Si el punto existe en los datos (JsonUtility deja a cero los que faltan).</summary>
+            public static bool Has(Point point) => point != null && (point.x != 0f || point.y != 0f);
         }
 
         [Serializable]
@@ -105,6 +119,7 @@ namespace CronicasDeMexico.Editor.SceneGeneration
             public Cell[] agua_bloqueo; // el agua sin las celdas bajo los muelles
             public Pier[] muelles;
             public float[] limites; // x0, x1, y0, y1 del flujo
+            public Cell[] vacio;    // mazmorra: celdas sin piso, que no se atraviesan
             public RegionPoints puntos;
         }
 
@@ -282,6 +297,13 @@ namespace CronicasDeMexico.Editor.SceneGeneration
                 var blockingWater = data.agua_bloqueo is { Length: > 0 } ? data.agua_bloqueo : data.agua;
                 foreach (var (x, y, length) in Runs(blockingWater))
                     Box($"Agua_{x}_{y}", water, ToWorld(x, y, 0.5f), new Vector3(1f, 2f, length));
+            }
+
+            if (data.vacio is { Length: > 0 })
+            {
+                var voids = Group("Vacío", parent);
+                foreach (var (x, y, length) in Runs(data.vacio))
+                    Box($"Vacio_{x}_{y}", voids, ToWorld(x, y, wallHeight * 0.5f), new Vector3(1f, wallHeight, length));
             }
 
             // Tablero de los muelles: se camina sobre él (el agua de debajo no bloquea).
@@ -523,19 +545,21 @@ namespace CronicasDeMexico.Editor.SceneGeneration
 
         // El arte del escenario lleva la luz horneada. Esta luz solo ilumina a los personajes (HD2D_SpriteLit), sin
         // sombras en tiempo real: en estas escenas las sombras también van pintadas.
-        internal static void ConfigureLighting()
+        internal static void ConfigureLighting() => ConfigureLighting(1.1f, new Color(0.55f, 0.57f, 0.52f));
+
+        internal static void ConfigureLighting(float sunIntensity, Color ambient)
         {
             var sun = new GameObject("Sol (personajes)").AddComponent<Light>();
             sun.type = LightType.Directional;
             sun.color = new Color(1f, 0.95f, 0.86f);
-            sun.intensity = 1.1f;
+            sun.intensity = sunIntensity;
             sun.shadows = LightShadows.None;
             sun.transform.rotation = Quaternion.Euler(55f, 15f, 0f);
 
             RenderSettings.sun = sun;
             RenderSettings.skybox = null;
             RenderSettings.ambientMode = AmbientMode.Flat;
-            RenderSettings.ambientLight = new Color(0.55f, 0.57f, 0.52f);
+            RenderSettings.ambientLight = ambient;
             RenderSettings.fog = false;
         }
 
@@ -558,7 +582,9 @@ namespace CronicasDeMexico.Editor.SceneGeneration
             return player;
         }
 
-        internal static void CreateCamera(Transform player, float[] limits)
+        internal static void CreateCamera(Transform player, float[] limits) => CreateCamera(player, limits, BackgroundColor);
+
+        internal static void CreateCamera(Transform player, float[] limits, Color background)
         {
             var cameraObject = new GameObject("Main Camera") { tag = "MainCamera" };
             var camera = cameraObject.AddComponent<Camera>();
@@ -567,7 +593,7 @@ namespace CronicasDeMexico.Editor.SceneGeneration
             camera.nearClipPlane = 0.3f;
             camera.farClipPlane = 200f;
             camera.clearFlags = CameraClearFlags.SolidColor;
-            camera.backgroundColor = BackgroundColor;
+            camera.backgroundColor = background;
             cameraObject.transform.SetPositionAndRotation(player.position - IsometricProjection.CameraRotation * Vector3.forward * 60f,
                 IsometricProjection.CameraRotation);
 
@@ -589,7 +615,7 @@ namespace CronicasDeMexico.Editor.SceneGeneration
             clearCamera.cullingMask = 0;
             clearCamera.depth = -10f;
             clearCamera.clearFlags = CameraClearFlags.SolidColor;
-            clearCamera.backgroundColor = BackgroundColor;
+            clearCamera.backgroundColor = background;
             // No dibuja nada, pero URP le aplicaría a 1080 p lo que pida el nivel de calidad (en Alto, HDR, texturas de
             // profundidad y color, y el SSAO del renderer): se le quita todo y usa el renderer sin efectos.
             clearCamera.allowHDR = false;

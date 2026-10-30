@@ -314,7 +314,8 @@ namespace CronicasDeMexico.Tests
             shrine.Interact(player.transform);
             Assert.IsFalse(story.HasFlag(usedFlag), "Con la vida llena el fuego no se gasta.");
 
-            Assert.IsTrue(health.TryDamage(health.Max - 1, player.transform.position + Vector3.right));
+            // La defensa (nivel, reliquias) resta a cada golpe: se compensa para dejar al jugador con 1.
+            Assert.IsTrue(health.TryDamage(health.Max - 1 + health.Defense, player.transform.position + Vector3.right));
             Assert.AreEqual(1, health.Current);
             shrine.Interact(player.transform);
             Assert.AreEqual(1 + Mathf.CeilToInt(health.Max * 0.5f), health.Current, "Debe curar la mitad, redondeada hacia arriba.");

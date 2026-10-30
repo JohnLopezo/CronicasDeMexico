@@ -1,3 +1,4 @@
+using CronicasDeMexico.Core.Progress;
 using CronicasDeMexico.Core.Events;
 using CronicasDeMexico.Core.Narrative;
 using CronicasDeMexico.Core.Services;
@@ -47,6 +48,12 @@ namespace CronicasDeMexico.Gameplay.Interaction
             open = false;
             if (ServiceLocator.TryGet(out StoryState story))
                 story.SetFlag(collectedFlag);
+            // También va a la bolsa y al Museo de la Memoria (M5), una sola vez por fragmento.
+            if (ServiceLocator.TryGet(out RewardService rewards))
+                rewards.Grant(new RewardPackage { Experience = 20 }.Add(FragmentItemId, 1), "fragmento." + collectedFlag);
         }
+
+        /// <summary>Objeto «Fragmento de memoria menor» (Docs/Contenido/Catalogo_Objetos_Olmeca.md).</summary>
+        public const string FragmentItemId = "fragmento_menor";
     }
 }

@@ -7,6 +7,22 @@
             </ui:VisualElement>
             <ui:Label name="health-text" class="hud-health__text" picking-mode="Ignore" />
         </ui:VisualElement>
+        <ui:VisualElement name="progress" class="hud-progress hidden" picking-mode="Ignore">
+            <ui:VisualElement class="hud-progress__row" picking-mode="Ignore">
+                <ui:VisualElement class="hud-energy__bar" picking-mode="Ignore">
+                    <ui:VisualElement name="energy-fill" class="hud-energy__fill" picking-mode="Ignore" />
+                </ui:VisualElement>
+                <ui:Label name="energy-text" class="hud-progress__text" picking-mode="Ignore" />
+            </ui:VisualElement>
+            <ui:VisualElement class="hud-progress__row" picking-mode="Ignore">
+                <ui:Label name="level-text" class="hud-progress__level" picking-mode="Ignore" />
+                <ui:VisualElement class="hud-xp__bar" picking-mode="Ignore">
+                    <ui:VisualElement name="xp-fill" class="hud-xp__fill" picking-mode="Ignore" />
+                </ui:VisualElement>
+            </ui:VisualElement>
+        </ui:VisualElement>
+        <ui:VisualElement name="toasts" class="hud-toasts" picking-mode="Ignore" />
+        <ui:Button name="menu-button" text="Bolsa (I)" class="hud-menu-button" />
         <ui:VisualElement name="objective" class="hud-objective hidden" picking-mode="Ignore">
             <ui:Label name="objective-title" class="hud-objective__title" picking-mode="Ignore" />
             <ui:Label name="objective-text" class="hud-objective__text" picking-mode="Ignore" />
@@ -27,6 +43,16 @@
                 <ui:Label text="Calidad gráfica" class="hud-options__title" />
                 <ui:VisualElement name="quality-buttons" class="hud-options__buttons" />
                 <ui:Label text="Esc / Start para volver" class="hud-options__hint" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+        <ui:VisualElement name="game-menu" class="hud-menu hidden">
+            <ui:VisualElement class="hud-menu__panel">
+                <ui:VisualElement class="hud-menu__header">
+                    <ui:VisualElement name="menu-tabs" class="hud-menu__tabs" />
+                    <ui:Button name="menu-close" text="Cerrar (I / Esc)" class="hud-menu__close" />
+                </ui:VisualElement>
+                <ui:Label name="menu-summary" class="hud-menu__summary" />
+                <ui:ScrollView name="menu-content" class="hud-menu__content" />
             </ui:VisualElement>
         </ui:VisualElement>
     </ui:VisualElement>

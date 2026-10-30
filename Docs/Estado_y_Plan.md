@@ -1,6 +1,6 @@
 # Estado del proyecto y plan para continuar
 
-*Recopilación al 2026-10-29, actualizada el 2026-10-30 tras M2, M3 y M4 (la mazmorra hasta el Guardián liberado), en el i7-10700. Rama `feature/prototipo-olmeca`.* Léela al retomar, junto con la última entrada de `Docs/Bitacora.md`.
+*Recopilación al 2026-10-29, actualizada el 2026-10-30 tras M2, M3, M4 (la mazmorra hasta el Guardián liberado) y M5 (recompensas), en el i7-10700. Rama `feature/prototipo-olmeca`.* Léela al retomar, junto con la última entrada de `Docs/Bitacora.md`.
 
 ## 1. Cómo retomar (en cualquier PC)
 
@@ -106,8 +106,25 @@ Detalle en `Docs/Mazmorras/Olmeca.md` y `Docs/Enemigos/Olmeca.md`.
 - **Arte nuevo en Blender:** el Guardián en 7 poses. Pendiente de tu aprobación.
 - **Rendimiento de la arena en el i7:** unos 245 FPS en Bajo, 300–325 en Medio y 280 en Alto.
 
+### Recompensas (M5): sistema integral, 2026-10-30
+Detalle en `Docs/Sistemas/` (Recompensas, Inventario, Progresión y Fabricación) y en `Docs/Contenido/` (tabla olmeca,
+catálogo de objetos y Bendiciones).
+- **Escala ×10:** el jugador tiene 50 de vida y hace 10 de daño, y los enemigos y jefes se escalaron igual.
+- **Progresión:** nivel y experiencia, con menos experiencia sobre el nivel de la zona y protección contra el
+  farmeo.
+- **Energía** sin regeneración: se recupera en los santuarios de Memoria y con consumibles.
+- **Bolsa:** materiales, consumibles, 2 ranuras de reliquia, coleccionables y ecos (moneda ficticia).
+- **Ofrendas:** dos o tres por piso. Las ocultas están tras basalto agrietado y se abren con el golpe de tierra
+  (tecla C).
+- **Cierre de la mazmorra:** al liberar al Guardián se reciben la Bendición de la Tierra y el Fragmento de la Primera
+  Memoria. La ofrenda final da la nota C/B/A/S y la elección de una Bendición secundaria entre tres.
+- **En la ciudad:** fabricación con el artesano y comercio y trueque con el comerciante.
+- **Museo de la Memoria:** se abre desde el santuario de Memoria.
+- **Misión `MP_OLM_06`:** llevar el fragmento a la anciana y al altar-trono.
+- **Menú y HUD:** menú con la tecla I y barras de energía y experiencia en el HUD.
+
 ### Pruebas
-EditMode 57/57 y PlayMode 54/54 (al 2026-10-30, tras M4).
+EditMode 80/80 y PlayMode 59/59 (al 2026-10-30, tras M5).
 
 ## 4. Pendiente de decidir (por el autor)
 
@@ -143,7 +160,7 @@ EditMode 57/57 y PlayMode 54/54 (al 2026-10-30, tras M4).
 | ~~**M2. Base de mazmorra**~~ | **Hecha (2026-10-30).** Tres pisos y sus escaleras, santuarios de Memoria (guardado) y de Vida, regreso al santuario tras la derrota y continuar desde Boot. |
 | ~~**M3. Pisos 1 y 2**~~ | **Hecha (2026-10-30).** Esquiva, El Umbral como tutorial, El Pantano con agua baja y ecos borrados, el Jaguar de Piedra y `MP_OLM_04` hasta la antesala. |
 | ~~**M4. Piso 3 y jefe**~~ | **Hecha (2026-10-30).** Losa que se abre, arena circular y Guardián de la Piedra Viva en tres fases (avisos de círculo, anillo y franja; agua en la fase 2; Furia en la 3), con su liberación y `MP_OLM_05`. |
-| **M5. Recompensas y cierre** | Fragmento de la Primera Memoria, habilidad de tierra (propuesta: golpe que rompe basalto agrietado), elección de Bendición, `MP_OLM_06` (restaurar una inscripción) y conexión al arco II. |
+| **M5. Recompensas y cierre** | **Hecha (2026-10-30).** Sistema integral de recompensas (ver §3), Fragmento de la Primera Memoria, golpe de tierra, elección de Bendición y `MP_OLM_06`. Queda pendiente la conexión al arco II. |
 
 ### Otros pendientes técnicos
 - Menú de inicio con **Continuar o Nueva partida**. Hoy Boot continúa solo si hay partida guardada, y para empezar de nuevo se borra con **Crónicas → Borrar partida guardada**.

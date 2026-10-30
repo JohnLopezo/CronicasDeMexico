@@ -14,6 +14,29 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   branches:
   - requiredFlags:
+    - olm.anciana_recordo
+    forbiddenFlags: []
+    lines:
+    - speaker: {fileID: 0}
+      text: "Cuando llueva contar\xE9 el relato entero. Esta vez llegar\xE9 al final."
+    flagsOnFinish: []
+    questToStart: {fileID: 0}
+  - requiredFlags:
+    - olm.guardian_liberado
+    forbiddenFlags: []
+    lines:
+    - speaker: {fileID: 0}
+      text: "Esa luz... Ac\xE9rcate. Ahora lo oigo: el final del relato de mi abuela."
+    - speaker: {fileID: 0}
+      text: "Habla de una piedra que guardaba lo primero que record\xF3 esta tierra,
+        para que nadie lo perdiera."
+    - speaker: {fileID: 0}
+      text: "Ll\xE9valo al altar-trono de la plaza. Ah\xED se sentaban los que hablaban
+        por todos. Que lo recuerde tambi\xE9n la piedra."
+    flagsOnFinish:
+    - olm.anciana_recordo
+    questToStart: {fileID: 0}
+  - requiredFlags:
     - mision.MP_OLM_02.completada
     forbiddenFlags: []
     lines:

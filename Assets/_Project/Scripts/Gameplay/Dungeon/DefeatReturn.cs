@@ -1,3 +1,4 @@
+using CronicasDeMexico.Core.Narrative;
 using CronicasDeMexico.Core.Save;
 using CronicasDeMexico.Core.Services;
 using CronicasDeMexico.Core.Travel;
@@ -52,6 +53,11 @@ namespace CronicasDeMexico.Gameplay.Dungeon
 
         void OnDied()
         {
+            // Cuenta para la nota de la mazmorra (DungeonCompletion). La penalización por caer es 0 en M5: no se pierde
+            // experiencia, materiales ni objetos; returnHealthFraction queda para ajustarla en el futuro.
+            if (ServiceLocator.TryGet(out StoryState story))
+                story.SetFlag(DungeonCompletion.FallenFlag);
+
             if (!ServiceLocator.TryGet(out PlayerCheckpoint checkpoint) || !checkpoint.HasCheckpoint ||
                 !ServiceLocator.TryGet(out SceneTravel _))
                 return; // reaparece en el sitio

@@ -35,6 +35,17 @@
    ]
   },
   {
+   "nombre": "Basalto_Agrietado_01",
+   "lienzo": [
+    128,
+    144
+   ],
+   "pivote": [
+    64,
+    40
+   ]
+  },
+  {
    "nombre": "Canoa_01",
    "lienzo": [
     96,
@@ -1044,6 +1055,50 @@
    "pivote": [
     16,
     14
+   ]
+  },
+  {
+   "nombre": "Ofrenda_01",
+   "lienzo": [
+    64,
+    64
+   ],
+   "pivote": [
+    32,
+    20
+   ]
+  },
+  {
+   "nombre": "Ofrenda_02",
+   "lienzo": [
+    64,
+    64
+   ],
+   "pivote": [
+    32,
+    20
+   ]
+  },
+  {
+   "nombre": "Ofrenda_03",
+   "lienzo": [
+    64,
+    64
+   ],
+   "pivote": [
+    32,
+    20
+   ]
+  },
+  {
+   "nombre": "Ofrenda_04",
+   "lienzo": [
+    64,
+    64
+   ],
+   "pivote": [
+    32,
+    20
    ]
   },
   {

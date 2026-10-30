@@ -1,0 +1,39 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 822e6260ef1f75648861e154a79904af, type: 3}
+  m_Name: OBJ_obsidiana
+  m_EditorClassIdentifier: 
+  id: obsidiana
+  displayName: Obsidiana
+  description: "Vidrio volc\xE1nico de filo cortante."
+  category: 0
+  rarity: 1
+  origin: 0
+  originNote: "D: la obsidiana llegaba por intercambio a larga distancia. I: su uso
+    aqu\xED como material de mejora."
+  icon: {fileID: 21300000, guid: 0ecdb5ac6a2ab9c4099e5392c2802fff, type: 3}
+  maxStack: 30
+  value: 10
+  sellable: 1
+  bonus:
+    maxHealth: 0
+    attack: 0
+    defense: 0
+    maxEnergy: 0
+  guardianOnly: 
+  effect:
+    heal: 0
+    energy: 0
+    defenseBonus: 0
+    duration: 0
+  recordEntry: 
+  usage: "Para el talism\xE1n de obsidiana (m\xE1s ataque)."

@@ -17,7 +17,8 @@ namespace CronicasDeMexico.Gameplay.Combat
         [SerializeField, Tooltip("Layers que puede golpear.")]
         LayerMask targetLayers;
 
-        [SerializeField, Min(1)] int damage = 1;
+        [SerializeField, Min(1), Tooltip("Daño por golpe (escala ×10 desde M5). PlayerStats lo fija según el nivel.")]
+        int damage = 10;
 
         [SerializeField, Min(0f), Tooltip("Distancia del centro del golpe delante del personaje.")]
         float reach = 0.8f;
@@ -36,6 +37,14 @@ namespace CronicasDeMexico.Gameplay.Combat
         PlayerMovement movement;
         Health ownHealth;
         float nextAttackTime;
+
+        public int Damage
+        {
+            get => damage;
+            set => damage = Mathf.Max(1, value);
+        }
+
+        public LayerMask TargetLayers => targetLayers;
 
         void Awake()
         {

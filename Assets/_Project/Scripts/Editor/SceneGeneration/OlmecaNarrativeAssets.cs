@@ -42,6 +42,10 @@ namespace CronicasDeMexico.Editor.SceneGeneration
         public const string GuardianQuestId = "MP_OLM_05";
         public const string StoneGuardianId = "guardian_piedra_viva";
         public const string SealExamineId = "sello_guardian";
+        // Regreso (MP_OLM_06, M5): avisos "hablar:anciana" y "examinar:altar_trono". La empieza DungeonCompletion al
+        // liberar al Guardián.
+        public const string ReturnQuestId = "MP_OLM_06";
+        public const string AltarExamineId = "altar_trono";
         public const string GuardianPath = "Assets/_Project/Data/Characters/GUA_jaguar.asset";
         const string PlayerSpriteSetPath = "Assets/_Project/Data/Characters/DSS_Jugador.asset";
 
@@ -59,6 +63,10 @@ namespace CronicasDeMexico.Editor.SceneGeneration
         public const string SealOpenFlag = "olm.sello_abierto";
         /// <summary>El Guardián de la Piedra Viva fue vencido y liberado (M4); sus recompensas llegan en M5.</summary>
         public const string GuardianFreedFlag = "olm.guardian_liberado";
+        /// <summary>La anciana escuchó el final de su relato (MP_OLM_06, paso 1).</summary>
+        public const string ElderRememberedFlag = "olm.anciana_recordo";
+        /// <summary>El Fragmento de la Primera Memoria está en el altar-trono: el asentamiento recuerda (fin de MP_OLM_06).</summary>
+        public const string MemoryRestoredFlag = "olm.memoria_restaurada";
         static readonly string QuestActive = StoryEvents.QuestActiveFlag(SettlementQuestId);
         static readonly string QuestDone = StoryEvents.QuestCompletedFlag(SettlementQuestId);
         static readonly string JungleQuestDone = StoryEvents.QuestCompletedFlag(JungleQuestId);
@@ -101,7 +109,7 @@ namespace CronicasDeMexico.Editor.SceneGeneration
             public Character Spirit, Artisan, Elder, Warrior, Merchant;
             /// <summary>El joven guerrero en la entrada de la estructura (mismo NpcData, otro diálogo).</summary>
             public Character WarriorAtEntrance;
-            public QuestData AwakeningQuest, SettlementQuest, JungleQuest, DungeonQuest, GuardianQuest;
+            public QuestData AwakeningQuest, SettlementQuest, JungleQuest, DungeonQuest, GuardianQuest, ReturnQuest;
             public GuardianData Guardian;
         }
 
@@ -155,16 +163,23 @@ namespace CronicasDeMexico.Editor.SceneGeneration
                     new QuestStep(StoryEvents.Examine(SealExamineId), "Empuja la losa que sella el pórtico de la antesala"),
                     new QuestStep(StoryEvents.Defeat(StoneGuardianId), "Enfréntate al Guardián de la Piedra Viva"),
                 }));
+            var returnQuest = LoadOrCreate($"{Folder}/MIS_{ReturnQuestId}.asset", () => QuestData.Create(
+                ReturnQuestId, "La primera memoria", new[]
+                {
+                    new QuestStep(StoryEvents.Talk(ElderId), "Vuelve al asentamiento y lleva el fragmento a la anciana"),
+                    new QuestStep(StoryEvents.Examine(AltarExamineId), "Deja el fragmento en el altar-trono de la plaza"),
+                }, MemoryRestoredFlag));
             EnsureInCatalog(awakening);
             EnsureInCatalog(quest);
             EnsureInCatalog(jungle);
             EnsureInCatalog(dungeon);
             EnsureInCatalog(guardianQuest);
+            EnsureInCatalog(returnQuest);
 
             var content = new Content
             {
                 AwakeningQuest = awakening, SettlementQuest = quest, JungleQuest = jungle, DungeonQuest = dungeon,
-                GuardianQuest = guardianQuest, Guardian = guardian,
+                GuardianQuest = guardianQuest, ReturnQuest = returnQuest, Guardian = guardian,
             };
 
             // Historia_Mundo §2.2–2.4. No es un dios ni un enemigo; no tiene rasgos de ninguna deidad.
@@ -203,8 +218,18 @@ namespace CronicasDeMexico.Editor.SceneGeneration
                         "Si de verdad entiendes lo que digo, vuelve cuando sepas a qué vienes.")),
             });
 
+            // M5: las dos primeras ramas son del regreso (MP_OLM_06). Si el asset es anterior, se rehace en su sitio.
             content.Elder = CreateCharacter(ElderId, "La anciana", "anciana", new[]
             {
+                new DialogueBranch(Lines(
+                        "Cuando llueva contaré el relato entero. Esta vez llegaré al final."),
+                    requiredFlags: new[] { ElderRememberedFlag }),
+                new DialogueBranch(Lines(
+                        "Esa luz... Acércate. Ahora lo oigo: el final del relato de mi abuela.",
+                        "Habla de una piedra que guardaba lo primero que recordó esta tierra, para que nadie lo perdiera.",
+                        "Llévalo al altar-trono de la plaza. Ahí se sentaban los que hablaban por todos. Que lo recuerde también la piedra."),
+                    requiredFlags: new[] { GuardianFreedFlag },
+                    flagsOnFinish: new[] { ElderRememberedFlag }),
                 new DialogueBranch(Lines(
                         "Si encuentras el final de mi relato, tráemelo. Todavía recuerdo cómo empieza."),
                     requiredFlags: new[] { QuestDone }),
@@ -283,6 +308,14 @@ namespace CronicasDeMexico.Editor.SceneGeneration
         {
             var npc = LoadOrCreate($"{Folder}/NPC_{id}.asset", () => NpcData.Create(id, displayName, role));
             var dialogue = LoadOrCreate($"{Folder}/DLG_{id}.asset", () => DialogueData.Create($"DLG_{id}", branches));
+            if (dialogue.Branches.Length < branches.Length)
+            {
+                // Faltan ramas de un hito posterior: se rehace con el texto del código, conservando el GUID.
+                var fresh = DialogueData.Create($"DLG_{id}", branches);
+                EditorUtility.CopySerialized(fresh, dialogue);
+                Object.DestroyImmediate(fresh);
+                EditorUtility.SetDirty(dialogue);
+            }
             return new Character(npc, dialogue);
         }
 

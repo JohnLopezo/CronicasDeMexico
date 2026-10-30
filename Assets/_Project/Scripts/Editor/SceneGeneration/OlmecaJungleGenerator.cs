@@ -63,6 +63,7 @@ namespace CronicasDeMexico.Editor.SceneGeneration
             var messageChannel = MessageChannel();
             // Después de NewScene, que descarga los ScriptableObjects recién creados que nada referencia.
             var narrative = OlmecaNarrativeAssets.EnsureAssets();
+            var rewards = OlmecaRewardAssets.EnsureAssets(narrative);
 
             var root = BuildScenery("--- Selva ---", data, sprites,
                 (placement, renderer) => AddRuinInscription(placement, renderer, messageChannel));
@@ -72,7 +73,7 @@ namespace CronicasDeMexico.Editor.SceneGeneration
             var player = PlacePlayer(scene, points.llegada.Value);
             LinkRoofs(root, player.transform);
             BuildTravel(Group("--- Sendero a la ciudad ---", null), points);
-            BuildSpirits(Group("--- Espíritus corrompidos ---", null), points, sprites, messageChannel);
+            BuildSpirits(Group("--- Espíritus corrompidos ---", null), points, sprites, messageChannel, rewards);
             BuildEntrance(Group("--- Entrada ---", null), points, narrative, messageChannel);
             CreateCamera(player.transform, data.limites);
             CreateHud(messageChannel);
@@ -121,7 +122,7 @@ namespace CronicasDeMexico.Editor.SceneGeneration
         // ---------- Espíritus corrompidos y fragmentos ----------
 
         static void BuildSpirits(Transform parent, RegionPoints points, Dictionary<string, Sprite> sprites,
-            StringEventChannel messageChannel)
+            StringEventChannel messageChannel, OlmecaRewardAssets.Content rewards)
         {
             var spriteSet = OlmecaPrototypeGenerator.CreateSpriteSet("EspirituCorrompido",
                 PlaceholderSpriteFactory.CorruptedJaguarSpirit);
@@ -133,6 +134,7 @@ namespace CronicasDeMexico.Editor.SceneGeneration
 
                 var spirit = CreateSpirit(clearing, $"EspirituCorrompido_{i}", spriteSet, points.claros[i - 1].Value, defeated);
                 ShowWhen(spirit, null, new[] { defeated }, liveUpdate: true);
+                OlmecaRewardAssets.AddLoot(spirit, rewards.CommonSpirit, OlmecaRewardAssets.JungleLevel);
 
                 var fragment = CreateFragment(clearing, i, sprites, points.fragmentos[i - 1].Value, collected, messageChannel);
                 fragment.SetActive(false); // aparece al vencer a su espíritu
@@ -157,7 +159,7 @@ namespace CronicasDeMexico.Editor.SceneGeneration
             root.transform.position = ToWorld(home);
             root.layer = OlmecaPrototypeGenerator.Layer(OlmecaPrototypeGenerator.EnemyLayerName); // lo que golpea PlayerAttack
 
-            OlmecaPrototypeGenerator.AddHealth(root, maxHealth: 3, invulnerabilityTime: 0.2f, spriteRenderer);
+            OlmecaPrototypeGenerator.AddHealth(root, maxHealth: 30, invulnerabilityTime: 0.2f, spriteRenderer); // escala ×10 (M5)
             var chaser = root.AddComponent<EnemyChaser>();
             SetProperty(chaser, "detectionRadius", property => property.floatValue = 4.5f); // a la medida de un claro
             SetProperty(chaser, "loseRadius", property => property.floatValue = 7f);

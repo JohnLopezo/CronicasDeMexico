@@ -23,6 +23,28 @@ namespace CronicasDeMexico.Core.Save
         // Historia.
         public List<string> flags = new();
         public List<QuestRecord> quests = new();
+
+        // Recompensas y progresión (versión 2, M5).
+        public List<Progress.ItemStack> items = new();
+        public List<string> equippedRelics = new();
+        public int level;
+        public int experience;
+        /// <summary>Energía actual; -1 = llena (partidas anteriores a la versión 2).</summary>
+        public int energy = -1;
+        public List<string> blessings = new();
+        public string primaryBlessing;
+        public string secondaryBlessing;
+        /// <summary>Veces que se venció a cada enemigo concreto (protección contra el farmeo).</summary>
+        public List<KeyCount> defeats = new();
+        /// <summary>Recompensas únicas ya entregadas (cofres, jefes, misiones): nunca se entregan dos veces.</summary>
+        public List<string> grantedRewards = new();
+    }
+
+    [Serializable]
+    public sealed class KeyCount
+    {
+        public string key;
+        public int count;
     }
 
     [Serializable]

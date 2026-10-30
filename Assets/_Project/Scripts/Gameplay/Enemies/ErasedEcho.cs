@@ -41,7 +41,7 @@ namespace CronicasDeMexico.Gameplay.Enemies
 
         [SerializeField, Min(0f)] float projectileSpeed = 5f;
 
-        [SerializeField, Min(1)] int projectileDamage = 1;
+        [SerializeField, Min(1)] int projectileDamage = 10;
 
         [SerializeField, Min(0f), Tooltip("Segundos desvanecido al cambiar de sitio.")]
         float fadeTime = 0.9f;

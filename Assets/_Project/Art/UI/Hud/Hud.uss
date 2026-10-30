@@ -81,13 +81,226 @@
 .hud-objective {
     position: absolute;
     left: 24px;
-    top: 64px;
+    top: 118px;
     max-width: 520px;
     padding: 8px 14px;
     background-color: rgba(20, 16, 12, 0.7);
     border-left-width: 3px;
     border-color: rgb(190, 112, 44);
     border-radius: 2px;
+}
+
+/* Energía y nivel (M5), bajo la vida. */
+.hud-progress {
+    position: absolute;
+    left: 24px;
+    top: 52px;
+}
+
+.hud-progress__row {
+    flex-direction: row;
+    align-items: center;
+    margin-bottom: 4px;
+}
+
+.hud-energy__bar {
+    width: 220px;
+    height: 14px;
+    padding: 2px;
+    background-color: rgba(20, 16, 12, 0.85);
+    border-width: 2px;
+    border-color: rgb(46, 125, 107);
+    border-radius: 3px;
+}
+
+.hud-energy__fill {
+    height: 100%;
+    background-color: rgb(79, 179, 154);
+}
+
+.hud-xp__bar {
+    width: 180px;
+    height: 8px;
+    margin-left: 8px;
+    background-color: rgba(20, 16, 12, 0.85);
+    border-radius: 2px;
+}
+
+.hud-xp__fill {
+    height: 100%;
+    background-color: rgb(226, 180, 124);
+}
+
+.hud-progress__text,
+.hud-progress__level {
+    margin-left: 8px;
+    color: rgb(240, 232, 214);
+    font-size: 18px;
+    -unity-text-outline-width: 1px;
+    -unity-text-outline-color: rgba(0, 0, 0, 0.8);
+}
+
+.hud-progress__level {
+    margin-left: 0;
+    min-width: 32px;
+}
+
+/* Avisos de lo obtenido: arriba a la derecha, como mucho tres. */
+.hud-toasts {
+    position: absolute;
+    right: 16px;
+    top: 44px;
+    width: 360px;
+    align-items: flex-end;
+}
+
+.hud-toast {
+    flex-direction: row;
+    align-items: center;
+    margin-bottom: 6px;
+    padding: 6px 12px;
+    background-color: rgba(20, 16, 12, 0.88);
+    border-left-width: 4px;
+    border-color: rgb(156, 139, 117);
+    border-radius: 3px;
+}
+
+.hud-toast__icon {
+    width: 32px;
+    height: 32px;
+    margin-right: 8px;
+    -unity-background-scale-mode: scale-to-fit;
+}
+
+.hud-toast__text {
+    color: rgb(240, 232, 214);
+    font-size: 20px;
+    white-space: normal;
+}
+
+/* Colores de rareza (borde de avisos y filas). */
+.rareza-comun { border-color: rgb(156, 139, 117); }
+.rareza-pococomun { border-color: rgb(115, 173, 54); }
+.rareza-raro { border-color: rgb(79, 159, 214); }
+.rareza-epico { border-color: rgb(169, 139, 232); }
+.rareza-legendario { border-color: rgb(242, 165, 65); }
+
+.hud-menu-button {
+    position: absolute;
+    right: 16px;
+    bottom: 16px;
+    min-width: 120px;
+    height: 56px;
+    font-size: 22px;
+}
+
+/* Menú del juego: bolsa, Bendiciones, fabricación, comercio, Museo, elección y resultados. */
+.hud-menu {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(0, 0, 0, 0.6);
+}
+
+.hud-menu__panel {
+    width: 80%;
+    height: 84%;
+    padding: 18px 24px;
+    background-color: rgba(20, 16, 12, 0.96);
+    border-width: 2px;
+    border-color: rgb(190, 112, 44);
+    border-radius: 8px;
+}
+
+.hud-menu__header {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.hud-menu__tabs {
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.hud-menu__tab {
+    min-width: 150px;
+    height: 52px;
+    margin-right: 8px;
+    font-size: 22px;
+}
+
+.hud-menu__tab--selected {
+    background-color: rgb(190, 112, 44);
+    color: rgb(20, 16, 12);
+}
+
+.hud-menu__close {
+    height: 52px;
+    font-size: 20px;
+}
+
+.hud-menu__summary {
+    margin: 10px 0;
+    color: rgb(226, 170, 96);
+    font-size: 20px;
+    white-space: normal;
+}
+
+.hud-menu__content {
+    flex-grow: 1;
+}
+
+.hud-menu__section {
+    margin-top: 12px;
+    margin-bottom: 4px;
+    color: rgb(226, 170, 96);
+    font-size: 24px;
+    -unity-font-style: bold;
+}
+
+.hud-menu__row {
+    flex-direction: row;
+    align-items: center;
+    margin-bottom: 6px;
+    padding: 6px 10px;
+    background-color: rgba(54, 56, 47, 0.6);
+    border-left-width: 4px;
+    border-color: rgb(156, 139, 117);
+    border-radius: 3px;
+}
+
+.hud-menu__row-text {
+    flex-grow: 1;
+    flex-shrink: 1;
+    color: rgb(240, 232, 214);
+    font-size: 20px;
+    white-space: normal;
+}
+
+.hud-menu__row-button {
+    min-width: 140px;
+    height: 48px;
+    margin-left: 8px;
+    font-size: 20px;
+}
+
+.hud-menu__note {
+    color: rgb(201, 192, 171);
+    font-size: 18px;
+    white-space: normal;
+    margin-bottom: 6px;
+}
+
+.hud-menu__grade {
+    font-size: 72px;
+    color: rgb(242, 165, 65);
+    -unity-font-style: bold;
+    -unity-text-align: middle-center;
 }
 
 .hud-objective__title {

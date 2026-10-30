@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using CronicasDeMexico.Core.Events;
 using CronicasDeMexico.Core.Narrative;
+using CronicasDeMexico.Core.Progress;
+using CronicasDeMexico.Gameplay.Interaction;
 using CronicasDeMexico.Gameplay.Narrative;
 using UnityEditor;
 using UnityEditor.SceneManagement;
@@ -36,6 +38,10 @@ namespace CronicasDeMexico.Editor.SceneGeneration
         const string AltarText =
             "Un altar-trono de basalto. En La Venta, de nichos como este sale la figura de un gobernante sentado " +
             "(Altar 4). Este nicho está vacío.";
+        // Desde que la anciana recordó el final de su relato (MP_OLM_06): ahí se deja el Fragmento de la Primera Memoria (F).
+        const string AltarWithMemoryText =
+            "En el nicho del altar-trono brilla el Fragmento de la Primera Memoria. Al tocarlo, por un instante, toda la " +
+            "plaza recuerda lo que fue.";
         internal const string StelaText = "Una estela de basalto. Si tuvo relieves, la lluvia y el tiempo los borraron.";
         internal const string BrokenStelaText = "Una estela partida. Su parte superior yace en el suelo, cubierta de musgo.";
         // Tras la misión del asentamiento: pista de que el borrado no es natural (se revela al cerrar el arco I).
@@ -76,6 +82,7 @@ namespace CronicasDeMexico.Editor.SceneGeneration
             var messageChannel = MessageChannel();
             // Después de NewScene, que descarga los ScriptableObjects recién creados que nada referencia.
             var narrative = OlmecaNarrativeAssets.EnsureAssets();
+            OlmecaRewardAssets.EnsureAssets(narrative);
 
             var root = BuildScenery("--- Ciudad ---", data, sprites,
                 (placement, renderer) => AddMonumentInscription(placement, renderer, messageChannel));
@@ -86,6 +93,7 @@ namespace CronicasDeMexico.Editor.SceneGeneration
             PlaceSettlers(Group("--- Habitantes ---", null), narrative, messageChannel);
             BuildAwakening(Group("--- Despertar ---", null), narrative, messageChannel);
             BuildPathToJungle(Group("--- Sendero a la selva ---", null), data.puntos);
+            BuildServices(Group("--- Servicios ---", null));
             CreateCamera(player.transform, data.limites);
             CreateHud(messageChannel);
 
@@ -108,8 +116,9 @@ namespace CronicasDeMexico.Editor.SceneGeneration
                 ToWorld(placement.x, placement.y, placement.z) + Vector3.up * 0.8f,
                 isAltar ? AltarText : isBrokenStela ? BrokenStelaText : StelaText, messageChannel,
                 examineId: isAltar ? "altar_trono" : "estela",
-                alternateFlag: isStela ? StoryEvents.QuestCompletedFlag(OlmecaNarrativeAssets.SettlementQuestId) : null,
-                alternateText: isStela ? StelaAfterSettlementText : null);
+                alternateFlag: isStela ? StoryEvents.QuestCompletedFlag(OlmecaNarrativeAssets.SettlementQuestId)
+                    : isAltar ? OlmecaNarrativeAssets.ElderRememberedFlag : null,
+                alternateText: isStela ? StelaAfterSettlementText : isAltar ? AltarWithMemoryText : null);
         }
 
         // El reflejo es una inscripción sin sprite en la orilla; la misión empieza sola al cargar si no se empezó.
@@ -148,6 +157,29 @@ namespace CronicasDeMexico.Editor.SceneGeneration
                 // se comprueba al cargar, para que no desaparezca en mitad de la conversación.
                 if (id == OlmecaNarrativeAssets.WarriorId)
                     ShowWhen(settler, null, new[] { OlmecaNarrativeAssets.WarriorInJungleFlag }, liveUpdate: false);
+            }
+        }
+
+        // Taller del artesano y puesto del comerciante (M5): abren Fabricar y Comerciar en el menú. Junto al NPC, hacia la
+        // cámara, aparte de su conversación.
+        static readonly (string name, string verb, string tab, Vector2 point)[] Services =
+        {
+            ("Taller_Artesano", "Fabricar", MenuTabs.Crafting, new Vector2(14.0f, 1.7f)),
+            ("Puesto_Comerciante", "Comerciar", MenuTabs.Trading, new Vector2(19.0f, -4.3f)),
+        };
+
+        static void BuildServices(Transform parent)
+        {
+            var channel = OlmecaPrototypeGenerator.LoadOrCreateAsset<StringEventChannel>(OlmecaPrototypeGenerator.MenuChannelPath);
+            foreach (var (name, verb, tab, point) in Services)
+            {
+                var service = new GameObject(name) { layer = OlmecaPrototypeGenerator.Layer(OlmecaPrototypeGenerator.InteractableLayerName) };
+                service.transform.SetParent(parent, false);
+                service.transform.position = ToWorld(point) + Vector3.up * 0.5f;
+                var trigger = service.AddComponent<SphereCollider>();
+                trigger.isTrigger = true;
+                trigger.radius = 0.7f;
+                service.AddComponent<ServicePoint>().Configure(verb, tab, channel);
             }
         }
 

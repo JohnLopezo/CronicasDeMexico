@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7fda4cc8ed99f1f42bf7487f22abe8d1, type: 3}
+  m_Name: BEN_tierra
+  m_EditorClassIdentifier: 
+  id: tierra
+  displayName: "Bendici\xF3n de la Tierra"
+  description: "El Guardi\xE1n de la Piedra Viva te presta su peso: la tierra responde
+    cuando la golpeas."
+  slot: 0
+  bonus:
+    maxHealth: 0
+    attack: 0
+    defense: 0
+    maxEnergy: 0
+  energyCost: 30
+  cooldown: 4
+  combatEffect: "Golpe de tierra (tecla C o bot\xF3n Este): da\xF1o en \xE1rea de
+    2,5 m (2 \xD7 ataque)."
+  explorationEffect: 'Rompe el basalto agrietado: abre pasos y ofrendas ocultas.'
+  unlockCondition: "Liberar al Guardi\xE1n de la Piedra Viva (obligatoria, no se
+    pierde)."
+  culture: olmeca

@@ -1,0 +1,39 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 822e6260ef1f75648861e154a79904af, type: 3}
+  m_Name: OBJ_figurilla_jade
+  m_EditorClassIdentifier: 
+  id: figurilla_jade
+  displayName: Figurilla de jade
+  description: "Una figura peque\xF1a de rostro sereno y cabeza alargada."
+  category: 3
+  rarity: 2
+  origin: 0
+  originNote: 'D: en La Venta se hallaron figurillas de jade y serpentina en ofrendas
+    (Ofrenda 4). F: esta pieza concreta.'
+  icon: {fileID: 21300000, guid: 96491d313db088d4cb941eedaa03a1b6, type: 3}
+  maxStack: 1
+  value: 0
+  sellable: 0
+  bonus:
+    maxHealth: 0
+    attack: 0
+    defense: 0
+    maxEnergy: 0
+  guardianOnly: 
+  effect:
+    heal: 0
+    energy: 0
+    defenseBonus: 0
+    duration: 0
+  recordEntry: figurilla_jade
+  usage: Coleccionable (Museo).

@@ -34,7 +34,7 @@ namespace CronicasDeMexico.Gameplay.Enemies
         [SerializeField, Min(0f), Tooltip("Distancia entre centros a la que golpea al objetivo.")]
         float contactDistance = 0.8f;
 
-        [SerializeField, Min(1)] int contactDamage = 1;
+        [SerializeField, Min(1)] int contactDamage = 10;
 
         [SerializeField, Min(0f), Tooltip("Velocidad del retroceso al recibir un golpe, en m/s.")]
         float knockbackSpeed = 5f;

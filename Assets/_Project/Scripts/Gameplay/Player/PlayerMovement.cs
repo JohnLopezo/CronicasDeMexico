@@ -71,9 +71,15 @@ namespace CronicasDeMexico.Gameplay.Player
         {
             controller = GetComponent<CharacterController>();
             health = GetComponent<Health>();
-            dodge = dodgeAction != null ? dodgeAction.action
-                : moveAction != null ? moveAction.action.actionMap?.FindAction(DodgeActionName) : null;
+            dodge = dodgeAction != null ? dodgeAction.action : FindSiblingAction(DodgeActionName);
         }
+
+        /// <summary>
+        /// Una acción del mismo mapa que la de movimiento (Player/Dodge, Player/Ability...): así los componentes del
+        /// jugador encuentran sus acciones sin tocar el prefab.
+        /// </summary>
+        public InputAction FindSiblingAction(string actionName) =>
+            moveAction != null ? moveAction.action.actionMap?.FindAction(actionName) : null;
 
         void Start()
         {

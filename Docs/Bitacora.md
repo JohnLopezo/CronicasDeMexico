@@ -21,6 +21,63 @@ Plantilla:
 
 ---
 
+## 2026-10-30 (fin) — i7-10700: M5, sistema de recompensas
+
+- **Rama / último commit:** `feature/prototipo-olmeca` @ `bf08922` al empezar. M5 se revisó y se subió en un
+  solo commit, por autorización del usuario.
+- **Hecho (fases 1–6):**
+  - **Núcleo:** `Core/Progress` (`Inventory`, `Progression`, `RewardService`, `Economy`), `SaveData` v2 con migración
+    y los ScriptableObjects de `Data/Rewards`.
+  - **Contenido olmeca:** lo genera `OlmecaRewardAssets` en `Data/Rewards/Olmeca` y los catálogos en
+    `Resources/Recompensas`. Los iconos de 16 px los dibuja `ItemIconFactory`.
+  - **Jugador:** `PlayerStats` (estadísticas y consumibles) y `PlayerAbility` (golpe de tierra) se añaden al prefab
+    con `PlayerPrefabUpgrade`.
+  - **Mundo:** `EnemyReward`, `RewardChest`, `RewardOnEnter`, `BreakableBasalt`, `DungeonCompletion` (jefe, nota y
+    cierre), `ServicePoint` en la ciudad y el `MemoryShrine`, que recarga la energía y abre el Museo.
+  - **Interfaz:** `GameMenuController`, con el HUD de energía, nivel y experiencia, los avisos, el menú (Bolsa,
+    Bendiciones, Fabricar, Comerciar y Museo) y las pantallas de elección y de resultados.
+  - **Arte en Blender:** `Ofrenda_01`–`04` (caja y vasija, cerradas y abiertas) y `Basalto_Agrietado_01`.
+  - **Pisos:** una alcoba de 2 × 2 celdas por piso tras el basalto agrietado (sin pisos nuevos) y los puntos de las
+    ofrendas en `PISOS`.
+  - **Misión `MP_OLM_06`:** con su rama nueva de la anciana (`DLG_anciana` se rehízo conservando el GUID) y el texto
+    nuevo del altar.
+  - **Escenas regeneradas:** ciudad, selva y pisos 1–3.
+  - **Documentos:** `Docs/Sistemas/` (Recompensas, Inventario, Progresión y Fabricación) y `Docs/Contenido/` (tabla,
+    catálogo y Bendiciones). La tabla de equilibrio con los valores de antes y después está en
+    `Sistema_Progresion.md` §1.
+- **Pruebas:** EditMode 80/80 (`RewardSystemTests` es nueva) y PlayMode 59/59 (`OlmecaRecompensasTests` es nueva).
+  Tres pruebas de combate antiguas se ajustaron a la escala ×10 y a la defensa.
+- **Rendimiento (piso 2, i7):** Bajo unos 245 FPS, Medio 295 y Alto 260. Son unos 0,6 ms más por cuadro que en M3 en los tres niveles; la causa no se ha aislado y sigue lejos del presupuesto. Falta medir en el i5 / HD 530.
+- **Siguiente:**
+  1. El usuario juega M5 en el Editor y anota lo que se sienta mal.
+  2. Decidir el plan de arte de `Docs/Personages.png`.
+  3. Conexión al arco II.
+
+## 2026-10-30 (cierre) — i7-10700: M5 en curso
+
+- **Rama / último commit:** `feature/prototipo-olmeca` @ `bf08922` (M4, subido).
+- **M5 = sistema integral de recompensas.** La propuesta del usuario es la que se pegó en la sesión del 2026-10-30: botín, inventario, experiencia, fabricación, comercio, Bendiciones, Museo de la Memoria, pantalla de resultados y documentos en `Docs/Sistemas` y `Docs/Contenido`. Se trabaja en las fases 1 a 6 del plan sin pedir aprobación archivo por archivo; solo se para ante decisiones que cambien la jugabilidad.
+- **Decisiones del usuario:**
+  1. **Escala ×10:** el jugador pasa a 50 de vida y 10 de daño; se ajustan enemigos, jefes, curaciones y defensas. Hay que documentar los valores antes y después, y probar que el combate se siente igual.
+  2. **Energía SIN regeneración automática.** Solo se recupera en los santuarios de Memoria, con consumibles y con ciertas recompensas o habilidades.
+  3. **Bendición de la Tierra obligatoria** al vencer al Guardián: es el golpe de tierra, que daña y rompe el basalto agrietado. Además se elige una Bendición secundaria entre tres. Hay dos ranuras: la principal, fija e intocable, y la secundaria.
+  4. **Moneda «ecos», ficticia.** La documentación debe decir que no es una moneda histórica. También se podrá intercambiar materiales con los NPC.
+  5. **Experiencia:** menos experiencia por encima del nivel de la zona y protección contra el farmeo de enemigos reaparecidos. Explorar zonas nuevas debe rendir más. El mínimo y la reducción son configurables.
+  6. **Museo de la Memoria:** un panel que se abre desde el santuario de Memoria. Muestra culturas, Guardianes vencidos, reliquias, Bendiciones, fragmentos, coleccionables e información narrativa. La sala física se deja preparada para después.
+  7. **Penalización por caer = 0**, configurable pero desactivada.
+  - **Condiciones:** no añadir pisos (siguen siendo 3), que todo funcione dentro de Unity, prioridad al rendimiento en la HD 530 y sin commits sin autorización.
+- **Hecho hasta ahora:** solo la entrada. En `InputSystem_Actions` se renombraron acciones que nadie usaba:
+  - `Crouch` pasa a `Ability` (C / botón Este), para el golpe de tierra.
+  - `Previous` pasa a `UseItem` (1 / cruceta izquierda).
+  - `Next` pasa a `Menu` (I / Select).
+- **Siguiente (plan acordado):**
+  1. **Documentos de diseño** en `Docs/Sistemas` y `Docs/Contenido`.
+  2. **Núcleo en Core:** `Inventory`, `Progression` y `RewardService`, todos `ISaveParticipant` con `SaveData` v2, más los catálogos en Data con el patrón de `IQuestCatalog`.
+  3. **Integración:** botín de enemigos, ofrendas (cofres) que se abren una vez, `PlayerStats` y energía, golpe de tierra y basalto agrietado, consumibles, avisos y barras en el HUD.
+  4. **Final de la mazmorra:** recompensas del Guardián, elección de Bendición y resultados C/B/A/S.
+  5. **Comunidad:** fabricación con el artesano, comercio con el comerciante, `MP_OLM_06` y el Museo.
+  6. **Pruebas y FPS.**
+
 ## 2026-10-30 (noche) — i7-10700
 
 - **Rama / último commit al empezar:** `feature/prototipo-olmeca` @ `cb81ef3` (M3).

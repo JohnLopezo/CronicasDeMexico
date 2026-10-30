@@ -3,6 +3,7 @@ using System.Linq;
 using CronicasDeMexico.Core.Events;
 using CronicasDeMexico.Core.Save;
 using CronicasDeMexico.Data.Characters;
+using CronicasDeMexico.Data.Rewards;
 using CronicasDeMexico.Editor.PixelArt;
 using CronicasDeMexico.Gameplay.Combat;
 using CronicasDeMexico.Gameplay.Dungeon;
@@ -10,6 +11,7 @@ using CronicasDeMexico.Gameplay.Enemies;
 using CronicasDeMexico.Gameplay.Movement;
 using CronicasDeMexico.Gameplay.Narrative;
 using CronicasDeMexico.Gameplay.Player;
+using CronicasDeMexico.Gameplay.Rewards;
 using CronicasDeMexico.World.Rendering;
 using UnityEditor;
 using UnityEditor.SceneManagement;
@@ -153,6 +155,8 @@ namespace CronicasDeMexico.Editor.SceneGeneration
             var messageChannel = MessageChannel();
             // Después de NewScene, que descarga los ScriptableObjects recién creados que nada referencia (MP_OLM_04).
             var narrative = OlmecaNarrativeAssets.EnsureAssets();
+            var rewards = OlmecaRewardAssets.EnsureAssets(narrative);
+            var menuChannel = OlmecaPrototypeGenerator.LoadOrCreateAsset<StringEventChannel>(OlmecaPrototypeGenerator.MenuChannelPath);
             var bossNameChannel = OlmecaPrototypeGenerator.LoadOrCreateAsset<StringEventChannel>(OlmecaPrototypeGenerator.BossNameChannelPath);
             var bossHealthChannel = OlmecaPrototypeGenerator.LoadOrCreateAsset<HealthEventChannel>(OlmecaPrototypeGenerator.BossHealthChannelPath);
 
@@ -172,11 +176,19 @@ namespace CronicasDeMexico.Editor.SceneGeneration
             var player = PlacePlayer(scene, points.llegada_arriba.Value);
             BuildTravel(Group("--- Escaleras ---", null), floor, points, sprites);
             BuildShrines(Group("--- Santuarios ---", null), floor, points, sprites, placed, messageChannel);
-            BuildEnemies(Group("--- Espíritus corrompidos ---", null), points);
-            BuildEchoes(Group("--- Ecos borrados ---", null), points);
+            var spirits = Group("--- Espíritus corrompidos ---", null);
+            BuildEnemies(spirits, points);
+            var echoes = Group("--- Ecos borrados ---", null);
+            BuildEchoes(echoes, points);
+            var zoneLevel = OlmecaRewardAssets.FloorLevel(floor);
+            AddLoot(spirits, rewards.CommonSpirit, zoneLevel);
+            AddLoot(echoes, rewards.ErasedEcho, zoneLevel);
             if (RegionPoints.Has(points.jaguar))
-                BuildStoneJaguar(Group("--- Jaguar de Piedra ---", null), points.jaguar.Value, messageChannel, bossNameChannel,
-                    bossHealthChannel);
+            {
+                var jaguarGroup = Group("--- Jaguar de Piedra ---", null);
+                BuildStoneJaguar(jaguarGroup, points.jaguar.Value, messageChannel, bossNameChannel, bossHealthChannel);
+                AddLoot(jaguarGroup, rewards.StoneJaguar, zoneLevel);
+            }
             if (RegionPoints.Has(points.guardian))
             {
                 var arena = Group("--- Guardián de la Piedra Viva ---", null);
@@ -185,6 +197,9 @@ namespace CronicasDeMexico.Editor.SceneGeneration
                 arena.gameObject.AddComponent<StartQuestOnLoad>().Quest = narrative.GuardianQuest;
             }
             BuildHints(Group("--- Tutorial ---", null), floor, messageChannel);
+            BuildRewards(Group("--- Recompensas ---", null), floor, points, sprites, rewards, narrative, messageChannel, menuChannel);
+            foreach (var shrine in Object.FindObjectsByType<MemoryShrine>(FindObjectsSortMode.None))
+                SetProperty(shrine, "menuChannel", property => property.objectReferenceValue = menuChannel);
 
             var defeat = new GameObject("Derrota").AddComponent<DefeatReturn>();
             defeat.Player = player.GetComponent<Health>();
@@ -292,6 +307,109 @@ namespace CronicasDeMexico.Editor.SceneGeneration
             return touch;
         }
 
+        // ---------- Recompensas (M5) ----------
+
+        const string CrackText =
+            "Columnas de basalto caídas, partidas por grietas que brillan como brasas. Detrás se adivina un hueco. " +
+            "La piedra no cede a las garras: haría falta que la tierra misma la empujara.";
+
+        static void AddLoot(Transform group, LootTable table, int zoneLevel)
+        {
+            foreach (var health in group.GetComponentsInChildren<Health>(true))
+                OlmecaRewardAssets.AddLoot(health.gameObject, table, zoneLevel);
+        }
+
+        // Ofrendas del piso (Docs/Contenido/Tabla_Recompensas_Olmeca.md), el basalto agrietado que tapa la oculta, la
+        // recompensa por descubrir el piso y, en el piso 3, el cierre de la mazmorra (jefe, nota y ofrenda final). Las
+        // ocultas de los pisos 1 y 2 solo se abren al volver con la Bendición de la Tierra; la nota cuenta las especiales
+        // de los pisos 1 y 2 y la oculta del 3, que sí se alcanzan antes de abrir la ofrenda final.
+        static void BuildRewards(Transform parent, int floor, RegionPoints points, Dictionary<string, Sprite> sprites,
+            OlmecaRewardAssets.Content rewards, OlmecaNarrativeAssets.Content narrative, StringEventChannel messageChannel,
+            StringEventChannel menuChannel)
+        {
+            var discovery = TriggerBox($"Descubrir_Piso{floor}", parent, points.llegada_arriba.Value, new Vector3(3f, 3f, 2f));
+            discovery.AddComponent<RewardOnEnter>().Configure($"mazmorra_piso{floor}", rewards.Discoveries[floor]);
+
+            DungeonCompletion completion = null;
+            if (RegionPoints.Has(points.guardian))
+            {
+                completion = new GameObject("Cierre_Mazmorra").AddComponent<DungeonCompletion>();
+                completion.transform.SetParent(parent, false);
+                completion.Configure(OlmecaRewardAssets.Culture, "La ciudad bajo la selva", OlmecaNarrativeAssets.GuardianFreedFlag,
+                    rewards.Boss, SecretFlags, rewards.Grades, narrative.ReturnQuest, menuChannel);
+            }
+
+            void Offering(Point point, string kind, ChestKind chestKind, bool vessel, LootTable loot = null,
+                string requiredFlag = null, DungeonCompletion closer = null)
+            {
+                if (!RegionPoints.Has(point))
+                    return;
+                var id = OfferingId(floor, kind);
+                var bundle = chestKind == ChestKind.Final ? rewards.Final : rewards.Offerings[id];
+                BuildOffering(parent, id, chestKind, point.Value, vessel, bundle, loot, sprites, messageChannel, requiredFlag, closer);
+            }
+
+            Offering(points.ofrenda_comun, "comun", ChestKind.Comun, vessel: true);
+            Offering(points.ofrenda_especial, "especial", ChestKind.Especial, vessel: false);
+            Offering(points.ofrenda_oculta, "oculta", ChestKind.Oculto, vessel: false);
+            Offering(points.ofrenda_guardian, "guardian", ChestKind.Guardian, vessel: false,
+                requiredFlag: OlmecaNarrativeAssets.StoneJaguarDefeatedFlag);
+            Offering(points.ofrenda_final, "final", ChestKind.Final, vessel: false,
+                requiredFlag: OlmecaNarrativeAssets.GuardianFreedFlag, closer: completion);
+
+            if (RegionPoints.Has(points.agrietado))
+                BuildCrack(parent, $"olm_p{floor}", points.agrietado.Value, sprites, messageChannel);
+        }
+
+        /// <summary>Id de una ofrenda: "p1_comun", "p3_final"…</summary>
+        public static string OfferingId(int floor, string kind) => $"p{floor}_{kind}";
+
+        static readonly string[] SecretFlags =
+        {
+            RewardChest.FlagPrefix + "p1_especial", RewardChest.FlagPrefix + "p2_especial", RewardChest.FlagPrefix + "p3_oculta",
+        };
+
+        // Cerrada y abierta en el mismo sitio (ActiveWhenFlags alterna); lo que se toca es un trigger aparte que no se
+        // desactiva. Las que esperan a un jefe aparecen con su bandera.
+        static void BuildOffering(Transform parent, string id, ChestKind kind, Vector2 point, bool vessel, RewardBundle bundle,
+            LootTable loot, Dictionary<string, Sprite> sprites, StringEventChannel messageChannel, string requiredFlag,
+            DungeonCompletion completion)
+        {
+            var flag = RewardChest.FlagPrefix + id;
+            var group = Group($"Ofrenda_{id}", parent);
+            var content = Group("Contenido", group);
+            var closed = PlacedSprite("Cerrada", content, sprites, vessel ? "Ofrenda_03" : "Ofrenda_01", point);
+            var opened = PlacedSprite("Abierta", content, sprites, vessel ? "Ofrenda_04" : "Ofrenda_02", point);
+            opened.gameObject.SetActive(false);
+            ShowWhen(closed.gameObject, null, new[] { flag }, liveUpdate: true);
+            ShowWhen(opened.gameObject, new[] { flag }, null, liveUpdate: true);
+            TriggerBox("Bloqueo", content, point, new Vector3(0.55f, 0.7f, 0.5f)).GetComponent<BoxCollider>().isTrigger = false;
+
+            var touch = Touchable("Abrir", content, point);
+            touch.GetComponent<SphereCollider>().radius = 0.9f; // la oculta no se alcanza a través del basalto
+            touch.AddComponent<RewardChest>().Configure(id, kind, bundle, loot, messageChannel, completion);
+
+            if (requiredFlag != null)
+            {
+                content.gameObject.SetActive(false);
+                ShowWhen(content.gameObject, new[] { requiredFlag }, null, liveUpdate: true);
+            }
+        }
+
+        // Bloque de 1 × 2 m que solo rompe el golpe de tierra (PlayerAbility); se examina para dar la pista.
+        static void BuildCrack(Transform parent, string id, Vector2 point, Dictionary<string, Sprite> sprites,
+            StringEventChannel messageChannel)
+        {
+            var group = Group("Basalto_Agrietado", parent);
+            var block = Group("Bloque", group);
+            block.gameObject.AddComponent<BreakableBasalt>().BreakId = id;
+            PlacedSprite("Sprite", block, sprites, "Basalto_Agrietado_01", point);
+            TriggerBox("Bloqueo", block, point, new Vector3(1f, 2f, 1.5f)).GetComponent<BoxCollider>().isTrigger = false;
+            AddInscription(block, "Inscripcion_Basalto", ToWorld(point) + Vector3.up * 0.8f, CrackText, messageChannel,
+                prompt: "Examinar");
+            ShowWhen(block.gameObject, null, new[] { BreakableBasalt.FlagPrefix + id }, liveUpdate: true);
+        }
+
         // ---------- Tutorial ----------
 
         static void BuildHints(Transform parent, int floor, StringEventChannel messageChannel)
@@ -334,7 +452,7 @@ namespace CronicasDeMexico.Editor.SceneGeneration
                 root.transform.SetParent(parent, false);
                 root.transform.position = anchors[0];
                 root.layer = OlmecaPrototypeGenerator.Layer(OlmecaPrototypeGenerator.EnemyLayerName);
-                OlmecaPrototypeGenerator.AddHealth(root, maxHealth: 2, invulnerabilityTime: 0.2f, spriteRenderer);
+                OlmecaPrototypeGenerator.AddHealth(root, maxHealth: 20, invulnerabilityTime: 0.2f, spriteRenderer); // escala ×10 (M5)
 
                 var projectiles = new Projectile[3];
                 for (var i = 0; i < projectiles.Length; i++)
@@ -403,7 +521,7 @@ namespace CronicasDeMexico.Editor.SceneGeneration
             SetProperty(billboard, "mode", property => property.enumValueIndex = (int)SpriteBillboard.BillboardMode.CameraPlane);
             spriteObject.AddComponent<PixelGridSnap>();
 
-            OlmecaPrototypeGenerator.AddHealth(root, maxHealth: 16, invulnerabilityTime: 0.15f, spriteRenderer, bossHealthChannel);
+            OlmecaPrototypeGenerator.AddHealth(root, maxHealth: 160, invulnerabilityTime: 0.15f, spriteRenderer, bossHealthChannel);
 
             var markerObject = new GameObject("Aviso");
             markerObject.transform.SetParent(root.transform, false);
@@ -570,7 +688,7 @@ namespace CronicasDeMexico.Editor.SceneGeneration
             SetProperty(billboard, "mode", property => property.enumValueIndex = (int)SpriteBillboard.BillboardMode.CameraPlane);
             spriteObject.AddComponent<PixelGridSnap>();
 
-            OlmecaPrototypeGenerator.AddHealth(root, maxHealth: 40, invulnerabilityTime: 0.2f, spriteRenderer, bossHealthChannel);
+            OlmecaPrototypeGenerator.AddHealth(root, maxHealth: 400, invulnerabilityTime: 0.2f, spriteRenderer, bossHealthChannel);
 
             TelegraphMarker Marker(string name, Sprite sprite, TelegraphMarker.MarkerShape shape)
             {

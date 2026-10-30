@@ -65,8 +65,8 @@ namespace CronicasDeMexico.Gameplay.Enemies
         [SerializeField] float gravity = -20f;
 
         [Header("Daño")]
-        [SerializeField, Min(1)] int heavyDamage = 2;
-        [SerializeField, Min(1)] int lightDamage = 1;
+        [SerializeField, Min(1)] int heavyDamage = 20;
+        [SerializeField, Min(1)] int lightDamage = 10;
         [SerializeField, Min(0f)] float chargeSpeed = 11f;
         [SerializeField, Min(0f)] float chargeLength = 8f;
         [SerializeField, Min(0f), Tooltip("Segundos aturdido si la embestida choca con algo.")] float chargeStun = 1.6f;

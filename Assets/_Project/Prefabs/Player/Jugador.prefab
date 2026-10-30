@@ -119,6 +119,8 @@ GameObject:
   - component: {fileID: 4475566719306281092}
   - component: {fileID: 7485052137595017428}
   - component: {fileID: 2855715814293587335}
+  - component: {fileID: 2784412969086955806}
+  - component: {fileID: 8246834595236470100}
   m_Layer: 0
   m_Name: Jugador
   m_TagString: Player
@@ -140,6 +142,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6031400278821999305}
+  - {fileID: 1862826649027144421}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!143 &4844504375349180849
@@ -180,10 +183,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveAction: {fileID: -1680190386980627800, guid: 052faaac586de48259a63d0c4782560b, type: 3}
+  dodgeAction: {fileID: 0}
   cameraTransform: {fileID: 0}
   moveSpeed: 4
   acceleration: 40
   gravity: -20
+  dodgeSpeed: 10
+  dodgeTime: 0.18
+  dodgeInvulnerability: 0.3
+  dodgeCooldown: 0.6
 --- !u!114 &1161331672111561633
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -232,7 +240,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6cdbadb8a24748f44a3b79c71791fd67, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 5
+  maxHealth: 50
   invulnerabilityTime: 1
   changedChannel: {fileID: 11400000, guid: 1b48d06bc819bd249a9b071dd1b11c69, type: 2}
 --- !u!114 &4475566719306281092
@@ -281,8 +289,143 @@ MonoBehaviour:
   targetLayers:
     serializedVersion: 2
     m_Bits: 128
-  damage: 1
+  damage: 10
   reach: 0.8
   radius: 0.7
   cooldown: 0.35
   height: 0.7
+--- !u!114 &2784412969086955806
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3936822071325029381}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 70437a257cf40f04d982ad5777b327ed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  useItemAction: {fileID: 0}
+--- !u!114 &8246834595236470100
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3936822071325029381}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2448d9afdd5663f4988c18b324627366, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  abilityAction: {fileID: 0}
+  blessingId: tierra
+  radius: 2.5
+  damageFactor: 2
+  defaultEnergyCost: 30
+  defaultCooldown: 4
+  visual: {fileID: 7987531281539302813}
+  messageChannel: {fileID: 11400000, guid: 40479bdc95cd83c49b8e1e2d4a300ec4, type: 2}
+--- !u!1 &7862478236392693040
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1862826649027144421}
+  - component: {fileID: 3562260751592570567}
+  - component: {fileID: 7987531281539302813}
+  m_Layer: 0
+  m_Name: GolpeTierra
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1862826649027144421
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7862478236392693040}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6563147803131534840}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!212 &3562260751592570567
+SpriteRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7862478236392693040}
+  m_Enabled: 0
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: 5c0f82d500be253449f8af5e923d784f, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 0
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_Sprite: {fileID: 21300000, guid: cab612cc2b8f297419e0c000545aa89e, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_FlipX: 0
+  m_FlipY: 0
+  m_DrawMode: 0
+  m_Size: {x: 2, y: 2}
+  m_AdaptiveModeThreshold: 0.5
+  m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 1
+  m_MaskInteraction: 0
+  m_SpriteSortPoint: 0
+--- !u!114 &7987531281539302813
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7862478236392693040}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 92934668667da3040abf8e6cec277f9c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shape: 0
+  color: {r: 0.85, g: 0.62, b: 0.3, a: 1}

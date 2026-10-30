@@ -29,3 +29,4 @@ MonoBehaviour:
     description: "Baja a lo m\xE1s hondo de la estructura"
   rewardFlags:
   - olm.antesala_alcanzada
+  reward: {fileID: 11400000, guid: ebde7fa94f1977847820e4d3aee64d33, type: 2}

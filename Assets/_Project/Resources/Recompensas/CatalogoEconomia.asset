@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7044c2cb51dc3924eaeee801dab9312f, type: 3}
+  m_Name: CatalogoEconomia
+  m_EditorClassIdentifier: 
+  recipes:
+  - {fileID: 11400000, guid: 24206bb98fb359645896d022b8cdb5b0, type: 2}
+  - {fileID: 11400000, guid: 785c205ba741c0243a88dc410bd41ca7, type: 2}
+  - {fileID: 11400000, guid: 11d413b1f16656848ab3e92ff0bcca62, type: 2}
+  - {fileID: 11400000, guid: dab0ec9bd1b306242a1bfcab8d049727, type: 2}
+  - {fileID: 11400000, guid: b6e422851fb08914ba2e1d97089b0f23, type: 2}
+  - {fileID: 11400000, guid: fbe1cc0994e1c7b4eb36fdd306577b7a, type: 2}
+  - {fileID: 11400000, guid: a9852ad4ea74e1a439a5e50ad226d5f7, type: 2}
+  offers:
+  - {fileID: 11400000, guid: 890ada92edf6fd34089304cd6a7851f2, type: 2}
+  - {fileID: 11400000, guid: 20b41c398fc37124abb128547d1add3f, type: 2}
+  - {fileID: 11400000, guid: 34c3b3dcebb152f419d2b029bca005f5, type: 2}
+  - {fileID: 11400000, guid: 583d652e18dcb624c8d84433bd3d79d2, type: 2}
+  - {fileID: 11400000, guid: 8be663b5cd204f946bfc25f5a35bc456, type: 2}
+  - {fileID: 11400000, guid: 4279c33339f730d4d8b84adc5fa7185c, type: 2}
+  - {fileID: 11400000, guid: 796f7c14ad766cd469133b1f3e1cc8b1, type: 2}

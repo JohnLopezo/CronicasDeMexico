@@ -28,3 +28,4 @@ MonoBehaviour:
       espera
   rewardFlags:
   - olm.estructura_encontrada
+  reward: {fileID: 11400000, guid: c2439d09dc6388f42b38df30e7394b55, type: 2}

@@ -22,10 +22,20 @@ namespace CronicasDeMexico.Data.Narrative
         [SerializeField, Tooltip("Banderas que se activan una sola vez al completarla.")]
         string[] rewardFlags = Array.Empty<string>();
 
+        [SerializeField, Tooltip("Opcional: experiencia y objetos que da al completarse (RewardService).")]
+        Rewards.RewardBundle reward;
+
         public string Id => id;
         public string Title => title;
         public int StepCount => steps.Length;
         public string[] RewardFlags => rewardFlags;
+        public Core.Progress.RewardPackage Reward => reward != null ? reward.ToPackage() : null;
+
+        public Rewards.RewardBundle RewardBundle
+        {
+            get => reward;
+            set => reward = value;
+        }
 
         public QuestStepInfo GetStep(int index) =>
             index >= 0 && index < steps.Length ? steps[index].ToInfo() : default;

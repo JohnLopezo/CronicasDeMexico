@@ -50,7 +50,7 @@ namespace CronicasDeMexico.Gameplay.Enemies
         [SerializeField, Min(0f)] float swipeWindup = 0.55f;
         [SerializeField, Min(0f)] float swipeRadius = 1.2f;
         [SerializeField, Min(0f)] float swipeReach = 1f;
-        [SerializeField, Min(1)] int swipeDamage = 2;
+        [SerializeField, Min(1)] int swipeDamage = 20;
         [SerializeField, Min(0f)] float swipeRecover = 0.5f;
 
         [Header("Salto")]
@@ -58,13 +58,13 @@ namespace CronicasDeMexico.Gameplay.Enemies
         [SerializeField, Min(0f)] float leapRadius = 1.5f;
         [SerializeField, Min(0.05f)] float leapTime = 0.5f;
         [SerializeField, Min(0f)] float leapHeight = 1.6f;
-        [SerializeField, Min(1)] int leapDamage = 2;
+        [SerializeField, Min(1)] int leapDamage = 20;
         [SerializeField, Min(0f), Tooltip("Al caer queda expuesto un rato: el momento de atacarlo.")] float leapRecover = 0.9f;
 
         [Header("Rugido")]
         [SerializeField, Min(0f)] float roarWindup = 0.9f;
         [SerializeField, Min(0f)] float roarRadius = 3.2f;
-        [SerializeField, Min(1)] int roarDamage = 1;
+        [SerializeField, Min(1)] int roarDamage = 10;
         [SerializeField, Min(0f)] float roarKnockback = 9f;
         [SerializeField, Min(0f)] float roarRecover = 0.6f;
 

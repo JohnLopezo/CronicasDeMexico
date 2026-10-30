@@ -23,3 +23,4 @@ MonoBehaviour:
     description: "Busca al joven guerrero junto al fog\xF3n, cerca de la plaza"
   rewardFlags:
   - olm.entrada_descubierta
+  reward: {fileID: 11400000, guid: 935e89925cba6fd429f65d58bcfe0a5c, type: 2}

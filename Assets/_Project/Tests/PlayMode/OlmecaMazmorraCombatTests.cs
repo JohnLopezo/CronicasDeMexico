@@ -259,7 +259,7 @@ namespace CronicasDeMexico.Tests
 
             var jaguarHealth = jaguar.GetComponent<Health>();
             yield return new WaitForSeconds(0.2f);
-            Assert.IsTrue(jaguarHealth.TryDamage(100, player.transform.position));
+            Assert.IsTrue(jaguarHealth.TryDamage(jaguarHealth.Max, player.transform.position));
             yield return null;
             Assert.IsTrue(story.HasFlag(JaguarDefeatedFlag));
             Assert.IsFalse(jaguar.gameObject.activeInHierarchy, "Vencido, el Jaguar no vuelve.");

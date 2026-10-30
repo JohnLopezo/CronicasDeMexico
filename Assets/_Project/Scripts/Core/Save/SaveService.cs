@@ -13,7 +13,7 @@ namespace CronicasDeMexico.Core.Save
     /// </summary>
     public sealed class SaveService
     {
-        public const int CurrentVersion = 1;
+        public const int CurrentVersion = 2;
         const string FileName = "partida.json";
 
         readonly List<ISaveParticipant> participants = new();
@@ -124,11 +124,24 @@ namespace CronicasDeMexico.Core.Save
             return Migrate(data);
         }
 
-        // Punto único para convertir partidas de versiones anteriores. Por ahora solo existe la versión 1.
+        // Punto único para convertir partidas de versiones anteriores. La versión 2 (M5) añade inventario, nivel,
+        // energía, Bendiciones y recompensas entregadas: una partida de la versión 1 empieza en el nivel 1, con la
+        // energía llena y sin objetos.
         static SaveData Migrate(SaveData data)
         {
             data.flags ??= new List<string>();
             data.quests ??= new List<QuestRecord>();
+            if (data.version < 2)
+            {
+                data.level = 1;
+                data.experience = 0;
+                data.energy = -1;
+            }
+            data.items ??= new List<Progress.ItemStack>();
+            data.equippedRelics ??= new List<string>();
+            data.blessings ??= new List<string>();
+            data.defeats ??= new List<KeyCount>();
+            data.grantedRewards ??= new List<string>();
             data.version = CurrentVersion;
             return data;
         }

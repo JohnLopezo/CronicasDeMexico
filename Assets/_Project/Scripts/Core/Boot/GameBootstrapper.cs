@@ -1,4 +1,5 @@
 using CronicasDeMexico.Core.Narrative;
+using CronicasDeMexico.Core.Progress;
 using CronicasDeMexico.Core.Save;
 using CronicasDeMexico.Core.Services;
 using CronicasDeMexico.Core.Travel;
@@ -35,8 +36,11 @@ namespace CronicasDeMexico.Core.Boot
 
         void OnDestroy() => ServiceLocator.Clear();
 
-        // Igual que QuestCatalog.ResourcePath (Data), que Core no puede referenciar.
+        // Igual que QuestCatalog.ResourcePath y los ResourcePath de Data/Rewards, que Core no puede referenciar.
         const string QuestCatalogResource = "Narrativa/CatalogoMisiones";
+        const string ItemCatalogResource = "Recompensas/CatalogoObjetos";
+        const string BlessingCatalogResource = "Recompensas/CatalogoBendiciones";
+        const string ProgressionConfigResource = "Recompensas/ConfigProgresion";
 
         static void RegisterServices()
         {
@@ -56,6 +60,18 @@ namespace CronicasDeMexico.Core.Boot
             ServiceLocator.Register(story);
             ServiceLocator.Register(quests);
             ServiceLocator.Register(checkpoint);
+
+            // Recompensas y progresión (M5). El inventario se restaura antes que la progresión, que suma sus reliquias.
+            var inventory = new Inventory(Resources.Load<ScriptableObject>(ItemCatalogResource) as IItemCatalog);
+            var progression = new Progression(Resources.Load<ScriptableObject>(ProgressionConfigResource) as IProgressionConfig,
+                inventory, Resources.Load<ScriptableObject>(BlessingCatalogResource) as IBlessingCatalog);
+            var rewards = new RewardService(inventory, progression, story, quests);
+            save.Register(inventory);
+            save.Register(progression);
+            save.Register(rewards);
+            ServiceLocator.Register(inventory);
+            ServiceLocator.Register(progression);
+            ServiceLocator.Register(rewards);
             ServiceLocator.Register(save);
         }
 

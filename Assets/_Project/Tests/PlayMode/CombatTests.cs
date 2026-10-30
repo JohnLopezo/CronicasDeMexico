@@ -160,7 +160,7 @@ namespace CronicasDeMexico.Tests
                 yield return new WaitForFixedUpdate();
 
                 Assert.That(attack.Strike(), Is.EqualTo(1), "Debe golpear exactamente a un objetivo.");
-                Assert.That(frontHealth.Current, Is.EqualTo(frontHealth.Max - 1), "El objetivo de delante debe recibir daño.");
+                Assert.That(frontHealth.Current, Is.EqualTo(frontHealth.Max - attack.Damage), "El objetivo de delante debe recibir daño.");
                 Assert.That(behindHealth.Current, Is.EqualTo(behindHealth.Max), "El de detrás no debe recibir daño.");
                 Assert.That(playerHealth.Current, Is.EqualTo(playerHealth.Max), "El jugador no debe golpearse a sí mismo.");
             }

@@ -64,7 +64,9 @@ namespace CronicasDeMexico.UI.Hud
 
         void Update()
         {
-            if (optionsAction != null && optionsAction.action.WasPressedThisFrame())
+            // Con el menú del juego abierto, Esc lo cierra a él (GameMenuController).
+            if (optionsAction != null && optionsAction.action.WasPressedThisFrame() && !GameMenuController.IsOpen &&
+                GameMenuController.ClosedFrame != Time.frameCount)
                 SetOpen(!IsOpen);
         }
 

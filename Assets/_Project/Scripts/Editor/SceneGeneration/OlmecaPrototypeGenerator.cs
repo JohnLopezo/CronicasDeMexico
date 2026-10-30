@@ -61,6 +61,9 @@ namespace CronicasDeMexico.Editor.SceneGeneration
         internal const string PlayerHealthChannelPath = EventsFolder + "/EVT_Jugador_Vida.asset";
         internal const string BossNameChannelPath = EventsFolder + "/EVT_Jefe_Nombre.asset";
         internal const string BossHealthChannelPath = EventsFolder + "/EVT_Jefe_Vida.asset";
+        /// <summary>El mundo pide abrir una pantalla del menú (MenuTabs): santuario, artesano, comerciante, ofrenda final.</summary>
+        internal const string MenuChannelPath = EventsFolder + "/EVT_Menu_Abrir.asset";
+        const string MenuActionPath = "Player/Menu";
         const string HudLayoutPath = "Assets/_Project/Art/UI/Hud/Hud.uxml";
         const string HudThemePath = "Assets/_Project/Art/UI/Hud/HudTheme.tss";
         const string PanelSettingsPath = "Assets/_Project/Settings/UI/PanelSettings_Hud.asset";
@@ -331,7 +334,7 @@ namespace CronicasDeMexico.Editor.SceneGeneration
             SetReference(interactor, "promptChannel", promptChannel);
             SetReference(interactor, "messageChannel", messageChannel);
 
-            AddHealth(root, maxHealth: 5, invulnerabilityTime: 1f, spriteRenderer, healthChannel);
+            AddHealth(root, maxHealth: 50, invulnerabilityTime: 1f, spriteRenderer, healthChannel); // escala ×10 (M5)
             root.AddComponent<PlayerDamageResponse>();
 
             var attack = root.AddComponent<PlayerAttack>();
@@ -374,7 +377,7 @@ namespace CronicasDeMexico.Editor.SceneGeneration
             var root = CreateCharacterRoot("EspirituJaguar", spriteSet, spriteMaterial, out var spriteRenderer);
             root.layer = Layer(EnemyLayerName); // solo la raíz tiene collider: es lo que golpea PlayerAttack
 
-            AddHealth(root, maxHealth: 3, invulnerabilityTime: 0.2f, spriteRenderer);
+            AddHealth(root, maxHealth: 30, invulnerabilityTime: 0.2f, spriteRenderer); // escala ×10 (M5)
             var chaser = root.AddComponent<EnemyChaser>();
             AddSpriteAnimator(root, chaser, spriteRenderer, spriteSet);
 
@@ -528,6 +531,12 @@ namespace CronicasDeMexico.Editor.SceneGeneration
 
             var options = hud.AddComponent<QualityOptionsPanel>();
             SetReference(options, "optionsAction", FindInputActionReference(OptionsActionPath));
+
+            // Bolsa, Bendiciones, fabricación, comercio, Museo y resultados (M5).
+            var menu = hud.AddComponent<GameMenuController>();
+            SetReference(menu, "menuChannel", LoadOrCreateAsset<StringEventChannel>(MenuChannelPath));
+            SetReference(menu, "menuAction", FindInputActionReference(MenuActionPath));
+            SetReference(menu, "optionsAction", FindInputActionReference(OptionsActionPath));
 
             // Navegación con teclado o mando en los botones. Usa el mapa UI del asset del proyecto: las acciones
             // por defecto del módulo no son un asset y no se guardarían en la escena.

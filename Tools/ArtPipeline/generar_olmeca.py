@@ -1785,6 +1785,65 @@ def santuario_vida(rng, variante):
             pa.asignar(bpy.context.active_object, mat_emision("Brasa", "#9A3A1C", 0.7))
 
 
+def ofrenda(rng, variante):
+    """Ofrenda (M5): recompensas de la mazmorra. En La Venta se enterraron ofrendas de hachas de jade y serpentina,
+    figurillas y espejos (D); la caja de lajas de basalto y la vasija tapada como contenedores son interpretación (I).
+    Variantes: 1 caja cerrada, 2 caja abierta (la laja a un lado y el jade brilla), 3 vasija tapada con un cajete,
+    4 vasija destapada. Mira a +X."""
+    mat = pa.mat_piedra_musgo("LajaOfrenda", BASALTO_LOSA, ["#3E5F27", "#5A8732"], escala=9, estirar=(1, 1, 0.6),
+                              altura_musgo=0.06, umbral_musgo=0.55)
+    if variante in (1, 2):
+        pa.asignar(caja("Cuerpo", (0, 0, 0.13), (0.5, 0.66, 0.26), 0.015), mat)
+        if variante == 1:
+            pa.asignar(caja("Tapa", (0, 0, 0.29), (0.58, 0.74, 0.06), 0.015), mat)
+        else:
+            pa.asignar(caja("Hueco", (0, 0, 0.262), (0.4, 0.56, 0.01), 0),
+                       pa.mat_ruido("HuecoOfrenda", ["#1E2420", "#2C302A"], escala=10))
+            for dy, giro in ((-0.14, 10), (0.0, -6), (0.14, 4)):   # hachas votivas de jade, tumbadas
+                v, f, c = [], [], []
+                prisma_color(v, f, c, Vector((0, 0, 0)), 0.045, 0.04, "#4FB39A", 4)
+                hacha = pa.malla("Hacha", v, f, c)
+                hacha.scale = (1.6, 0.7, 1.0)
+                hacha.rotation_euler.z = math.radians(giro)
+                hacha.location = (0.0, dy, 0.262)
+                pa.asignar(hacha, mat_emision("JadeOfrenda", "#4FB39A", 1.1))
+            tapa = caja("Tapa", (0.42, 0.05, 0.03), (0.58, 0.74, 0.06), 0.015)   # la laja, en el suelo delante
+            tapa.rotation_euler.z = math.radians(8)
+            pa.asignar(tapa, mat)
+    else:
+        vasija("Vasija", Vector((0, 0, 0)), 0.2, 0.36, ["#B16143", "#9B713F", "#C6925A"], cuello=0.05)
+        cajete = (0, 0, 0.42) if variante == 3 else (0.3, -0.1, 0.035)
+        bpy.ops.mesh.primitive_cylinder_add(vertices=20, radius=0.13, depth=0.06, location=cajete)
+        pa.asignar(bpy.context.active_object, pa.mat_ruido("CajeteTapa", ["#E3B47C", "#C9C0AB", "#C6925A"], escala=12))
+        if variante == 4:
+            for _ in range(5):   # semillas y una cuenta de jade que asoman por la boca
+                bpy.ops.mesh.primitive_ico_sphere_add(subdivisions=1, radius=0.025,
+                                                      location=(rng.uniform(-0.04, 0.04), rng.uniform(-0.04, 0.04), 0.415))
+                pa.asignar(bpy.context.active_object, pa.mat_ruido("Semilla", ["#568B26", "#92B535"], escala=10))
+            bpy.ops.mesh.primitive_ico_sphere_add(subdivisions=2, radius=0.035, location=(0.02, 0.0, 0.43))
+            pa.asignar(bpy.context.active_object, mat_emision("CuentaJade", "#4FB39A", 1.1))
+
+
+def basalto_agrietado(rng, variante):
+    """Basalto agrietado (M5): columnas de basalto caídas que tapan un paso, partidas por grietas de tierra que
+    brillan en ámbar; solo ceden al golpe de tierra de la Bendición de la Tierra (F). Ocupa 2 m de ancho en Y."""
+    mat = pa.mat_piedra_musgo("BasaltoAgrietado", BASALTO_COLUMNA, ["#3E5F27", "#5A8732"], escala=8, estirar=(1, 1, 0.5),
+                              altura_musgo=0.1, umbral_musgo=0.5)
+    for k, (dy, alto, radio) in enumerate(((-0.62, 1.05, 0.2), (-0.2, 1.2, 0.22), (0.22, 1.12, 0.21), (0.63, 0.98, 0.2))):
+        columna = prisma_basalto(f"Columna{k}", rng, alto, radio)
+        columna.location = (rng.uniform(-0.05, 0.05), dy, 0)
+        pa.asignar(columna, mat)
+    v, f, c = [], [], []
+    for _ in range(6):   # grietas: listones finos en la cara que mira a la cámara
+        prisma_color(v, f, c, Vector((0.21, rng.uniform(-0.7, 0.7), rng.uniform(0.15, 0.85))), 0.012,
+                     rng.uniform(0.12, 0.25), "#F2A541", 4)
+    pa.asignar(pa.malla("Grietas", v, f, c), mat_emision("GrietaTierra", "#F2A541", 1.0))
+    for _ in range(4):
+        bpy.ops.mesh.primitive_ico_sphere_add(subdivisions=1, radius=rng.uniform(0.06, 0.1),
+                                              location=(rng.uniform(0.2, 0.4), rng.uniform(-0.8, 0.8), 0.03))
+        pa.asignar(bpy.context.active_object, mat)
+
+
 def escalera_subida(rng, variante):
     """Escalera que sube hacia la salida (al piso de arriba o a la selva): tres peldaños hacia -X hasta un pórtico de
     basalto con el hueco negro. Va contra el muro del lado -X de una sala y mira a +X."""
@@ -2075,6 +2134,11 @@ TIPOS = {
     "Escalera_Subida": (escalera_subida, (128, 160), (64, 40), ("basalto", "tierra", "musgo"), "#1E2420",
                         ((192, 112), (70, 48)), 0.5),
     "Escalera_Bajada": (escalera_bajada, (96, 80), (48, 40), ("basalto",), None, None, 0.5),
+    # Recompensas (M5)
+    "Ofrenda": (ofrenda, (64, 64), (32, 20), ("basalto", "tierra", "acentos", "jade", "musgo", "verde_calido"), "#1E2420",
+                SOMBRA_CHICA, 0.5),
+    "Basalto_Agrietado": (basalto_agrietado, (128, 144), (64, 40), ("basalto", "musgo", "fuego", "tierra"), "#1E2420",
+                          ((160, 96), (56, 44)), 0.5),
 }
 VARIANTES = {"Tile_Camino_Tierra": 4, "Tile_Pasto_Selva": 3, "Tile_Agua_Anim": 4, "Cerca_Basalto": 3,
              "Palma_Corozo": 2, "Arbusto_Selva": 2, "Matorral_Selva": 3, "Pasto_Alto": 2, "Helecho": 2,
@@ -2084,7 +2148,7 @@ VARIANTES = {"Tile_Camino_Tierra": 4, "Tile_Pasto_Selva": 3, "Tile_Agua_Anim": 4
              "Enramada_Poste": 1, "Enramada_Techo": 1, "Muelle_Madera": 2, "Canoa": 1,
              "Grieta_Olvido": 2, "Fragmento_Memoria": 1, "Entrada_Estructura": 1,
              "Tile_Losa_Basalto": 3, "Muro_Basalto": 3, "Muro_Basalto_Y": 3, "Santuario_Memoria": 2, "Santuario_Vida": 2,
-             "Escalera_Subida": 1, "Escalera_Bajada": 1}
+             "Escalera_Subida": 1, "Escalera_Bajada": 1, "Ofrenda": 4, "Basalto_Agrietado": 1}
 # Jaguar de Piedra (M3): una pose por tipo y una variante por dirección de pantalla; liberado, solo de frente (S).
 for _pose in POSES_JAGUAR:
     _liberado = _pose == "Liberado"
@@ -2775,11 +2839,15 @@ PISOS = {
     # rastros de la expedición del guerrero, y la bajada.
     1: {"limites": (-16, 20, -10, 10),
         "celdas": rect(-14, -9, -3, 3) | rect(-8, -5, -1, 1) | rect(-4, 1, -3, 3) | rect(2, 4, -1, 1)
-                  | rect(5, 11, -4, 4) | rect(12, 13, -1, 1) | rect(14, 18, -3, 3),
+                  | rect(5, 11, -4, 4) | rect(12, 13, -1, 1) | rect(14, 18, -3, 3)
+                  | rect(3, 4, 3, 4),   # M5: alcoba tras el basalto agrietado (ofrenda oculta)
         "subida": (-13.6, 0.0), "llegada_arriba": (-12.2, 0.0),
         "bajada": (16.5, 0.0), "llegada_abajo": (15.0, 0.0),
         "memoria": (-13.95, -2.3), "memoria_llegada": (-12.7, -2.3),
         "enemigos": [(-1.0, 0.5), (8.5, 2.0), (8.0, -2.5)],
+        # Recompensas (M5): ofrendas por tipo y el basalto agrietado que tapa la alcoba (2 m de ancho en Y).
+        "ofrenda_comun": (-10.2, 2.3), "ofrenda_especial": (6.0, 3.3), "ofrenda_oculta": (3.15, 3.5),
+        "agrietado": (4.0, 3.5),
         "adornos": [("Escombros_Basalto_01", -3.3, 2.6), ("Escombros_Basalto_03", 0.6, -2.5),
                     ("Estela_Lisa_01", 5.4, -3.4), ("Escombros_Basalto_02", 10.6, 3.6), ("Escombros_Basalto_01", 17.6, 2.5)],
         "losas": [1, 1, 1, 2, 2], "muros": [1, 2, 1, 2, 1, 2, 3]},
@@ -2787,24 +2855,28 @@ PISOS = {
     # arena del Jaguar de Piedra, donde está la bajada (cerrada hasta vencerlo).
     2: {"limites": (-16, 17, -10, 10),
         "celdas": rect(-14, -9, -2, 4) | rect(-8, -5, 0, 2) | rect(-4, 5, -4, 5) | rect(-1, 0, -6, -5)
-                  | rect(-3, 2, -9, -7) | rect(6, 8, 0, 2) | rect(9, 15, -4, 6),
+                  | rect(-3, 2, -9, -7) | rect(6, 8, 0, 2) | rect(9, 15, -4, 6)
+                  | rect(-6, -5, 4, 5),   # M5: alcoba tras el basalto agrietado
         "subida": (-13.6, 1.0), "llegada_arriba": (-12.2, 1.0),
         "bajada": (14.0, -2.5), "llegada_abajo": (12.4, -2.5),
         "vida": (1.2, -8.2),
         "enemigos": [(3.0, 4.0)],
         "ecos": [[(-2.5, 4.0), (1.5, -3.0), (4.0, 3.0)], [(0.5, -1.5), (3.5, -3.5), (-3.0, -2.0)]],
         "jaguar": (12.0, 1.5),
+        "ofrenda_especial": (-2.5, -8.6), "ofrenda_oculta": (-5.85, 4.5), "ofrenda_guardian": (13.8, 4.0),
+        "agrietado": (-5.0, 4.5),
         "agua": rect(-2, 1, 0, 2) | rect(2, 4, -3, -2) | rect(-4, -3, 3, 5) | rect(10, 11, 4, 5),
         "adornos": [("Estela_Lisa_01", 4.6, 4.6), ("Estela_Lisa_01", -3.4, -3.6), ("Vasijas_01", -2.6, -7.4),
                     ("Escombros_Basalto_02", 9.6, 5.6), ("Escombros_Basalto_03", 14.6, 5.4)],
         "losas": [3, 3, 3, 1, 2], "muros": [1, 2, 1, 2, 3]},
     3: {"limites": (-12, 14, -9, 21),
         "celdas": rect(-10, -6, -2, 2) | rect(-5, -2, -1, 1) | rect(-1, 8, -4, 4) | rect(4, 6, 5, 6)
-                  | circulo(5, 13, 6.5),
+                  | circulo(5, 13, 6.5) | rect(-3, -2, 3, 4),   # M5: alcoba tras el basalto agrietado
         "subida": (-9.6, 0.0), "llegada_arriba": (-8.2, 0.0),
         "memoria": (-0.95, 2.6), "memoria_llegada": (0.3, 2.6),
         "sello": (5.0, 4.7),
         "guardian": (5.0, 13.0),
+        "ofrenda_oculta": (-2.85, 3.5), "ofrenda_final": (5.0, 17.0), "agrietado": (-2.0, 3.5),
         # El agua del borde de la arena: aparece en la fase 2 del Guardián (sobre el suelo, no horneada).
         "inundacion": {c for c in circulo(5, 13, 6.5) if (c[0] - 5) ** 2 + (c[1] - 13) ** 2 >= 5.0 ** 2},
         "enemigos": [],
@@ -2863,7 +2935,8 @@ def planificar_piso(piso):
     punto = lambda p: {"x": round(p[0], 2), "y": round(p[1], 2)}
     puntos = {clave: punto(datos[clave]) for clave in
               ("subida", "llegada_arriba", "bajada", "llegada_abajo", "memoria", "memoria_llegada", "vida", "sello",
-               "jaguar", "guardian")
+               "jaguar", "guardian", "ofrenda_comun", "ofrenda_especial", "ofrenda_oculta", "ofrenda_guardian",
+               "ofrenda_final", "agrietado")
               if clave in datos}
     puntos["enemigos"] = [punto(p) for p in datos["enemigos"]]
     puntos["ecos"] = [punto(p) for eco in datos.get("ecos", []) for p in eco]   # de tres en tres

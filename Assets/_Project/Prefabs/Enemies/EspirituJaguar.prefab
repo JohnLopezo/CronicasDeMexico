@@ -176,7 +176,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6cdbadb8a24748f44a3b79c71791fd67, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 3
+  maxHealth: 30
   invulnerabilityTime: 0.2
   changedChannel: {fileID: 0}
 --- !u!114 &4244953499131136756
@@ -212,7 +212,7 @@ MonoBehaviour:
   moveSpeed: 2.6
   acceleration: 12
   contactDistance: 0.8
-  contactDamage: 1
+  contactDamage: 10
   knockbackSpeed: 5
   stunTime: 0.3
   respawnDelay: 8

@@ -15,6 +15,9 @@ namespace CronicasDeMexico.Core.Narrative
 
         /// <summary>Banderas que se activan una sola vez al completarla (recompensas, cambios en el mundo).</summary>
         string[] RewardFlags { get; }
+
+        /// <summary>Experiencia y objetos que da al completarse (los entrega RewardService), o null.</summary>
+        Progress.RewardPackage Reward { get; }
     }
 
     /// <summary>Un paso se cumple al recibir <see cref="RequiredCount"/> veces el aviso <see cref="EventKey"/>.</summary>

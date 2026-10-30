@@ -11,7 +11,7 @@ namespace CronicasDeMexico.Gameplay.Combat
     /// </summary>
     public sealed class Health : MonoBehaviour
     {
-        [SerializeField, Min(1)] int maxHealth = 5;
+        [SerializeField, Min(1)] int maxHealth = 50;
 
         [SerializeField, Min(0f), Tooltip("Segundos sin recibir daño tras un golpe.")]
         float invulnerabilityTime = 0.5f;
@@ -25,6 +25,9 @@ namespace CronicasDeMexico.Gameplay.Combat
         public int Current => current;
         public int Max => maxHealth;
         public bool IsDead => current <= 0;
+
+        /// <summary>Resta a cada golpe (reliquias, Bendiciones, consumibles). Un golpe siempre quita al menos 1.</summary>
+        public int Defense { get; set; }
 
         /// <summary>Recibió daño; el argumento es la posición de quien lo causó.</summary>
         public event Action<Vector3> Damaged;
@@ -45,7 +48,7 @@ namespace CronicasDeMexico.Gameplay.Combat
             if (amount <= 0 || IsDead || Time.time < invulnerableUntil)
                 return false;
 
-            current = Mathf.Max(0, current - amount);
+            current = Mathf.Max(0, current - Mathf.Max(1, amount - Defense));
             invulnerableUntil = Time.time + invulnerabilityTime;
             Publish();
             Damaged?.Invoke(sourcePosition);
@@ -100,6 +103,21 @@ namespace CronicasDeMexico.Gameplay.Combat
                 return;
 
             current = value;
+            Publish();
+        }
+
+        /// <summary>
+        /// Cambia la vida máxima (sube de nivel, equipa una reliquia). La vida actual se mueve lo mismo que el máximo:
+        /// subir de nivel no cura, solo añade la vida nueva. Nunca mata ni revive.
+        /// </summary>
+        public void SetMaxHealth(int value)
+        {
+            value = Mathf.Max(1, value);
+            if (value == maxHealth)
+                return;
+            if (!IsDead)
+                current = Mathf.Clamp(current + value - maxHealth, 1, value);
+            maxHealth = value;
             Publish();
         }
 

@@ -1388,6 +1388,111 @@
     ],
     "ppu": 45.254833995939045
   },
+  "Ofrenda_01": {
+    "lienzo": [
+      64,
+      64
+    ],
+    "pivote_px": [
+      32,
+      20
+    ],
+    "ppu": 45.254833995939045,
+    "sombra": {
+      "lienzo": [
+        80,
+        40
+      ],
+      "pivote_px": [
+        26,
+        20
+      ]
+    }
+  },
+  "Ofrenda_02": {
+    "lienzo": [
+      64,
+      64
+    ],
+    "pivote_px": [
+      32,
+      20
+    ],
+    "ppu": 45.254833995939045,
+    "sombra": {
+      "lienzo": [
+        80,
+        40
+      ],
+      "pivote_px": [
+        26,
+        20
+      ]
+    }
+  },
+  "Ofrenda_03": {
+    "lienzo": [
+      64,
+      64
+    ],
+    "pivote_px": [
+      32,
+      20
+    ],
+    "ppu": 45.254833995939045,
+    "sombra": {
+      "lienzo": [
+        80,
+        40
+      ],
+      "pivote_px": [
+        26,
+        20
+      ]
+    }
+  },
+  "Ofrenda_04": {
+    "lienzo": [
+      64,
+      64
+    ],
+    "pivote_px": [
+      32,
+      20
+    ],
+    "ppu": 45.254833995939045,
+    "sombra": {
+      "lienzo": [
+        80,
+        40
+      ],
+      "pivote_px": [
+        26,
+        20
+      ]
+    }
+  },
+  "Basalto_Agrietado_01": {
+    "lienzo": [
+      128,
+      144
+    ],
+    "pivote_px": [
+      64,
+      40
+    ],
+    "ppu": 45.254833995939045,
+    "sombra": {
+      "lienzo": [
+        160,
+        96
+      ],
+      "pivote_px": [
+        56,
+        44
+      ]
+    }
+  },
   "Jaguar_Piedra_Acecho_01": {
     "lienzo": [
       176,

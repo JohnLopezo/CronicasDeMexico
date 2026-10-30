@@ -105,6 +105,8 @@ namespace CronicasDeMexico.Editor.SceneGeneration
             public Point memoria, memoria_llegada, vida, sello, jaguar, guardian;
             public Point[] enemigos;
             public Point[] ecos; // de tres en tres: los sitios de cada eco borrado
+            // Mazmorra, recompensas (M5): ofrendas por tipo y el basalto agrietado que tapa la oculta
+            public Point ofrenda_comun, ofrenda_especial, ofrenda_oculta, ofrenda_guardian, ofrenda_final, agrietado;
 
             /// <summary>Si el punto existe en los datos (JsonUtility deja a cero los que faltan).</summary>
             public static bool Has(Point point) => point != null && (point.x != 0f || point.y != 0f);
@@ -584,6 +586,7 @@ namespace CronicasDeMexico.Editor.SceneGeneration
 
         internal static GameObject PlacePlayer(UnityEngine.SceneManagement.Scene scene, Vector2 start)
         {
+            PlayerPrefabUpgrade.Ensure(); // M5: estadísticas y golpe de tierra
             var prefab = AssetDatabase.LoadAssetAtPath<GameObject>(OlmecaPrototypeGenerator.PlayerPrefabPath)
                 ?? throw new InvalidOperationException($"No se encontró {OlmecaPrototypeGenerator.PlayerPrefabPath}.");
             var player = (GameObject)PrefabUtility.InstantiatePrefab(prefab, scene);

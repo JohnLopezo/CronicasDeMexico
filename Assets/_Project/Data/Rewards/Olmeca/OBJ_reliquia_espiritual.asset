@@ -1,0 +1,38 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 822e6260ef1f75648861e154a79904af, type: 3}
+  m_Name: OBJ_reliquia_espiritual
+  m_EditorClassIdentifier: 
+  id: reliquia_espiritual
+  displayName: Reliquia espiritual
+  description: Jade y un fragmento de memoria, unidos.
+  category: 2
+  rarity: 2
+  origin: 2
+  originNote: F.
+  icon: {fileID: 21300000, guid: 99ff3be3018952740aab6cafc5c26ec3, type: 3}
+  maxStack: 1
+  value: 35
+  sellable: 1
+  bonus:
+    maxHealth: 0
+    attack: 0
+    defense: 0
+    maxEnergy: 20
+  guardianOnly: 
+  effect:
+    heal: 0
+    energy: 0
+    defenseBonus: 0
+    duration: 0
+  recordEntry: 
+  usage: "Energ\xEDa m\xE1xima +20: m\xE1s golpes de tierra antes de descansar."

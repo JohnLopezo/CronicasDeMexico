@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e94142cdebc665d45ab323ee27b53928, type: 3}
+  m_Name: CUL_olmeca
+  m_EditorClassIdentifier: 
+  id: olmeca
+  title: La memoria olmeca
+  discoveredFlag: registro.cultura.olmeca
+  summary: "D: La Venta (Tabasco) fue un gran centro olmeca entre aproximadamente
+    900 y 400 a. C.: mont\xEDculos de arcilla, columnas de basalto, altares-trono,
+    cabezas colosales y ofrendas enterradas de jade y serpentina.\nI: la vida en
+    la aldea, la selva y el r\xEDo tal como aparecen en el juego.\nF: la Sombra del
+    Olvido, los Guardianes y el Fragmento de la Primera Memoria."
+  guardians:
+  - name: Jaguar de Piedra
+    defeatedFlag: olm.jaguar_piedra_vencido
+    memory: Lo tallaron para vigilar, no para odiar.
+  - name: "Guardi\xE1n de la Piedra Viva"
+    defeatedFlag: olm.guardian_liberado
+    memory: "Guardaba la primera memoria de esta tierra; la Sombra le hizo ver en
+      ti a quien ven\xEDa a robarla."

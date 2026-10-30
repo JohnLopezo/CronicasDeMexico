@@ -1,0 +1,38 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 822e6260ef1f75648861e154a79904af, type: 3}
+  m_Name: OBJ_talisman_obsidiana
+  m_EditorClassIdentifier: 
+  id: talisman_obsidiana
+  displayName: "Talism\xE1n de obsidiana"
+  description: Una lasca de obsidiana envuelta en fibra.
+  category: 2
+  rarity: 1
+  origin: 2
+  originNote: F.
+  icon: {fileID: 21300000, guid: dbc68fc7f07f93949b85f24f642311a1, type: 3}
+  maxStack: 1
+  value: 25
+  sellable: 1
+  bonus:
+    maxHealth: 0
+    attack: 3
+    defense: 0
+    maxEnergy: 0
+  guardianOnly: 
+  effect:
+    heal: 0
+    energy: 0
+    defenseBonus: 0
+    duration: 0
+  recordEntry: 
+  usage: Ataque +3. Se fabrica con el artesano.

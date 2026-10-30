@@ -15,6 +15,9 @@ namespace CronicasDeMexico.Gameplay.Dungeon
     /// </summary>
     public sealed class MemoryShrine : MonoBehaviour, IInteractable
     {
+        /// <summary>Aviso "examinar:santuario_memoria" al descansar, común a todos (MP_OLM_04).</summary>
+        public const string ExamineId = "santuario_memoria";
+
         [SerializeField] string prompt = "Descansar";
 
         [SerializeField, Tooltip("Id del santuario, único en el juego.")]
@@ -52,7 +55,10 @@ namespace CronicasDeMexico.Gameplay.Dungeon
             if (ServiceLocator.TryGet(out PlayerCheckpoint checkpoint))
                 checkpoint.Set(gameObject.scene.name, spawnId, health != null ? health.Current : 0);
             if (ServiceLocator.TryGet(out StoryState story))
+            {
                 story.SetFlag(DungeonFlags.MemoryShrineAwake(shrineId));
+                story.Report(StoryEvents.Examine(ExamineId)); // antes de guardar: el paso de la misión queda guardado
+            }
 
             var saved = ServiceLocator.TryGet(out SaveService save) && save.Save();
             if (messageChannel != null)

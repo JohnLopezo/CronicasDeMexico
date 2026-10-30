@@ -12,6 +12,12 @@
             <ui:Label name="objective-text" class="hud-objective__text" picking-mode="Ignore" />
         </ui:VisualElement>
         <ui:Label name="fps" class="hud-fps" picking-mode="Ignore" />
+        <ui:VisualElement name="boss" class="hud-boss hidden" picking-mode="Ignore">
+            <ui:Label name="boss-name" class="hud-boss__name" picking-mode="Ignore" />
+            <ui:VisualElement class="hud-boss__bar" picking-mode="Ignore">
+                <ui:VisualElement name="boss-fill" class="hud-boss__fill" picking-mode="Ignore" />
+            </ui:VisualElement>
+        </ui:VisualElement>
         <ui:VisualElement class="hud-bottom" picking-mode="Ignore">
             <ui:Label name="message" class="hud-message hidden" picking-mode="Ignore" />
             <ui:Label name="prompt" class="hud-prompt hidden" picking-mode="Ignore" />

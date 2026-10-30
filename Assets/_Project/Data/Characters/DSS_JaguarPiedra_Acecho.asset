@@ -1,0 +1,36 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0f3a2dbe737f384da36cc4134724892, type: 3}
+  m_Name: DSS_JaguarPiedra_Acecho
+  m_EditorClassIdentifier: 
+  clips:
+  - idle: {fileID: 21300000, guid: 672a5acf69159c942a0a0d76a24111a0, type: 3}
+    walk:
+    - {fileID: 21300000, guid: d5b5a096a94e3d04890ad30f5df23057, type: 3}
+    - {fileID: 21300000, guid: 672a5acf69159c942a0a0d76a24111a0, type: 3}
+  - idle: {fileID: 21300000, guid: 0f2a50203922d7243b83ce0b995e7994, type: 3}
+    walk:
+    - {fileID: 21300000, guid: 2841a33dac3eaac4999ea122104839c6, type: 3}
+    - {fileID: 21300000, guid: 0f2a50203922d7243b83ce0b995e7994, type: 3}
+  - idle: {fileID: 21300000, guid: a688de8097afaf646afb0d1b1f6b0406, type: 3}
+    walk:
+    - {fileID: 21300000, guid: 18f613feddcd916419df3d315c95e8a9, type: 3}
+    - {fileID: 21300000, guid: a688de8097afaf646afb0d1b1f6b0406, type: 3}
+  - idle: {fileID: 21300000, guid: 261cd231512fa0740af462770d2ef40b, type: 3}
+    walk:
+    - {fileID: 21300000, guid: f7113af76574c5947a8b423b0180fcb0, type: 3}
+    - {fileID: 21300000, guid: 261cd231512fa0740af462770d2ef40b, type: 3}
+  - idle: {fileID: 21300000, guid: f7c0e1e818e447c4694ffa501c592a4e, type: 3}
+    walk:
+    - {fileID: 21300000, guid: d56c0ddd2d904994387e6d748a3fd4b4, type: 3}
+    - {fileID: 21300000, guid: f7c0e1e818e447c4694ffa501c592a4e, type: 3}
+  walkFramesPerSecond: 8

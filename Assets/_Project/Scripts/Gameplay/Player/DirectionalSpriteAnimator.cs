@@ -28,6 +28,13 @@ namespace CronicasDeMexico.Gameplay.Player
         Transform spriteTransform;
         float walkTime;
 
+        /// <summary>Juego de sprites en uso. Un personaje con varias poses (el Jaguar de Piedra) lo cambia según lo que hace.</summary>
+        public DirectionalSpriteSet SpriteSet
+        {
+            get => spriteSet;
+            set => spriteSet = value;
+        }
+
         void Awake()
         {
             movement = motionSource as IPlanarMotion;

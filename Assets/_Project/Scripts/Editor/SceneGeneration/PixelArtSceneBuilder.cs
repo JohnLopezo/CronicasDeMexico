@@ -5,6 +5,7 @@ using CronicasDeMexico.Core.Events;
 using CronicasDeMexico.Data.Characters;
 using CronicasDeMexico.Editor.PixelArt;
 using CronicasDeMexico.Gameplay.Interaction;
+using CronicasDeMexico.Gameplay.Movement;
 using CronicasDeMexico.Gameplay.Narrative;
 using CronicasDeMexico.Gameplay.Npc;
 using CronicasDeMexico.Gameplay.Travel;
@@ -101,8 +102,9 @@ namespace CronicasDeMexico.Editor.SceneGeneration
             public Point[] claros, fragmentos;
             public Point mazmorra, desde_mazmorra;                       // selva: entrada al piso 1
             public Point subida, llegada_arriba, bajada, llegada_abajo;  // pisos de la mazmorra
-            public Point memoria, memoria_llegada, vida, sello;
+            public Point memoria, memoria_llegada, vida, sello, jaguar;
             public Point[] enemigos;
+            public Point[] ecos; // de tres en tres: los sitios de cada eco borrado
 
             /// <summary>Si el punto existe en los datos (JsonUtility deja a cero los que faltan).</summary>
             public static bool Has(Point point) => point != null && (point.x != 0f || point.y != 0f);
@@ -120,6 +122,7 @@ namespace CronicasDeMexico.Editor.SceneGeneration
             public Pier[] muelles;
             public float[] limites; // x0, x1, y0, y1 del flujo
             public Cell[] vacio;    // mazmorra: celdas sin piso, que no se atraviesan
+            public bool agua_vadeable; // el agua baja del Pantano se cruza, más despacio (SlowZone)
             public RegionPoints puntos;
         }
 
@@ -291,7 +294,22 @@ namespace CronicasDeMexico.Editor.SceneGeneration
             Box("Limite_Oeste", parent, ToWorld(x0 - 0.5f, cy, wallHeight * 0.5f), new Vector3(sy + 2f, wallHeight, 1f));
             Box("Limite_Este", parent, ToWorld(x1 + 0.5f, cy, wallHeight * 0.5f), new Vector3(sy + 2f, wallHeight, 1f));
 
-            if (data.agua is { Length: > 0 })
+            if (data.agua is { Length: > 0 } && data.agua_vadeable)
+            {
+                // Agua baja: no bloquea; frena a quien la pisa.
+                var water = Group("Agua baja", parent);
+                foreach (var (x, y, length) in Runs(data.agua))
+                {
+                    var zone = new GameObject($"AguaBaja_{x}_{y}");
+                    zone.transform.SetParent(water, false);
+                    zone.transform.position = ToWorld(x, y, 0.5f);
+                    var trigger = zone.AddComponent<BoxCollider>();
+                    trigger.isTrigger = true;
+                    trigger.size = new Vector3(1f, 1f, length);
+                    zone.AddComponent<SlowZone>();
+                }
+            }
+            else if (data.agua is { Length: > 0 })
             {
                 var water = Group("Agua", parent);
                 var blockingWater = data.agua_bloqueo is { Length: > 0 } ? data.agua_bloqueo : data.agua;
@@ -399,7 +417,7 @@ namespace CronicasDeMexico.Editor.SceneGeneration
         }
 
         /// <summary>Caja trigger centrada en un punto del flujo; size = huella en x, y del flujo y altura.</summary>
-        static GameObject TriggerBox(string name, Transform parent, Vector2 point, Vector3 size)
+        internal static GameObject TriggerBox(string name, Transform parent, Vector2 point, Vector3 size)
         {
             var zone = new GameObject(name);
             zone.transform.SetParent(parent, false);

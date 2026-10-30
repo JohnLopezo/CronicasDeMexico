@@ -42,15 +42,15 @@ namespace CronicasDeMexico.World.Diagnostics
             ("SelvaDensa", new Vector2(6f, -6f)),
         };
 
-        // En Olmeca_Mazmorra_P2 (planificar_piso, el piso con más muros y espíritus): llegada, sala central, santuario de
-        // Vida y bajada.
+        // En Olmeca_Mazmorra_P2 (planificar_piso, el piso más cargado: ecos, agua y el Jaguar de Piedra): llegada, sala
+        // inundada, santuario de Vida y arena.
         const string DungeonSceneName = "Olmeca_Mazmorra_P2";
         static readonly (string name, Vector2 point)[] DungeonViews =
         {
             ("Llegada", new Vector2(-11.5f, 1f)),
             ("Sala", new Vector2(0f, 0.5f)),
             ("Vida", new Vector2(0f, -7f)),
-            ("Bajada", new Vector2(12f, 0f)),
+            ("Arena", new Vector2(12f, 0f)),
         };
 
         readonly float[] samples = new float[MaxSamples];

@@ -59,6 +59,8 @@ namespace CronicasDeMexico.Editor.SceneGeneration
         internal const string PromptChannelPath = EventsFolder + "/EVT_Interaccion_Aviso.asset";
         internal const string MessageChannelPath = EventsFolder + "/EVT_Interaccion_Mensaje.asset";
         internal const string PlayerHealthChannelPath = EventsFolder + "/EVT_Jugador_Vida.asset";
+        internal const string BossNameChannelPath = EventsFolder + "/EVT_Jefe_Nombre.asset";
+        internal const string BossHealthChannelPath = EventsFolder + "/EVT_Jefe_Vida.asset";
         const string HudLayoutPath = "Assets/_Project/Art/UI/Hud/Hud.uxml";
         const string HudThemePath = "Assets/_Project/Art/UI/Hud/HudTheme.tss";
         const string PanelSettingsPath = "Assets/_Project/Settings/UI/PanelSettings_Hud.asset";
@@ -222,7 +224,7 @@ namespace CronicasDeMexico.Editor.SceneGeneration
             return material;
         }
 
-        static T LoadOrCreateAsset<T>(string path) where T : ScriptableObject
+        internal static T LoadOrCreateAsset<T>(string path) where T : ScriptableObject
         {
             var asset = AssetDatabase.LoadAssetAtPath<T>(path);
             if (asset == null)
@@ -496,7 +498,8 @@ namespace CronicasDeMexico.Editor.SceneGeneration
 
         // ---------- HUD ----------
 
-        internal static void CreateHud(StringEventChannel promptChannel, StringEventChannel messageChannel, HealthEventChannel healthChannel)
+        internal static void CreateHud(StringEventChannel promptChannel, StringEventChannel messageChannel, HealthEventChannel healthChannel,
+            StringEventChannel bossNameChannel = null, HealthEventChannel bossHealthChannel = null)
         {
             var theme = AssetDatabase.LoadAssetAtPath<ThemeStyleSheet>(HudThemePath)
                 ?? throw new System.InvalidOperationException($"No se encontró el tema {HudThemePath}.");
@@ -520,6 +523,8 @@ namespace CronicasDeMexico.Editor.SceneGeneration
             SetReference(controller, "promptChannel", promptChannel);
             SetReference(controller, "messageChannel", messageChannel);
             SetReference(controller, "healthChannel", healthChannel);
+            SetReference(controller, "bossNameChannel", bossNameChannel);
+            SetReference(controller, "bossHealthChannel", bossHealthChannel);
 
             var options = hud.AddComponent<QualityOptionsPanel>();
             SetReference(options, "optionsAction", FindInputActionReference(OptionsActionPath));

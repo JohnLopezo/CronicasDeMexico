@@ -1,6 +1,6 @@
 # Estado del proyecto y plan para continuar
 
-*Recopilación al 2026-10-29, actualizada el 2026-10-30 tras M2 (la base de la mazmorra), en el i7-10700. Rama `feature/prototipo-olmeca`.* Léela al retomar, junto con la última entrada de `Docs/Bitacora.md`.
+*Recopilación al 2026-10-29, actualizada el 2026-10-30 tras M2 y M3 (la base de la mazmorra y sus pisos 1 y 2), en el i7-10700. Rama `feature/prototipo-olmeca`.* Léela al retomar, junto con la última entrada de `Docs/Bitacora.md`.
 
 ## 1. Cómo retomar (en cualquier PC)
 
@@ -84,8 +84,18 @@ Detalle en `Docs/Mazmorras/Olmeca.md`.
 - **Arte nuevo en Blender**, pendiente de tu aprobación (`Docs/Arte_Olmeca_Demo.md` §12).
 - **Rendimiento en el i7, piso 2:** unos 290 FPS en Bajo, 300–370 en Medio y 280–310 en Alto.
 
+### Mazmorra (M3): El Umbral, El Pantano y el Jaguar de Piedra, 2026-10-30
+Detalle en `Docs/Mazmorras/Olmeca.md`, `Docs/Enemigos/Olmeca.md` y `Docs/Historia/Misiones.md`.
+- **Esquiva:** Espacio o el botón Sur. Es corta, invulnerable y con espera entre usos.
+- **El Umbral** es el tutorial: salas seguidas con pistas que aparecen una sola vez y tres espíritus.
+- **El Pantano:** agua baja que frena, dos **ecos borrados** (disparan avisando y saltan de sitio), el santuario de Vida y la arena del **Jaguar de Piedra**.
+- **Jaguar de Piedra:** sus tres ataques avisan con una marca en el suelo, tiene barra de jefe en el HUD y, vencido, queda liberado y abre la bajada.
+- **Misión `MP_OLM_04`:** la da el guerrero en la entrada y llega hasta la antesala del piso 3.
+- **Arte nuevo en Blender:** el Jaguar en 5 poses × 5 direcciones y los charcos. Pendiente de tu aprobación.
+- **Rendimiento del Pantano en el i7:** unos 300 FPS en Bajo, 360 en Medio y 310 en Alto.
+
 ### Pruebas
-EditMode 57/57 y PlayMode 42/42 (al 2026-10-30, tras M2).
+EditMode 57/57 y PlayMode 48/48 (al 2026-10-30, tras M3).
 
 ## 4. Pendiente de decidir (por el autor)
 
@@ -98,19 +108,20 @@ EditMode 57/57 y PlayMode 42/42 (al 2026-10-30, tras M2).
 
 - Sprites del **Jaguar** jugable. Hoy el jugador es un humano provisional, aunque el reflejo diga "jaguar".
 - Sprites de los **NPC**, con siluetas propias, y de la **figura espiritual**.
-- Sprites del **espíritu jaguar corrompido** (hoy, la silueta humana provisional con grietas violetas).
+- Sprites del **espíritu jaguar corrompido** (hoy, la silueta humana provisional con grietas violetas) y del **eco borrado** (hoy, la misma silueta en violeta con franjas borradas).
 - Cabeza colosal, enemigos animados y **Guardián de la Piedra Viva**.
 
 ## 6. Plan propuesto (cada etapa se presenta y espera autorización)
 
 ### Inmediato
 - **Probar en el Editor** el arco completo, de `MP_OLM_01` a `MP_OLM_03` (Boot → ciudad → selva), y después la mazmorra:
-  - Bajar del piso 1 al 3.
+  - Hacer el tutorial de El Umbral y bajar al Pantano.
+  - Vencer a los ecos y al Jaguar de Piedra, y bajar a la antesala.
   - Descansar en el santuario de Memoria, caer en combate y volver al santuario.
   - Usar el santuario de Vida.
   - Cerrar el juego y continuar desde Boot.
-  - Anotar lo que se sienta mal: textos, posiciones, ritmo y combate.
-- Aprobar o corregir el arte de M1 (la entrada, las grietas y el fragmento) y el de M2 (losas, muros, santuarios y escaleras). Ver `Docs/Arte_Olmeca_Demo.md` §12.
+  - Anotar lo que se sienta mal: textos, posiciones, ritmo, dificultad del Jaguar y de los ecos, y la esquiva.
+- Aprobar o corregir el arte de M1 (la entrada, las grietas y el fragmento), el de M2 (losas, muros, santuarios y escaleras) y el de M3 (el Jaguar de Piedra y los charcos). Ver `Docs/Arte_Olmeca_Demo.md` §12.
 
 ### Fase narrativa 2, continuación: selva y mazmorra (corresponde a las fases 5 y 6 del GDD)
 
@@ -118,7 +129,7 @@ EditMode 57/57 y PlayMode 42/42 (al 2026-10-30, tras M2).
 |---|---|
 | ~~**M1. Rastros en la selva**~~ | **Hecha (2026-10-29).** Viaje entre escenas, arte nuevo, escena `Olmeca_Selva`, `MP_OLM_03` y medición. |
 | ~~**M2. Base de mazmorra**~~ | **Hecha (2026-10-30).** Tres pisos y sus escaleras, santuarios de Memoria (guardado) y de Vida, regreso al santuario tras la derrota y continuar desde Boot. |
-| **M3. Pisos 1 y 2** | El Umbral (tutorial de combate) y El Pantano (terreno que ralentiza, eco borrado). Mini-jefe **Jaguar de Piedra**. |
+| ~~**M3. Pisos 1 y 2**~~ | **Hecha (2026-10-30).** Esquiva, El Umbral como tutorial, El Pantano con agua baja y ecos borrados, el Jaguar de Piedra y `MP_OLM_04` hasta la antesala. |
 | **M4. Piso 3 y jefe** | Arena del **Guardián de la Piedra Viva** en tres fases (`Docs/Enemigos/Olmeca.md`). |
 | **M5. Recompensas y cierre** | Fragmento de la Primera Memoria, habilidad de tierra (propuesta: golpe que rompe basalto agrietado), elección de Bendición, `MP_OLM_06` (restaurar una inscripción) y conexión al arco II. |
 

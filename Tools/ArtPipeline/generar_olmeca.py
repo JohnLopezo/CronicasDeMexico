@@ -1832,6 +1832,105 @@ def escalera_bajada(rng, variante):
     pa.asignar(caja("Fondo", (sx + 0.3, 0, -1.0), (0.6, 2 * sy, 1.0), 0), fondo)   # la escalera sigue bajo el borde
 
 
+# ---------------------------------------------------------------- Jaguar de Piedra (M3, mini-jefe del Pantano)
+
+# Direcciones de pantalla de DirectionalSpriteSet (N, NE, E, SE, S) = variantes 1–5. El modelo mira a +X (SE en
+# pantalla); el giro lo lleva a cada dirección.
+GIRO_DIRECCION = (135, 90, 45, 0, -45)
+ESCALA_JAGUAR = 1.45
+# Pose: altura de la cadera, cabeceo (+ = nariz abajo), giro de cada pata alrededor de su cadera (+ = hacia atrás:
+# delantera izquierda, delantera derecha, trasera izquierda, trasera derecha; la derecha es -Y, la que ve la cámara),
+# largo relativo de las patas, alzado de la cola y boca abierta
+POSES_JAGUAR = {
+    "Acecho": (0.5, 0, (0, 0, 0, 0), 1.0, 0.1, False),
+    "Zancada": (0.5, 0, (-25, 20, 20, -25), 1.0, 0.15, False),
+    "Agazapado": (0.33, 8, (-30, -30, 35, 35), 0.65, 0.45, True),
+    "Salto": (0.75, -12, (-60, -55, 60, 55), 1.0, 0.0, True),
+    "Zarpazo": (0.55, -10, (0, -105, 10, 10), 1.0, 0.25, True),
+    "Liberado": (0.42, -14, (-10, -10, 75, 75), 0.55, -0.1, False),
+}
+
+
+def parte(obj, padre, loc, rot=(0, 0, 0), mat=None):
+    obj.parent = padre
+    obj.location = loc
+    obj.rotation_euler = Euler(tuple(math.radians(a) for a in rot))
+    if mat:
+        pa.asignar(obj, mat)
+    return obj
+
+
+def pivote(nombre, padre, loc, rot=(0, 0, 0)):
+    e = bpy.data.objects.new(nombre, None)
+    bpy.context.scene.collection.objects.link(e)
+    return parte(e, padre, loc, rot)
+
+
+def esfera(nombre, escala, sub=3):
+    bpy.ops.mesh.primitive_uv_sphere_add(segments=16 * sub // 3, ring_count=8 * sub // 3, radius=1)
+    o = bpy.context.active_object
+    o.name = nombre
+    o.scale = escala
+    return o
+
+
+def jaguar_piedra(pose, variante, corrupto=True):
+    """Jaguar de Piedra (Docs/Enemigos/Olmeca.md): escultura felina ficticia (F) que la corrupción anima, de cuerpo
+    pesado y cabeza ancha, en basalto claro con musgo. Corrupto lleva grietas y ojos violetas (rampa Olvido); liberado,
+    no. Es rígida: cada pose solo gira las piezas (patas, cuerpo, cola), así que no necesita esqueleto. El modelo es el
+    mismo en todas las poses y direcciones (generador aleatorio fijo)."""
+    rng = random.Random(7)
+    alto, cabeceo, patas, largo_pata, cola, boca = POSES_JAGUAR[pose]
+    piedra = pa.mat_piedra_musgo("PiedraJaguar", ["#4A473B", "#615C48", "#7D745B", "#9C8B75", "#C9C0AB"],
+                                 ["#3E5F27", "#5A8732"], escala=3.5, estirar=(1, 1, 0.6), altura_musgo=0.4, umbral_musgo=0.62)
+    oscuro = pa.mat_ruido("BocaJaguar", ["#1E2420", "#2C302A"], escala=10)
+    olvido = mat_emision("Olvido", "#A98BE8")
+
+    raiz = pivote("Jaguar", None, (0, 0, 0), (0, 0, GIRO_DIRECCION[variante - 1]))
+    raiz.scale = (ESCALA_JAGUAR,) * 3   # más grande que un jaguar real: es un mini-jefe
+    cuerpo = pivote("Cuerpo", raiz, (0, 0, alto), (0, cabeceo, 0))
+    parte(esfera("Torso", (0.55, 0.27, 0.24)), cuerpo, (0, 0, 0), mat=piedra)
+    parte(esfera("Pecho", (0.3, 0.29, 0.28)), cuerpo, (0.3, 0, 0.04), mat=piedra)
+    parte(esfera("Anca", (0.28, 0.28, 0.25)), cuerpo, (-0.32, 0, 0.03), mat=piedra)
+
+    # Cabeza ancha y cuadrada, con hocico corto y la boca hacia abajo (rasgo felino estilizado)
+    cabeza = pivote("Cabeza", cuerpo, (0.6, 0, 0.2), (0, -6 if boca else 4, 0))
+    parte(caja("Craneo", (0, 0, 0), (0.34, 0.38, 0.3), 0.05), cabeza, (0.08, 0, 0), mat=piedra)
+    parte(caja("Hocico", (0, 0, 0), (0.16, 0.26, 0.15), 0.03), cabeza, (0.28, 0, -0.07), mat=piedra)
+    parte(caja("Boca", (0, 0, 0), (0.05, 0.2, 0.09 if boca else 0.04), 0), cabeza, (0.35, 0, -0.12), mat=oscuro)
+    for y in (-0.14, 0.14):
+        parte(caja("Oreja", (0, 0, 0), (0.07, 0.08, 0.09), 0.015), cabeza, (0.02, y, 0.18), mat=piedra)
+        parte(caja("Ojo", (0, 0, 0), (0.03, 0.06, 0.025), 0), cabeza, (0.255, y * 0.65, 0.05),
+              mat=olvido if corrupto else oscuro)
+
+    # Patas: cilindro colgado de la cadera y zarpa aplanada
+    largo = 0.47 * largo_pata
+    for (x, y), giro in zip(((0.33, 0.15), (0.33, -0.17), (-0.35, 0.15), (-0.35, -0.15)), patas):
+        alzada = giro < -90   # la pata del zarpazo: más larga y con la zarpa abierta, para que se lea
+        cadera = pivote("Cadera", cuerpo, (x, y, -0.05), (0, giro, 0))
+        bpy.ops.mesh.primitive_cylinder_add(vertices=8, radius=0.085 if alzada else 0.075, depth=largo * (1.25 if alzada else 1))
+        parte(bpy.context.active_object, cadera, (0, 0, -largo * (1.25 if alzada else 1) / 2), mat=piedra)
+        parte(esfera("Zarpa", (0.14, 0.12, 0.07) if alzada else (0.1, 0.08, 0.05), 2), cadera,
+              (0.04, 0, -largo * (1.25 if alzada else 1)), mat=piedra)
+
+    # Cola: cuentas de piedra solapadas que se curvan hacia arriba
+    for i in range(9):
+        t = i / 8
+        parte(esfera("Cola", (0.07 - 0.025 * t,) * 3, 2), cuerpo,
+              (-0.58 - 0.075 * i, 0, 0.02 + cola * t * t * 0.9 - 0.12 * t * (1 - cola)), mat=piedra)
+
+    # Grietas de la corrupción en los dos flancos y el lomo
+    if corrupto:
+        for lado in (-1, 1):
+            for k in range(3):
+                g = caja("Grieta", (0, 0, 0), (0.16, 0.012, 0.022), 0)
+                parte(g, cuerpo, (-0.25 + 0.2 * k + rng.uniform(-0.04, 0.04), lado * 0.255, rng.uniform(-0.06, 0.08)),
+                      (rng.uniform(-35, 35), 0, 0), mat=olvido)
+        for k in range(2):
+            g = caja("GrietaLomo", (0, 0, 0), (0.2, 0.02, 0.012), 0)
+            parte(g, cuerpo, (-0.1 + 0.25 * k, rng.uniform(-0.05, 0.05), 0.24), (0, 0, rng.uniform(-30, 30)), mat=olvido)
+
+
 # ---------------------------------------------------------------- producción
 
 SOMBRA_CHICA = ((80, 40), (26, 20))
@@ -1916,6 +2015,13 @@ VARIANTES = {"Tile_Camino_Tierra": 4, "Tile_Pasto_Selva": 3, "Tile_Agua_Anim": 4
              "Grieta_Olvido": 2, "Fragmento_Memoria": 1, "Entrada_Estructura": 1,
              "Tile_Losa_Basalto": 3, "Muro_Basalto": 3, "Muro_Basalto_Y": 3, "Santuario_Memoria": 2, "Santuario_Vida": 2,
              "Escalera_Subida": 1, "Escalera_Bajada": 1}
+# Jaguar de Piedra (M3): una pose por tipo y una variante por dirección de pantalla; liberado, solo de frente (S).
+for _pose in POSES_JAGUAR:
+    _liberado = _pose == "Liberado"
+    TIPOS[f"Jaguar_Piedra_{_pose}"] = (
+        lambda rng, v, p=_pose, libre=_liberado: jaguar_piedra(p, 5 if libre else v, corrupto=not libre),
+        (176, 176), (88, 48), ("basalto", "musgo", "olvido"), "#1E2420", None, 0.5)
+    VARIANTES[f"Jaguar_Piedra_{_pose}"] = 1 if _liberado else len(GIRO_DIRECCION)
 # Las transiciones y los módulos de plataforma se generan solo para las máscaras que usan las composiciones
 SIN_AVISO_BORDE = {"Tile_Camino_Tierra", "Tile_Pasto_Selva", "Tile_Agua_Anim", "Tile_Camino_Trans", "Tile_Orilla",
                    "Plataforma_Arcilla", "Tile_Losa_Basalto"}
@@ -2579,27 +2685,36 @@ def rect(x0, x1, y0, y1):
 
 
 # Por piso: límites, celdas con piso, escalera de subida (centro y celdas de Y donde reemplaza al muro), punto de
-# llegada al bajar, escalera de bajada y su llegada al subir, santuarios, enemigos, adornos, variantes de losa y del
-# muro (pesos) y la losa sellada del piso 3. Coordenadas del flujo: la cámara mira desde +X, -Y.
+# llegada al bajar, escalera de bajada y su llegada al subir, santuarios, espíritus, ecos borrados (tres puntos cada
+# uno), Jaguar de Piedra, agua baja (celdas con piso que frenan), adornos, variantes de losa y del muro (pesos) y la
+# losa sellada del piso 3. Coordenadas del flujo: la cámara mira desde +X, -Y.
 PISOS = {
-    1: {"limites": (-16, 16, -10, 10),
-        "celdas": rect(-14, -9, -3, 3) | rect(-8, -5, -1, 1) | rect(-4, 4, -5, 5) | rect(5, 8, -2, 0) | rect(9, 14, -4, 2),
+    # El Umbral (M3): tutorial en salas seguidas. Llegada con el santuario, un espíritu solo, dos juntos con los
+    # rastros de la expedición del guerrero, y la bajada.
+    1: {"limites": (-16, 20, -10, 10),
+        "celdas": rect(-14, -9, -3, 3) | rect(-8, -5, -1, 1) | rect(-4, 1, -3, 3) | rect(2, 4, -1, 1)
+                  | rect(5, 11, -4, 4) | rect(12, 13, -1, 1) | rect(14, 18, -3, 3),
         "subida": (-13.6, 0.0), "llegada_arriba": (-12.2, 0.0),
-        "bajada": (12.0, -1.0), "llegada_abajo": (10.4, -1.0),
+        "bajada": (16.5, 0.0), "llegada_abajo": (15.0, 0.0),
         "memoria": (-13.95, -2.3), "memoria_llegada": (-12.7, -2.3),
-        "enemigos": [(-1.0, 2.0), (2.0, -2.5)],
-        "adornos": [("Escombros_Basalto_01", -3.0, 4.0), ("Escombros_Basalto_03", 3.2, 4.2),
-                    ("Escombros_Basalto_02", 13.5, 1.5), ("Estela_Lisa_01", -3.2, -4.3)],
+        "enemigos": [(-1.0, 0.5), (8.5, 2.0), (8.0, -2.5)],
+        "adornos": [("Escombros_Basalto_01", -3.3, 2.6), ("Escombros_Basalto_03", 0.6, -2.5),
+                    ("Estela_Lisa_01", 5.4, -3.4), ("Escombros_Basalto_02", 10.6, 3.6), ("Escombros_Basalto_01", 17.6, 2.5)],
         "losas": [1, 1, 1, 2, 2], "muros": [1, 2, 1, 2, 1, 2, 3]},
-    2: {"limites": (-16, 16, -10, 10),
+    # El Pantano (M3): sala inundada con dos ecos borrados y un espíritu, sala lateral del santuario de Vida y la
+    # arena del Jaguar de Piedra, donde está la bajada (cerrada hasta vencerlo).
+    2: {"limites": (-16, 17, -10, 10),
         "celdas": rect(-14, -9, -2, 4) | rect(-8, -5, 0, 2) | rect(-4, 5, -4, 5) | rect(-1, 0, -6, -5)
-                  | rect(-3, 2, -9, -7) | rect(6, 9, 0, 2) | rect(10, 14, -3, 3),
+                  | rect(-3, 2, -9, -7) | rect(6, 8, 0, 2) | rect(9, 15, -4, 6),
         "subida": (-13.6, 1.0), "llegada_arriba": (-12.2, 1.0),
-        "bajada": (12.5, 0.0), "llegada_abajo": (10.9, 0.0),
+        "bajada": (14.0, -2.5), "llegada_abajo": (12.4, -2.5),
         "vida": (1.2, -8.2),
-        "enemigos": [(-1.5, 3.0), (3.0, 1.0), (0.5, -2.5)],
-        "adornos": [("Escombros_Basalto_02", 4.5, 4.5), ("Escombros_Basalto_01", -3.5, -3.5),
-                    ("Estela_Lisa_01", 13.8, 2.6), ("Vasijas_01", -2.6, -7.4)],
+        "enemigos": [(3.0, 4.0)],
+        "ecos": [[(-2.5, 4.0), (1.5, -3.0), (4.0, 3.0)], [(0.5, -1.5), (3.5, -3.5), (-3.0, -2.0)]],
+        "jaguar": (12.0, 1.5),
+        "agua": rect(-2, 1, 0, 2) | rect(2, 4, -3, -2) | rect(-4, -3, 3, 5) | rect(10, 11, 4, 5),
+        "adornos": [("Estela_Lisa_01", 4.6, 4.6), ("Estela_Lisa_01", -3.4, -3.6), ("Vasijas_01", -2.6, -7.4),
+                    ("Escombros_Basalto_02", 9.6, 5.6), ("Escombros_Basalto_03", 14.6, 5.4)],
         "losas": [3, 3, 3, 1, 2], "muros": [1, 2, 1, 2, 3]},
     3: {"limites": (-12, 12, -9, 9),
         "celdas": rect(-10, -6, -2, 2) | rect(-5, -2, -1, 1) | rect(-1, 8, -4, 4),
@@ -2625,9 +2740,12 @@ def planificar_piso(piso):
     sx, sy = datos["subida"]
     bx, by = datos.get("sello", (99, 99))
 
+    # El agua baja va animada bajo el suelo horneado (como el río de la ciudad): donde hay agua no se pone losa, y el
+    # grueso de las losas vecinas hace de borde del charco.
+    agua = datos.get("agua", set())
     suelo = []
     for X, Y in sorted(celdas, key=lambda p: p[0] - p[1]):
-        suelo.append((f"Tile_Losa_Basalto_{rng.choice(datos['losas']):02d}", X, Y))
+        suelo.append(("AGUA", X, Y) if (X, Y) in agua else (f"Tile_Losa_Basalto_{rng.choice(datos['losas']):02d}", X, Y))
 
     # Muros en los bordes traseros; la escalera de subida ocupa tres módulos del muro -X
     objetos = []
@@ -2653,13 +2771,16 @@ def planificar_piso(piso):
 
     punto = lambda p: {"x": round(p[0], 2), "y": round(p[1], 2)}
     puntos = {clave: punto(datos[clave]) for clave in
-              ("subida", "llegada_arriba", "bajada", "llegada_abajo", "memoria", "memoria_llegada", "vida", "sello")
+              ("subida", "llegada_arriba", "bajada", "llegada_abajo", "memoria", "memoria_llegada", "vida", "sello",
+               "jaguar")
               if clave in datos}
     puntos["enemigos"] = [punto(p) for p in datos["enemigos"]]
+    puntos["ecos"] = [punto(p) for eco in datos.get("ecos", []) for p in eco]   # de tres en tres
     colision = {
         "niveles": [], "niveles_recinto": [], "rampas": [], "agua": [], "agua_bloqueo": [], "muelles": [],
         "limites": [X0, X1, Y0, Y1],
         "vacio": sorted((X, Y) for X in range(X0, X1 + 1) for Y in range(Y0, Y1 + 1) if (X, Y) not in celdas),
+        "agua_vadeable": bool(agua),   # el agua se cruza (más despacio) en vez de bloquear
         "puntos": puntos,
     }
     return {"suelo": suelo, "objetos": objetos, "dosel": [], "marcas": marcas}, colision
@@ -2692,8 +2813,8 @@ RECORTES_SELVA = {"Llegada": (14, 0), "Claro": (2, 0.5), "Entrada": (-11, -2)}
 
 # Los pisos de la mazmorra caben en el lienzo de la selva; fondo casi negro (el vacío bajo el piso)
 FONDO_MAZMORRA = "#0B0D0B"
-RECORTES_PISO = {1: {"Llegada": (-11.5, -1), "Sala": (0, 0), "Bajada": (11, -1)},
-                 2: {"Llegada": (-11.5, 0), "Sala": (0, 0), "Vida": (0, -7)},
+RECORTES_PISO = {1: {"Llegada": (-11.5, -1), "Sala": (-1.5, 0), "Grupo": (8, 0), "Bajada": (15.5, 0)},
+                 2: {"Llegada": (-11.5, 0), "Sala": (0, 0.5), "Vida": (0, -7), "Arena": (12, 1)},
                  3: {"Llegada": (-7, 0), "Antesala": (3.5, 0.5)}}
 
 
@@ -2815,12 +2936,13 @@ def exportar_unity(salida, metas, regiones):
     """Copia a Assets los sprites del juego y los datos de cada región (<Región>.json). regiones = [(nombre, plan,
     colision, tam, centro)]: todas a la vez, porque cada carpeta se limpia de lo que ya no se genera. Conserva los
     .meta de los archivos que siguen existiendo (GUID estables)."""
-    destinos = {"Objetos": [], "Agua": [], "Suelo": []}
+    destinos = {"Objetos": [], "Agua": [], "Suelo": [], "Personajes": []}
     pivotes = []
     for nombre, meta in sorted(metas.items()):
         if nombre.startswith(NO_EXPORTAR):
             continue
-        carpeta = "Agua" if nombre.startswith("Tile_Agua") else "Objetos"
+        carpeta = ("Agua" if nombre.startswith("Tile_Agua") else "Personajes" if nombre.startswith("Jaguar_Piedra")
+                   else "Objetos")
         destinos[carpeta].append((nombre, os.path.join(salida, nombre + ".png")))
         pivotes.append({"nombre": nombre, "lienzo": list(meta["lienzo"]), "pivote": list(meta["pivote_px"])})
 
@@ -2846,6 +2968,8 @@ def exportar_unity(salida, metas, regiones):
         }
         if "vacio" in colision:   # pisos de la mazmorra
             datos[region]["vacio"] = [{"x": c[0], "y": c[1]} for c in colision["vacio"]]
+        if colision.get("agua_vadeable"):
+            datos[region]["agua_vadeable"] = True
 
     for carpeta, archivos in destinos.items():
         dest = os.path.join(SPRITES_UNITY, carpeta)
@@ -2888,6 +3012,7 @@ def main():
     solo_mazmorra = "--solo-mazmorra" in sys.argv   # para revisar el arte de los pisos sin rehacer todo (no exporta)
     if solo_mazmorra:
         usados = {n.rsplit("_", 1)[0] for _, plan_, _ in pisos for n, *_ in plan_["suelo"] + plan_["objetos"] + plan_["marcas"]}
+        usados |= {"Tile_Agua_Anim"} | {f"Jaguar_Piedra_{p}" for p in POSES_JAGUAR}
         lotes = [(tipo, vs) for tipo, vs in lotes if tipo in usados]
     metas = {}
     for tipo, variantes in lotes:

@@ -18,7 +18,7 @@ Fuente: `Docs/Historia_Mundo.md` §4.3, §7, §10; GDD `Docs/Diseno.md` §10. **
 | Pecarí | Natural | Tanque ligero | Selva | Carga en línea recta si se le molesta; se puede evitar | D (fauna nativa) |
 | Cocodrilo de pantano | Natural | Emboscada | Orillas y pantano | Espera en el agua; ataque rápido con aviso; no persigue lejos | D (*Crocodylus moreletii*, nativo; verificar distribución) |
 | Murciélagos | Natural | Volador, enjambre | Cuevas y cámaras | Grupos pequeños; molestan más que dañan | D |
-| **Eco borrado** | Corrompido | Mágico / distancia | Ruinas y mazmorra | Silueta incompleta que dispara fragmentos de símbolos; se desvanece y reaparece | F |
+| **Eco borrado** | Corrompido | Mágico / distancia | Ruinas y mazmorra | Silueta incompleta que dispara fragmentos de símbolos; se desvanece y reaparece. **Implementado en M3** (`ErasedEcho`, El Pantano): brilla 0,6 s antes de cada disparo, salta entre tres puntos tras dos disparos o al recibir un golpe, y desvanecido no recibe daño. Arte provisional: la silueta humana violeta con franjas borradas (`PlaceholderSpriteFactory.ErasedEcho`) | F |
 | **Basalto despierto** | Corrompido | Tanque | Mazmorra, pisos intermedios | Bloque de basalto columnar animado; lento, golpe de área anunciado | F (material: D) |
 | **Enredadera de olvido** | Corrompido | Control | Pantano y templo hundido | Raíces que ralentizan o enraízan | F |
 
@@ -26,8 +26,21 @@ Fuente: `Docs/Historia_Mundo.md` §4.3, §7, §10; GDD `Docs/Diseno.md` §10. **
 
 | Mini-jefe | Piso (meta de 8) | Idea |
 |---|---|---|
-| **Jaguar de Piedra** | 4 (en el vertical slice, piso 2) | Criatura ficticia: escultura felina animada por la corrupción. Saltos, zarpazos y un rugido que levanta polvo (GDD §7.1) |
+| **Jaguar de Piedra** | 4 (en el vertical slice, piso 2) | Criatura ficticia: escultura felina animada por la corrupción. Saltos, zarpazos y un rugido que levanta polvo (GDD §7.1). **Implementado en M3** (`StoneJaguar`, arena del Pantano; ver abajo) |
 | **Centinela de basalto** (antes "Guardián de la Piedra" en el GDD) | 7 | Se renombra para no confundirse con el jefe final. Guardián menor que custodia el corazón de la mazmorra |
+
+### Jaguar de Piedra en el juego (M3, 2026-10-30)
+
+- **Arte:** escultura rígida modelada en Blender. Tiene cinco poses (acecho, zancada, agazapado, salto y zarpazo) en las cinco direcciones de pantalla, más la pose liberada (sentado y sin grietas). Al ser de piedra, cada pose solo gira las piezas y no hace falta esqueleto.
+- **Despertar:** duerme hasta que el jugador entra en la arena. Entonces muestra su barra en el HUD y acecha.
+- **Ataques:** todos se avisan con una marca en el suelo (`TelegraphMarker`) y una pose. No hace daño por contacto.
+  - **Zarpazo** (cerca): círculo corto delante. Avisa 0,55 s y hace 2 de daño.
+  - **Salto** (lejos): la marca aparece donde estaba el jugador. Avisa 0,8 s, cae ahí y hace 2 de daño. Después queda 0,9 s expuesto.
+  - **Rugido:** anillo de 3,2 m que empuja y hace 1 de daño. Es uno de cada tres ataques, o uno de cada dos por debajo de la mitad de la vida.
+- **Al vencerlo** (16 de vida, números provisionales):
+  - Se libera: queda sentado, sin grietas, y deja un recuerdo breve.
+  - Se activa `olm.jaguar_piedra_vencido`: no vuelve y se abre la bajada al piso 3.
+  - No da el fragmento grande, que es del Guardián.
 
 ## Jefe final: el Guardián de la Piedra Viva
 

@@ -24,11 +24,13 @@ namespace CronicasDeMexico.Editor.SceneGeneration
             public readonly Color32 Skin, Headgear, Cloth, Sash, Sandal;
             public readonly bool Spots; // manchas de jaguar en ropa y tocado
             public readonly Color32? SpotColor; // vacío = manchas oscuras
+            public readonly bool Erased; // silueta incompleta: le faltan franjas (eco borrado)
 
             public CharacterPalette(Color32 skin, Color32 headgear, Color32 cloth, Color32 sash, Color32 sandal, bool spots,
-                Color32? spotColor = null)
+                Color32? spotColor = null, bool erased = false)
             {
                 SpotColor = spotColor;
+                Erased = erased;
                 Skin = skin;
                 Headgear = headgear;
                 Cloth = cloth;
@@ -79,6 +81,12 @@ namespace CronicasDeMexico.Editor.SceneGeneration
         public static readonly CharacterPalette CorruptedJaguarSpirit = new(
             new Color32(62, 52, 58, 255), new Color32(150, 128, 92, 255), new Color32(150, 128, 92, 255),
             new Color32(36, 28, 40, 255), new Color32(36, 28, 40, 255), true, new Color32(190, 160, 250, 255));
+
+        // Eco borrado (M3): figura humana violeta y pálida a la que le faltan franjas, como un relieve a medio borrar.
+        // No es un "olmeca enemigo": es un eco de la memoria (Docs/Enemigos/Olmeca.md).
+        public static readonly CharacterPalette ErasedEcho = new(
+            new Color32(150, 128, 200, 255), new Color32(110, 80, 170, 255), new Color32(190, 172, 236, 255),
+            new Color32(75, 42, 107, 255), new Color32(110, 80, 170, 255), true, new Color32(217, 204, 255, 255), erased: true);
 
         // Mismo orden que DirectionalSpriteSet.
         static readonly string[] DirectionNames = { "N", "NE", "E", "SE", "S" };
@@ -278,6 +286,13 @@ namespace CronicasDeMexico.Editor.SceneGeneration
                     Fill(22, headY - 3, 22, headY - 2, palette.Headgear);
                     break;
             }
+
+            // Franjas borradas, inclinadas y quietas entre cuadros: el contorno las rodea y se leen como huecos.
+            if (palette.Erased)
+                for (var y = 0; y < Height; y++)
+                for (var x = 0; x < Width; x++)
+                    if ((x + 2 * y) % 11 == 0 || (y > 4 && y < 10 && (x + y) % 3 == 0))
+                        pixels[y * Width + x] = Clear;
 
             return AddOutline(pixels);
         }

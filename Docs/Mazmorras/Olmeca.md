@@ -73,9 +73,24 @@ Regreso al último santuario de Memoria con una penalización moderada configura
 - **Escenas** `Olmeca_Mazmorra_P1` a `P3`, generadas por `OlmecaDungeonGenerator` desde `Mazmorra_P<n>.json` (`planificar_piso`): salas de losas sobre el vacío, unidas por pasillos.
   - Cada piso tiene su escalera de subida (en el piso 1, a la selva) y su escalera de bajada (salvo el 3).
   - La abertura de la entrada de la selva lleva al piso 1 solo cuando `MP_OLM_03` está completada.
-- **Contenido provisional**:
-  - El piso 1 tiene 2 espíritus corrompidos y una estela con rastros de la expedición del guerrero.
-  - El piso 2 tiene 3 espíritus y una estela borrada.
-  - El piso 3 es una antesala sin enemigos, con la losa sellada del Guardián.
-  - El tutorial de combate, el terreno del Pantano, el Jaguar de Piedra y la arena del jefe llegan en M3 y M4.
+- **El piso 3** es una antesala sin enemigos, con la losa sellada del Guardián. Su arena llega en M4.
+
+## Pisos 1 y 2 (M3, 2026-10-30)
+
+- **El Umbral (piso 1), tutorial en salas seguidas:**
+  1. Llegada con el santuario de Memoria.
+  2. Un espíritu solo.
+  3. Dos espíritus juntos, junto a la estela con los rastros de la expedición del guerrero.
+  4. La bajada.
+  - Las pistas (`TutorialHint`) se muestran al entrar en cada zona, una sola vez en la partida (bandera `tutorial.<id>`), y se quitan al salir o con Interactuar. Explican el movimiento, el santuario, el ataque y la esquiva, cómo pelear contra varios y que la vida no se recupera.
+- **El Pantano (piso 2):**
+  - Una sala inundada con charcos de **agua baja** que frenan a la mitad a quien los pisa, salvo durante la esquiva (`SlowZone`). Tiene dos **ecos borrados**, un espíritu y dos estelas borradas.
+  - Una sala lateral con el santuario de Vida.
+  - La **arena del Jaguar de Piedra** (`Docs/Enemigos/Olmeca.md`). La bajada al piso 3 está en la arena, tapada por escombros hasta vencerlo.
+- **Combate nuevo:**
+  - **Esquiva** (Espacio o el botón Sur, la antigua acción Jump): 0,18 s a 10 m/s, 0,3 s invulnerable y 0,6 s de espera entre esquivas.
+  - **Avisos en el suelo** (`TelegraphMarker`): parpadean cada vez más rápido.
+  - **Proyectiles reutilizados** (`Projectile`).
+  - **Barra del jefe** en el HUD.
+- **Misión `MP_OLM_04`:** detalle en `Docs/Historia/Misiones.md`.
 - **Continuar:** al arrancar desde Boot con una partida guardada, el juego aparece en su santuario de Memoria (`GameBootstrapper.ContinueSavedGame`). Hasta que exista el menú de inicio, la partida se borra con **Crónicas → Borrar partida guardada**.

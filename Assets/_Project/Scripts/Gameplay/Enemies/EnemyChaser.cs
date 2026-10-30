@@ -7,11 +7,11 @@ namespace CronicasDeMexico.Gameplay.Enemies
     /// <summary>
     /// Enemigo cuerpo a cuerpo: persigue al objetivo cuando se acerca, lo daña al tocarlo y vuelve a su sitio
     /// cuando lo pierde. Al recibir un golpe retrocede y queda aturdido un instante; al morir desaparece y
-    /// reaparece en su sitio pasado un tiempo. Camina en línea recta (sin NavMesh) y el contacto se comprueba
-    /// por distancia, sin física.
+    /// reaparece en su sitio pasado un tiempo (salvo en la mazmorra). Camina en línea recta (sin NavMesh), el terreno
+    /// lento lo frena (SlowZone) y el contacto se comprueba por distancia, sin física.
     /// </summary>
     [RequireComponent(typeof(CharacterController), typeof(Health))]
-    public sealed class EnemyChaser : MonoBehaviour, IPlanarMotion
+    public sealed class EnemyChaser : MonoBehaviour, IPlanarMotion, ISlowable
     {
         const float HomeArriveDistance = 0.2f;
         const float ReturnSpeedFactor = 0.6f;
@@ -60,6 +60,7 @@ namespace CronicasDeMexico.Gameplay.Enemies
         float verticalSpeed;
         float stunTimer;
         float respawnTimer;
+        SlowTracker slow;
 
         public Vector3 PlanarVelocity => planarVelocity;
         public Vector3 FacingDirection { get; private set; } = Vector3.back;
@@ -140,7 +141,7 @@ namespace CronicasDeMexico.Gameplay.Enemies
                 if (IsChasing)
                 {
                     if (distance > contactDistance)
-                        return toTarget / distance * moveSpeed;
+                        return toTarget / distance * (moveSpeed * slow.Multiplier);
 
                     if (targetHealth != null)
                         targetHealth.TryDamage(contactDamage, transform.position);
@@ -153,8 +154,12 @@ namespace CronicasDeMexico.Gameplay.Enemies
             }
 
             var toHome = Vector3.ProjectOnPlane(home - transform.position, Vector3.up);
-            return toHome.magnitude > HomeArriveDistance ? toHome.normalized * (moveSpeed * ReturnSpeedFactor) : Vector3.zero;
+            return toHome.magnitude > HomeArriveDistance
+                ? toHome.normalized * (moveSpeed * ReturnSpeedFactor * slow.Multiplier)
+                : Vector3.zero;
         }
+
+        public void ApplySlow(float speedFactor) => slow.Apply(speedFactor);
 
         void OnDamaged(Vector3 sourcePosition)
         {

@@ -17,12 +17,15 @@ namespace CronicasDeMexico.Editor.PixelArt
         public const string ObjectMaterialPath = MaterialsFolder + "/M_PixelArt_Objeto.mat";
         public const string GroundMaterialPath = MaterialsFolder + "/M_PixelArt_Suelo.mat";
         public const string WaterMaterialPath = MaterialsFolder + "/M_PixelArt_Agua.mat";
+        /// <summary>Avisos de ataque en el suelo (TelegraphMarker).</summary>
+        public const string AlertMaterialPath = MaterialsFolder + "/M_PixelArt_Aviso.mat";
         public const string AtlasPath = PixelArtSpriteImporter.SpritesFolder + "/Atlas_Olmeca.spriteatlasv2";
 
-        // Orden de dibujo: agua animada, suelo horneado encima (lo transparente deja ver el agua) y, al final, los
-        // objetos, que se ordenan entre sí por profundidad. Las tres colas caen en la pasada opaca.
+        // Orden de dibujo: agua animada, suelo horneado encima (lo transparente deja ver el agua), los avisos de ataque
+        // sobre el suelo y, al final, los objetos, que se ordenan entre sí por profundidad. Todas caen en la pasada opaca.
         public const int WaterQueue = 1900;
         public const int GroundQueue = 1950;
+        public const int AlertQueue = 1960;
         public const int ObjectQueue = 2450;
 
         [MenuItem("Crónicas/Pixel Art/Crear materiales y atlas")]
@@ -47,6 +50,7 @@ namespace CronicasDeMexico.Editor.PixelArt
             CreateMaterial(ObjectMaterialPath, shader, zWrite: true, ObjectQueue);
             CreateMaterial(GroundMaterialPath, shader, zWrite: false, GroundQueue);
             CreateMaterial(WaterMaterialPath, shader, zWrite: false, WaterQueue);
+            CreateMaterial(AlertMaterialPath, shader, zWrite: false, AlertQueue);
         }
 
         static void CreateMaterial(string path, Shader shader, bool zWrite, int queue)

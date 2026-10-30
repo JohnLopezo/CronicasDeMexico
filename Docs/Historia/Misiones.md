@@ -62,4 +62,14 @@ Assets en `Data/Narrative/Olmeca/` y catálogo en `Resources/Narrativa/CatalogoM
 
 Assets: `MIS_MP_OLM_03`, `DLG_guerrero_joven` (recreado con la rama nueva) y `DLG_guerrero_joven_entrada`. Textos de los fragmentos en `OlmecaNarrativeAssets.FragmentTexts`: el basalto llevado río abajo y la piedra verde pulida (D/I), y el nombre olvidado (F).
 
-**Falta:** `MP_OLM_04` en adelante necesitan la mazmorra (M2–M5, `Docs/Estado_y_Plan.md`).
+**`MP_OLM_04` jugable hasta la antesala (2026-10-30, M3)**, por los pisos `Olmeca_Mazmorra_P1` a `P3`:
+
+1. **Empieza** al terminar la conversación con el guerrero en la entrada, tanto la que cierra `MP_OLM_03` como las siguientes (para las partidas que ya la habían cerrado). `DLG_guerrero_joven_entrada` se recreó con esa rama.
+2. Paso 1, `llegar:mazmorra_piso1`: al bajar a El Umbral.
+3. Paso 2, `llegar:mazmorra_piso2`: al bajar a El Pantano.
+4. Paso 3, `vencer:jaguar_piedra`: el mini-jefe del Pantano. Al caer activa `olm.jaguar_piedra_vencido`, no vuelve y abre la bajada.
+5. Paso 4, `llegar:mazmorra_piso3`: la antesala del Guardián. Recompensa: `olm.antesala_alcanzada`.
+
+Todos los pasos son de llegar o de vencer en su propio piso, así que ninguno se puede cumplir antes de tiempo y perderse. Descansar en un santuario no es un paso por esa razón: se podría vencer al Jaguar sin haber descansado.
+
+**Falta:** el resto de la misión (el Guardián, M4), `MP_OLM_05` y `MP_OLM_06` (M4–M5, `Docs/Estado_y_Plan.md`).

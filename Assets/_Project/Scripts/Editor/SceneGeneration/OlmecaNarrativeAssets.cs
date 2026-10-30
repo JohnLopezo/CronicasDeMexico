@@ -33,6 +33,11 @@ namespace CronicasDeMexico.Editor.SceneGeneration
         public const string CorruptedSpiritId = "espiritu_corrompido";
         public const string FragmentId = "fragmento_menor";
         public const int JungleSpiritCount = 3;
+        // Mazmorra (MP_OLM_04, M3): avisos "llegar:mazmorra_pisoN" (OlmecaDungeonGenerator.FloorZoneId) y
+        // "vencer:jaguar_piedra". Todos los pasos son de llegar o de vencer en su piso: ninguno se puede saltar.
+        public const string DungeonQuestId = "MP_OLM_04";
+        public const string StoneJaguarId = "jaguar_piedra";
+        public const string ErasedEchoId = "eco_borrado";
         public const string GuardianPath = "Assets/_Project/Data/Characters/GUA_jaguar.asset";
         const string PlayerSpriteSetPath = "Assets/_Project/Data/Characters/DSS_Jugador.asset";
 
@@ -43,6 +48,9 @@ namespace CronicasDeMexico.Editor.SceneGeneration
         public const string EntranceFoundFlag = "olm.entrada_descubierta";
         public const string WarriorInJungleFlag = "olm.guerrero_en_selva";
         public const string StructureFoundFlag = "olm.estructura_encontrada";
+        /// <summary>El Jaguar de Piedra fue vencido y liberado: no vuelve y la bajada al piso 3 queda abierta.</summary>
+        public const string StoneJaguarDefeatedFlag = "olm.jaguar_piedra_vencido";
+        public const string AntechamberReachedFlag = "olm.antesala_alcanzada";
         static readonly string QuestActive = StoryEvents.QuestActiveFlag(SettlementQuestId);
         static readonly string QuestDone = StoryEvents.QuestCompletedFlag(SettlementQuestId);
         static readonly string JungleQuestDone = StoryEvents.QuestCompletedFlag(JungleQuestId);
@@ -85,7 +93,7 @@ namespace CronicasDeMexico.Editor.SceneGeneration
             public Character Spirit, Artisan, Elder, Warrior, Merchant;
             /// <summary>El joven guerrero en la entrada de la estructura (mismo NpcData, otro diálogo).</summary>
             public Character WarriorAtEntrance;
-            public QuestData AwakeningQuest, SettlementQuest, JungleQuest;
+            public QuestData AwakeningQuest, SettlementQuest, JungleQuest, DungeonQuest;
             public GuardianData Guardian;
         }
 
@@ -124,13 +132,23 @@ namespace CronicasDeMexico.Editor.SceneGeneration
                         "Vence a los espíritus corrompidos y recoge los fragmentos de memoria que dejan", JungleSpiritCount),
                     new QuestStep(StoryEvents.Talk(WarriorId), "Sigue el sendero hasta la entrada de piedra; el joven guerrero te espera"),
                 }, StructureFoundFlag));
+            var dungeon = LoadOrCreate($"{Folder}/MIS_{DungeonQuestId}.asset", () => QuestData.Create(
+                DungeonQuestId, "La ciudad bajo la selva", new[]
+                {
+                    new QuestStep(StoryEvents.Reach("mazmorra_piso1"), "Entra en la estructura por la abertura entre las columnas"),
+                    new QuestStep(StoryEvents.Reach("mazmorra_piso2"), "Baja por la escalera del suelo hasta el Pantano"),
+                    new QuestStep(StoryEvents.Defeat(StoneJaguarId), "Cruza el agua y enfréntate al Jaguar de Piedra"),
+                    new QuestStep(StoryEvents.Reach("mazmorra_piso3"), "Baja a lo más hondo de la estructura"),
+                }, AntechamberReachedFlag));
             EnsureInCatalog(awakening);
             EnsureInCatalog(quest);
             EnsureInCatalog(jungle);
+            EnsureInCatalog(dungeon);
 
             var content = new Content
             {
-                AwakeningQuest = awakening, SettlementQuest = quest, JungleQuest = jungle, Guardian = guardian,
+                AwakeningQuest = awakening, SettlementQuest = quest, JungleQuest = jungle, DungeonQuest = dungeon,
+                Guardian = guardian,
             };
 
             // Historia_Mundo §2.2–2.4. No es un dios ni un enemigo; no tiene rasgos de ninguna deidad.
@@ -213,15 +231,17 @@ namespace CronicasDeMexico.Editor.SceneGeneration
             var allFragments = Enumerable.Range(1, JungleSpiritCount).Select(FragmentFlag).ToArray();
             var warriorAtEntrance = LoadOrCreate($"{Folder}/DLG_{WarriorId}_entrada.asset", () => DialogueData.Create(
                 $"DLG_{WarriorId}_entrada",
+                // MP_OLM_04 empieza al terminar cualquiera de las dos primeras ramas (QuestService ignora si ya empezó).
                 new DialogueBranch(Lines(
-                        "Yo vigilo aquí afuera. Lo que borra las piedras está ahí abajo, y tú eres quien puede entrar."),
-                    requiredFlags: new[] { JungleQuestDone }),
+                        "Yo vigilo aquí afuera. Lo que borra las piedras está ahí abajo, y tú eres quien puede entrar.",
+                        "Yo llegué hasta la primera sala con los otros dos. Oímos agua más abajo... y algo grande que respiraba como la piedra."),
+                    requiredFlags: new[] { JungleQuestDone }, questToStart: dungeon),
                 new DialogueBranch(Lines(
                         "Llegaste. Y traes esas piedrecitas con luz... ¿las sientes? Son pedazos de algo que alguien recordó.",
                         "Mira las columnas: son de basalto, como las del recinto de la plaza. Mi abuela decía que bajo los montículos así descansaba alguien importante.",
                         "Pero yo crecí en esta selva y nunca vi esta entrada. No estaba aquí... o no la recordábamos.",
                         "Algo allá abajo se está comiendo los recuerdos. Si alguien puede detenerlo, es quien vino de fuera."),
-                    requiredFlags: allFragments),
+                    requiredFlags: allFragments, questToStart: dungeon),
                 new DialogueBranch(Lines(
                         "Aquí es, entre las raíces. Llegué antes que tú: conozco los atajos.",
                         "No entres todavía. Las criaturas corrompidas siguen en el sendero, y lo que dejan al caer hay que recogerlo antes de que se apague."))));

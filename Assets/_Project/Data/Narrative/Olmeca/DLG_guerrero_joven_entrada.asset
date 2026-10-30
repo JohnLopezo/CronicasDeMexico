@@ -20,8 +20,11 @@ MonoBehaviour:
     - speaker: {fileID: 0}
       text: "Yo vigilo aqu\xED afuera. Lo que borra las piedras est\xE1 ah\xED abajo,
         y t\xFA eres quien puede entrar."
+    - speaker: {fileID: 0}
+      text: "Yo llegu\xE9 hasta la primera sala con los otros dos. O\xEDmos agua
+        m\xE1s abajo... y algo grande que respiraba como la piedra."
     flagsOnFinish: []
-    questToStart: {fileID: 0}
+    questToStart: {fileID: 11400000, guid: e40b9712adbbea044845f99d0147ccff, type: 2}
   - requiredFlags:
     - olm.selva.fragmento_1
     - olm.selva.fragmento_2
@@ -41,7 +44,7 @@ MonoBehaviour:
       text: "Algo all\xE1 abajo se est\xE1 comiendo los recuerdos. Si alguien puede
         detenerlo, es quien vino de fuera."
     flagsOnFinish: []
-    questToStart: {fileID: 0}
+    questToStart: {fileID: 11400000, guid: e40b9712adbbea044845f99d0147ccff, type: 2}
   - requiredFlags: []
     forbiddenFlags: []
     lines:

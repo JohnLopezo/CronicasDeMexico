@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d45f8048ad69a96419b47e727f858b71, type: 3}
+  m_Name: MIS_MP_OLM_04
+  m_EditorClassIdentifier: 
+  id: MP_OLM_04
+  title: La ciudad bajo la selva
+  steps:
+  - eventKey: llegar:mazmorra_piso1
+    requiredCount: 1
+    description: Entra en la estructura por la abertura entre las columnas
+  - eventKey: llegar:mazmorra_piso2
+    requiredCount: 1
+    description: Baja por la escalera del suelo hasta el Pantano
+  - eventKey: vencer:jaguar_piedra
+    requiredCount: 1
+    description: "Cruza el agua y enfr\xE9ntate al Jaguar de Piedra"
+  - eventKey: llegar:mazmorra_piso3
+    requiredCount: 1
+    description: "Baja a lo m\xE1s hondo de la estructura"
+  rewardFlags:
+  - olm.antesala_alcanzada

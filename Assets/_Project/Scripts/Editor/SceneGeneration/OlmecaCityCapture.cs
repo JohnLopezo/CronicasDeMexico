@@ -52,11 +52,19 @@ namespace CronicasDeMexico.Editor.SceneGeneration
         [MenuItem("Crónicas/Capturar selva olmeca")]
         public static void CaptureJungle() => CaptureScene(OlmecaJungleGenerator.ScenePath, "Selva", JungleViews);
 
-        // Pisos de la mazmorra (PISOS en generar_olmeca.py): llegada y santuarios, sala central y escalera de bajada.
+        // Pisos de la mazmorra (PISOS en generar_olmeca.py): llegada y santuarios, salas, arena y escalera de bajada.
         static readonly (string name, Vector2 focus)[][] DungeonViews =
         {
-            new[] { ("Llegada", new Vector2(-11.5f, -1f)), ("Sala", new Vector2(0f, 0f)), ("Bajada", new Vector2(11f, -1f)) },
-            new[] { ("Llegada", new Vector2(-11.5f, 1f)), ("Sala", new Vector2(0f, 0.5f)), ("Vida", new Vector2(0f, -7f)) },
+            new[]
+            {
+                ("Llegada", new Vector2(-11.5f, -1f)), ("Sala", new Vector2(-1.5f, 0f)), ("Grupo", new Vector2(8f, 0f)),
+                ("Bajada", new Vector2(15.5f, 0f)),
+            },
+            new[]
+            {
+                ("Llegada", new Vector2(-11.5f, 1f)), ("Sala", new Vector2(0f, 0.5f)), ("Vida", new Vector2(0f, -7f)),
+                ("Arena", new Vector2(12f, 1f)),
+            },
             new[] { ("Llegada", new Vector2(-7f, 0f)), ("Antesala", new Vector2(3.5f, 0.5f)) },
         };
 

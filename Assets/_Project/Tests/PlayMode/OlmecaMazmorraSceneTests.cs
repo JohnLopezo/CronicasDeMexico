@@ -155,7 +155,11 @@ namespace CronicasDeMexico.Tests
         [UnityTest]
         public IEnumerator Floors_Load_WithStairsShrinesEnemiesAndTheVoidBlocked()
         {
-            var expectedEnemies = new[] { 2, 3, 0 };
+            // Con el Jaguar de Piedra ya vencido, para que la bajada del piso 2 esté abierta.
+            var (story, _, _) = OwnServices();
+            story.SetFlag("olm.jaguar_piedra_vencido");
+            var expectedEnemies = new[] { 3, 1, 0 };
+            var expectedEchoes = new[] { 0, 2, 0 };
             for (var n = 1; n <= 3; n++)
             {
                 yield return Load(Floor(n));
@@ -180,6 +184,8 @@ namespace CronicasDeMexico.Tests
                 Assert.AreEqual(expectedEnemies[n - 1], enemies.Length, $"Piso {n}: número de espíritus.");
                 foreach (var enemy in enemies)
                     Assert.That(enemy.transform.position.y, Is.EqualTo(0f).Within(0.1f), $"{enemy.name} no está sobre el suelo.");
+                Assert.AreEqual(expectedEchoes[n - 1], Object.FindObjectsByType<ErasedEcho>(FindObjectsSortMode.None).Length,
+                    $"Piso {n}: número de ecos borrados.");
 
                 Assert.AreEqual(n != 2, Object.FindAnyObjectByType<MemoryShrine>() != null, $"Piso {n}: santuario de Memoria.");
                 Assert.AreEqual(n == 2, Object.FindAnyObjectByType<LifeShrine>() != null, $"Piso {n}: santuario de Vida.");
@@ -200,6 +206,7 @@ namespace CronicasDeMexico.Tests
             Assert.IsTrue(ServiceLocator.TryGet(out SceneTravel travel), "Boot no registró SceneTravel.");
             var (story, _, _) = OwnServices();
             story.SetFlag(StoryEvents.QuestCompletedFlag("MP_OLM_03")); // el guerrero ya reconoció la entrada
+            story.SetFlag("olm.jaguar_piedra_vencido"); // la bajada del Pantano está abierta
 
             yield return Load(JungleScene);
             var health = Player().GetComponent<Health>();
@@ -269,7 +276,7 @@ namespace CronicasDeMexico.Tests
             health = player.GetComponent<Health>();
             Assert.IsFalse(health.IsDead);
             Assert.AreEqual(health.Max, health.Current, "Se vuelve con la vida completa (penalización 0).");
-            Assert.AreEqual(2, Object.FindObjectsByType<EnemyChaser>(FindObjectsSortMode.None)
+            Assert.AreEqual(3, Object.FindObjectsByType<EnemyChaser>(FindObjectsSortMode.None)
                 .Count(e => !e.GetComponent<Health>().IsDead), "Los espíritus normales vuelven al recargar el piso.");
             Assert.IsTrue(story.HasFlag("prueba.progreso"), "La derrota no debe borrar el progreso de la historia.");
 

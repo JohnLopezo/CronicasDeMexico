@@ -332,6 +332,292 @@
    ]
   },
   {
+   "nombre": "Jaguar_Piedra_Acecho_01",
+   "lienzo": [
+    176,
+    176
+   ],
+   "pivote": [
+    88,
+    48
+   ]
+  },
+  {
+   "nombre": "Jaguar_Piedra_Acecho_02",
+   "lienzo": [
+    176,
+    176
+   ],
+   "pivote": [
+    88,
+    48
+   ]
+  },
+  {
+   "nombre": "Jaguar_Piedra_Acecho_03",
+   "lienzo": [
+    176,
+    176
+   ],
+   "pivote": [
+    88,
+    48
+   ]
+  },
+  {
+   "nombre": "Jaguar_Piedra_Acecho_04",
+   "lienzo": [
+    176,
+    176
+   ],
+   "pivote": [
+    88,
+    48
+   ]
+  },
+  {
+   "nombre": "Jaguar_Piedra_Acecho_05",
+   "lienzo": [
+    176,
+    176
+   ],
+   "pivote": [
+    88,
+    48
+   ]
+  },
+  {
+   "nombre": "Jaguar_Piedra_Agazapado_01",
+   "lienzo": [
+    176,
+    176
+   ],
+   "pivote": [
+    88,
+    48
+   ]
+  },
+  {
+   "nombre": "Jaguar_Piedra_Agazapado_02",
+   "lienzo": [
+    176,
+    176
+   ],
+   "pivote": [
+    88,
+    48
+   ]
+  },
+  {
+   "nombre": "Jaguar_Piedra_Agazapado_03",
+   "lienzo": [
+    176,
+    176
+   ],
+   "pivote": [
+    88,
+    48
+   ]
+  },
+  {
+   "nombre": "Jaguar_Piedra_Agazapado_04",
+   "lienzo": [
+    176,
+    176
+   ],
+   "pivote": [
+    88,
+    48
+   ]
+  },
+  {
+   "nombre": "Jaguar_Piedra_Agazapado_05",
+   "lienzo": [
+    176,
+    176
+   ],
+   "pivote": [
+    88,
+    48
+   ]
+  },
+  {
+   "nombre": "Jaguar_Piedra_Liberado_01",
+   "lienzo": [
+    176,
+    176
+   ],
+   "pivote": [
+    88,
+    48
+   ]
+  },
+  {
+   "nombre": "Jaguar_Piedra_Salto_01",
+   "lienzo": [
+    176,
+    176
+   ],
+   "pivote": [
+    88,
+    48
+   ]
+  },
+  {
+   "nombre": "Jaguar_Piedra_Salto_02",
+   "lienzo": [
+    176,
+    176
+   ],
+   "pivote": [
+    88,
+    48
+   ]
+  },
+  {
+   "nombre": "Jaguar_Piedra_Salto_03",
+   "lienzo": [
+    176,
+    176
+   ],
+   "pivote": [
+    88,
+    48
+   ]
+  },
+  {
+   "nombre": "Jaguar_Piedra_Salto_04",
+   "lienzo": [
+    176,
+    176
+   ],
+   "pivote": [
+    88,
+    48
+   ]
+  },
+  {
+   "nombre": "Jaguar_Piedra_Salto_05",
+   "lienzo": [
+    176,
+    176
+   ],
+   "pivote": [
+    88,
+    48
+   ]
+  },
+  {
+   "nombre": "Jaguar_Piedra_Zancada_01",
+   "lienzo": [
+    176,
+    176
+   ],
+   "pivote": [
+    88,
+    48
+   ]
+  },
+  {
+   "nombre": "Jaguar_Piedra_Zancada_02",
+   "lienzo": [
+    176,
+    176
+   ],
+   "pivote": [
+    88,
+    48
+   ]
+  },
+  {
+   "nombre": "Jaguar_Piedra_Zancada_03",
+   "lienzo": [
+    176,
+    176
+   ],
+   "pivote": [
+    88,
+    48
+   ]
+  },
+  {
+   "nombre": "Jaguar_Piedra_Zancada_04",
+   "lienzo": [
+    176,
+    176
+   ],
+   "pivote": [
+    88,
+    48
+   ]
+  },
+  {
+   "nombre": "Jaguar_Piedra_Zancada_05",
+   "lienzo": [
+    176,
+    176
+   ],
+   "pivote": [
+    88,
+    48
+   ]
+  },
+  {
+   "nombre": "Jaguar_Piedra_Zarpazo_01",
+   "lienzo": [
+    176,
+    176
+   ],
+   "pivote": [
+    88,
+    48
+   ]
+  },
+  {
+   "nombre": "Jaguar_Piedra_Zarpazo_02",
+   "lienzo": [
+    176,
+    176
+   ],
+   "pivote": [
+    88,
+    48
+   ]
+  },
+  {
+   "nombre": "Jaguar_Piedra_Zarpazo_03",
+   "lienzo": [
+    176,
+    176
+   ],
+   "pivote": [
+    88,
+    48
+   ]
+  },
+  {
+   "nombre": "Jaguar_Piedra_Zarpazo_04",
+   "lienzo": [
+    176,
+    176
+   ],
+   "pivote": [
+    88,
+    48
+   ]
+  },
+  {
+   "nombre": "Jaguar_Piedra_Zarpazo_05",
+   "lienzo": [
+    176,
+    176
+   ],
+   "pivote": [
+    88,
+    48
+   ]
+  },
+  {
    "nombre": "Matorral_Selva_01",
    "lienzo": [
     64,
@@ -907,44 +1193,44 @@
    "nombre": "Suelo_Mazmorra_P1_00",
    "lienzo": [
     1024,
-    612
+    660
    ],
    "pivote": [
     512.0,
-    306.0
+    330.0
    ]
   },
   {
    "nombre": "Suelo_Mazmorra_P1_01",
    "lienzo": [
-    96,
-    612
+    256,
+    660
    ],
    "pivote": [
-    48.0,
-    306.0
+    128.0,
+    330.0
    ]
   },
   {
    "nombre": "Suelo_Mazmorra_P2_00",
    "lienzo": [
     1024,
-    612
+    644
    ],
    "pivote": [
     512.0,
-    306.0
+    322.0
    ]
   },
   {
    "nombre": "Suelo_Mazmorra_P2_01",
    "lienzo": [
-    96,
-    612
+    224,
+    644
    ],
    "pivote": [
-    48.0,
-    306.0
+    112.0,
+    322.0
    ]
   },
   {

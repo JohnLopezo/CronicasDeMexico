@@ -21,6 +21,35 @@ Plantilla:
 
 ---
 
+## 2026-10-30 (tarde) — i7-10700
+
+- **Rama / último commit al empezar:** `feature/prototipo-olmeca` @ `276d10d` (M2).
+- **Decisiones del usuario (M3):**
+  - Se añade la esquiva.
+  - El Jaguar de Piedra se modela en Blender como escultura rígida.
+  - Los pecaríes se quedan para la selva.
+  - El eco borrado entra en M3.
+- **Hecho (M3, pisos 1 y 2):**
+  - **Combate:**
+    - Esquiva en `PlayerMovement`. La acción `Jump` pasa a llamarse `Dodge`.
+    - Componentes nuevos: `TelegraphMarker` (aviso en el suelo con su material `M_PixelArt_Aviso`), `Projectile`, `SlowZone`/`ISlowable` y la barra del jefe en el HUD.
+  - **Enemigos:** `ErasedEcho` (sprite provisional con franjas borradas) y `StoneJaguar` (zarpazo, salto y rugido avisados). `EnemyChaser` también se frena en el agua.
+  - **Arte en Blender:** el Jaguar en 5 poses × 5 direcciones más la pose liberada (`Sprites/Personajes`), agua baja en el Pantano y trazados nuevos de los pisos 1 y 2.
+  - **Escenas:** El Umbral con `TutorialHint`. El Pantano con charcos, ecos y la arena con la bajada tapada hasta vencer al Jaguar. Pisos y selva regenerados.
+  - **Misión:** `MP_OLM_04`. Se recreó `DLG_guerrero_joven_entrada`, que ahora la inicia.
+- **Corregido durante las pruebas:**
+  - El Jaguar llamaba a `Move` con el controller apagado al empezar el salto.
+  - Las zonas lentas dependían de `OnTriggerExit`, que Unity no envía al teletransportarse. El jugador podía quedar frenado tras reaparecer; ahora frenan con `OnTriggerStay`.
+- **Estado:**
+  - Pruebas: EditMode 57/57 y PlayMode 48/48. Las nuevas están en `OlmecaMazmorraCombatTests` (esquiva, pista del tutorial, agua baja, eco borrado, el Jaguar con la misión y que no reaparezca), y `OlmecaMazmorraSceneTests` está ajustado.
+  - Capturas reales de Unity revisadas a ojo; el Jaguar se agrandó tras verlas.
+  - FPS del Pantano en `Docs/Rendimiento.md`.
+  - **No se ha jugado en el Editor.** Commit y push al cerrar la sesión.
+- **Siguiente:**
+  - Jugar la mazmorra en el Editor: dificultad del Jaguar y de los ecos, y sensación de la esquiva.
+  - Aprobar el arte de M1, M2 y M3.
+  - Plan de M4: la arena del Guardián de la Piedra Viva.
+
 ## 2026-10-30 — i7-10700
 
 - **Rama / último commit al empezar:** `feature/prototipo-olmeca` @ `a8759bc` (al día con origin, árbol limpio salvo `Docs/Desarrollo juego México.html` y su carpeta, una conversación guardada que no se tocó).

@@ -213,6 +213,14 @@ Ventaja: coherencia de luz y escala entre recursos y facilidad para generar vari
   - Vistas previas: `Mazmorra_P<n>_2048x1216.png` y recortes ×3. Para revisar solo los pisos sin exportar: `--solo-mazmorra` (≈1,5 min). Capturas reales de Unity: menú **Crónicas → Capturar mazmorra olmeca**.
   - Pendiente: el arte definitivo del sello del Guardián (hoy una estela grande, provisional hasta M4) y la luz propia de los interiores. Los sprites se renderizan con el mismo sol que el exterior, y solo los personajes se oscurecen en la escena.
 
+- **Mazmorra, M3 (2026-10-30), pendiente de aprobación:** el Jaguar de Piedra, el agua del Pantano y los nuevos trazados de los pisos 1 y 2.
+  - `Jaguar_Piedra_<Pose>_01–05`: escultura felina rígida en basalto claro con musgo, con grietas y ojos violetas (rampa Olvido). Tiene cinco poses (`POSES_JAGUAR`: acecho, zancada, agazapado, salto y zarpazo), cada una en las cinco direcciones de pantalla de `DirectionalSpriteSet` (giros de `GIRO_DIRECCION`). `Jaguar_Piedra_Liberado_01` es la pose sentada, sin grietas y solo de frente.
+    - Se modela a escala 1,45 (`ESCALA_JAGUAR`): es un mini-jefe. Se exporta a `Sprites/Personajes` con sus pivotes, sin sombra horneada (se mueve).
+    - Es una criatura ficticia (F); el motivo felino es interpretación (I).
+  - **Agua baja:** las celdas `agua` de `PISOS` llevan el agua animada del río bajo el suelo horneado, sin losa. El grueso de las losas vecinas hace de borde del charco hundido. En Unity el agua del Pantano se tiñe más turbia (`SwampWaterTint`).
+  - Trazado nuevo de El Umbral (salas en fila) y de El Pantano (sala inundada, sala lateral del santuario y arena). La opción `--solo-mazmorra` también renderiza el Jaguar.
+  - Efectos dibujados por código (`EffectSpriteFactory`, en `Art/Effects`): la marca de aviso (círculo tramado, tintado en el juego y dibujado con `M_PixelArt_Aviso`, sobre el suelo y bajo los personajes) y el fragmento de símbolo del eco borrado. El eco es un sprite provisional (`PlaceholderSpriteFactory.ErasedEcho`): silueta violeta con franjas borradas.
+
 Regenerar todo (desde la carpeta del proyecto):
 
 ```

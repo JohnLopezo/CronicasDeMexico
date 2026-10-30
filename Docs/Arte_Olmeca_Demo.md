@@ -221,6 +221,13 @@ Ventaja: coherencia de luz y escala entre recursos y facilidad para generar vari
   - Trazado nuevo de El Umbral (salas en fila) y de El Pantano (sala inundada, sala lateral del santuario y arena). La opción `--solo-mazmorra` también renderiza el Jaguar.
   - Efectos dibujados por código (`EffectSpriteFactory`, en `Art/Effects`): la marca de aviso (círculo tramado, tintado en el juego y dibujado con `M_PixelArt_Aviso`, sobre el suelo y bajo los personajes) y el fragmento de símbolo del eco borrado. El eco es un sprite provisional (`PlaceholderSpriteFactory.ErasedEcho`): silueta violeta con franjas borradas.
 
+- **Mazmorra, M4 (2026-10-30), pendiente de aprobación:** el Guardián de la Piedra Viva y la arena.
+  - `Guardian_Piedra_<Pose>_01–05`: felino macizo de basalto, de volúmenes geométricos, con tocado plano, orejeras, boca ancha con las comisuras hacia abajo y un disco en el pecho (violeta corrupto, jade liberado). Poses de `POSES_GUARDIAN`: erguido, paso, embestida, golpe y rugido en cinco direcciones; sentado y liberado, solo de frente.
+    - Escala 1,6 (`ESCALA_GUARDIAN`), lienzo de 256 × 288.
+    - Es una figura original (F) inspirada en la monumentalidad olmeca (I).
+  - Arena: el círculo `circulo(5, 13, 6.5)` detrás de la losa, con columnas (`Estela_Lisa`), escombros y raíces de la selva. El borde que se inunda (`inundacion`) se exporta aparte: en Unity son cuadros del agua animada sobre el suelo (material de los avisos) que aparecen en la fase 2.
+  - Avisos nuevos (`EffectSpriteFactory`): anillo (`Aviso_Anillo`) y franja (`Aviso_Franja`, con el pivote en su borde corto).
+
 Regenerar todo (desde la carpeta del proyecto):
 
 ```

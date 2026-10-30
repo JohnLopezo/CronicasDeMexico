@@ -21,6 +21,33 @@ Plantilla:
 
 ---
 
+## 2026-10-30 (noche) — i7-10700
+
+- **Rama / último commit al empezar:** `feature/prototipo-olmeca` @ `cb81ef3` (M3).
+- **Decisiones del usuario (M4):**
+  - La arena va en la misma escena del piso 3.
+  - El Guardián se modela en Blender.
+  - El agua de la fase 2 son charcos en el borde de la arena.
+  - M4 termina con la liberación; las recompensas son de M5.
+- **Hecho (M4):**
+  - **Avisos:** `TelegraphMarker` tiene ahora tres formas (círculo, anillo y franja), con sus sprites en `EffectSpriteFactory`.
+  - **Componentes nuevos:** `SealedPassage` (la losa que se abre al cerrar su mensaje) y `StoneGuardian`.
+    - El Guardián tiene tres fases por vida y siete ataques en corrutinas (zarpazo, embestida con aturdimiento, golpe de tierra, ondas, fragmentos, rugido y Furia), con invulnerabilidad al cambiar de fase.
+    - `ForceAttack` sirve para las pruebas.
+  - **Arte en Blender:** el Guardián (figura felina geométrica con tocado y disco de la Primera Memoria) en 7 poses. La arena es circular, con columnas, raíces y un borde que se inunda.
+  - **Escena:** piso 3 regenerado con la losa, la arena, el agua de la fase 2 (objeto inactivo con `SlowZone`), el Guardián, la figura liberada y `StartQuestOnLoad` de `MP_OLM_05`.
+  - **Misión:** `MP_OLM_05` («La Piedra Viva»), con los pasos abrir la losa y vencer al Guardián.
+  - **Herramientas:** build de medición de la arena (`BuildArena`) y su vista en las capturas.
+- **Estado:**
+  - Pruebas: EditMode 57/57 y PlayMode 54/54. Las nuevas están en `OlmecaGuardianTests`: losa, fases y agua, embestida, ondas, Furia, y liberación con misión sin que reaparezca.
+  - Capturas de Unity revisadas a ojo; el tocado se estrechó y se quitó musgo tras verlas.
+  - FPS de la arena en `Docs/Rendimiento.md`.
+  - **No se ha jugado en el Editor.** Commit y push al cerrar la sesión.
+- **Siguiente:**
+  - Jugar la mazmorra completa en el Editor y ajustar la dificultad del Guardián.
+  - Aprobar el arte de M1 a M4.
+  - Plan de M5: fragmento de la Primera Memoria, habilidad de tierra, Bendición, `MP_OLM_06` y conexión al arco II.
+
 ## 2026-10-30 (tarde) — i7-10700
 
 - **Rama / último commit al empezar:** `feature/prototipo-olmeca` @ `276d10d` (M2).

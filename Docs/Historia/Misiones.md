@@ -72,4 +72,12 @@ Assets: `MIS_MP_OLM_03`, `DLG_guerrero_joven` (recreado con la rama nueva) y `DL
 
 Todos los pasos son de llegar o de vencer en su propio piso, así que ninguno se puede cumplir antes de tiempo y perderse. Descansar en un santuario no es un paso por esa razón: se podría vencer al Jaguar sin haber descansado.
 
-**Falta:** el resto de la misión (el Guardián, M4), `MP_OLM_05` y `MP_OLM_06` (M4–M5, `Docs/Estado_y_Plan.md`).
+**`MP_OLM_05` jugable hasta la liberación (2026-10-30, M4)**, en el piso 3:
+
+1. **Empieza** al cargar la antesala (`StartQuestOnLoad`).
+2. Paso 1, `examinar:sello_guardian`: empujar la losa que sella el pórtico.
+3. Paso 2, `vencer:guardian_piedra_viva`: el Guardián de la Piedra Viva. Al caer se libera (`olm.guardian_liberado`) y cuenta su recuerdo.
+
+Por ahora no tiene recompensas.
+
+**Falta:** las recompensas del Guardián (fragmento de la Primera Memoria, habilidad de tierra y elección de Bendición) y `MP_OLM_06` (M5, `Docs/Estado_y_Plan.md`).

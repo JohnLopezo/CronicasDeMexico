@@ -7,6 +7,7 @@ using CronicasDeMexico.Editor.PixelArt;
 using CronicasDeMexico.Gameplay.Combat;
 using CronicasDeMexico.Gameplay.Dungeon;
 using CronicasDeMexico.Gameplay.Enemies;
+using CronicasDeMexico.Gameplay.Movement;
 using CronicasDeMexico.Gameplay.Narrative;
 using CronicasDeMexico.Gameplay.Player;
 using CronicasDeMexico.World.Rendering;
@@ -25,9 +26,11 @@ namespace CronicasDeMexico.Editor.SceneGeneration
     /// - Piso 1, El Umbral (M3): tutorial con pistas (TutorialHint), santuario de Memoria y espíritus corrompidos.
     /// - Piso 2, El Pantano (M3): agua baja que frena (SlowZone), ecos borrados, santuario de Vida y la arena del Jaguar
     ///   de Piedra; la bajada queda tapada por escombros hasta vencerlo.
-    /// - Piso 3 (M2): la antesala sin enemigos, con otro santuario de Memoria ante la losa sellada del Guardián (M4).
-    /// Los enemigos no reaparecen mientras se está en el piso, pero vuelven al cargarlo de nuevo; el Jaguar, una vez
-    /// vencido, no vuelve (bandera). Al caer, DefeatReturn devuelve al jugador al último santuario de Memoria.
+    /// - Piso 3 (M4): la antesala sin enemigos, con otro santuario de Memoria ante la losa sellada (SealedPassage), y
+    ///   detrás la arena circular del Guardián de la Piedra Viva, cuyo borde se inunda en su fase 2. MP_OLM_05 empieza
+    ///   al cargar el piso.
+    /// Los enemigos no reaparecen mientras se está en el piso, pero vuelven al cargarlo de nuevo; el Jaguar y el
+    /// Guardián, una vez vencidos, no vuelven (banderas). Al caer, DefeatReturn devuelve al jugador al último santuario de Memoria.
     ///
     /// Las escenas se derivan por completo de los datos: regenerarlas las reemplaza (no editarlas a mano).
     /// Desde consola: Unity.exe -batchmode -quit -projectPath . -executeMethod
@@ -65,7 +68,14 @@ namespace CronicasDeMexico.Editor.SceneGeneration
 
         const string SealText =
             "Una estela de basalto, puesta como losa, tapa un pórtico en el muro. De su base salen grietas violetas, como " +
-            "raíces. Del otro lado algo respira despacio, y es la piedra misma.";
+            "raíces. Del otro lado algo respira despacio, y es la piedra misma. Empujas: la losa cede, rechinando, y se " +
+            "hunde en el suelo.";
+
+        const string GuardianDefeatText =
+            "La Piedra Viva se detiene. Las grietas violetas se cierran como heridas que sanan, el disco de su pecho se " +
+            "vuelve verde y la figura se sienta, despacio, como si recordara cómo hacerlo. Te habla sin voz: «Guardaba la " +
+            "primera memoria de esta tierra. La sombra me hizo ver en ti a quien venía a robarla.» Por un instante ves la " +
+            "plaza llena de gente y el río cargando basalto. Luego, silencio.";
 
         const string JaguarDefeatText =
             "La piedra deja de temblar. Las grietas violetas se apagan y el jaguar se sienta, quieto, como lo tallaron. Por un " +
@@ -90,6 +100,9 @@ namespace CronicasDeMexico.Editor.SceneGeneration
             (2, "pantano", new Vector2(-4.5f, 1f), new Vector2(1f, 3f),
                 "El agua baja te frena, a ti y a lo que te persigue; la esquiva no. Las siluetas borradas disparan desde " +
                 "lejos y avisan con un brillo."),
+            (3, "guardian", new Vector2(5f, 6f), new Vector2(3f, 1f),
+                "Al fondo, una figura de piedra sentada. Sus avisos tienen otras formas: anillos (el centro queda a salvo) " +
+                "y franjas por donde embiste. Si choca contra una columna, queda aturdida."),
             (2, "arena", new Vector2(8.5f, 1f), new Vector2(1f, 3f),
                 "Algo de piedra se mueve al fondo. Mira el suelo: antes de cada golpe aparece una marca."),
         };
@@ -139,7 +152,7 @@ namespace CronicasDeMexico.Editor.SceneGeneration
             var scene = EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
             var messageChannel = MessageChannel();
             // Después de NewScene, que descarga los ScriptableObjects recién creados que nada referencia (MP_OLM_04).
-            OlmecaNarrativeAssets.EnsureAssets();
+            var narrative = OlmecaNarrativeAssets.EnsureAssets();
             var bossNameChannel = OlmecaPrototypeGenerator.LoadOrCreateAsset<StringEventChannel>(OlmecaPrototypeGenerator.BossNameChannelPath);
             var bossHealthChannel = OlmecaPrototypeGenerator.LoadOrCreateAsset<HealthEventChannel>(OlmecaPrototypeGenerator.BossHealthChannelPath);
 
@@ -149,6 +162,8 @@ namespace CronicasDeMexico.Editor.SceneGeneration
                 placed[placement.sprite] = renderer;
                 AddFloorInscription(floor, placement, renderer, messageChannel);
             });
+            if (RegionPoints.Has(points.sello))
+                BuildSeal(Group("--- Sello ---", null), root, placed["Estela_Grande_01"], points.sello.Value, messageChannel);
             foreach (var water in root.Find("Agua")?.GetComponentsInChildren<SpriteRenderer>() ?? new SpriteRenderer[0])
                 water.color = SwampWaterTint;
 
@@ -162,6 +177,13 @@ namespace CronicasDeMexico.Editor.SceneGeneration
             if (RegionPoints.Has(points.jaguar))
                 BuildStoneJaguar(Group("--- Jaguar de Piedra ---", null), points.jaguar.Value, messageChannel, bossNameChannel,
                     bossHealthChannel);
+            if (RegionPoints.Has(points.guardian))
+            {
+                var arena = Group("--- Guardián de la Piedra Viva ---", null);
+                var flood = BuildFlood(arena, data, sprites);
+                BuildStoneGuardian(arena, points.guardian.Value, flood, messageChannel, bossNameChannel, bossHealthChannel);
+                arena.gameObject.AddComponent<StartQuestOnLoad>().Quest = narrative.GuardianQuest;
+            }
             BuildHints(Group("--- Tutorial ---", null), floor, messageChannel);
 
             var defeat = new GameObject("Derrota").AddComponent<DefeatReturn>();
@@ -182,9 +204,7 @@ namespace CronicasDeMexico.Editor.SceneGeneration
         static void AddFloorInscription(int floor, Placement placement, SpriteRenderer renderer, StringEventChannel messageChannel)
         {
             var position = ToWorld(placement.x, placement.y, placement.z) + Vector3.up * 0.8f;
-            if (placement.sprite == "Estela_Grande_01" && floor == FloorCount)
-                AddInscription(renderer.transform.parent, "Inscripcion_Sello", position, SealText, messageChannel, examineId: "sello_guardian");
-            else if (placement.sprite.StartsWith("Estela_Lisa"))
+            if (placement.sprite.StartsWith("Estela_Lisa"))
                 AddInscription(renderer.transform.parent, $"Inscripcion_{placement.sprite}_{placement.x}", position,
                     floor == 1 ? ExpeditionText : ErasedStelaText, messageChannel, examineId: "estela");
         }
@@ -422,7 +442,12 @@ namespace CronicasDeMexico.Editor.SceneGeneration
         }
 
         // Jaguar_Piedra_<Pose>_<dirección 01–05> (N, NE, E, SE, S); Liberado solo tiene 01.
-        static Dictionary<string, Sprite[]> LoadJaguarSprites()
+        static Dictionary<string, Sprite[]> LoadJaguarSprites() =>
+            LoadPoseSprites("Jaguar_Piedra", JaguarPoses, new[] { "Liberado" });
+
+        // <prefijo>_<Pose>_<dirección 01–05> (N, NE, E, SE, S); las poses solo de frente tienen únicamente 01.
+        static Dictionary<string, Sprite[]> LoadPoseSprites(string prefix, IEnumerable<string> directionalPoses,
+            IEnumerable<string> frontPoses)
         {
             var all = AssetDatabase.FindAssets("t:Sprite", new[] { CharactersFolder })
                 .Select(guid => AssetDatabase.LoadAssetAtPath<Sprite>(AssetDatabase.GUIDToAssetPath(guid)))
@@ -432,10 +457,194 @@ namespace CronicasDeMexico.Editor.SceneGeneration
                 ? sprite
                 : throw new System.InvalidOperationException($"Falta el sprite '{name}' en {CharactersFolder}: ejecuta el flujo de arte.");
 
-            var result = JaguarPoses.ToDictionary(pose => pose,
-                pose => Enumerable.Range(1, DirectionalSpriteSet.DirectionCount).Select(d => Get($"Jaguar_Piedra_{pose}_{d:00}")).ToArray());
-            result["Liberado"] = new[] { Get("Jaguar_Piedra_Liberado_01") };
+            var result = directionalPoses.ToDictionary(pose => pose,
+                pose => Enumerable.Range(1, DirectionalSpriteSet.DirectionCount).Select(d => Get($"{prefix}_{pose}_{d:00}")).ToArray());
+            foreach (var pose in frontPoses)
+                result[pose] = new[] { Get($"{prefix}_{pose}_01") };
             return result;
+        }
+
+        static DirectionalSpriteSet PoseSet(string assetName, Sprite[] idle, Sprite[] walk = null)
+        {
+            var set = OlmecaPrototypeGenerator.LoadOrCreateAsset<DirectionalSpriteSet>($"{CharacterDataFolder}/DSS_{assetName}.asset");
+            set.SetClips(Enumerable.Range(0, DirectionalSpriteSet.DirectionCount)
+                .Select(d => new DirectionalSpriteSet.DirectionClip(idle[Mathf.Min(d, idle.Length - 1)],
+                    walk == null ? System.Array.Empty<Sprite>() : new[] { walk[d], idle[d] }))
+                .ToArray());
+            EditorUtility.SetDirty(set);
+            return set;
+        }
+
+        // ---------- Losa sellada de la antesala ----------
+
+        // La losa, su colisión del escenario, un bloqueo del ancho del pasillo y lo que se toca van juntos en un
+        // contenedor sin girar; al abrirla (bandera) ActiveWhenFlags lo retira todo.
+        static void BuildSeal(Transform parent, Transform scenery, SpriteRenderer slab, Vector2 point, StringEventChannel messageChannel)
+        {
+            var seal = new GameObject("Losa");
+            seal.transform.SetParent(parent, false);
+            slab.transform.SetParent(seal.transform, true);
+            var obstacle = scenery.Find("Colisiones/Obstáculos/Estela_Grande_01");
+            if (obstacle != null)
+                obstacle.SetParent(seal.transform, true);
+
+            var blocker = new GameObject("Bloqueo");
+            blocker.transform.SetParent(seal.transform, false);
+            blocker.transform.position = ToWorld(point.x, point.y, 1f);
+            blocker.AddComponent<BoxCollider>().size = new Vector3(0.5f, 2f, 3.2f); // a lo ancho del pasillo (x del flujo)
+
+            var passage = Touchable("Empujar", seal.transform, point).AddComponent<SealedPassage>();
+            passage.OpenFlag = OlmecaNarrativeAssets.SealOpenFlag;
+            SetProperty(passage, "text", property => property.stringValue = SealText);
+            SetProperty(passage, "messageChannel", property => property.objectReferenceValue = messageChannel);
+            SetProperty(passage, "examineId", property => property.stringValue = OlmecaNarrativeAssets.SealExamineId);
+            ShowWhen(seal, null, new[] { OlmecaNarrativeAssets.SealOpenFlag }, liveUpdate: true);
+        }
+
+        // ---------- Guardián de la Piedra Viva ----------
+
+        static readonly string[] GuardianPoses = { "Erguido", "Paso", "Embestida", "Golpe", "Rugido" };
+        static readonly Color FloodTint = new(0.45f, 0.55f, 0.5f);
+
+        // El agua de la fase 2 cubre el borde de la arena por encima del suelo horneado (material de los avisos) y frena;
+        // empieza apagada y la enciende el Guardián.
+        static GameObject BuildFlood(Transform parent, RegionData data, Dictionary<string, Sprite> sprites)
+        {
+            var flood = Group("Inundación", parent);
+            if (data.inundacion is not { Length: > 0 })
+                return flood.gameObject;
+
+            var frames = Enumerable.Range(1, 4).Select(i => Require(sprites, $"Tile_Agua_Anim_{i:00}")).ToArray();
+            var material = AssetDatabase.LoadAssetAtPath<Material>(PixelArtAssets.AlertMaterialPath);
+            var renderers = data.inundacion
+                .Select(cell => SpriteObject($"Agua_{cell.x}_{cell.y}", flood, frames[0], material,
+                    IsometricProjection.SnapToPixelGrid(ToWorld(cell.x, cell.y, 0.02f), 1f / IsometricProjection.PixelsPerUnit)))
+                .ToArray();
+            foreach (var renderer in renderers)
+                renderer.color = FloodTint;
+            flood.gameObject.AddComponent<SpriteFrameCycler>().Configure(frames, renderers);
+
+            foreach (var (x, y, length) in Runs(data.inundacion))
+            {
+                var zone = new GameObject($"AguaAlta_{x}_{y}");
+                zone.transform.SetParent(flood, false);
+                zone.transform.position = ToWorld(x, y, 0.5f);
+                var trigger = zone.AddComponent<BoxCollider>();
+                trigger.isTrigger = true;
+                trigger.size = new Vector3(1f, 1f, length);
+                zone.AddComponent<SlowZone>();
+            }
+
+            flood.gameObject.SetActive(false);
+            return flood.gameObject;
+        }
+
+        static void BuildStoneGuardian(Transform parent, Vector2 home, GameObject flood, StringEventChannel messageChannel,
+            StringEventChannel bossNameChannel, HealthEventChannel bossHealthChannel)
+        {
+            var poses = LoadPoseSprites("Guardian_Piedra", GuardianPoses, new[] { "Sentado", "Liberado" });
+            var stand = PoseSet("GuardianPiedra_Erguido", poses["Erguido"], poses["Paso"]);
+            var seated = PoseSet("GuardianPiedra_Sentado", poses["Sentado"]);
+            var charge = PoseSet("GuardianPiedra_Embestida", poses["Embestida"]);
+            var slam = PoseSet("GuardianPiedra_Golpe", poses["Golpe"]);
+            var roar = PoseSet("GuardianPiedra_Rugido", poses["Rugido"]);
+
+            // Raíz sin escalar: los sprites del flujo ya están a la resolución del escenario.
+            var root = new GameObject("GuardianDeLaPiedraViva") { layer = OlmecaPrototypeGenerator.Layer(OlmecaPrototypeGenerator.EnemyLayerName) };
+            root.transform.SetParent(parent, false);
+            root.transform.position = ToWorld(home);
+            var controller = root.AddComponent<CharacterController>();
+            controller.height = 2.2f;
+            controller.radius = 1f;
+            controller.center = new Vector3(0f, 1.1f, 0f);
+            controller.stepOffset = 0.3f;
+            controller.minMoveDistance = 0f;
+
+            var spriteObject = new GameObject("Sprite");
+            spriteObject.transform.SetParent(root.transform, false);
+            var spriteRenderer = spriteObject.AddComponent<SpriteRenderer>();
+            spriteRenderer.sprite = poses["Sentado"][0];
+            spriteRenderer.sharedMaterial = CharacterMaterial();
+            spriteRenderer.shadowCastingMode = ShadowCastingMode.Off;
+            var billboard = spriteObject.AddComponent<SpriteBillboard>();
+            SetProperty(billboard, "mode", property => property.enumValueIndex = (int)SpriteBillboard.BillboardMode.CameraPlane);
+            spriteObject.AddComponent<PixelGridSnap>();
+
+            OlmecaPrototypeGenerator.AddHealth(root, maxHealth: 40, invulnerabilityTime: 0.2f, spriteRenderer, bossHealthChannel);
+
+            TelegraphMarker Marker(string name, Sprite sprite, TelegraphMarker.MarkerShape shape)
+            {
+                var markerObject = new GameObject(name);
+                markerObject.transform.SetParent(root.transform, false);
+                var markerRenderer = markerObject.AddComponent<SpriteRenderer>();
+                markerRenderer.sprite = sprite;
+                markerRenderer.sharedMaterial = AssetDatabase.LoadAssetAtPath<Material>(PixelArtAssets.AlertMaterialPath);
+                markerRenderer.shadowCastingMode = ShadowCastingMode.Off;
+                markerRenderer.receiveShadows = false;
+                markerRenderer.enabled = false; // lo enciende TelegraphMarker.Show
+                var marker = markerObject.AddComponent<TelegraphMarker>();
+                SetProperty(marker, "shape", property => property.enumValueIndex = (int)shape);
+                return marker;
+            }
+            var circleSprite = EffectSpriteFactory.TelegraphCircle();
+            var circle = Marker("Aviso_Circulo", circleSprite, TelegraphMarker.MarkerShape.Circle);
+            var line = Marker("Aviso_Franja", EffectSpriteFactory.TelegraphLine(), TelegraphMarker.MarkerShape.Line);
+            var ring = Marker("Aviso_Anillo", EffectSpriteFactory.TelegraphRing(), TelegraphMarker.MarkerShape.Ring);
+            var fury = Enumerable.Range(1, 6).Select(i => Marker($"Aviso_Furia_{i}", circleSprite, TelegraphMarker.MarkerShape.Circle)).ToArray();
+
+            // Fragmentos de piedra: el sprite del fragmento de símbolo, en gris; a 32 px por unidad como el eco.
+            var shardSprite = EffectSpriteFactory.SymbolShard();
+            var shardMaterial = AssetDatabase.LoadAssetAtPath<Material>(PixelArtAssets.ObjectMaterialPath);
+            var shards = new Projectile[8];
+            for (var i = 0; i < shards.Length; i++)
+            {
+                var shard = SpriteObject($"FragmentoPiedra_{i + 1}", root.transform, shardSprite, shardMaterial, root.transform.position);
+                shard.transform.localScale = Vector3.one * (PlaceholderPixelsPerUnit / IsometricProjection.PixelsPerUnit);
+                shard.color = new Color(0.75f, 0.72f, 0.62f);
+                shard.gameObject.SetActive(false);
+                shards[i] = shard.gameObject.AddComponent<Projectile>();
+            }
+
+            var guardian = root.AddComponent<StoneGuardian>();
+            OlmecaPrototypeGenerator.AddSpriteAnimator(root, guardian, spriteRenderer, seated);
+            SetProperty(guardian, "spriteAnimator", property => property.objectReferenceValue = root.GetComponent<DirectionalSpriteAnimator>());
+            SetProperty(guardian, "circleMarker", property => property.objectReferenceValue = circle);
+            SetProperty(guardian, "lineMarker", property => property.objectReferenceValue = line);
+            SetProperty(guardian, "ringMarker", property => property.objectReferenceValue = ring);
+            SetProperty(guardian, "furyMarkers", property =>
+            {
+                property.arraySize = fury.Length;
+                for (var i = 0; i < fury.Length; i++)
+                    property.GetArrayElementAtIndex(i).objectReferenceValue = fury[i];
+            });
+            SetProperty(guardian, "shards", property =>
+            {
+                property.arraySize = shards.Length;
+                for (var i = 0; i < shards.Length; i++)
+                    property.GetArrayElementAtIndex(i).objectReferenceValue = shards[i];
+            });
+            SetProperty(guardian, "seatedPose", property => property.objectReferenceValue = seated);
+            SetProperty(guardian, "standPose", property => property.objectReferenceValue = stand);
+            SetProperty(guardian, "chargePose", property => property.objectReferenceValue = charge);
+            SetProperty(guardian, "slamPose", property => property.objectReferenceValue = slam);
+            SetProperty(guardian, "roarPose", property => property.objectReferenceValue = roar);
+            SetProperty(guardian, "flood", property => property.objectReferenceValue = flood);
+            SetProperty(guardian, "bossNameChannel", property => property.objectReferenceValue = bossNameChannel);
+            SetProperty(guardian, "messageChannel", property => property.objectReferenceValue = messageChannel);
+            SetProperty(guardian, "defeatText", property => property.stringValue = GuardianDefeatText);
+
+            var report = root.AddComponent<ReportOnDefeat>();
+            report.EnemyId = OlmecaNarrativeAssets.StoneGuardianId;
+            report.FlagOnDefeat = OlmecaNarrativeAssets.GuardianFreedFlag;
+            ShowWhen(root, null, new[] { OlmecaNarrativeAssets.GuardianFreedFlag }, liveUpdate: true);
+
+            // Liberado: sentado en el centro de la arena, con el disco de jade encendido.
+            var freed = Group("Liberado", parent);
+            var statue = SpriteObject("Guardian_Piedra_Liberado", freed, poses["Liberado"][0],
+                AssetDatabase.LoadAssetAtPath<Material>(PixelArtAssets.ObjectMaterialPath),
+                IsometricProjection.SnapToPixelGrid(ToWorld(home), 1f / IsometricProjection.PixelsPerUnit));
+            statue.gameObject.SetActive(false);
+            ShowWhen(statue.gameObject, new[] { OlmecaNarrativeAssets.GuardianFreedFlag }, null, liveUpdate: true);
         }
     }
 }

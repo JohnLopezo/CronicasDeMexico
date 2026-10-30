@@ -310,6 +310,303 @@
    ]
   },
   {
+   "nombre": "Guardian_Piedra_Embestida_01",
+   "lienzo": [
+    256,
+    288
+   ],
+   "pivote": [
+    128,
+    64
+   ]
+  },
+  {
+   "nombre": "Guardian_Piedra_Embestida_02",
+   "lienzo": [
+    256,
+    288
+   ],
+   "pivote": [
+    128,
+    64
+   ]
+  },
+  {
+   "nombre": "Guardian_Piedra_Embestida_03",
+   "lienzo": [
+    256,
+    288
+   ],
+   "pivote": [
+    128,
+    64
+   ]
+  },
+  {
+   "nombre": "Guardian_Piedra_Embestida_04",
+   "lienzo": [
+    256,
+    288
+   ],
+   "pivote": [
+    128,
+    64
+   ]
+  },
+  {
+   "nombre": "Guardian_Piedra_Embestida_05",
+   "lienzo": [
+    256,
+    288
+   ],
+   "pivote": [
+    128,
+    64
+   ]
+  },
+  {
+   "nombre": "Guardian_Piedra_Erguido_01",
+   "lienzo": [
+    256,
+    288
+   ],
+   "pivote": [
+    128,
+    64
+   ]
+  },
+  {
+   "nombre": "Guardian_Piedra_Erguido_02",
+   "lienzo": [
+    256,
+    288
+   ],
+   "pivote": [
+    128,
+    64
+   ]
+  },
+  {
+   "nombre": "Guardian_Piedra_Erguido_03",
+   "lienzo": [
+    256,
+    288
+   ],
+   "pivote": [
+    128,
+    64
+   ]
+  },
+  {
+   "nombre": "Guardian_Piedra_Erguido_04",
+   "lienzo": [
+    256,
+    288
+   ],
+   "pivote": [
+    128,
+    64
+   ]
+  },
+  {
+   "nombre": "Guardian_Piedra_Erguido_05",
+   "lienzo": [
+    256,
+    288
+   ],
+   "pivote": [
+    128,
+    64
+   ]
+  },
+  {
+   "nombre": "Guardian_Piedra_Golpe_01",
+   "lienzo": [
+    256,
+    288
+   ],
+   "pivote": [
+    128,
+    64
+   ]
+  },
+  {
+   "nombre": "Guardian_Piedra_Golpe_02",
+   "lienzo": [
+    256,
+    288
+   ],
+   "pivote": [
+    128,
+    64
+   ]
+  },
+  {
+   "nombre": "Guardian_Piedra_Golpe_03",
+   "lienzo": [
+    256,
+    288
+   ],
+   "pivote": [
+    128,
+    64
+   ]
+  },
+  {
+   "nombre": "Guardian_Piedra_Golpe_04",
+   "lienzo": [
+    256,
+    288
+   ],
+   "pivote": [
+    128,
+    64
+   ]
+  },
+  {
+   "nombre": "Guardian_Piedra_Golpe_05",
+   "lienzo": [
+    256,
+    288
+   ],
+   "pivote": [
+    128,
+    64
+   ]
+  },
+  {
+   "nombre": "Guardian_Piedra_Liberado_01",
+   "lienzo": [
+    256,
+    288
+   ],
+   "pivote": [
+    128,
+    64
+   ]
+  },
+  {
+   "nombre": "Guardian_Piedra_Paso_01",
+   "lienzo": [
+    256,
+    288
+   ],
+   "pivote": [
+    128,
+    64
+   ]
+  },
+  {
+   "nombre": "Guardian_Piedra_Paso_02",
+   "lienzo": [
+    256,
+    288
+   ],
+   "pivote": [
+    128,
+    64
+   ]
+  },
+  {
+   "nombre": "Guardian_Piedra_Paso_03",
+   "lienzo": [
+    256,
+    288
+   ],
+   "pivote": [
+    128,
+    64
+   ]
+  },
+  {
+   "nombre": "Guardian_Piedra_Paso_04",
+   "lienzo": [
+    256,
+    288
+   ],
+   "pivote": [
+    128,
+    64
+   ]
+  },
+  {
+   "nombre": "Guardian_Piedra_Paso_05",
+   "lienzo": [
+    256,
+    288
+   ],
+   "pivote": [
+    128,
+    64
+   ]
+  },
+  {
+   "nombre": "Guardian_Piedra_Rugido_01",
+   "lienzo": [
+    256,
+    288
+   ],
+   "pivote": [
+    128,
+    64
+   ]
+  },
+  {
+   "nombre": "Guardian_Piedra_Rugido_02",
+   "lienzo": [
+    256,
+    288
+   ],
+   "pivote": [
+    128,
+    64
+   ]
+  },
+  {
+   "nombre": "Guardian_Piedra_Rugido_03",
+   "lienzo": [
+    256,
+    288
+   ],
+   "pivote": [
+    128,
+    64
+   ]
+  },
+  {
+   "nombre": "Guardian_Piedra_Rugido_04",
+   "lienzo": [
+    256,
+    288
+   ],
+   "pivote": [
+    128,
+    64
+   ]
+  },
+  {
+   "nombre": "Guardian_Piedra_Rugido_05",
+   "lienzo": [
+    256,
+    288
+   ],
+   "pivote": [
+    128,
+    64
+   ]
+  },
+  {
+   "nombre": "Guardian_Piedra_Sentado_01",
+   "lienzo": [
+    256,
+    288
+   ],
+   "pivote": [
+    128,
+    64
+   ]
+  },
+  {
    "nombre": "Helecho_01",
    "lienzo": [
     48,
@@ -1236,12 +1533,23 @@
   {
    "nombre": "Suelo_Mazmorra_P3_00",
    "lienzo": [
-    832,
-    436
+    1024,
+    516
    ],
    "pivote": [
-    416.0,
-    218.0
+    512.0,
+    258.0
+   ]
+  },
+  {
+   "nombre": "Suelo_Mazmorra_P3_01",
+   "lienzo": [
+    288,
+    516
+   ],
+   "pivote": [
+    144.0,
+    258.0
    ]
   }
  ]

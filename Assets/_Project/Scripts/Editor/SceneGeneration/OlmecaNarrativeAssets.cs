@@ -38,6 +38,10 @@ namespace CronicasDeMexico.Editor.SceneGeneration
         public const string DungeonQuestId = "MP_OLM_04";
         public const string StoneJaguarId = "jaguar_piedra";
         public const string ErasedEchoId = "eco_borrado";
+        // Arena (MP_OLM_05, M4): avisos "examinar:sello_guardian" y "vencer:guardian_piedra_viva".
+        public const string GuardianQuestId = "MP_OLM_05";
+        public const string StoneGuardianId = "guardian_piedra_viva";
+        public const string SealExamineId = "sello_guardian";
         public const string GuardianPath = "Assets/_Project/Data/Characters/GUA_jaguar.asset";
         const string PlayerSpriteSetPath = "Assets/_Project/Data/Characters/DSS_Jugador.asset";
 
@@ -51,6 +55,10 @@ namespace CronicasDeMexico.Editor.SceneGeneration
         /// <summary>El Jaguar de Piedra fue vencido y liberado: no vuelve y la bajada al piso 3 queda abierta.</summary>
         public const string StoneJaguarDefeatedFlag = "olm.jaguar_piedra_vencido";
         public const string AntechamberReachedFlag = "olm.antesala_alcanzada";
+        /// <summary>La losa de la antesala está abierta: se pasa a la arena del Guardián.</summary>
+        public const string SealOpenFlag = "olm.sello_abierto";
+        /// <summary>El Guardián de la Piedra Viva fue vencido y liberado (M4); sus recompensas llegan en M5.</summary>
+        public const string GuardianFreedFlag = "olm.guardian_liberado";
         static readonly string QuestActive = StoryEvents.QuestActiveFlag(SettlementQuestId);
         static readonly string QuestDone = StoryEvents.QuestCompletedFlag(SettlementQuestId);
         static readonly string JungleQuestDone = StoryEvents.QuestCompletedFlag(JungleQuestId);
@@ -93,7 +101,7 @@ namespace CronicasDeMexico.Editor.SceneGeneration
             public Character Spirit, Artisan, Elder, Warrior, Merchant;
             /// <summary>El joven guerrero en la entrada de la estructura (mismo NpcData, otro diálogo).</summary>
             public Character WarriorAtEntrance;
-            public QuestData AwakeningQuest, SettlementQuest, JungleQuest, DungeonQuest;
+            public QuestData AwakeningQuest, SettlementQuest, JungleQuest, DungeonQuest, GuardianQuest;
             public GuardianData Guardian;
         }
 
@@ -140,15 +148,23 @@ namespace CronicasDeMexico.Editor.SceneGeneration
                     new QuestStep(StoryEvents.Defeat(StoneJaguarId), "Cruza el agua y enfréntate al Jaguar de Piedra"),
                     new QuestStep(StoryEvents.Reach("mazmorra_piso3"), "Baja a lo más hondo de la estructura"),
                 }, AntechamberReachedFlag));
+            // Empieza sola al cargar la antesala (StartQuestOnLoad en el piso 3). Sin recompensas aún: llegan en M5.
+            var guardianQuest = LoadOrCreate($"{Folder}/MIS_{GuardianQuestId}.asset", () => QuestData.Create(
+                GuardianQuestId, "La Piedra Viva", new[]
+                {
+                    new QuestStep(StoryEvents.Examine(SealExamineId), "Empuja la losa que sella el pórtico de la antesala"),
+                    new QuestStep(StoryEvents.Defeat(StoneGuardianId), "Enfréntate al Guardián de la Piedra Viva"),
+                }));
             EnsureInCatalog(awakening);
             EnsureInCatalog(quest);
             EnsureInCatalog(jungle);
             EnsureInCatalog(dungeon);
+            EnsureInCatalog(guardianQuest);
 
             var content = new Content
             {
                 AwakeningQuest = awakening, SettlementQuest = quest, JungleQuest = jungle, DungeonQuest = dungeon,
-                Guardian = guardian,
+                GuardianQuest = guardianQuest, Guardian = guardian,
             };
 
             // Historia_Mundo §2.2–2.4. No es un dios ni un enemigo; no tiene rasgos de ninguna deidad.

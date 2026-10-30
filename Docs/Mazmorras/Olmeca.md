@@ -73,7 +73,11 @@ Regreso al último santuario de Memoria con una penalización moderada configura
 - **Escenas** `Olmeca_Mazmorra_P1` a `P3`, generadas por `OlmecaDungeonGenerator` desde `Mazmorra_P<n>.json` (`planificar_piso`): salas de losas sobre el vacío, unidas por pasillos.
   - Cada piso tiene su escalera de subida (en el piso 1, a la selva) y su escalera de bajada (salvo el 3).
   - La abertura de la entrada de la selva lleva al piso 1 solo cuando `MP_OLM_03` está completada.
-- **El piso 3** es una antesala sin enemigos, con la losa sellada del Guardián. Su arena llega en M4.
+- **El piso 3 (M4):**
+  - La antesala sin enemigos, con el santuario de Memoria, es el punto de control antes del jefe.
+  - La losa sellada (`SealedPassage`) se abre al examinarla (`olm.sello_abierto`).
+  - Detrás está la arena circular del Guardián de la Piedra Viva (`Docs/Enemigos/Olmeca.md`), con cuatro columnas en pie contra las que choca su embestida, escombros, raíces y un borde que se inunda en la fase 2.
+  - Al caer en el combate se vuelve a la antesala y el Guardián se reinicia completo.
 
 ## Pisos 1 y 2 (M3, 2026-10-30)
 

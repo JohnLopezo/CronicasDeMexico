@@ -102,7 +102,7 @@ namespace CronicasDeMexico.Editor.SceneGeneration
             public Point[] claros, fragmentos;
             public Point mazmorra, desde_mazmorra;                       // selva: entrada al piso 1
             public Point subida, llegada_arriba, bajada, llegada_abajo;  // pisos de la mazmorra
-            public Point memoria, memoria_llegada, vida, sello, jaguar;
+            public Point memoria, memoria_llegada, vida, sello, jaguar, guardian;
             public Point[] enemigos;
             public Point[] ecos; // de tres en tres: los sitios de cada eco borrado
 
@@ -123,6 +123,7 @@ namespace CronicasDeMexico.Editor.SceneGeneration
             public float[] limites; // x0, x1, y0, y1 del flujo
             public Cell[] vacio;    // mazmorra: celdas sin piso, que no se atraviesan
             public bool agua_vadeable; // el agua baja del Pantano se cruza, más despacio (SlowZone)
+            public Cell[] inundacion;  // arena del Guardián: agua que aparece en su fase 2 (no se hornea)
             public RegionPoints puntos;
         }
 
@@ -374,7 +375,7 @@ namespace CronicasDeMexico.Editor.SceneGeneration
         }
 
         /// <summary>Celdas agrupadas en tramos contiguos a lo largo de x del flujo: (centro x, y, largo).</summary>
-        static IEnumerable<(float x, int y, int length)> Runs(IEnumerable<Cell> cells)
+        internal static IEnumerable<(float x, int y, int length)> Runs(IEnumerable<Cell> cells)
         {
             foreach (var row in cells.GroupBy(c => c.y))
             {

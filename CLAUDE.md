@@ -49,8 +49,10 @@ Configuración de Git por PC (LFS + UnityYAMLMerge, guardada en `.git/config`): 
 - **Mazmorra** (`Gameplay/Dungeon`, M2): `MemoryShrine` (punto de control y guardado), `LifeShrine` (cura una vez por incursión), `DefeatReturn` (en cada piso: al caer con punto de control, viaja al santuario y recarga el piso) e `IncursionReset` (en la selva: borra las banderas `incursion.*`). Ids de banderas en `DungeonFlags`.
 - **Combate de la mazmorra** (M3):
   - `PlayerMovement` incluye la esquiva (acción `Player/Dodge`, la antigua Jump; se busca en el mapa de la acción de movimiento, así que no hace falta tocar el prefab).
-  - Los ataques avisados usan `TelegraphMarker`, un círculo en el suelo que se desprende de su dueño. Los proyectiles (`Projectile`) los reutiliza quien los lanza.
-  - Enemigos: `ErasedEcho` (dispara y salta entre puntos) y `StoneJaguar` (mini-jefe con varias poses; cambia `DirectionalSpriteAnimator.SpriteSet`; barra en el HUD por `EVT_Jefe_Nombre` y `EVT_Jefe_Vida`).
+  - Los ataques avisados usan `TelegraphMarker`, una forma en el suelo (círculo, anillo o franja) que se desprende de su dueño. Los proyectiles (`Projectile`) los reutiliza quien los lanza.
+  - Enemigos: `ErasedEcho` (dispara y salta entre puntos), `StoneJaguar` (mini-jefe con varias poses; cambia `DirectionalSpriteAnimator.SpriteSet`; barra en el HUD por `EVT_Jefe_Nombre` y `EVT_Jefe_Vida`) y `StoneGuardian` (jefe, M4).
+  - El Guardián tiene tres fases por vida y ataques en corrutinas; `ForceAttack` permite probar cada uno. El agua de su fase 2 es un objeto de la escena que él activa.
+  - `SealedPassage` abre un paso al cerrar su mensaje (bandera).
   - `SlowZone` frena a los `ISlowable` con `OnTriggerStay`, no con salidas: Unity no llama a `OnTriggerExit` si el personaje se teletransporta.
   - `TutorialHint` muestra una pista una sola vez (bandera `tutorial.<id>`).
   - En las pruebas, la invulnerabilidad del jugador tras un golpe dura 1 s.

@@ -30,6 +30,9 @@ Se mide en un **build de desarrollo** (no en el Editor), en cada hito. En PC el 
 | 2026-10-30 | El Pantano (M3) | i7-10700 / UHD 630 | Bajo | 1920×1080 | Olmeca_Mazmorra_P2 | 295–301 | 214–240 | 3,3–3,4 (p95 3,8–4,0) | Con agua baja, 2 ecos, 1 espíritu y el Jaguar de Piedra; 4 puntos (llegada, sala inundada, santuario de Vida, arena) |
 | 2026-10-30 | El Pantano (M3) | i7-10700 / UHD 630 | Medio | 1920×1080 | Olmeca_Mazmorra_P2 | 360–364 | 279–288 | 2,7–2,8 (p95 3,2) | Ídem |
 | 2026-10-30 | El Pantano (M3) | i7-10700 / UHD 630 | Alto | 1920×1080 | Olmeca_Mazmorra_P2 | 306–313 | 241–253 | 3,2–3,3 (p95 3,6–3,8) | Ídem; algo mejor que en M2, dentro del ruido de la medición |
+| 2026-10-30 | Arena del Guardián (M4) | i7-10700 / UHD 630 | Bajo | 1920×1080 | Olmeca_Mazmorra_P3 | 243–253 | 119–162 | 4,0–4,1 (p95 5,1–5,3) | 3 puntos (antesala, centro de la arena, borde); el Guardián dormido y el agua sin subir |
+| 2026-10-30 | Arena del Guardián (M4) | i7-10700 / UHD 630 | Medio | 1920×1080 | Olmeca_Mazmorra_P3 | 301–327 | 145–227 | 3,1–3,3 (p95 3,9–4,3) | Ídem |
+| 2026-10-30 | Arena del Guardián (M4) | i7-10700 / UHD 630 | Alto | 1920×1080 | Olmeca_Mazmorra_P3 | 280–285 | 195–206 | 3,5–3,6 (p95 4,3–4,5) | Ídem. Bajo es el más lento aquí (unos 0,7 ms más que el Pantano); sigue lejos del presupuesto |
 
 **Cámara de fondo (2026-10-29):** la cámara que limpia la pantalla bajo `PixelArtScreen` no dibuja nada, pero URP le aplicaba a 1920×1080 lo que pide el nivel: en Alto, HDR, texturas de profundidad y color, y el SSAO de `Renderer_Calidad`; en Medio, HDR y profundidad. Ahora usa el renderer 1 de cada URP Asset (`Renderer_Rendimiento`, sin efectos; `PixelArtScreen.ClearRendererIndex`) y desactiva HDR, MSAA, sombras y texturas. La cámara del escenario conserva el SSAO a la resolución del arte. Lo comprueba `ClearCamera_UsesRendererWithoutEffects_InEveryQualityLevel`.
 

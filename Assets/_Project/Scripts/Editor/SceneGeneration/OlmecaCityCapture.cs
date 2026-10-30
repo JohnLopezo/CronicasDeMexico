@@ -65,7 +65,7 @@ namespace CronicasDeMexico.Editor.SceneGeneration
                 ("Llegada", new Vector2(-11.5f, 1f)), ("Sala", new Vector2(0f, 0.5f)), ("Vida", new Vector2(0f, -7f)),
                 ("Arena", new Vector2(12f, 1f)),
             },
-            new[] { ("Llegada", new Vector2(-7f, 0f)), ("Antesala", new Vector2(3.5f, 0.5f)) },
+            new[] { ("Llegada", new Vector2(-7f, 0f)), ("Antesala", new Vector2(3.5f, 0.5f)), ("Arena", new Vector2(5f, 12f)) },
         };
 
         [MenuItem("Crónicas/Capturar mazmorra olmeca")]

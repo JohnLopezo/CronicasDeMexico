@@ -53,3 +53,25 @@ Figura **original** inspirada en la monumentalidad escultórica olmeca y en las 
 - **Resolución:** se libera de la corrupción, revela un recuerdo y concede el fragmento, la habilidad de tierra y la elección de Bendición (`Docs/Mazmorras/Olmeca.md`).
 
 Las fases vienen del GDD §10; los números son provisionales hasta el balance.
+
+### El Guardián en el juego (M4, 2026-10-30)
+
+- **Arte:** figura felina maciza y geométrica modelada en Blender, rígida como el Jaguar, de unos 3 m. Lleva un tocado plano y un disco en el pecho, la Primera Memoria que protege: violeta mientras está corrupto, jade al liberarse.
+  - Es una figura original (F) inspirada en la monumentalidad olmeca (I), no una deidad ni una copia de una pieza concreta.
+  - Poses: sentado, erguido, paso, embestida, golpe (alzado), rugido y liberado.
+- **Despertar:** espera sentado en el centro de la arena circular, detrás de la losa de la antesala, y despierta al acercarse el jugador. Tiene 40 de vida, barra de jefe y no hace daño por contacto salvo en la embestida.
+- **Fase 1:**
+  - Zarpazo: círculo delante, 2 de daño.
+  - Embestida: franja de 8 m hacia el jugador, 2 de daño. Si choca con una columna o el borde, queda aturdido 1,6 s.
+  - Golpe de tierra: círculo de 3,5 m a su alrededor, 2 de daño.
+- **Fase 2** (≤ 60 %):
+  - Ruge y queda invulnerable 1,2 s.
+  - Sube el agua del borde de la arena, que frena.
+  - Ondas: dos anillos seguidos de 3,5 y 7 m, con el centro a salvo. Cada uno hace 1 de daño.
+  - Fragmentos de piedra: cinco en abanico de 60°.
+  - Rugido que empuja.
+- **Fase 3** (≤ 25 %): avisos un 25 % más cortos, menos espera entre ataques y la **Furia de la Primera Piedra**: dos tandas de tres zonas, una sobre el jugador, 2 de daño.
+- **Al vencerlo:**
+  - Queda sentado con el disco de jade encendido y cuenta su recuerdo («guardaba la primera memoria…»).
+  - Se activa `olm.guardian_liberado`, completa `MP_OLM_05` y no vuelve.
+  - El fragmento, la habilidad de tierra y la Bendición llegan en M5.

@@ -1674,6 +1674,303 @@
     ],
     "ppu": 45.254833995939045
   },
+  "Guardian_Piedra_Sentado_01": {
+    "lienzo": [
+      256,
+      288
+    ],
+    "pivote_px": [
+      128,
+      64
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Guardian_Piedra_Erguido_01": {
+    "lienzo": [
+      256,
+      288
+    ],
+    "pivote_px": [
+      128,
+      64
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Guardian_Piedra_Erguido_02": {
+    "lienzo": [
+      256,
+      288
+    ],
+    "pivote_px": [
+      128,
+      64
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Guardian_Piedra_Erguido_03": {
+    "lienzo": [
+      256,
+      288
+    ],
+    "pivote_px": [
+      128,
+      64
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Guardian_Piedra_Erguido_04": {
+    "lienzo": [
+      256,
+      288
+    ],
+    "pivote_px": [
+      128,
+      64
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Guardian_Piedra_Erguido_05": {
+    "lienzo": [
+      256,
+      288
+    ],
+    "pivote_px": [
+      128,
+      64
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Guardian_Piedra_Paso_01": {
+    "lienzo": [
+      256,
+      288
+    ],
+    "pivote_px": [
+      128,
+      64
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Guardian_Piedra_Paso_02": {
+    "lienzo": [
+      256,
+      288
+    ],
+    "pivote_px": [
+      128,
+      64
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Guardian_Piedra_Paso_03": {
+    "lienzo": [
+      256,
+      288
+    ],
+    "pivote_px": [
+      128,
+      64
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Guardian_Piedra_Paso_04": {
+    "lienzo": [
+      256,
+      288
+    ],
+    "pivote_px": [
+      128,
+      64
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Guardian_Piedra_Paso_05": {
+    "lienzo": [
+      256,
+      288
+    ],
+    "pivote_px": [
+      128,
+      64
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Guardian_Piedra_Embestida_01": {
+    "lienzo": [
+      256,
+      288
+    ],
+    "pivote_px": [
+      128,
+      64
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Guardian_Piedra_Embestida_02": {
+    "lienzo": [
+      256,
+      288
+    ],
+    "pivote_px": [
+      128,
+      64
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Guardian_Piedra_Embestida_03": {
+    "lienzo": [
+      256,
+      288
+    ],
+    "pivote_px": [
+      128,
+      64
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Guardian_Piedra_Embestida_04": {
+    "lienzo": [
+      256,
+      288
+    ],
+    "pivote_px": [
+      128,
+      64
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Guardian_Piedra_Embestida_05": {
+    "lienzo": [
+      256,
+      288
+    ],
+    "pivote_px": [
+      128,
+      64
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Guardian_Piedra_Golpe_01": {
+    "lienzo": [
+      256,
+      288
+    ],
+    "pivote_px": [
+      128,
+      64
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Guardian_Piedra_Golpe_02": {
+    "lienzo": [
+      256,
+      288
+    ],
+    "pivote_px": [
+      128,
+      64
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Guardian_Piedra_Golpe_03": {
+    "lienzo": [
+      256,
+      288
+    ],
+    "pivote_px": [
+      128,
+      64
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Guardian_Piedra_Golpe_04": {
+    "lienzo": [
+      256,
+      288
+    ],
+    "pivote_px": [
+      128,
+      64
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Guardian_Piedra_Golpe_05": {
+    "lienzo": [
+      256,
+      288
+    ],
+    "pivote_px": [
+      128,
+      64
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Guardian_Piedra_Rugido_01": {
+    "lienzo": [
+      256,
+      288
+    ],
+    "pivote_px": [
+      128,
+      64
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Guardian_Piedra_Rugido_02": {
+    "lienzo": [
+      256,
+      288
+    ],
+    "pivote_px": [
+      128,
+      64
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Guardian_Piedra_Rugido_03": {
+    "lienzo": [
+      256,
+      288
+    ],
+    "pivote_px": [
+      128,
+      64
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Guardian_Piedra_Rugido_04": {
+    "lienzo": [
+      256,
+      288
+    ],
+    "pivote_px": [
+      128,
+      64
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Guardian_Piedra_Rugido_05": {
+    "lienzo": [
+      256,
+      288
+    ],
+    "pivote_px": [
+      128,
+      64
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Guardian_Piedra_Liberado_01": {
+    "lienzo": [
+      256,
+      288
+    ],
+    "pivote_px": [
+      128,
+      64
+    ],
+    "ppu": 45.254833995939045
+  },
   "Tile_Camino_Trans_01": {
     "lienzo": [
       64,

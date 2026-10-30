@@ -5,9 +5,9 @@ using UnityEngine;
 namespace CronicasDeMexico.Editor.SceneGeneration
 {
     /// <summary>
-    /// Sprites de efectos dibujados por código e importados como pixel art (32 px por unidad, filtro Point): la marca de
-    /// aviso de los ataques (un círculo de 2 m de diámetro, blanco para teñirlo con SpriteRenderer.color) y el fragmento
-    /// de símbolo que dispara el eco borrado. Sin semitransparencias: el material recorta el alfa a 0,5, así que el
+    /// Sprites de efectos dibujados por código e importados como pixel art (32 px por unidad, filtro Point): las marcas de
+    /// aviso de los ataques (círculo y anillo de 2 m de diámetro y franja de 1 × 2 m, blancos para teñirlos con
+    /// SpriteRenderer.color) y el fragmento de símbolo que dispara el eco borrado. Sin semitransparencias: el material recorta el alfa a 0,5, así que el
     /// interior de la marca va tramado.
     /// </summary>
     public static class EffectSpriteFactory
@@ -18,21 +18,43 @@ namespace CronicasDeMexico.Editor.SceneGeneration
         static readonly Color32 Clear = new(0, 0, 0, 0);
         static readonly Color32 White = new(255, 255, 255, 255);
 
-        public static Sprite TelegraphCircle()
+        public static Sprite TelegraphCircle() => TelegraphDisc("Aviso_Circulo", 0f);
+
+        /// <summary>Anillo: el hueco central (TelegraphMarker.RingInnerRatio del radio) queda a salvo.</summary>
+        public static Sprite TelegraphRing() => TelegraphDisc("Aviso_Anillo", 0.5f);
+
+        static Sprite TelegraphDisc(string name, float innerRatio)
         {
             const int size = 64;
             var pixels = new Color32[size * size];
             const float center = (size - 1) * 0.5f;
+            var inner = center * innerRatio;
             for (var y = 0; y < size; y++)
             for (var x = 0; x < size; x++)
             {
                 var distance = Mathf.Sqrt((x - center) * (x - center) + (y - center) * (y - center));
-                var ring = distance <= center && distance > center - 3f;
-                var dither = distance <= center - 3f && (x + y) % 2 == 0 && (x / 2 + y / 2) % 2 == 0;
-                pixels[y * size + x] = ring || dither ? White : Clear;
+                var edge = distance <= center && (distance > center - 3f || (innerRatio > 0f && distance >= inner && distance < inner + 3f));
+                var dither = distance <= center - 3f && distance >= inner + 3f && Dither(x, y);
+                pixels[y * size + x] = edge || dither ? White : Clear;
             }
-            return Save("Aviso_Circulo", size, size, pixels);
+            return Save(name, size, size, pixels);
         }
+
+        /// <summary>Franja de 1 × 2 m con el pivote en el centro de su borde inferior (la embestida sale de ahí).</summary>
+        public static Sprite TelegraphLine()
+        {
+            const int width = 32, height = 64;
+            var pixels = new Color32[width * height];
+            for (var y = 0; y < height; y++)
+            for (var x = 0; x < width; x++)
+            {
+                var edge = x < 3 || x >= width - 3 || y < 2 || y >= height - 3;
+                pixels[y * width + x] = edge || Dither(x, y) ? White : Clear;
+            }
+            return Save("Aviso_Franja", width, height, pixels, new Vector2(0.5f, 0f));
+        }
+
+        static bool Dither(int x, int y) => (x + y) % 2 == 0 && (x / 2 + y / 2) % 2 == 0;
 
         public static Sprite SymbolShard()
         {
@@ -51,7 +73,7 @@ namespace CronicasDeMexico.Editor.SceneGeneration
             return Save("Fragmento_Simbolo", size, size, pixels);
         }
 
-        static Sprite Save(string name, int width, int height, Color32[] pixels)
+        static Sprite Save(string name, int width, int height, Color32[] pixels, Vector2? pivot = null)
         {
             OlmecaPrototypeGenerator.EnsureFolder(Folder);
             var path = $"{Folder}/{name}.png";
@@ -74,7 +96,9 @@ namespace CronicasDeMexico.Editor.SceneGeneration
             var settings = new TextureImporterSettings();
             importer.ReadTextureSettings(settings);
             settings.spriteMeshType = SpriteMeshType.FullRect;
-            settings.spriteAlignment = (int)SpriteAlignment.Center;
+            settings.spriteAlignment = (int)(pivot.HasValue ? SpriteAlignment.Custom : SpriteAlignment.Center);
+            if (pivot.HasValue)
+                settings.spritePivot = pivot.Value;
             importer.SetTextureSettings(settings);
             importer.SaveAndReimport();
             return AssetDatabase.LoadAssetAtPath<Sprite>(path);

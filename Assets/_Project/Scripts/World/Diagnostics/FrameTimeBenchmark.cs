@@ -53,6 +53,15 @@ namespace CronicasDeMexico.World.Diagnostics
             ("Arena", new Vector2(12f, 0f)),
         };
 
+        // En Olmeca_Mazmorra_P3: la antesala y la arena del Guardián de la Piedra Viva (centro y borde).
+        const string ArenaSceneName = "Olmeca_Mazmorra_P3";
+        static readonly (string name, Vector2 point)[] ArenaViews =
+        {
+            ("Antesala", new Vector2(3.5f, 0.5f)),
+            ("Arena", new Vector2(5f, 12f)),
+            ("BordeArena", new Vector2(8f, 16f)),
+        };
+
         readonly float[] samples = new float[MaxSamples];
         string outputFolder;
 
@@ -117,6 +126,7 @@ namespace CronicasDeMexico.World.Diagnostics
                 {
                     JungleSceneName => JungleViews,
                     DungeonSceneName => DungeonViews,
+                    ArenaSceneName => ArenaViews,
                     _ => Views,
                 };
                 foreach (var (viewName, point) in views)

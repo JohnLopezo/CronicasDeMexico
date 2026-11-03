@@ -2,14 +2,18 @@ using System.Collections.Generic;
 using CronicasDeMexico.Core.Events;
 using CronicasDeMexico.Core.Narrative;
 using CronicasDeMexico.Data.Characters;
+using CronicasDeMexico.Editor.PixelArt;
 using CronicasDeMexico.Gameplay.Combat;
 using CronicasDeMexico.Gameplay.Dungeon;
 using CronicasDeMexico.Gameplay.Enemies;
 using CronicasDeMexico.Gameplay.Interaction;
 using CronicasDeMexico.Gameplay.Narrative;
+using CronicasDeMexico.Gameplay.Player;
+using CronicasDeMexico.World.Rendering;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
+using UnityEngine.Rendering;
 using static CronicasDeMexico.Editor.SceneGeneration.PixelArtSceneBuilder;
 
 namespace CronicasDeMexico.Editor.SceneGeneration
@@ -133,7 +137,8 @@ namespace CronicasDeMexico.Editor.SceneGeneration
                 var collected = OlmecaNarrativeAssets.FragmentFlag(i);
 
                 var spirit = CreateSpirit(clearing, $"EspirituCorrompido_{i}", spriteSet, points.claros[i - 1].Value, defeated);
-                ShowWhen(spirit, null, new[] { defeated }, liveUpdate: true);
+                // Al cargar no aparece si ya se venció; al vencerlo, cae y desaparece solo (EnemyChaser.deathLinger).
+                ShowWhen(spirit, null, new[] { defeated }, liveUpdate: false);
                 OlmecaRewardAssets.AddLoot(spirit, rewards.CommonSpirit, OlmecaRewardAssets.JungleLevel);
 
                 var fragment = CreateFragment(clearing, i, sprites, points.fragmentos[i - 1].Value, collected, messageChannel);
@@ -154,7 +159,25 @@ namespace CronicasDeMexico.Editor.SceneGeneration
         internal static GameObject CreateCorruptedSpirit(Transform parent, string name, DirectionalSpriteSet spriteSet, Vector2 home,
             string defeatedFlag)
         {
-            var root = CreateCharacter(name, spriteSet, out var spriteRenderer);
+            // Etapa B del plan de personajes: el espíritu corrompido es el jaguar corrupto (cuadrúpedo, sprites del
+            // flujo a la resolución del escenario) con su salto avisado. Sin esos sprites, la silueta provisional.
+            var jaguar = JaguarCharacterAssets.SpritesExist() ? JaguarCharacterAssets.Corrupted() : null;
+            GameObject root;
+            SpriteRenderer spriteRenderer;
+            if (jaguar != null)
+            {
+                spriteSet = jaguar.Walk;
+                root = OlmecaPrototypeGenerator.CreateCharacterRoot(name, spriteSet, CharacterMaterial(), out spriteRenderer);
+                spriteRenderer.shadowCastingMode = ShadowCastingMode.Off;
+                SetProperty(spriteRenderer.GetComponent<SpriteBillboard>(), "mode",
+                    property => property.enumValueIndex = (int)SpriteBillboard.BillboardMode.CameraPlane);
+                spriteRenderer.gameObject.AddComponent<PixelGridSnap>();
+                JaguarCharacterAssets.ConfigureController(root.GetComponent<CharacterController>());
+            }
+            else
+            {
+                root = CreateCharacter(name, spriteSet, out spriteRenderer);
+            }
             root.transform.SetParent(parent, false);
             root.transform.position = ToWorld(home);
             root.layer = OlmecaPrototypeGenerator.Layer(OlmecaPrototypeGenerator.EnemyLayerName); // lo que golpea PlayerAttack
@@ -163,15 +186,43 @@ namespace CronicasDeMexico.Editor.SceneGeneration
             var chaser = root.AddComponent<EnemyChaser>();
             SetProperty(chaser, "detectionRadius", property => property.floatValue = 4.5f); // a la medida de un claro
             SetProperty(chaser, "loseRadius", property => property.floatValue = 7f);
-            if (defeatedFlag == null)
+            if (defeatedFlag == null || jaguar != null)
                 SetProperty(chaser, "respawns", property => property.boolValue = false);
             OlmecaPrototypeGenerator.AddSpriteAnimator(root, chaser, spriteRenderer, spriteSet);
+            if (jaguar != null)
+            {
+                SetProperty(chaser, "contactDistance", property => property.floatValue = 1.0f); // cuerpo más largo
+                SetProperty(chaser, "deathLinger", property => property.floatValue = jaguar["Muerte"].Duration + 0.6f);
+                chaser.Lunges = true;
+                chaser.LungeMarker = LungeMarker(root.transform);
+                var animator = root.GetComponent<DirectionalSpriteAnimator>();
+                animator.IdleSet = jaguar.Idle;
+                root.AddComponent<CharacterAnimationDriver>().Configure(animator, null, null, jaguar["Acecho"], jaguar["Salto"],
+                    jaguar["Golpeado"], jaguar["Muerte"]);
+            }
 
             var report = root.AddComponent<ReportOnDefeat>();
             report.EnemyId = OlmecaNarrativeAssets.CorruptedSpiritId;
             report.FlagOnDefeat = defeatedFlag;
             root.AddComponent<CorruptionPulse>().SpriteRenderer = spriteRenderer;
             return root;
+        }
+
+        // Franja que avisa el salto del jaguar corrupto (TelegraphMarker se desprende del dueño al empezar).
+        static TelegraphMarker LungeMarker(Transform owner)
+        {
+            var markerObject = new GameObject("Aviso_Salto");
+            markerObject.transform.SetParent(owner, false);
+            var markerRenderer = markerObject.AddComponent<SpriteRenderer>();
+            markerRenderer.sprite = EffectSpriteFactory.TelegraphLine();
+            markerRenderer.sharedMaterial = AssetDatabase.LoadAssetAtPath<Material>(PixelArtAssets.AlertMaterialPath);
+            markerRenderer.shadowCastingMode = ShadowCastingMode.Off;
+            markerRenderer.receiveShadows = false;
+            markerRenderer.enabled = false; // lo enciende TelegraphMarker.ShowLine
+            var marker = markerObject.AddComponent<TelegraphMarker>();
+            SetProperty(marker, "shape", property => property.enumValueIndex = (int)TelegraphMarker.MarkerShape.Line);
+            SetProperty(marker, "color", property => property.colorValue = new Color(0.66f, 0.55f, 0.91f, 1f)); // violeta del olvido
+            return marker;
         }
 
         static GameObject CreateFragment(Transform parent, int index, Dictionary<string, Sprite> sprites, Vector2 point,

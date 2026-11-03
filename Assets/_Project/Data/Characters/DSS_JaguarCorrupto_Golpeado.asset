@@ -1,0 +1,36 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0f3a2dbe737f384da36cc4134724892, type: 3}
+  m_Name: DSS_JaguarCorrupto_Golpeado
+  m_EditorClassIdentifier: 
+  clips:
+  - idle: {fileID: 21300000, guid: c9db5d34bdfc58c4491d202b56565c12, type: 3}
+    walk:
+    - {fileID: 21300000, guid: 1b69e6c31c0b4be4aa599d5946a41a0d, type: 3}
+    - {fileID: 21300000, guid: 132f6b7a57c1ac345a0037d2d9391d40, type: 3}
+  - idle: {fileID: 21300000, guid: 92b181385a60e034083fb625b983b8ec, type: 3}
+    walk:
+    - {fileID: 21300000, guid: 3771fc4d214beb34ab1e1cca64075007, type: 3}
+    - {fileID: 21300000, guid: df8f3d699e89caf4188804e0a5c8b8ce, type: 3}
+  - idle: {fileID: 21300000, guid: 092c305b1c75c164190681be1ae362ae, type: 3}
+    walk:
+    - {fileID: 21300000, guid: 9360a67a7cd5d954d8dbff11192531ef, type: 3}
+    - {fileID: 21300000, guid: f26c0f865fc6eee47b14bf851b701e84, type: 3}
+  - idle: {fileID: 21300000, guid: e3ef889f8fc0e204fbaf36a3ab0323da, type: 3}
+    walk:
+    - {fileID: 21300000, guid: e9f845c15c3fd4341acea90dcc6887a8, type: 3}
+    - {fileID: 21300000, guid: 6e9903fb6c174c644997bf79be0008b3, type: 3}
+  - idle: {fileID: 21300000, guid: a2c471a6b3960874e949f062e3b5eaee, type: 3}
+    walk:
+    - {fileID: 21300000, guid: 0c123d073d1cf21438d8902e01b9a28b, type: 3}
+    - {fileID: 21300000, guid: 667df6315e3101641a7877c575a8fafa, type: 3}
+  walkFramesPerSecond: 10

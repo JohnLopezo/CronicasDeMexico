@@ -21,6 +21,23 @@ Plantilla:
 
 ---
 
+## 2026-11-03 — i7-10700: aldea A3 (referencias visuales 3–5)
+
+- **Rama / último commit:** `feature/prototipo-olmeca` @ `199a8e9`.
+  - Al empezar ya había 20 archivos locales sin subir que no estaban en esta bitácora: animación direccional, `EnemyChaser`, `Jugador.prefab`, las 5 escenas y `generar_olmeca.py`. El usuario pidió seguir encima de ellos.
+- **Hecho:** etapas A3–D3, autorizadas. Detalle en `Docs/Arte_Olmeca_Demo.md` §12, «Etapa A3».
+  - Recursos nuevos de aldea y casas rehechas.
+  - Patios, vegetación, fogones, rocas, troncos, bancal y pasto nuevo en la zona de la aldea.
+  - Colisiones nuevas en `PixelArtSceneBuilder`.
+  - Flujo completo regenerado (unos 10 min en el i7) y `Olmeca_Ciudad` regenerada.
+- **Estado al cerrar:** EditMode 80/80 y PlayMode 62/62. Medición en `Docs/Rendimiento.md`: la aldea, 4,35 ms en Bajo.
+  - Commit y push de todo, por petición del usuario, en un solo commit: lo que ya había en local y A3.
+- **Siguiente:**
+  1. El usuario revisa la aldea en el Editor y aprueba A3 o pide ajustes.
+  2. Medir en el i5.
+
+---
+
 ## 2026-10-30 (fin) — i7-10700: M5, sistema de recompensas
 
 - **Rama / último commit:** `feature/prototipo-olmeca` @ `bf08922` al empezar. M5 se revisó y se subió en un

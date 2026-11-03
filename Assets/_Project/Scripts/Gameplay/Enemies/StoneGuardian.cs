@@ -281,7 +281,8 @@ namespace CronicasDeMexico.Gameplay.Enemies
                 var flags = controller.Move(FacingDirection * step + Vector3.down * 0.5f * Time.deltaTime);
                 travelled += step;
                 planarVelocity = FacingDirection * chargeSpeed;
-                if (!hit && targetHealth != null && PlanarDistance(target.position) < 1.4f)
+                // Alcanza al chocar con el objetivo, sea cual sea el ancho de su cápsula.
+                if (!hit && targetHealth != null && PlanarDistance(target.position) < controller.radius + 0.6f)
                     hit = targetHealth.TryDamage(heavyDamage, transform.position);
                 if ((flags & CollisionFlags.Sides) != 0)
                 {

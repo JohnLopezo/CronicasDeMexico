@@ -35,6 +35,23 @@ La elección define apariencia, atributos, animaciones y estilo de combate; **no
 
 El juego distinguirá **endémico**, **nativo** y **emblemático** (§2.3). La tabla anterior es orientativa: comprobar distribución y estado de conservación con fuentes antes de usarlo en textos del juego.
 
+**Afinidades adoptadas (decisión del autor, 2026-10-30, a partir de `Docs/Personages.png`).** Cada Guardián tiene dos
+afinidades; la primera es la inicial.
+
+| Guardián | Afinidades |
+|---|---|
+| Jaguar | Tierra / Oscuridad |
+| Ajolote | Agua / Luz |
+| Quetzal | Viento / Luz |
+| Águila real | Viento / Fuego |
+| Xoloitzcuintle | Oscuridad / Luz |
+| Lobo mexicano | Tierra / Viento |
+
+La Mariposa monarca (luz, en la biblia) y la Vaquita marina (agua, a futuro) no aparecen en la imagen; sus afinidades
+siguen abiertas. Estas afinidades sustituyen las propuestas del GDD de la tabla anterior.
+
+**Diseño visual del Jaguar:** ficha en `Docs/Personajes/Fichas/Jaguar.md`.
+
 ## Alcance inicial
 
 Se implementa **un** Guardián completo para el vertical slice (GDD §4, §17): **el Jaguar** (decidido el 2026-10-29). Los demás quedan como diseño. Conviene diferenciarlo visual y narrativamente de los **espíritus jaguar** enemigos del prototipo (o renombrar a estos), para no confundir al jugador.

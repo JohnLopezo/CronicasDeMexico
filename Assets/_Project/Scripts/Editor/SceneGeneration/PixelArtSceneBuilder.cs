@@ -53,6 +53,14 @@ namespace CronicasDeMexico.Editor.SceneGeneration
             ("Tronco_Caido_01", new Vector3(0.9f, 0.5f, 0.35f)),
             ("Tronco_Caido_02", new Vector3(0.45f, 0.45f, 0.35f)),
             ("Entrada_Estructura", new Vector3(2.9f, 3.8f, 1.5f)), // el montículo con sus columnas
+            // Aldea, etapa A3 (generar_olmeca.py, aldea_a3). El petate va horneado en el suelo y se pisa.
+            ("Cestos", new Vector3(0.5f, 0.5f, 0.4f)),
+            ("Lena", new Vector3(0.6f, 0.55f, 0.35f)),
+            ("Cerca_Varas_02", new Vector3(0.25f, 1.1f, 0.8f)),
+            ("Cerca_Varas", new Vector3(1.1f, 0.25f, 0.8f)),
+            ("Poste_Manta", new Vector3(1.0f, 0.25f, 1.3f)),
+            ("Roca_Musgo", new Vector3(0.75f, 0.75f, 0.6f)),
+            ("Tronco_Grueso", new Vector3(1.3f, 0.5f, 0.45f)),
             // Mazmorra (los bordes de cada sala ya los cierra el vacío; el muro solo evita pisar sus columnas)
             ("Muro_Basalto_Y", new Vector3(0.3f, 1f, 1.7f)),
             ("Muro_Basalto", new Vector3(1f, 0.3f, 1.7f)),
@@ -591,10 +599,11 @@ namespace CronicasDeMexico.Editor.SceneGeneration
                 ?? throw new InvalidOperationException($"No se encontró {OlmecaPrototypeGenerator.PlayerPrefabPath}.");
             var player = (GameObject)PrefabUtility.InstantiatePrefab(prefab, scene);
             player.transform.position = ToWorld(start);
-            // El sprite provisional está a 32 px por unidad: se escala para que cada píxel coincida con los del
-            // escenario (45,25 px por unidad). La escala va en la raíz porque el animador voltea el sprite con su
-            // escala X; también reduce el CharacterController a la talla del arte (~1 m).
-            player.transform.localScale = Vector3.one * (PlaceholderPixelsPerUnit / IsometricProjection.PixelsPerUnit);
+            // El jaguar (etapa A) ya está a la resolución del escenario. El sprite provisional, a 32 px por unidad, se
+            // escalaba para que cada píxel coincidiera con los del escenario (45,25 px por unidad), en la raíz porque el
+            // animador voltea el sprite con su escala X.
+            if (!JaguarCharacterAssets.SpritesExist())
+                player.transform.localScale = Vector3.one * (PlaceholderPixelsPerUnit / IsometricProjection.PixelsPerUnit);
 
             var sprite = player.GetComponentInChildren<SpriteBillboard>();
             // Orientado al plano de la cámara: escribe la profundidad de sus pies, igual que los objetos.

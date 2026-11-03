@@ -16,6 +16,7 @@ from mathutils import Euler, Matrix, Vector, noise
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import pixelart_comun as pa  # noqa: E402
+import personajes as pj  # noqa: E402
 
 ARRIBA_Z = Vector((0, 0, 1))
 
@@ -362,6 +363,28 @@ def tile_pasto(rng, variante):
         for _ in range(7):
             col = rng.choice(["#F47588", "#F1C891"])
             esferita("Flor", (rng.uniform(-0.4, 0.4), rng.uniform(-0.4, 0.4), 0.05), 0.03, [col, col])
+    # Etapa A3 (aldea). 4: pasto tupido con matas altas y flores de varios colores; 5: calva de tierra con guijarros.
+    # Ambas dejan el borde del tile como las demás, para que empalmen.
+    if variante == 4:
+        v, f, c = [], [], []
+        for _ in range(10):
+            matas(v, f, c, (rng.uniform(-0.38, 0.38), rng.uniform(-0.38, 0.38), 0), rng.randint(6, 9), 0.11, 0.05, rng,
+                  base="#387022", puntas=("#73AD36", "#92B535", "#AAC652"), grosor=0.02)
+        pa.asignar(pa.malla("Matas", v, f, c), pa.mat_color_vertice("Vegetal"))
+        for _ in range(9):
+            col = rng.choice(["#B24232", "#F47588", "#994F66", "#F1C891"])
+            esferita("Flor", (rng.uniform(-0.38, 0.38), rng.uniform(-0.38, 0.38), 0.07), 0.026, [col, col])
+    elif variante == 5:
+        bpy.ops.mesh.primitive_circle_add(vertices=20, radius=0.27, fill_type='NGON', location=(0, 0, ALTURA_PASTO + 0.006))
+        calva = bpy.context.active_object
+        for vt in calva.data.vertices:
+            vt.co.xy *= 1 + 0.25 * noise.noise(Vector((vt.co.x * 6 + 3, vt.co.y * 6, 0)))
+        calva.scale.y = 0.8
+        pa.asignar(calva, pa.mat_ruido("Calva", TIERRA_HUMEDA, escala=14))
+        guijarros(rng, 6, 0.018, 0.035, ["#7B5B33", "#9B713F", "#C6925A"], zona=0.18)
+        for o in bpy.context.scene.objects:   # guijarros() los pone a z = 0: se suben sobre la calva
+            if o.name.startswith("Ico"):
+                o.location.z = ALTURA_PASTO + 0.012
 
 
 def tile_agua(rng, cuadro):
@@ -1000,10 +1023,11 @@ def muros_bajareque(rng, a, b, r, z0, alto, puerta=0.28, alto_puerta=0.82):
     pa.asignar(caja("Dintel", (0, -b - 0.005, z0 + alto_puerta + 0.025), (2 * puerta + 0.12, 0.05, 0.05), 0), mat)
 
 
-def techo_palma(rng, a, b, r, z_alero, z_cumbrera, n=120, anillos=16):
+def techo_palma(rng, a, b, r, z_alero, z_cumbrera, n=120, anillos=16, fleco=None, nombre="Techo"):
     """Techo de palma a cuatro aguas sobre un rectángulo redondeado: los anillos se encogen hacia la cumbrera
     (b llega a 0; a se acorta lo mismo). Alero con flecos irregulares; la paja forma vetas en el sentido de la
-    pendiente y solo hay una franja de amarre discreta a media altura."""
+    pendiente y solo hay una franja de amarre discreta a media altura. fleco: color del anillo del alero (borde oscuro
+    de la paja vieja, etapa A3)."""
     verts, cols = [], []
     for k in range(anillos + 1):
         t = k / anillos
@@ -1015,7 +1039,9 @@ def techo_palma(rng, a, b, r, z_alero, z_cumbrera, n=120, anillos=16):
             verts.append(p + Vector((0, 0, z)))
             # Ruido fino a lo largo del anillo y estirado entre anillos: vetas que bajan por el techo
             veta = noise.noise(Vector((p.x * 16, p.y * 16, k * 0.12)))
-            if k == anillos // 2 and veta < 0.3:
+            if k == 0 and fleco:
+                cols.append(fleco)
+            elif k == anillos // 2 and veta < 0.3:
                 cols.append(PAJA[0])   # amarre
             elif k >= anillos - 1:
                 cols.append(PAJA[0])   # cumbrera
@@ -1023,17 +1049,35 @@ def techo_palma(rng, a, b, r, z_alero, z_cumbrera, n=120, anillos=16):
                 cols.append(PAJA[0] if veta < -0.35 else PAJA[1] if veta < 0.05 else PAJA[2] if veta < 0.4 else PAJA[3])
     caras = [(k * n + j, k * n + (j + 1) % n, (k + 1) * n + (j + 1) % n, (k + 1) * n + j)
              for k in range(anillos) for j in range(n)]
-    pa.asignar(pa.malla("Techo", verts, caras, cols), pa.mat_color_vertice("Palma"))
+    pa.asignar(pa.malla(nombre, verts, caras, cols), pa.mat_color_vertice("Palma"))
 
 
 def casa_bajareque(rng, variante):
     """Casa de bajareque con techo de palma sobre basamento bajo (D: casas perecederas en torno a La Venta; la forma
-    concreta es I). Variantes: 1 rectangular, 2 absidal (extremos redondeados), 3 pequeña y redonda."""
+    concreta es I). Variantes: 1 rectangular, 2 absidal (extremos redondeados), 3 pequeña y redonda.
+    Etapa A3: horcones de madera a la vista, techo en dos capas con el alero oscuro, escalón de piedra ante la puerta
+    y enseres junto al muro."""
     a, b, r, cumbrera = {1: (1.0, 0.7, 0.06, 2.45), 2: (1.05, 0.65, 0.65, 2.4), 3: (0.6, 0.6, 0.6, 2.2)}[variante]
     z0, alto, vuelo = 0.2, 1.0, 0.3
     basamento(rng, a, b, r)
     muros_bajareque(rng, a, b, r, z0, alto)
-    techo_palma(rng, a + vuelo, b + vuelo, max(r + vuelo, 0.1) if r > 0.1 else 0.1, z0 + alto + 0.04, cumbrera)
+    r_techo = max(r + vuelo, 0.1) if r > 0.1 else 0.1
+    z_alero = z0 + alto + 0.04
+    techo_palma(rng, a + vuelo, b + vuelo, r_techo, z_alero, cumbrera, fleco="#48331F")
+    # Segunda capa: un faldón más corto encima del primero, con su propio fleco
+    t2 = 0.3
+    techo_palma(rng, (a + vuelo) - (b + vuelo) * t2, (b + vuelo) * (1 - t2), r_techo * (1 - t2),
+                z_alero + (cumbrera - z_alero) * t2 + 0.05, cumbrera + 0.03, anillos=11, fleco="#6D502E", nombre="Faldon")
+    mat_horcon = pa.mat_ruido("Horcon", ["#48331F", "#6D502E", "#9C7842"], escala=14, estirar=(1, 1, 0.2))
+    for p in perimetro(a + 0.03, b + 0.03, r, 8 if variante == 3 else 10):
+        if p.y < -b + 0.05 and abs(p.x) < 0.45:
+            continue   # no tapar la puerta
+        pa.asignar(caja("Horcon", (p.x, p.y, z0 + alto / 2 + 0.02), (0.07, 0.07, alto + 0.04), 0), mat_horcon)
+    escalon = caja("Escalon", (0, -b - 0.52, 0.06), (0.62, 0.26, 0.12), 0.02)   # laja de basalto al pie del basamento
+    pa.asignar(escalon, pa.mat_ruido("Escalon", ["#4A473B", "#615C48", "#7D745B", "#9C8B75"], escala=10))
+    # Sobre el basamento, delante del muro de la puerta (también cabe en la casa redonda)
+    vasija("OllaMuro", Vector((a * 0.6, -b - 0.15, z0)), 0.1, 0.2, ["#C6925A", "#B6814C", "#E3B47C"], cuello=0.05)
+    cesto("CestoMuro", (-a * 0.6, -b - 0.14, z0), 0.1, 0.13, TRAMA)
     v, f, c = [], [], []
     for _ in range(7):
         ang = rng.uniform(-math.pi, 0.6)
@@ -1384,6 +1428,308 @@ def canoa(rng, variante):
         p.rotation_euler.z = ang
         pa.asignar(p, mat_remo)
     vasija("TecomateCanoa", rot(-0.32, 0.0, borda - 0.08), 0.06, 0.1, ["#B16143", "#9B713F"])
+
+
+# ---------------------------------------------------------------- etapa A3: aldea con más vida (Referencia_Visual_Olmeca3–5)
+# Cestería, cercas de varas, mantas y petates son perecederos: plausibles, sin evidencia directa en La Venta (I). Se
+# descartan de las referencias las pirámides de sillares, los glifos, los cocoteros y la carreta (sin rueda de carga).
+
+def cesto(nombre, centro, radio, alto, colores):
+    """Cesto de palma tejida: cilindro algo abierto con la trama en bandas alternas, borde oscuro e interior en sombra."""
+    n, filas = 20, 6
+    verts, cols = [], []
+    for k in range(filas + 1):
+        r = radio * (0.82 + 0.18 * k / filas)
+        for j in range(n):
+            a = 2 * math.pi * j / n
+            verts.append(Vector(centro) + Vector((math.cos(a) * r, math.sin(a) * r, alto * k / filas)))
+            cols.append(colores[2] if k == filas else colores[(j // 2 + k) % 2])
+    caras = [(k * n + j, k * n + (j + 1) % n, (k + 1) * n + (j + 1) % n, (k + 1) * n + j) for k in range(filas) for j in range(n)]
+    caras.append(tuple(reversed(range(n))))
+    pa.asignar(pa.malla(nombre, verts, caras, cols), pa.mat_color_vertice("Cesteria"))
+    bpy.ops.mesh.primitive_cylinder_add(vertices=n, radius=radio * 0.95, depth=0.01,
+                                        location=Vector(centro) + Vector((0, 0, alto * 0.75)))
+    pa.asignar(bpy.context.active_object, pa.mat_ruido(nombre + "Dentro", ["#3A2A1A", "#48331F"], escala=10))
+
+
+TRAMA = ["#C6925A", "#9C7842", "#6D502E"]   # dos tonos de palma y el borde
+
+
+def cestos(rng, variante):
+    """1 cesto grande con mazorcas (maíz cultivado en La Venta: D) y uno pequeño; 2 dos cestos apilados y un tecomate."""
+    if variante == 1:
+        cesto("CestoGrande", (0, 0.04, 0), 0.17, 0.2, TRAMA)
+        for _ in range(6):   # mazorcas asomando por la boca
+            p = Vector((rng.uniform(-0.09, 0.09), rng.uniform(-0.05, 0.13), 0.2))
+            bpy.ops.mesh.primitive_uv_sphere_add(segments=8, ring_count=5, radius=0.035, location=p)
+            m = bpy.context.active_object
+            m.scale = (1, 1, 2.2)
+            m.rotation_euler = Euler((rng.uniform(-0.6, 0.6), rng.uniform(-0.6, 0.6), 0))
+            pa.asignar(m, pa.mat_ruido("Mazorca", ["#E3B47C", "#F1C891", "#C6925A"], escala=40))
+        cesto("CestoChico", (0.22, -0.16, 0), 0.09, 0.11, ["#9C7842", "#C6925A", "#48331F"])
+    else:
+        cesto("CestoBase", (-0.04, 0.05, 0), 0.15, 0.17, TRAMA)
+        cesto("CestoArriba", (-0.04, 0.05, 0.17), 0.12, 0.13, ["#9C7842", "#C6925A", "#48331F"])
+        vasija("TecomateCesto", Vector((0.21, -0.14, 0)), 0.08, 0.13, ["#B16143", "#9B713F"])
+    v, f, c = [], [], []
+    matas(v, f, c, (-0.12, -0.22, 0), 7, 0.1, 0.06, rng, grosor=0.02)
+    pa.asignar(pa.malla("Pasto", v, f, c), pa.mat_color_vertice("Vegetal"))
+
+
+def petate(rng, variante):
+    """Petate (estera de palma) tendido en el suelo, con un cajete; se hornea en el suelo como las grietas, para que el
+    jugador lo pise sin que el sprite lo tape."""
+    n_x, n_y = 24, 16
+    verts, caras, cols = [], [], []
+    for j in range(n_y + 1):
+        for i in range(n_x + 1):
+            verts.append(Vector((-0.6 + 1.2 * i / n_x, -0.4 + 0.8 * j / n_y, 0.008)))
+            borde = i in (0, n_x) or j in (0, n_y)
+            cols.append("#6D502E" if borde else TRAMA[((i // 2) + (j // 2)) % 2])   # tejido en damero de bandas
+    for j in range(n_y):
+        for i in range(n_x):
+            k = j * (n_x + 1) + i
+            caras.append((k, k + 1, k + n_x + 2, k + n_x + 1))
+    pa.asignar(pa.malla("Petate", verts, caras, cols), pa.mat_color_vertice("Petate"))
+    bpy.ops.mesh.primitive_cylinder_add(vertices=16, radius=0.09, depth=0.05, location=(0.3, 0.12, 0.033))
+    pa.asignar(bpy.context.active_object, pa.mat_ruido("CajetePetate", ["#E3B47C", "#C9C0AB"], escala=12))
+    for _ in range(9):   # semillas de cacao (I) secándose
+        p = (rng.uniform(-0.35, 0.05), rng.uniform(-0.2, 0.15), 0.018)
+        bpy.ops.mesh.primitive_ico_sphere_add(subdivisions=1, radius=0.022, location=p)
+        pa.asignar(bpy.context.active_object, pa.mat_ruido("Semilla", ["#644B2A", "#7B5B33"], escala=20))
+
+
+def lena(rng, variante):
+    """Leña apilada entre dos estacas: troncos de corteza oscura con el corte claro hacia la cámara."""
+    corteza = pa.mat_ruido("Corteza", ["#48331F", "#6D502E", "#9C7842"], escala=18)
+    corte = pa.mat_ruido("Corte", ["#C6925A", "#E3B47C", "#9C7842"], escala=30)
+    for fila, cuantos in enumerate((4, 3, 2)):
+        for i in range(cuantos):
+            x = (i - (cuantos - 1) / 2) * 0.1 + rng.uniform(-0.01, 0.01)
+            z = 0.045 + fila * 0.082
+            largo = rng.uniform(0.5, 0.6)
+            bpy.ops.mesh.primitive_cylinder_add(vertices=8, radius=0.043, depth=largo, location=(x, 0, z))
+            t = bpy.context.active_object
+            t.rotation_euler = Euler((math.radians(90), 0, 0))
+            pa.asignar(t, corteza)
+            bpy.ops.mesh.primitive_cylinder_add(vertices=8, radius=0.036, depth=0.006, location=(x, -largo / 2 - 0.002, z))
+            tapa = bpy.context.active_object
+            tapa.rotation_euler = Euler((math.radians(90), 0, 0))
+            pa.asignar(tapa, corte)
+    for x in (-0.27, 0.27):
+        pa.asignar(caja("Estaca", (x, 0, 0.18), (0.035, 0.035, 0.36), 0), corteza)
+    v, f, c = [], [], []
+    matas(v, f, c, (0.2, -0.25, 0), 8, 0.12, 0.06, rng, grosor=0.02)
+    pa.asignar(pa.malla("Pasto", v, f, c), pa.mat_color_vertice("Vegetal"))
+
+
+def cerca_varas(rng, variante):
+    """Cerca baja de varas de 1,1 m: estacas desiguales atadas a dos travesaños. Variante 1 a lo largo de X, 2 de Y."""
+    mat = pa.mat_ruido("Vara", ["#48331F", "#6D502E", "#9C7842", "#A28A6D"], escala=16, estirar=(1, 1, 0.2))
+    n = 10
+    for i in range(n):
+        x = -0.5 + i / (n - 1)
+        alto = rng.uniform(0.5, 0.68)
+        vara = caja("Vara", (x, rng.uniform(-0.01, 0.01), alto / 2), (0.04, 0.04, alto), 0)
+        vara.rotation_euler = Euler((rng.uniform(-0.05, 0.05), rng.uniform(-0.06, 0.06), 0))
+        pa.asignar(vara, mat)
+    for z in (0.2, 0.42):
+        pa.asignar(caja("Travesano", (0, -0.03, z), (1.1, 0.03, 0.03), 0), mat)
+    v, f, c = [], [], []
+    for x in (-0.35, 0.1, 0.45):
+        matas(v, f, c, (x, -0.08, 0), rng.randint(6, 9), 0.18, 0.07, rng, grosor=0.022)
+    pa.asignar(pa.malla("Pasto", v, f, c), pa.mat_color_vertice("Vegetal"))
+    if variante == 2:
+        bpy.context.view_layer.update()
+        giro = Matrix.Rotation(math.radians(90), 4, 'Z')
+        for o in bpy.context.scene.objects:
+            if o.type == 'MESH':
+                o.matrix_world = giro @ o.matrix_world
+
+
+def poste_manta(rng, variante):
+    """Dos postes con un travesaño: 1 manta de algodón listada puesta a secar; 2 mazorcas y manojos de hierbas colgados."""
+    mat = pa.mat_ruido("PosteManta", ["#48331F", "#6D502E", "#9C7842"], escala=14, estirar=(1, 1, 0.2))
+    for x in (-0.45, 0.45):
+        pa.asignar(caja("Poste", (x, 0, 0.65), (0.07, 0.07, 1.3), 0), mat)
+    pa.asignar(caja("Travesano", (0, 0, 1.22), (1.05, 0.05, 0.05), 0), mat)
+    if variante == 1:
+        listas = ["#E3B47C", "#E3B47C", "#B24232", "#E3B47C", "#B16143", "#994F66", "#E3B47C", "#B24232"]
+        n_x, n_y = 12, 16
+        verts, caras, cols = [], [], []
+        for j in range(n_y + 1):
+            for i in range(n_x + 1):
+                x = -0.32 + 0.64 * i / n_x
+                verts.append(Vector((x, -0.03 + 0.02 * math.sin(i * 1.3), 1.19 - 0.72 * j / n_y)))
+                cols.append(listas[j * len(listas) // (n_y + 1)])
+        for j in range(n_y):
+            for i in range(n_x):
+                k = j * (n_x + 1) + i
+                caras.append((k, k + 1, k + n_x + 2, k + n_x + 1))
+        pa.asignar(pa.malla("Manta", verts, caras, cols), pa.mat_color_vertice("Manta"))
+    else:
+        for i, x in enumerate((-0.28, -0.1, 0.1, 0.28)):
+            pa.asignar(caja("Cuerda", (x, 0, 1.12), (0.01, 0.01, 0.18), 0), mat)
+            if i % 2 == 0:   # par de mazorcas
+                for dx in (-0.025, 0.025):
+                    bpy.ops.mesh.primitive_uv_sphere_add(segments=8, ring_count=5, radius=0.035, location=(x + dx, 0, 0.94))
+                    m = bpy.context.active_object
+                    m.scale = (1, 1, 2.3)
+                    pa.asignar(m, pa.mat_ruido("MazorcaColgada", ["#E3B47C", "#F1C891", "#C6925A"], escala=40))
+            else:   # manojo de hierbas
+                v, f, c = [], [], []
+                matas(v, f, c, (x, 0, 0.78), 14, 0.26, 0.03, rng, base="#387022", puntas=("#568B26", "#73AD36"), grosor=0.018)
+                pa.asignar(pa.malla("Manojo", v, f, c), pa.mat_color_vertice("Vegetal"))
+    v, f, c = [], [], []
+    for x in (-0.45, 0.45):
+        matas(v, f, c, (x, -0.06, 0), rng.randint(7, 10), 0.16, 0.06, rng, grosor=0.022)
+    pa.asignar(pa.malla("Pasto", v, f, c), pa.mat_color_vertice("Vegetal"))
+
+
+def hoja_corazon(v, f, c, base, azim, elev, largo, ancho, col_base, col_borde):
+    """Hoja acorazonada (malanga) en abanico de triángulos desde el extremo del pecíolo, con la punta caída."""
+    d = Vector((math.cos(azim) * math.cos(elev), math.sin(azim) * math.cos(elev), math.sin(elev)))
+    perp = Vector((-math.sin(azim), math.cos(azim), 0))
+    k = len(v)
+    v.append(base + d * largo * 0.35)
+    c.append(col_base)
+    segs = 14
+    for j in range(segs + 1):
+        th = 2 * math.pi * j / segs
+        hundir = 0.55 if abs(math.cos(th) + 1) < 0.15 else 1.0   # escotadura junto al pecíolo
+        p = base + d * (largo * 0.5 * (1 + math.cos(th)) * hundir) + perp * (ancho * math.sin(th))
+        p -= ARRIBA_Z * (0.35 * largo * ((1 + math.cos(th)) / 2) ** 2)
+        v.append(p)
+        c.append(col_borde)
+    f += [(k, k + 1 + j, k + 2 + j) for j in range(segs)]
+
+
+def planta_hoja_ancha(rng, variante):
+    """Malanga o macal (Xanthosoma, nativa y cultivada en Tabasco: D): hojas acorazonadas grandes sobre pecíolos largos.
+    1 planta grande; 2 mata baja y densa, más oscura."""
+    v, f, c = [], [], []
+    n, largo, alto = (5, 0.36, 0.42) if variante == 1 else (8, 0.24, 0.26)
+    for i in range(n):
+        az = 2 * math.pi * i / n + rng.uniform(-0.3, 0.3)
+        h = alto * rng.uniform(0.75, 1.0)
+        tope = Vector((math.cos(az) * 0.12, math.sin(az) * 0.12, h))
+        rama(v, f, c, Vector((0, 0, 0)), tope, 0.014, 0.01, ["#387022", "#568B26"], 4, 2)
+        cols = rng.choice([("#568B26", "#73AD36"), ("#387022", "#568B26"), ("#217233", "#4A993E")]) if variante == 1 \
+            else rng.choice([("#217233", "#328F3E"), ("#136B35", "#217233"), ("#387022", "#568B26")])
+        hoja_corazon(v, f, c, tope, az, math.radians(rng.uniform(5, 25)), largo * rng.uniform(0.85, 1.1),
+                     largo * 0.42, *cols)
+    pa.asignar(pa.malla("Malanga", v, f, c), pa.mat_color_vertice("Vegetal"))
+    v, f, c = [], [], []
+    matas(v, f, c, (0, 0, 0), 12, 0.14, 0.12, rng, grosor=0.02)
+    pa.asignar(pa.malla("Pasto", v, f, c), pa.mat_color_vertice("Vegetal"))
+
+
+def flor_selva(rng, variante):
+    """Arbusto en flor: 1 coralillo (Hamelia patens, nativo; flores tubulares rojas); 2 cinco negritos (Lantana camara,
+    nativa; ramilletes rosas y crema). La especie concreta es I."""
+    v, f, c = [], [], []
+    centro = Vector((0, 0, 0.13))
+    for _ in range(60):
+        th = rng.uniform(0, 2 * math.pi)
+        ph = math.radians(rng.uniform(0, 85))
+        pos = centro + Vector((0.25 * math.sin(ph) * math.cos(th), 0.25 * math.sin(ph) * math.sin(th), 0.23 * math.cos(ph)))
+        cols = (("#568B26", "#73AD36") if pos.z > 0.28 else ("#387022", "#568B26") if pos.z > 0.18
+                else rng.choice([("#23551C", "#387022"), ("#124524", "#217233")]))
+        hoja(v, f, c, pos, (pos - centro) + ARRIBA_Z * 0.3, rng.uniform(0.12, 0.16), 0.06, *cols)
+    colores = (("#B24232", "#F47588"), ("#B16143", "#B24232")) if variante == 1 else (("#F47588", "#F1C891"), ("#994F66", "#F47588"))
+    for _ in range(14):   # ramilletes en la mitad superior, por fuera del follaje
+        th = rng.uniform(0, 2 * math.pi)
+        ph = math.radians(rng.uniform(0, 65))
+        p = centro + Vector((0.28 * math.sin(ph) * math.cos(th), 0.28 * math.sin(ph) * math.sin(th), 0.26 * math.cos(ph) + 0.03))
+        base, punta = rng.choice(colores)
+        for j in range(5):
+            a = 2 * math.pi * j / 5
+            hoja(v, f, c, p, Vector((math.cos(a), math.sin(a), 0.6 if variante == 1 else 0.3)), 0.075, 0.03, base, punta)
+    pa.asignar(pa.malla("Flores", v, f, c), pa.mat_color_vertice("Vegetal"))
+    esferita("Nucleo", (0, 0, 0.14), 0.2, ["#1D2B1A", "#23551C"])
+
+
+def roca_musgo(rng, variante):
+    """Rocas de basalto grandes cubiertas de musgo: 1 bloque redondeado, 2 grupo de tres, 3 laja ancha con un helecho."""
+    mat = pa.mat_piedra_musgo("RocaMusgo", ["#36382F", "#4A473B", "#615C48", "#7D745B", "#9C8B75"],
+                              ["#3E5F27", "#5A8732", "#84B345", "#899736"], escala=5, estirar=(1, 1, 1), altura_musgo=0.1,
+                              umbral_musgo=0.42)
+    piezas = {1: [((0, 0), 0.34, 0.7)], 2: [((-0.12, 0.1), 0.24, 0.75), ((0.18, -0.06), 0.18, 0.7), ((-0.02, -0.2), 0.12, 0.65)],
+              3: [((0, 0), 0.36, 0.38)]}[variante]
+    for (x, y), r, aplastar in piezas:
+        bpy.ops.mesh.primitive_ico_sphere_add(subdivisions=3, radius=r)
+        o = bpy.context.active_object
+        sem = rng.uniform(0, 50)
+        for vt in o.data.vertices:
+            vt.co += vt.co.normalized() * (r * 0.2 * noise.noise(vt.co * (1 / r) + Vector((sem, 0, 0))))
+            vt.co.z *= aplastar
+        o.location = (x, y, r * aplastar * 0.55)
+        o.rotation_euler.z = rng.uniform(0, 2 * math.pi)
+        pa.asignar(o, mat)
+    v, f, c = [], [], []
+    matas(v, f, c, (0.25, -0.2, 0), 10, 0.13, 0.07, rng, grosor=0.02)
+    matas(v, f, c, (-0.3, -0.05, 0), 8, 0.11, 0.06, rng, grosor=0.02)
+    if variante == 3:
+        helecho(v, f, c, (0.05, 0.05, 0.27), 0.6, rng)
+    else:
+        helecho(v, f, c, (-0.28, 0.2, 0), 0.6, rng)
+    pa.asignar(pa.malla("Pasto", v, f, c), pa.mat_color_vertice("Vegetal"))
+
+
+def tronco_grueso(rng, variante):
+    """Tronco caído grueso y hueco: musgo encima, hongos, el extremo abierto hacia la cámara y helechos al pie."""
+    v, f, c = [], [], []
+    giro = math.radians(20)
+    d = Vector((math.cos(giro), math.sin(giro), 0))
+    lado = Vector((-d.y, d.x, 0))
+    p0, p1 = -d * 0.7 + ARRIBA_Z * 0.2, d * 0.7 + ARRIBA_Z * 0.18
+    rama(v, f, c, p0, p1, 0.21, 0.18, MADERA[:3] * 3 + ["#5A8732", "#3E5F27"], 12, 8, rng)
+    rama(v, f, c, d * 0.2 + ARRIBA_Z * 0.3, d * 0.35 + lado * 0.3 + ARRIBA_Z * 0.45, 0.05, 0.03, MADERA, 5, 2, rng)
+    hongos(v, f, c, d * 0.3 - lado * 0.22, rng, 4)
+    hongos(v, f, c, -d * 0.3 - lado * 0.21, rng, 3)
+    pa.asignar(pa.malla("Tronco", v, f, c), pa.mat_color_vertice("Madera"))
+    # Extremo -d (hacia -x, a la izquierda): anillo claro de la madera y hueco oscuro
+    for radio, color, fondo in ((0.2, "#9C7842", 0.0), (0.13, "#3A2A1A", 0.01)):
+        bpy.ops.mesh.primitive_cylinder_add(vertices=16, radius=radio, depth=0.01, location=p0 - d * (0.005 + fondo))
+        tapa = bpy.context.active_object
+        tapa.rotation_euler = Euler((0, math.radians(90), giro))
+        pa.asignar(tapa, pa.mat_ruido("Tapa" + color, [color, color], escala=10))
+    v, f, c = [], [], []
+    matas(v, f, c, d * 0.1 - lado * 0.3, 10, 0.14, 0.08, rng, grosor=0.02)
+    helecho(v, f, c, d * 0.75 - lado * 0.1, 0.6, rng)
+    helecho(v, f, c, -d * 0.55 + lado * 0.25, 0.5, rng)
+    pa.asignar(pa.malla("Pasto", v, f, c), pa.mat_color_vertice("Vegetal"))
+
+
+def fogon_piedras(rng, variante):
+    """Fogón encendido dentro de un aro de piedras, con leña cruzada, brasas y una llama baja (rampa fuego)."""
+    bpy.ops.mesh.primitive_cylinder_add(vertices=24, radius=0.26, depth=0.012, location=(0, 0, 0.006))
+    pa.asignar(bpy.context.active_object, pa.mat_ruido("CenizaAro", ["#4A473B", "#7D745B", "#9C8B75"], escala=16))
+    mat_piedra = pa.mat_piedra_musgo("PiedraAro", ["#2C302A", "#36382F", "#4A473B", "#615C48", "#7D745B"],
+                                     ["#3E5F27", "#5A8732"], escala=10, estirar=(1, 1, 1), altura_musgo=0.03,
+                                     umbral_musgo=0.55)
+    for k in range(9):
+        a = 2 * math.pi * k / 9 + rng.uniform(-0.1, 0.1)
+        bpy.ops.mesh.primitive_ico_sphere_add(subdivisions=2, radius=rng.uniform(0.06, 0.075),
+                                              location=(math.cos(a) * 0.27, math.sin(a) * 0.27, 0.045))
+        g = bpy.context.active_object
+        g.scale = (1, 0.85, 0.75)
+        pa.asignar(g, mat_piedra)
+    mat_lena = pa.mat_ruido("LenaAro", ["#3A2A1A", "#48331F", "#6D502E"], escala=20)
+    for giro in (20, 80, 140):
+        o = caja("Lena", (0, 0, 0.04), (0.36, 0.045, 0.045), 0)
+        o.rotation_euler = Euler((0, math.radians(-12), math.radians(giro)))
+        pa.asignar(o, mat_lena)
+    for _ in range(6):   # brasas
+        bpy.ops.mesh.primitive_ico_sphere_add(subdivisions=1, radius=0.03,
+                                              location=(rng.uniform(-0.08, 0.08), rng.uniform(-0.08, 0.08), 0.03))
+        pa.asignar(bpy.context.active_object, mat_emision("Brasa", "#D8642A"))
+    v, f, c = [], [], []
+    matas(v, f, c, (0, 0, 0.05), 9, 0.2, 0.05, rng, base="#D8642A", puntas=("#F2A541", "#FFE08A"), grosor=0.03)
+    pa.asignar(pa.malla("Llama", v, f, c), mat_emision("Llama", "#F2A541"))
+    v, f, c = [], [], []
+    matas(v, f, c, (0, 0, 0.05), 5, 0.12, 0.03, rng, grosor=0.025)
+    pa.asignar(pa.malla("Nucleo", v, f, c), mat_emision("NucleoLlama", "#FFE08A"))
 
 
 def planificar_aldea():
@@ -2114,6 +2460,23 @@ TIPOS = {
                        "#3A2A1A", None, 0.5),
     "Muelle_Madera": (muelle, (64, 64), (32, 22), ("madera", "tierra"), "#3A2A1A", None, 0.5),
     "Canoa": (canoa, (96, 64), (48, 26), ("madera", "tierra", "acentos"), "#3A2A1A", None, 0.5),
+    # Aldea, etapa A3
+    "Cestos": (cestos, (48, 48), (24, 12), ("tierra", "madera", "acentos", "verde_calido"), "#3A2A1A", SOMBRA_CHICA, 0.5),
+    "Petate": (petate, (96, 64), (48, 32), ("tierra", "madera", "basalto"), None, None, 0.5),
+    "Lena": (lena, (48, 48), (24, 14), ("madera", "tierra", "verde_calido"), "#3A2A1A", SOMBRA_CHICA, 0.5),
+    "Cerca_Varas": (cerca_varas, (80, 72), (40, 20), ("madera", "tierra", "verde_calido", "verde_frio"), "#3A2A1A",
+                    ((128, 64), (40, 32)), 0.5),
+    "Poste_Manta": (poste_manta, (64, 96), (32, 18), ("madera", "tierra", "acentos", "verde_calido"), "#3A2A1A",
+                    ((128, 64), (40, 32)), 0.5),
+    "Planta_Hoja_Ancha": (planta_hoja_ancha, (64, 64), (32, 14), ("verde_calido", "verde_frio"), "#0F2A17",
+                          ((96, 48), (30, 24)), 0.45),
+    "Flor_Selva": (flor_selva, (48, 48), (24, 10), ("verde_calido", "verde_frio", "acentos", "tierra"), "#0F2A17",
+                   SOMBRA_CHICA, 0.45),
+    "Roca_Musgo": (roca_musgo, (64, 64), (32, 18), ("basalto", "musgo", "verde_calido", "verde_frio"), "#1E2420",
+                   ((128, 64), (40, 32)), 0.5),
+    "Tronco_Grueso": (tronco_grueso, (96, 64), (48, 22), ("madera", "musgo", "verde_calido", "verde_frio", "tierra", "acentos"),
+                      "#1D2B1A", ((128, 64), (40, 32)), 0.5),
+    "Fogon_Piedras": (fogon_piedras, (48, 48), (24, 14), ("basalto", "musgo", "madera", "fuego"), "#1E2420", SOMBRA_CHICA, 0.5),
     "Plataforma_Arcilla": (plataforma_arcilla, (64, 96), (32, 18), ("tierra", "acentos", "basalto", "verde_calido", "verde_frio"),
                            None, None, 0.5),
     "Grieta_Olvido": (grieta_olvido, (96, 64), (48, 32), ("olvido", "tierra"), None, None, 0.5),
@@ -2140,7 +2503,7 @@ TIPOS = {
     "Basalto_Agrietado": (basalto_agrietado, (128, 144), (64, 40), ("basalto", "musgo", "fuego", "tierra"), "#1E2420",
                           ((160, 96), (56, 44)), 0.5),
 }
-VARIANTES = {"Tile_Camino_Tierra": 4, "Tile_Pasto_Selva": 3, "Tile_Agua_Anim": 4, "Cerca_Basalto": 3,
+VARIANTES = {"Tile_Camino_Tierra": 4, "Tile_Pasto_Selva": 5, "Tile_Agua_Anim": 4, "Cerca_Basalto": 3,
              "Palma_Corozo": 2, "Arbusto_Selva": 2, "Matorral_Selva": 3, "Pasto_Alto": 2, "Helecho": 2,
              "Roca_Basalto": 3, "Nenufar": 1, "Tule": 1, "Sombra_Dosel": 2, "Altar_Trono": 1,
              "Estela_Lisa": 1, "Estela_Grande": 3, "Rampa_Arcilla": 2, "Casa_Bajareque": 3, "Fogon": 1,
@@ -2148,7 +2511,9 @@ VARIANTES = {"Tile_Camino_Tierra": 4, "Tile_Pasto_Selva": 3, "Tile_Agua_Anim": 4
              "Enramada_Poste": 1, "Enramada_Techo": 1, "Muelle_Madera": 2, "Canoa": 1,
              "Grieta_Olvido": 2, "Fragmento_Memoria": 1, "Entrada_Estructura": 1,
              "Tile_Losa_Basalto": 3, "Muro_Basalto": 3, "Muro_Basalto_Y": 3, "Santuario_Memoria": 2, "Santuario_Vida": 2,
-             "Escalera_Subida": 1, "Escalera_Bajada": 1, "Ofrenda": 4, "Basalto_Agrietado": 1}
+             "Escalera_Subida": 1, "Escalera_Bajada": 1, "Ofrenda": 4, "Basalto_Agrietado": 1,
+             "Cestos": 2, "Petate": 1, "Lena": 1, "Cerca_Varas": 2, "Poste_Manta": 2, "Planta_Hoja_Ancha": 2,
+             "Flor_Selva": 2, "Roca_Musgo": 3, "Tronco_Grueso": 1, "Fogon_Piedras": 1}
 # Jaguar de Piedra (M3): una pose por tipo y una variante por dirección de pantalla; liberado, solo de frente (S).
 for _pose in POSES_JAGUAR:
     _liberado = _pose == "Liberado"
@@ -2163,6 +2528,15 @@ for _pose in POSES_GUARDIAN:
         lambda rng, v, p=_pose, frente=_de_frente: guardian_piedra(p, 5 if frente else v, corrupto=p != "Liberado"),
         (256, 288), (128, 64), ("basalto", "musgo", "olvido", "jade"), "#1E2420", None, 0.5)
     VARIANTES[f"Guardian_Piedra_{_pose}"] = 1 if _de_frente else len(GIRO_DIRECCION)
+# Jaguar jugable y jaguar corrupto (etapas A y B del plan de personajes, personajes.py): un tipo por cuadro de cada
+# animación y una variante por dirección. Se exportan a Personajes como <Jaguar|JaguarCorrupto>_<Anim><n>_<dir>.
+for _corrupto, _prefijo, _tabla in ((False, "Jaguar", pj.ANIMACIONES_JAGUAR), (True, "JaguarCorrupto", pj.ANIMACIONES_CORRUPTO)):
+    for _anim, _n in _tabla.items():
+        for _f in range(_n):
+            TIPOS[f"{_prefijo}_{_anim}{_f + 1}"] = (
+                lambda rng, v, a=_anim, f=_f, c=_corrupto: pj.jaguar(a, f, v, c), pj.LIENZO, pj.ANCLA,
+                pj.PELAJE["corrupto" if _corrupto else "jaguar"]["rampas"], pj.CONTORNO, None, 0.5)
+            VARIANTES[f"{_prefijo}_{_anim}{_f + 1}"] = len(GIRO_DIRECCION)
 # Las transiciones y los módulos de plataforma se generan solo para las máscaras que usan las composiciones
 SIN_AVISO_BORDE = {"Tile_Camino_Tierra", "Tile_Pasto_Selva", "Tile_Agua_Anim", "Tile_Camino_Trans", "Tile_Orilla",
                    "Plataforma_Arcilla", "Tile_Losa_Basalto"}
@@ -2603,16 +2977,18 @@ def planificar_ciudad():
     # ---- recursos de la etapa A2, con su propio generador: lo anterior no cambia de sitio, salvo la vegetación baja
     # que despejan los objetos grandes (la selva ya ocupa todo el espacio libre)
     azar = random.Random(41)
-    VEGETACION = ("Matorral_Selva", "Helecho", "Pasto_Alto", "Arbusto_Selva", "Tule", "Roca_Basalto", "Palma_Corozo")
+    VEGETACION = ("Matorral_Selva", "Helecho", "Pasto_Alto", "Arbusto_Selva", "Tule", "Roca_Basalto", "Palma_Corozo",
+                  "Planta_Hoja_Ancha", "Flor_Selva")   # las dos últimas, de la etapa A3
 
-    def despejar_y_poner(nombre, X, Y, r, z=0.0, forzar=False):
+    def despejar_y_poner(nombre, X, Y, r, z=0.0, forzar=False, ignorar=None):
         """Pone un objeto grande si no choca con nada que no sea vegetación; quita la vegetación a menos de r.
-        forzar: no comprueba los objetos fijos (piezas de un mismo conjunto, como los módulos del muelle)."""
+        forzar: no comprueba los objetos fijos (piezas de un mismo conjunto, como los módulos del muelle).
+        ignorar: (x, y) de un objeto fijo con el que se puede solapar su radio (la casa de un patio, etapa A3)."""
         celda = (round(X), round(Y))
         if celda not in tipo_celda or (celda in ocupadas and not forzar):
             return False
-        fijos = [(a, b, rb) for a, b, rb in puntos
-                 if not any(o[0].startswith(VEGETACION) and o[1] == a and o[2] == b for o in objetos)]
+        fijos = [(a, b, rb) for a, b, rb in puntos if (a, b) != ignorar
+                 and not any(o[0].startswith(VEGETACION) and o[1] == a and o[2] == b for o in objetos)]
         if not forzar and any((X - a) ** 2 + (Y - b) ** 2 < (r + rb) ** 2 for a, b, rb in fijos):
             return False
         quitar = [o for o in objetos if o[0].startswith(VEGETACION) and (o[1] - X) ** 2 + (o[2] - Y) ** 2 < r * r]
@@ -2676,6 +3052,8 @@ def planificar_ciudad():
     suelo[:] = [(nuevas.get((X, Y), n), X, Y) for n, X, Y in suelo]
     en_sendero = lambda X, Y: any(abs(X - a) < 0.85 and abs(Y - b) < 0.85 for a, b in sendero)
     objetos[:] = [o for o in objetos if o[3] > 0.01 or o[0].startswith("Ceiba") or not en_sendero(o[1], o[2])]
+    marcas, bancal = aldea_a3(objetos, puntos, suelo, tipo_celda, ocupadas, mascaras, zona, junto_camino, junto_a,
+                              despejar_y_poner, VEGETACION)
     punto = lambda X, Y: {"x": round(X, 2), "y": round(Y, 2)}
 
     colision = {
@@ -2684,14 +3062,130 @@ def planificar_ciudad():
             "llegada_selva": punto(X0 + 3.0, sendero_y(X0 + 3) + 0.5),
         },
         "niveles": [[list(c) for c in sorted(n)] for n in niveles],
-        "niveles_recinto": [[list(c) for c in sorted(n)] for n in niveles_a],
+        "niveles_recinto": [[list(c) for c in sorted(niveles_a[0] | bancal)]] + [[list(c) for c in sorted(n)] for n in niveles_a[1:]],
         "rampas": [{"sprite": n, "x": X, "y": Y, "z": z} for n, X, Y, z in rampas],
         "agua": [list(c) for c, t in sorted(tipo_celda.items()) if t == "agua"],
         "agua_bloqueo": [list(c) for c, t in sorted(tipo_celda.items()) if t == "agua" and c not in celdas_muelle],
         "muelles": muelles,
         "limites": [X0, X1, Y0, Y1],
     }
-    return {"suelo": suelo, "objetos": con_capas(objetos), "dosel": dosel_}, mascaras, colision
+    return {"suelo": suelo, "objetos": con_capas(objetos), "dosel": dosel_, "marcas": marcas}, mascaras, colision
+
+
+# Puntos de los habitantes, los servicios y el despertar (x, y del flujo; OlmecaCityGenerator): sin obstáculos cerca
+PUNTOS_RESERVADOS_CIUDAD = [(13.5, 2.8), (14.6, 2.8), (12.4, 14.2), (12.0, 8.5), (19.0, -3.2), (14.0, 1.7), (19.0, -4.3),
+                            (17.4, 22.8), (19.3, 22.6), (18.6, 23.6)]
+
+
+def aldea_a3(objetos, puntos, suelo, tipo_celda, ocupadas, mascaras, zona, junto_camino, junto_a, despejar_y_poner,
+             vegetacion):
+    """Etapa A3 de la ciudad (Referencia_Visual_Olmeca3–5): patios con leña, cestos, mantas, petates y cercas de varas
+    junto a cada casa; plantas de hoja ancha y arbustos en flor en lugar de parte de los arbustos redondos; fogones de
+    aro de piedras; rocas con musgo, troncos gruesos, pasto con flores y calvas de tierra, y un bancal de arcilla.
+    Va al final y con su propio azar: lo anterior no cambia de sitio, salvo la vegetación baja que tapan las piezas
+    nuevas. Modifica las listas recibidas; devuelve las marcas horneadas en el suelo (petates) y las celdas del bancal."""
+    azar = random.Random(53)
+    en_aldea = lambda X, Y: zona(X, Y) == "aldea"
+    lejos = lambda X, Y, r: all((X - a) ** 2 + (Y - b) ** 2 >= (r + 0.9) ** 2 for a, b in PUNTOS_RESERVADOS_CIUDAD)
+
+    def pieza(nombre, X, Y, r, casa=None, alternativas=()):
+        """Pone la pieza en (X, Y) o, si no cabe, en el primer desplazamiento de alternativas que quepa."""
+        for dx, dy in ((0, 0),) + tuple(alternativas):
+            x, y = X + dx, Y + dy
+            celda = (round(x), round(y))
+            if (tipo_celda.get(celda) != "pasto" or not en_aldea(x, y) or junto_camino(x, y, 0.5) or not lejos(x, y, r)
+                    or any(tipo_celda.get((celda[0] + i, celda[1] + j)) == "agua" for i in (-1, 0, 1) for j in (-1, 0, 1))):
+                continue
+            if despejar_y_poner(nombre, x, y, r, ignorar=casa):
+                return True
+        return False
+
+    def quitar_vegetacion(X, Y, r):
+        for o in [o for o in objetos if o[0].startswith(vegetacion) and (o[1] - X) ** 2 + (o[2] - Y) ** 2 < r * r]:
+            objetos.remove(o)
+            puntos[:] = [q for q in puntos if not (q[0] == o[1] and q[1] == o[2])]
+
+    # ---- bancal: plataforma baja de arcilla de 3 × 2 m con plantas encima (I: las casas olmecas se alzaban sobre
+    # plataformas de tierra). No tiene rampa: se rodea, como la del recinto.
+    bancal = set()
+    candidatos = [(X, Y) for X, Y in tipo_celda if en_aldea(X, Y)]
+    azar.shuffle(candidatos)
+    for X0, Y0 in candidatos:
+        celdas = {(X0 + dx, Y0 + dy) for dx in range(3) for dy in range(2)}
+        margen = {(X + dx, Y + dy) for X, Y in celdas for dx in (-1, 0, 1) for dy in (-1, 0, 1)}
+        cx, cy = X0 + 1.0, Y0 + 0.5
+        if (all(tipo_celda.get(c) == "pasto" and c not in ocupadas for c in margen) and lejos(cx, cy, 2.0)
+                and all(en_aldea(*c) for c in margen) and all(
+                    (cx - a) ** 2 + (cy - b) ** 2 >= (1.7 + rb) ** 2 for a, b, rb in puntos
+                    if not any(o[0].startswith(vegetacion) and (o[1], o[2]) == (a, b) for o in objetos))):
+            bancal = celdas
+            break
+    if bancal:
+        quitar_vegetacion(cx, cy, 2.3)
+        suelo[:] = [s for s in suelo if (s[1], s[2]) not in bancal]
+        for X, Y in sorted(bancal):
+            m = mascara_plataforma(bancal, X, Y)
+            mascaras["Plataforma_Arcilla"].add(m)
+            objetos.append((f"Plataforma_Arcilla_{m:02d}", X, Y, 0.0))
+        ocupadas |= bancal
+        puntos.append((cx, cy, 1.9))
+        for (dx, dy), n in zip(((-0.6, 0.1), (0.7, 0.3), (0.1, -0.2)), ("Planta_Hoja_Ancha_01", "Helecho_01", "Flor_Selva_02")):
+            objetos.append((n, cx + dx, cy + dy, H_PLATAFORMA))
+
+    # ---- patios: alrededor de cada casa (puerta hacia -y, fogón en x + 0.9, y - 2.5)
+    marcas = []
+    casas = [(o[1], o[2]) for o in objetos if o[0].startswith("Casa_Bajareque")]
+    for i, (X, Y) in enumerate(casas):
+        casa = (X, Y)
+        pieza("Lena_01", X + 1.8, Y + 0.6, 0.35, casa, ((-3.7, 0), (0, -0.9), (-3.7, -0.9)))
+        pieza(f"Cestos_{1 + i % 2:02d}", X - 1.6, Y - 1.6, 0.35, casa, ((3.3, 0.7), (-0.3, 1.4), (1.0, -0.6), (3.0, -0.6)))
+        pieza(f"Poste_Manta_{1 + (i // 2) % 2:02d}", X + 1.9, Y - 1.3, 0.55, casa, ((-3.8, -0.1), (-1.6, 3.7)))
+        if i % 3 != 2:   # cerca de varas en el lado -x (y una esquina hacia el fondo)
+            if pieza("Cerca_Varas_02", X - 2.2, Y - 0.55, 0.5, casa):
+                pieza("Cerca_Varas_02", X - 2.2, Y + 0.55, 0.5, casa)
+                pieza("Cerca_Varas_01", X - 1.65, Y + 1.1, 0.5, casa)
+            elif pieza("Cerca_Varas_01", X - 0.55, Y + 2.3, 0.5, casa):   # si no, por el fondo
+                pieza("Cerca_Varas_01", X + 0.55, Y + 2.3, 0.5, casa)
+        px, py = X - 0.5, Y - 2.7
+        celda = (round(px), round(py))
+        if tipo_celda.get(celda) == "pasto" and not junto_camino(px, py, 0.6) and lejos(px, py, 0.6) and all(
+                (px - a) ** 2 + (py - b) ** 2 >= (0.7 + rb) ** 2 for a, b, rb in puntos
+                if (a, b) != casa and not any(o[0].startswith(vegetacion) and (o[1], o[2]) == (a, b) for o in objetos)):
+            quitar_vegetacion(px, py, 0.8)
+            marcas.append(("Petate_01", px, py))
+
+    # ---- fogones: uno de cada dos, encendido en su aro de piedras (misma huella)
+    fogones = [k for k, o in enumerate(objetos) if o[0] == "Fogon_01"]
+    for k in fogones[::2]:
+        objetos[k] = ("Fogon_Piedras_01",) + tuple(objetos[k][1:])
+
+    # ---- vegetación: parte de los arbustos redondos pasan a malanga y arbustos en flor (mismo sitio)
+    for k, o in enumerate(objetos):
+        if o[0] == "Arbusto_Selva_01" and en_aldea(o[1], o[2]) and o[3] < 0.01:
+            objetos[k] = (azar.choice(["Planta_Hoja_Ancha_01", "Planta_Hoja_Ancha_02", "Flor_Selva_01", "Flor_Selva_02",
+                                       "Arbusto_Selva_01"]),) + tuple(o[1:])
+    for _ in range(4000):   # flores al borde de los caminos
+        if sum(o[0].startswith("Flor_Selva") for o in objetos) >= 60:
+            break
+        X, Y = azar.uniform(8, 21), azar.uniform(-17, 22)
+        celda = (round(X), round(Y))
+        if celda in tipo_celda and en_aldea(X, Y) and junto_a("camino")(celda, X, Y) and lejos(X, Y, 0.3) and all(
+                (X - a) ** 2 + (Y - b) ** 2 >= (0.4 + rb) ** 2 for a, b, rb in puntos):
+            objetos.append((f"Flor_Selva_{azar.choice([1, 2]):02d}", X, Y, 0.0))
+            puntos.append((X, Y, 0.4))
+    for nombre, cantidad, r in (("Roca_Musgo_01", 3, 0.5), ("Roca_Musgo_02", 3, 0.5), ("Roca_Musgo_03", 2, 0.5),
+                                ("Tronco_Grueso_01", 4, 0.8)):
+        for _ in range(3000):
+            if cantidad == 0:
+                break
+            if pieza(nombre, azar.uniform(8, 21), azar.uniform(-17, 22), r):
+                cantidad -= 1
+
+    # ---- suelo de la aldea: más pasto con flores y algunas calvas de tierra
+    for k, (n, X, Y) in enumerate(suelo):
+        if n.startswith("Tile_Pasto_Selva") and en_aldea(X, Y):
+            suelo[k] = (f"Tile_Pasto_Selva_{azar.choice([1, 3, 4, 4, 5]):02d}", X, Y)
+    return marcas, bancal
 
 
 def planificar_selva():
@@ -3038,7 +3532,8 @@ SPRITES_UNITY = os.path.join(RAIZ_PROYECTO, "Assets", "_Project", "Art", "Enviro
 DATOS_UNITY = os.path.join(RAIZ_PROYECTO, "Assets", "_Project", "Data", "World", "Olmeca")
 TROZO_SUELO = 1024
 # Lo que se hornea en el suelo (no se exporta como sprite suelto)
-NO_EXPORTAR = ("Tile_Camino", "Tile_Pasto", "Tile_Orilla", "Sombra_Dosel", "Grieta_Olvido", "Tile_Losa", "Escalera_Bajada")
+NO_EXPORTAR = ("Tile_Camino", "Tile_Pasto", "Tile_Orilla", "Sombra_Dosel", "Grieta_Olvido", "Tile_Losa", "Escalera_Bajada",
+               "Petate")
 
 
 def capa_suelo(salida, metas, plan, tam, centro):
@@ -3106,7 +3601,7 @@ def exportar_unity(salida, metas, regiones):
     for nombre, meta in sorted(metas.items()):
         if nombre.startswith(NO_EXPORTAR):
             continue
-        personaje = nombre.startswith(("Jaguar_Piedra", "Guardian_Piedra"))
+        personaje = nombre.startswith(("Jaguar_", "JaguarCorrupto_", "Guardian_Piedra"))
         carpeta = "Agua" if nombre.startswith("Tile_Agua") else "Personajes" if personaje else "Objetos"
         destinos[carpeta].append((nombre, os.path.join(salida, nombre + ".png")))
         pivotes.append({"nombre": nombre, "lienzo": list(meta["lienzo"]), "pivote": list(meta["pivote_px"])})

@@ -75,12 +75,46 @@ namespace CronicasDeMexico.Editor.SceneGeneration
                 CaptureScene(OlmecaDungeonGenerator.ScenePath(floor), $"Mazmorra_P{floor}", DungeonViews[floor - 1]);
         }
 
-        static void CaptureScene(string scenePath, string prefix, (string name, Vector2 focus)[] views)
+        // Etapas A y B del plan de personajes: pasarela de poses en la selva (sin guardar la escena). Fila de arriba, el
+        // jaguar jugable; de abajo, el jaguar corrupto. Mirando al SE y en E, junto al jugador y al primer claro.
+        static readonly (string anim, int frame)[] PlayerPoses =
+            { ("Reposo", 0), ("Caminar", 1), ("Correr", 2), ("Zarpazo", 1), ("Zarpazo", 2), ("Golpeado", 0), ("Muerte", 3) };
+        static readonly (string anim, int frame)[] CorruptedPoses =
+            { ("Reposo", 0), ("Caminar", 3), ("Acecho", 0), ("Salto", 0), ("Salto", 1), ("Golpeado", 0), ("Muerte", 2) };
+
+        [MenuItem("Crónicas/Capturar jaguares (pasarela)")]
+        public static void CaptureJaguars() => CaptureScene(OlmecaJungleGenerator.ScenePath, "Jaguares",
+            new[] { ("Pasarela", new Vector2(12.75f, -1.35f)) }, () =>
+            {
+                // Copias del sprite del jugador de la escena: mismo material, capa y luz que los personajes.
+                var model = UnityEngine.Object.FindAnyObjectByType<Gameplay.Player.PlayerMovement>().GetComponentInChildren<SpriteBillboard>().GetComponent<SpriteRenderer>();
+                var parent = new GameObject("Pasarela").transform;
+                void Row(JaguarCharacterAssets.Sets sets, (string anim, int frame)[] poses, Vector2 start, int direction)
+                {
+                    for (var i = 0; i < poses.Length; i++)
+                    {
+                        var set = sets[poses[i].anim];
+                        var sprite = set.GetOnceFrame(direction, (poses[i].frame + 0.5f) / set.FramesPerSecond);
+                        var point = start + new Vector2(1.55f, 1.55f) * i;
+                        var copy = UnityEngine.Object.Instantiate(model.gameObject, parent);
+                        copy.name = sprite.name;
+                        copy.GetComponent<SpriteRenderer>().sprite = sprite;
+                        copy.transform.localScale = Vector3.one;
+                        copy.transform.position =
+                            IsometricProjection.SnapToPixelGrid(PixelArtSceneBuilder.ToWorld(point), 1f / IsometricProjection.PixelsPerUnit);
+                    }
+                }
+                Row(JaguarCharacterAssets.Player(), PlayerPoses, new Vector2(7.6f, -4.6f), 3);
+                Row(JaguarCharacterAssets.Corrupted(), CorruptedPoses, new Vector2(8.6f, -7.4f), 2);
+            });
+
+        static void CaptureScene(string scenePath, string prefix, (string name, Vector2 focus)[] views, Action prepare = null)
         {
             var folder = CommandLineValue("-capturePath") ?? Path.Combine("Logs", "Capturas");
             Directory.CreateDirectory(folder);
 
             EditorSceneManager.OpenScene(scenePath, OpenSceneMode.Single);
+            prepare?.Invoke();
             // Lo que en el juego aparece después (los fragmentos, al vencer a su espíritu) se muestra para revisarlo.
             // La escena no se guarda.
             foreach (var fragment in UnityEngine.Object.FindObjectsByType<MemoryFragmentInteractable>(

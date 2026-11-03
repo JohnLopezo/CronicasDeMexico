@@ -1,0 +1,46 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0f3a2dbe737f384da36cc4134724892, type: 3}
+  m_Name: DSS_Jaguar_Muerte
+  m_EditorClassIdentifier: 
+  clips:
+  - idle: {fileID: 21300000, guid: 7ceeed23824e6e44ca0dbc03f042d80d, type: 3}
+    walk:
+    - {fileID: 21300000, guid: 2958b6c4af8f2b349af9db2b6e39cba1, type: 3}
+    - {fileID: 21300000, guid: 0e2c5874623709948bfb21d234764c16, type: 3}
+    - {fileID: 21300000, guid: a9c297ec3a412e445b2f069176823e27, type: 3}
+    - {fileID: 21300000, guid: 475600b028d2dc04fb2bfa976abfd570, type: 3}
+  - idle: {fileID: 21300000, guid: 5285fdf000dd0954eb4f72e5927fd947, type: 3}
+    walk:
+    - {fileID: 21300000, guid: 63bf36692ecd69a41b13c68f249a13ee, type: 3}
+    - {fileID: 21300000, guid: b538e4f4003ea644994d743a5ee92022, type: 3}
+    - {fileID: 21300000, guid: c293b1e00cafe2442ab22ba940398b91, type: 3}
+    - {fileID: 21300000, guid: ff5c134b12c08da4b8a96bbef452837d, type: 3}
+  - idle: {fileID: 21300000, guid: ec5c62d53f05fed41b75e407f6352ccf, type: 3}
+    walk:
+    - {fileID: 21300000, guid: 38f0cdf9f428f36428244c0f90d9a184, type: 3}
+    - {fileID: 21300000, guid: c36b0677303dbf44483cc6629432b3b3, type: 3}
+    - {fileID: 21300000, guid: 37d42dd994adc214fbe8752d85a8b28f, type: 3}
+    - {fileID: 21300000, guid: 600953277cb15c64cbed26d3fa3e3de5, type: 3}
+  - idle: {fileID: 21300000, guid: 826d62e7b38dfc84b8c8fbcba46871e2, type: 3}
+    walk:
+    - {fileID: 21300000, guid: 5e4b636e7d1384040bc86e205d947355, type: 3}
+    - {fileID: 21300000, guid: 9ecd3ae4a7ac8ad4985c99a786b587e1, type: 3}
+    - {fileID: 21300000, guid: 700c37272c6a67a42998062b25bb949c, type: 3}
+    - {fileID: 21300000, guid: 78b6fa4700cdbb047a6046fd3a6bc988, type: 3}
+  - idle: {fileID: 21300000, guid: 70130ea16410e294ebfac6d933c3de20, type: 3}
+    walk:
+    - {fileID: 21300000, guid: 3795889b1e9e697468e681b77f0914d4, type: 3}
+    - {fileID: 21300000, guid: 0580f3fff70aad546a89fcefb82eb50d, type: 3}
+    - {fileID: 21300000, guid: 58ae22fe6cc4e114591480132ad11482, type: 3}
+    - {fileID: 21300000, guid: e40ce382b57251e4c88c3c0ed1755f5d, type: 3}
+  walkFramesPerSecond: 7

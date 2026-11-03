@@ -1,7 +1,9 @@
 using CronicasDeMexico.Core.Events;
+using CronicasDeMexico.Data.Characters;
 using CronicasDeMexico.Editor.PixelArt;
 using CronicasDeMexico.Gameplay.Combat;
 using CronicasDeMexico.Gameplay.Player;
+using CronicasDeMexico.World.Rendering;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Rendering;
@@ -60,6 +62,13 @@ namespace CronicasDeMexico.Editor.SceneGeneration
                     changed = true;
                 }
 
+                // Etapa A del plan de personajes: el jugador es el jaguar (sprites del flujo, sin escalar la raíz).
+                if (JaguarCharacterAssets.SpritesExist())
+                {
+                    ApplyJaguar(root);
+                    changed = true;
+                }
+
                 if (changed)
                     PrefabUtility.SaveAsPrefabAsset(root, path);
             }
@@ -67,6 +76,23 @@ namespace CronicasDeMexico.Editor.SceneGeneration
             {
                 PrefabUtility.UnloadPrefabContents(root);
             }
+        }
+
+        static void ApplyJaguar(GameObject root)
+        {
+            var sets = JaguarCharacterAssets.Player();
+            var animator = root.GetComponent<DirectionalSpriteAnimator>();
+            animator.SpriteSet = sets.Walk;
+            animator.IdleSet = sets.Idle;
+            var spriteRenderer = root.GetComponentInChildren<SpriteBillboard>().GetComponent<SpriteRenderer>();
+            spriteRenderer.sprite = sets.Idle.GetIdle(DirectionalSpriteSet.DirectionCount - 1);
+            spriteRenderer.sharedMaterial = PixelArtSceneBuilder.CharacterMaterial();
+            JaguarCharacterAssets.ConfigureController(root.GetComponent<CharacterController>());
+
+            var driver = root.GetComponent<CharacterAnimationDriver>() ?? root.AddComponent<CharacterAnimationDriver>();
+            driver.Configure(animator, sets["Zarpazo"], sets["Correr"], null, null, sets["Golpeado"], sets["Muerte"]);
+            EditorUtility.SetDirty(animator);
+            EditorUtility.SetDirty(driver);
         }
     }
 }

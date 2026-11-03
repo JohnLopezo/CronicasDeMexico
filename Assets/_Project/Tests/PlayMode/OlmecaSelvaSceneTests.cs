@@ -151,7 +151,9 @@ namespace CronicasDeMexico.Tests
 
                     Assert.IsTrue(spirit.GetComponent<Health>().TryDamage(100, player.transform.position));
                     yield return null;
-                    Assert.IsFalse(spirit.gameObject.activeSelf, $"{spirit.name} no debe volver tras caer.");
+                    // El jaguar corrupto cae (animación) y desaparece solo; no vuelve en esta visita ni al recargar.
+                    Assert.IsTrue(spirit.GetComponent<Health>().IsDead);
+                    Assert.IsFalse(spirit.GetComponent<CharacterController>().enabled, $"{spirit.name} vencido no debe estorbar.");
                     Assert.IsTrue(fragment.gameObject.activeInHierarchy, $"{spirit.name} no dejó su fragmento.");
 
                     fragment.Interact(player.transform);

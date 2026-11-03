@@ -24,15 +24,53 @@ namespace CronicasDeMexico.Gameplay.Player
         [SerializeField, Tooltip("Si está vacía se usa Camera.main al iniciar.")]
         Transform cameraTransform;
 
+        [SerializeField, Tooltip("Opcional: reposo animado (respiración) en bucle. Si está vacío, la pose quieta del juego.")]
+        DirectionalSpriteSet idleSet;
+
         IPlanarMotion movement;
         Transform spriteTransform;
         float walkTime;
+        float idleTime;
+        DirectionalSpriteSet actionSet;
+        float actionTime;
+        bool actionLoops;
+        bool actionHolds;
 
         /// <summary>Juego de sprites en uso. Un personaje con varias poses (el Jaguar de Piedra) lo cambia según lo que hace.</summary>
         public DirectionalSpriteSet SpriteSet
         {
             get => spriteSet;
             set => spriteSet = value;
+        }
+
+        public DirectionalSpriteSet IdleSet
+        {
+            get => idleSet;
+            set => idleSet = value;
+        }
+
+        /// <summary>Animación de acción que se muestra ahora por encima de caminar y reposo (null si ninguna).</summary>
+        public DirectionalSpriteSet CurrentAction => actionSet;
+
+        /// <summary>
+        /// Muestra una animación de acción (zarpazo, golpe, galope, muerte). En bucle dura hasta Stop; si no, termina
+        /// sola, salvo con hold, que se queda en el último cuadro (muerte).
+        /// </summary>
+        public void Play(DirectionalSpriteSet set, bool loop = false, bool hold = false)
+        {
+            if (set == null || (set == actionSet && (loop || hold)))
+                return;
+            actionSet = set;
+            actionTime = 0f;
+            actionLoops = loop;
+            actionHolds = hold;
+        }
+
+        /// <summary>Quita la acción (o solo esa, si se indica) y vuelve a caminar o reposar.</summary>
+        public void Stop(DirectionalSpriteSet set = null)
+        {
+            if (set == null || set == actionSet)
+                actionSet = null;
         }
 
         void Awake()
@@ -69,15 +107,29 @@ namespace CronicasDeMexico.Gameplay.Player
             var clipIndex = (int)(westward ? DirectionQuantizer.Mirror(direction) : direction);
 
             Sprite sprite;
-            if (movement.PlanarVelocity.sqrMagnitude > WalkSpeedThreshold * WalkSpeedThreshold)
+            if (actionSet != null)
+            {
+                actionTime += Time.deltaTime;
+                if (actionLoops)
+                    sprite = actionSet.GetWalkFrame(clipIndex, actionTime);
+                else
+                {
+                    sprite = actionSet.GetOnceFrame(clipIndex, actionTime);
+                    if (!actionHolds && actionTime >= actionSet.Duration)
+                        actionSet = null;
+                }
+            }
+            else if (movement.PlanarVelocity.sqrMagnitude > WalkSpeedThreshold * WalkSpeedThreshold)
             {
                 walkTime += Time.deltaTime;
+                idleTime = 0f;
                 sprite = spriteSet.GetWalkFrame(clipIndex, walkTime);
             }
             else
             {
                 walkTime = 0f;
-                sprite = spriteSet.GetIdle(clipIndex);
+                idleTime += Time.deltaTime;
+                sprite = idleSet != null ? idleSet.GetWalkFrame(clipIndex, idleTime) : spriteSet.GetIdle(clipIndex);
             }
 
             if (spriteRenderer.sprite != sprite)

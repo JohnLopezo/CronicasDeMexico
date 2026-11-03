@@ -77,9 +77,13 @@ namespace CronicasDeMexico.Gameplay.Combat
             Strike();
         }
 
+        /// <summary>Se lanzó un golpe (para la animación del zarpazo).</summary>
+        public event System.Action Struck;
+
         /// <summary>Lanza un golpe ahora, sin entrada ni enfriamiento. Devuelve cuántos objetivos recibieron daño.</summary>
         public int Strike()
         {
+            Struck?.Invoke();
             var center = transform.position + Vector3.up * height + movement.FacingDirection * reach;
             var count = Physics.OverlapSphereNonAlloc(center, radius, hits, targetLayers, QueryTriggerInteraction.Ignore);
 

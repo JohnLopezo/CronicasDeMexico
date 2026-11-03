@@ -350,6 +350,38 @@ Pedida el 2026-10-28; se hace en lugar de las etapas 4–6 de las ruinas.
     - *Límite:* bajo el techo, el jugador queda tapado salvo lo que asoma por debajo del alero; no se hace transparente.
   - **Pruebas:** EditMode 42/42 y PlayMode 27/27 (nueva: `Player_CanWalkUnderShelterRoof`).
 
+**Etapa A3 (2026-11-03): aldea con más vida, de `Referencia_Visual_Olmeca3–5.png`.** Pendiente de aprobación.
+
+- **Recursos nuevos:**
+  - `Cestos_01–02`: cesto con mazorcas y cestos apilados; el maíz está documentado en La Venta (D) y la cestería es I.
+  - `Lena_01`: leña apilada.
+  - `Cerca_Varas_01–02`: cerca de varas de 1,1 m, a lo largo de X y de Y.
+  - `Poste_Manta_01–02`: manta listada, y mazorcas con hierbas colgadas.
+  - `Petate_01`: va horneado en el suelo (`marcas`), como las grietas, para pisarlo sin que lo tape el sprite.
+  - `Planta_Hoja_Ancha_01–02`: malanga (*Xanthosoma*, D).
+  - `Flor_Selva_01–02`: coralillo y cinco negritos, nativos (la especie concreta es I).
+  - `Roca_Musgo_01–03`.
+  - `Tronco_Grueso_01`: hueco, con hongos.
+  - `Fogon_Piedras_01`: encendido, en un aro de piedras.
+  - `Tile_Pasto_Selva_04–05`: pasto con flores y calva de tierra.
+- **Casas rehechas** (`Casa_Bajareque_01–03`, mismos nombres y `.meta`): horcones a la vista, techo en dos capas con el alero oscuro, escalón de basalto y una olla y un cesto junto a la puerta. `techo_palma` admite `fleco`; la enramada no cambia.
+- **No adaptado (§8):** pirámides de sillares, glifos, cocoteros, cascadas y la carreta (sin rueda de carga en Mesoamérica).
+- **Trazado (`aldea_a3`, `Random(53)`, al final de `planificar_ciudad`):** lo anterior no se mueve; solo se despeja vegetación baja.
+  - Patios: leña, cestos y postes con manta junto a cada casa, y cercas de varas en dos de cada tres casas. Si una pieza no cabe, se prueba en otros sitios alrededor de la casa.
+  - 3 petates.
+  - La mitad de los fogones pasan a `Fogon_Piedras`.
+  - Parte de los arbustos redondos de la aldea pasan a malanga o arbusto en flor, en el mismo sitio, y se añaden flores al borde de los caminos.
+  - 8 rocas con musgo y 4 troncos gruesos.
+  - El pasto de la aldea mezcla las variantes 1, 3, 4 y 5.
+  - Bancal de arcilla de 3 × 2 m con plantas encima. Sin rampa, se rodea; va en `niveles_recinto` (z = 0).
+  - `PUNTOS_RESERVADOS_CIUDAD` copia los puntos de los habitantes, los servicios y el despertar de `OlmecaCityGenerator`, que quedan libres de obstáculos. **Si se mueven allí, hay que moverlos también aquí.**
+- **Unity:** colisiones nuevas en `PixelArtSceneBuilder.Obstacles` (cestos, leña, cercas, postes, rocas y tronco grueso). Las plantas se atraviesan. La ciudad tiene ahora 1113 objetos.
+- **Pruebas:** EditMode 80/80 y PlayMode 62/62. Capturas `Ciudad_Unity_*.png` y medición en `Docs/Rendimiento.md`.
+- **Límites conocidos:**
+  - Las calvas de tierra (variante 5) se repiten a la vista si coinciden varias juntas.
+  - Las flores al borde de los caminos quedan por debajo del objetivo (26 de 60), porque la aldea ya está llena.
+  - La enramada sigue mostrando su suelo oscuro bajo el techo, igual que antes de A3.
+
 ### Ruinas olmecas (opción b)
 
 Etapas 4–6: escombros, mosaico (opcional) y composición. Crear con el mismo flujo, añadiendo constructores a `generar_olmeca.py` y a la composición. Todo sin labrar con glifos y con los criterios de §8:

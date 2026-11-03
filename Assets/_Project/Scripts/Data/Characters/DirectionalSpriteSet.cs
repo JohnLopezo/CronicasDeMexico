@@ -46,6 +46,35 @@ namespace CronicasDeMexico.Data.Characters
             return walk[(int)(walkTime * walkFramesPerSecond) % walk.Length];
         }
 
+        /// <summary>
+        /// Cuadro de una animación que se reproduce una vez (zarpazo, golpe, muerte): avanza con el tiempo y se queda
+        /// en el último cuadro.
+        /// </summary>
+        public Sprite GetOnceFrame(int direction, float time)
+        {
+            var walk = clips[direction].Walk;
+            if (walk == null || walk.Length == 0)
+                return clips[direction].Idle;
+
+            return walk[Mathf.Clamp((int)(time * walkFramesPerSecond), 0, walk.Length - 1)];
+        }
+
+        /// <summary>Segundos que dura la animación de una vez (los cuadros de la primera dirección).</summary>
+        public float Duration
+        {
+            get
+            {
+                var walk = clips[0].Walk;
+                return walk == null || walk.Length == 0 ? 0f : walk.Length / walkFramesPerSecond;
+            }
+        }
+
+        public float FramesPerSecond
+        {
+            get => walkFramesPerSecond;
+            set => walkFramesPerSecond = Mathf.Max(1f, value);
+        }
+
         public void SetClips(DirectionClip[] value)
         {
             if (value == null || value.Length != DirectionCount)

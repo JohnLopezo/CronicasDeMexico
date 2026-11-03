@@ -14,6 +14,7 @@ using UnityEngine;
 using UnityEngine.Rendering.Universal;
 using UnityEngine.SceneManagement;
 using UnityEngine.TestTools;
+using CronicasDeMexico.UI.Hud;
 using UnityEngine.UIElements;
 
 namespace CronicasDeMexico.Tests
@@ -63,7 +64,7 @@ namespace CronicasDeMexico.Tests
             var billboard = player.GetComponentInChildren<SpriteBillboard>();
             Assert.AreEqual(SpriteBillboard.BillboardMode.CameraPlane, billboard.Mode,
                 "El jugador debe mirar al plano de la cámara para ordenarse por profundidad con los objetos.");
-            Assert.IsNotNull(Object.FindAnyObjectByType<UIDocument>(), "La escena no tiene HUD.");
+            Assert.IsNotNull(Object.FindAnyObjectByType<HudController>(), "La escena no tiene HUD.");
 
             yield return UnloadScene();
         }

@@ -10,6 +10,7 @@ using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.TestTools;
+using CronicasDeMexico.UI.Hud;
 using UnityEngine.UIElements;
 
 namespace CronicasDeMexico.Tests
@@ -42,7 +43,7 @@ namespace CronicasDeMexico.Tests
             Assert.IsNotNull(Object.FindAnyObjectByType<DialogueInteractable>(), "El artesano no tiene diálogo.");
             Assert.That(Object.FindObjectsByType<EnemyChaser>(FindObjectsSortMode.None).Length, Is.EqualTo(2), "Debe haber dos espíritus jaguar.");
 
-            var health = Object.FindAnyObjectByType<UIDocument>().rootVisualElement.Q("health");
+            var health = Object.FindAnyObjectByType<HudController>().GetComponent<UIDocument>().rootVisualElement.Q("health");
             Assert.IsNotNull(health, "El HUD no tiene barra de vida.");
             Assert.IsFalse(health.ClassListContains("hidden"), "La barra de vida debe verse con el jugador en escena.");
 
@@ -58,7 +59,7 @@ namespace CronicasDeMexico.Tests
             var inscription = Object.FindObjectsByType<InscriptionInteractable>(FindObjectsSortMode.None)
                 .FirstOrDefault(i => i.transform.parent != null && i.transform.parent.name == "CabezaColosal");
             Assert.IsNotNull(inscription, "La cabeza colosal no tiene inscripción.");
-            var document = Object.FindAnyObjectByType<UIDocument>();
+            var document = Object.FindAnyObjectByType<HudController>().GetComponent<UIDocument>();
             Assert.IsNotNull(document, "La escena no tiene HUD.");
             var prompt = document.rootVisualElement.Q<Label>("prompt");
             Assert.IsNotNull(prompt, "El HUD no tiene la etiqueta 'prompt'.");

@@ -538,8 +538,15 @@ namespace CronicasDeMexico.Editor.SceneGeneration
             SetReference(menu, "menuAction", FindInputActionReference(MenuActionPath));
             SetReference(menu, "optionsAction", FindInputActionReference(OptionsActionPath));
 
-            // Navegación con teclado o mando en los botones. Usa el mapa UI del asset del proyecto: las acciones
-            // por defecto del módulo no son un asset y no se guardarían en la escena.
+            CreateEventSystem();
+        }
+
+        /// <summary>
+        /// Navegación con teclado o mando en los botones. Usa el mapa UI del asset del proyecto: las acciones por
+        /// defecto del módulo no son un asset y no se guardarían en la escena.
+        /// </summary>
+        internal static GameObject CreateEventSystem()
+        {
             var eventSystem = new GameObject("EventSystem");
             eventSystem.AddComponent<EventSystem>();
             var inputModule = eventSystem.AddComponent<InputSystemUIInputModule>();
@@ -554,6 +561,7 @@ namespace CronicasDeMexico.Editor.SceneGeneration
             inputModule.cancel = FindInputActionReference("UI/Cancel");
             inputModule.trackedDevicePosition = FindInputActionReference("UI/TrackedDevicePosition");
             inputModule.trackedDeviceOrientation = FindInputActionReference("UI/TrackedDeviceOrientation");
+            return eventSystem;
         }
 
         // ---------- Escenario ----------

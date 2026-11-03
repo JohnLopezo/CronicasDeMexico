@@ -8,7 +8,12 @@
 2. Comprobar que `git log -1` coincide con el último commit anotado en `Docs/Bitacora.md`.
 3. Abrir Unity 6000.0.85f1 y esperar la importación.
 4. Para jugar: abrir `Scenes/Boot/Boot.unity` y pulsar Play.
-   - Sin partida guardada arranca en **`Olmeca_Ciudad`**. Con partida guardada aparece en su santuario de Memoria; se borra con **Crónicas → Borrar partida guardada**.
+   - Aparece el **menú de inicio**:
+     - **Continuar** lleva al santuario de Memoria de la partida guardada.
+     - **Nueva partida** empieza en **`Olmeca_Ciudad`** y borra la anterior tras confirmar.
+     - También tiene **Opciones** (calidad gráfica) y **Salir** (solo en el build).
+   - Al pulsar Play en una escena de juego no hay menú.
+   - **Crónicas → Borrar partida guardada** sigue disponible en el Editor.
    - La selva (`Olmeca_Selva`) se alcanza por el sendero del oeste de la ciudad.
    - Los pisos `Olmeca_Mazmorra_P1` a `P3` se alcanzan por la entrada de la selva, que se abre al completar `MP_OLM_03`.
    - Cualquier escena también se puede abrir directamente; al pulsar Play así no se carga la partida.
@@ -163,7 +168,7 @@ EditMode 80/80 y PlayMode 59/59 (al 2026-10-30, tras M5).
 | **M5. Recompensas y cierre** | **Hecha (2026-10-30).** Sistema integral de recompensas (ver §3), Fragmento de la Primera Memoria, golpe de tierra, elección de Bendición y `MP_OLM_06`. Queda pendiente la conexión al arco II. |
 
 ### Otros pendientes técnicos
-- Menú de inicio con **Continuar o Nueva partida**. Hoy Boot continúa solo si hay partida guardada, y para empezar de nuevo se borra con **Crónicas → Borrar partida guardada**.
+- ~~Menú de inicio con **Continuar o Nueva partida**.~~ **Hecho (2026-11-03).** También tiene Opciones y Salir; el fondo es liso y la imagen de título queda para cuando haya arte.
 - Pantalla de elección de Guardián, cuando haya más de uno.
 - Misiones secundarias del arco I (`MS_OLM_01` a `MS_OLM_05`, en `Docs/Historia/Misiones.md`) y la tienda del comerciante.
 - Arte de las ruinas que falta: escombros de basalto y mosaico de serpentina (`Arte_Olmeca_Demo.md` §12).

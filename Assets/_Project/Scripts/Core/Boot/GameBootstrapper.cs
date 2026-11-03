@@ -10,15 +10,23 @@ namespace CronicasDeMexico.Core.Boot
 {
     /// <summary>
     /// Vive en la escena Boot, que permanece cargada toda la partida. Registra los servicios globales (calidad, viaje,
-    /// historia, misiones, punto de control y guardado) y, si no hay otra escena abierta, continúa la partida guardada
-    /// en su santuario de Memoria o, si no la hay, carga la escena inicial de forma aditiva. Hasta que exista el menú de
-    /// inicio, la partida se borra con Crónicas → Borrar partida guardada.
+    /// historia, misiones, punto de control y guardado). Si no hay otra escena abierta, pide el menú de inicio
+    /// (StartMenuRequested; lo muestra StartMenuController, en la misma escena), que llama a ContinueSavedGame o a
+    /// StartNewGame.
     /// </summary>
     [DefaultExecutionOrder(-1000)]
     public sealed class GameBootstrapper : MonoBehaviour
     {
-        [SerializeField, Tooltip("Escena de juego que se carga al arrancar desde Boot. Debe estar en Build Settings.")]
+        [SerializeField, Tooltip("Escena de juego que carga Nueva partida. Debe estar en Build Settings.")]
         string initialScene = "Sandbox_HD2D";
+
+        /// <summary>Boot arrancó sola (el juego empieza aquí): el menú de inicio debe mostrarse.</summary>
+        public static bool StartMenuRequested { get; private set; }
+
+        public string InitialScene => initialScene;
+
+        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+        static void ResetStatics() => StartMenuRequested = false;
 
         void Awake()
         {
@@ -27,11 +35,9 @@ namespace CronicasDeMexico.Core.Boot
                 travel = gameObject.AddComponent<SceneTravel>();
             ServiceLocator.Register(travel);
 
-            // Si se pulsó Play desde una escena de juego, BootSceneLoader añadió Boot encima: no cargamos nada más (ni
-            // la partida guardada).
-            if (SceneManager.sceneCount == 1 &&
-                !ContinueSavedGame(ServiceLocator.Get<SaveService>(), ServiceLocator.Get<PlayerCheckpoint>(), travel))
-                LoadInitialScene();
+            // Si se pulsó Play desde una escena de juego, BootSceneLoader añadió Boot encima: no hay menú ni se carga
+            // la partida guardada.
+            StartMenuRequested = SceneManager.sceneCount == 1;
         }
 
         void OnDestroy() => ServiceLocator.Clear();
@@ -88,19 +94,27 @@ namespace CronicasDeMexico.Core.Boot
             return travel.Travel(default, checkpoint.Scene, checkpoint.SpawnId, checkpoint.Health);
         }
 
-        void LoadInitialScene()
+        /// <summary>
+        /// Borra la partida guardada (y su copia) y carga la escena inicial de forma aditiva. Devuelve false si la
+        /// escena no se puede cargar.
+        /// shortcut: no reinicia los servicios en memoria, que siguen limpios salvo que antes fallara un Continuar
+        /// tras leer la partida (partida sin punto de control); si eso llega a pasar, reiniciar los servicios aquí.
+        /// </summary>
+        public static bool StartNewGame(SaveService save, string scene)
         {
-            if (string.IsNullOrEmpty(initialScene))
-                return;
+            save?.Delete();
+            if (string.IsNullOrEmpty(scene))
+                return false;
 
-            var operation = SceneManager.LoadSceneAsync(initialScene, LoadSceneMode.Additive);
+            var operation = SceneManager.LoadSceneAsync(scene, LoadSceneMode.Additive);
             if (operation == null)
             {
-                Debug.LogError($"[Boot] No se pudo cargar '{initialScene}'. ¿Está en Build Settings?");
-                return;
+                Debug.LogError($"[Boot] No se pudo cargar '{scene}'. ¿Está en Build Settings?");
+                return false;
             }
 
-            operation.completed += _ => SceneManager.SetActiveScene(SceneManager.GetSceneByName(initialScene));
+            operation.completed += _ => SceneManager.SetActiveScene(SceneManager.GetSceneByName(scene));
+            return true;
         }
     }
 }

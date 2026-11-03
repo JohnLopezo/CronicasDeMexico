@@ -21,6 +21,24 @@ Plantilla:
 
 ---
 
+## 2026-11-03 (tarde) — i7-10700: menú de inicio
+
+- **Rama / último commit:** `feature/prototipo-olmeca` @ `e57e1e3` (aldea A3 y jaguares, subido).
+- **Hecho:** etapas 1–4, autorizadas, con Opciones y fondo liso.
+  - `GameBootstrapper` ya no continúa ni carga solo: pide el menú (`StartMenuRequested`) y tiene `StartNewGame`.
+  - `StartMenuController` y `StartMenu.uss`: Continuar, Nueva partida con confirmación, Opciones (reutiliza `QualityOptionsPanel.SelectLevel`) y Salir.
+  - `StartMenuSetup` lo añade a `Boot`.
+  - `OlmecaPrototypeGenerator.CreateEventSystem` queda separado para reutilizarlo.
+  - Build nuevo `WindowsGameBuild`, que arranca en Boot.
+- **Error encontrado en el build:** el menú no se dibujaba porque `StartMenuSetup` cargaba `PanelSettings` y la hoja de estilos antes de `OpenScene`, que los descarga, y la escena guardaba referencias vacías. Corregido. `StartMenu_HasPanelSettings_AndItsStyleSheet` lo vigila.
+- **Pruebas:** EditMode 80/80 y PlayMode 67/67. `StartMenuTests` es nueva (5 pruebas).
+  - Las pruebas del HUD de `OlmecaPrototypeSceneTests` y `OlmecaCiudadSceneTests` buscan ahora el `HudController`, porque `Boot` ya tiene otro `UIDocument`.
+  - Una de cuatro ejecuciones completas falló en `Player_CanWalkUnderShelterRoof` y `Charge_IsTelegraphedAsALine_AndHitsAlongIt`, y en cadena en `Scenery_IsOnPixelGrid_AndAltarsCanBeExamined`. Las otras tres pasaron. Parecen inestables; no se ha aislado la causa.
+- **Build comprobado:** muestra el menú con Continuar desactivado (sin partida) y el foco en Nueva partida. La navegación con teclado o mando no se probó en el build, solo la lógica en PlayMode.
+- **Siguiente:** el usuario prueba el menú (teclado y mando en el build). Commit y push hechos por petición del usuario.
+
+---
+
 ## 2026-11-03 — i7-10700: aldea A3 (referencias visuales 3–5)
 
 - **Rama / último commit:** `feature/prototipo-olmeca` @ `199a8e9`.

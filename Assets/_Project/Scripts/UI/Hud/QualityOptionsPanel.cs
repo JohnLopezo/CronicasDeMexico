@@ -80,7 +80,7 @@ namespace CronicasDeMexico.UI.Hud
                 levelButtons[QualitySettings.GetQualityLevel()].Focus();
         }
 
-        static void SelectLevel(int level)
+        internal static void SelectLevel(int level)
         {
             // Sin la escena Boot (p. ej. en pruebas) no hay servicio: se aplica sin guardar la preferencia.
             if (ServiceLocator.TryGet<QualityService>(out var quality))

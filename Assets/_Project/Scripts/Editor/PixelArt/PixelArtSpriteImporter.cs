@@ -16,6 +16,10 @@ namespace CronicasDeMexico.Editor.PixelArt
         public const string SpritesFolder = "Assets/_Project/Art/Environment/Olmeca/Sprites";
         public const string PivotsPath = SpritesFolder + "/pivotes_unity.json";
         public const string GroundFolder = SpritesFolder + "/Suelo";
+        // Carpeta aparte: el flujo de Blender borra de las suyas los PNG que no genera él.
+        public const string NpcFolder = SpritesFolder + "/Npc";
+        const float NpcPixelsPerUnit = 32f;
+        static readonly Vector2 NpcPivot = new(0.5f, 2f / 64f); // lienzo 48×64, pies a 2 px del borde (recortar_npc.py)
         public const float PixelsPerUnit = 45.254834f; // 32·√2
 
         [Serializable]
@@ -70,7 +74,16 @@ namespace CronicasDeMexico.Editor.PixelArt
             settings.spriteGenerateFallbackPhysicsShape = false;
 
             var spriteName = Path.GetFileNameWithoutExtension(assetPath);
-            if (TryGetPivot(spriteName, out var pivot))
+            if (assetPath.StartsWith(NpcFolder + "/", StringComparison.Ordinal))
+            {
+                // NPC de Tools/ArtPipeline/recortar_npc.py. A 32 PPU, como los provisionales: la escala de la raíz de
+                // CreateCharacter los deja a un píxel de pantalla por píxel de sprite, sin cambiar colisiones ni radios.
+                importer.spritePixelsPerUnit = NpcPixelsPerUnit;
+                settings.spritePixelsPerUnit = NpcPixelsPerUnit;
+                settings.spriteAlignment = (int)SpriteAlignment.Custom;
+                settings.spritePivot = NpcPivot;
+            }
+            else if (TryGetPivot(spriteName, out var pivot))
             {
                 settings.spriteAlignment = (int)SpriteAlignment.Custom;
                 settings.spritePivot = pivot;

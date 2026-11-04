@@ -171,6 +171,7 @@ namespace CronicasDeMexico.Editor.SceneGeneration
                 spriteRenderer.shadowCastingMode = ShadowCastingMode.Off;
                 SetProperty(spriteRenderer.GetComponent<SpriteBillboard>(), "mode",
                     property => property.enumValueIndex = (int)SpriteBillboard.BillboardMode.CameraPlane);
+                spriteRenderer.transform.rotation = IsometricProjection.CameraRotation; // como en CreateCharacter
                 spriteRenderer.gameObject.AddComponent<PixelGridSnap>();
                 JaguarCharacterAssets.ConfigureController(root.GetComponent<CharacterController>());
             }
@@ -255,9 +256,11 @@ namespace CronicasDeMexico.Editor.SceneGeneration
         {
             AddZone(parent, OlmecaNarrativeAssets.EntranceZoneId, points.entrada.Value, new Vector3(4f, 4f, 2f));
 
-            var spriteSet = OlmecaPrototypeGenerator.CreateSpriteSet("Guerrero", PlaceholderSpriteFactory.Warrior);
+            var spriteSet = NpcCharacterAssets.Build("Guerrero");
             var warrior = CreateSettler(Group("Guerrero", parent), narrative.WarriorAtEntrance, spriteSet, messageChannel,
                 new[] { points.guerrero.Value });
+            // Radio menor que la distancia al claro 3: pelea con lo que llegue a la entrada, no con los espíritus de la misión.
+            AddDefender(warrior, "Guerrero", detectionRadius: 4f);
             ShowWhen(warrior, new[] { OlmecaNarrativeAssets.WarriorInJungleFlag }, null, liveUpdate: true);
         }
     }

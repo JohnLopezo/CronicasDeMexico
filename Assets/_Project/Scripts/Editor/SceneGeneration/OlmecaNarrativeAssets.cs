@@ -22,6 +22,45 @@ namespace CronicasDeMexico.Editor.SceneGeneration
         public const string WarriorId = "guerrero_joven";
         public const string MerchantId = "comerciante";
         public const string SpiritId = "figura_espiritual";
+        /// <summary>El guardia de la aldea: un habitante, no un Guardián. Puede haber varios, con el mismo NpcData.</summary>
+        public const string VillageGuardId = "guardia";
+
+        // Habitantes de ambiente (Docs/Personajes/NPC_Olmecas.md): id, nombre, papel y frases. Textos de ficción (F).
+        static readonly (string id, string name, string role, string[] lines)[] VillagerTexts =
+        {
+            ("curandera", "Curandera", "sanadora", new[]
+            {
+                "Si vienes herido, siéntate. Si no, no me pises las hojas.",
+                "Ese muchacho no descansa. Yo le preparo el remedio y él se lo quita.",
+            }),
+            ("anciano", "Anciano", "sabio", new[] { "Mi padre me enseñó el nombre de cada montículo. Hoy me falta uno, y no sé cuál." }),
+            ("sacerdote", "Sacerdote", "guía espiritual", new[]
+            {
+                "Cada ofrenda se entierra donde la dejaron los que vinieron antes. Por eso me inquieta no recordar quiénes fueron.",
+            }),
+            ("agricultor", "Agricultor", "agricultor", new[] { "La milpa no pregunta qué pasa en el mundo. Hay que sembrar igual." }),
+            ("pescador", "Pescador", "pescador", new[]
+            {
+                "El río da lo que quiere. Hoy quiso poco.",
+                "Las canoas siguen donde las dejé. Al menos eso sí lo recuerdo.",
+            }),
+            ("mensajero", "Mensajero", "mensajero", new[] { "Lo malo no es correr. Lo malo es llegar y que nadie recuerde quién mandó el aviso." }),
+            ("comerciante_mujer", "Comerciante", "vendedora", new[] { "Mantas, cestos y cuentas. Si buscas cosas de lejos, habla con el del muelle." }),
+            (VillageGuardId, "Guardia de la aldea", "guardia", new[]
+            {
+                "Lo que sale últimamente de la selva ya no se porta como un animal. Si oyes gritos, corre hacia aquí, no al revés.",
+            }),
+            ("nino_1", "Niño", "niño", new[] { "¿Eres un jaguar de verdad? No te tengo miedo... casi." }),
+            ("nina_1", "Niña", "niña", new[] { "¡Te hice una corona de flores, pero se me cayó al río!" }),
+            ("nino_2", "Niño", "niño", new[] { "Si le dices a mi mamá que fui yo, te escondo las piedritas." }),
+            ("nina_2", "Niña", "niña", new[] { "¿Por qué tienes manchas? ¿Te salieron solas?" }),
+            ("nino_3", "Niño", "niño", new[] { "Apuesto a que llego al muelle antes que tú." }),
+            ("nina_3", "Niña", "niña", new[] { "...Hola." }),
+            ("nino_4", "Niño", "niño", new[] { "¡Un jaguar! ¡Un jaguar! ¡Vengan a ver!" }),
+            ("nina_4", "Niña", "niña", new[] { "Anoche soñé que las piedras hablaban. Luego se me olvidó qué decían." }),
+            ("nino_5", "Niño", "niño", new[] { "Yo no rompí esa vasija. Ya estaba rota. Desde hace... mucho." }),
+        };
+
         public const string AwakeningQuestId = "MP_OLM_01";
         public const string SettlementQuestId = "MP_OLM_02";
         public const string JungleQuestId = "MP_OLM_03";
@@ -109,6 +148,8 @@ namespace CronicasDeMexico.Editor.SceneGeneration
             public Character Spirit, Artisan, Elder, Warrior, Merchant;
             /// <summary>El joven guerrero en la entrada de la estructura (mismo NpcData, otro diálogo).</summary>
             public Character WarriorAtEntrance;
+            /// <summary>Habitantes de ambiente, por id.</summary>
+            public readonly System.Collections.Generic.Dictionary<string, Character> Villagers = new();
             public QuestData AwakeningQuest, SettlementQuest, JungleQuest, DungeonQuest, GuardianQuest, ReturnQuest;
             public GuardianData Guardian;
         }
@@ -298,6 +339,9 @@ namespace CronicasDeMexico.Editor.SceneGeneration
                         "Antes sabía cada vuelta del camino. Ahora llego a un cruce y no recuerdo hacia dónde iba.",
                         "Cuando vuelvan a ser seguros, tendré buenas cosas que cambiar.")),
             });
+
+            foreach (var (id, name, role, lines) in VillagerTexts)
+                content.Villagers[id] = CreateCharacter(id, name, role, new[] { new DialogueBranch(Lines(lines)) });
 
             AssetDatabase.SaveAssets();
             return content;

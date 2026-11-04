@@ -1,5 +1,6 @@
 using CronicasDeMexico.Gameplay.Combat;
 using CronicasDeMexico.Gameplay.Movement;
+using CronicasDeMexico.Gameplay.Npc;
 using UnityEngine;
 
 namespace CronicasDeMexico.Gameplay.Enemies
@@ -72,9 +73,15 @@ namespace CronicasDeMexico.Gameplay.Enemies
         [SerializeField, Min(0f), Tooltip("Segundos que sigue visible al morir (animación de caída) antes de desaparecer.")]
         float deathLinger;
 
+        [Header("Incursión (aldea)")]
+        [SerializeField, Tooltip("Al aparecer, en vez de quedarse en su sitio, marcha hasta marchPoint.")] bool marches;
+        [SerializeField] Vector3 marchPoint;
+
         CharacterController controller;
         Health health;
         Health targetHealth;
+        Transform player;
+        Health playerHealth;
         Renderer[] renderers;
         Vector3 home;
         Vector3 planarVelocity;
@@ -110,7 +117,7 @@ namespace CronicasDeMexico.Gameplay.Enemies
             controller = GetComponent<CharacterController>();
             health = GetComponent<Health>();
             renderers = GetComponentsInChildren<Renderer>();
-            home = transform.position;
+            home = marches ? marchPoint : transform.position;
         }
 
         void OnEnable()
@@ -136,6 +143,30 @@ namespace CronicasDeMexico.Gameplay.Enemies
 
             if (target != null)
                 targetHealth = target.GetComponentInParent<Health>();
+            player = target;
+            playerHealth = targetHealth;
+        }
+
+        // Va a por quien tenga más cerca: el jugador o un defensor (al que no puede dañar: no tiene vida).
+        void ChooseNearestTarget()
+        {
+            if (NpcDefender.Active.Count == 0)
+                return;
+
+            var playerAlive = player != null && (playerHealth == null || !playerHealth.IsDead);
+            target = playerAlive ? player : null;
+            targetHealth = playerAlive ? playerHealth : null;
+            var nearest = playerAlive ? (player.position - transform.position).sqrMagnitude : float.PositiveInfinity;
+            foreach (var defender in NpcDefender.Active)
+            {
+                var distance = (defender.transform.position - transform.position).sqrMagnitude;
+                if (distance < nearest)
+                {
+                    nearest = distance;
+                    target = defender.transform;
+                    targetHealth = null;
+                }
+            }
         }
 
         void Update()
@@ -185,6 +216,7 @@ namespace CronicasDeMexico.Gameplay.Enemies
 
         Vector3 ChooseVelocity()
         {
+            ChooseNearestTarget();
             var targetAlive = target != null && (targetHealth == null || !targetHealth.IsDead);
             if (targetAlive)
             {

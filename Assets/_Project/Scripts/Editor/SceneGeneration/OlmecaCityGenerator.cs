@@ -49,15 +49,44 @@ namespace CronicasDeMexico.Editor.SceneGeneration
             "Una estela de basalto. Desde que el artesano lo dijo, no puedes dejar de notarlo: la piedra no está " +
             "gastada como las rocas del camino. Está lisa, como si las marcas nunca hubieran existido.";
 
-        // Habitantes del asentamiento (Docs/Personajes/NPC_Olmecas.md): sprite provisional y puntos de patrulla en
-        // x, y del flujo (uno = quieto en su sitio). Posiciones en tierra y lejos de obstáculos.
+        // Habitantes del asentamiento (Docs/Personajes/NPC_Olmecas.md): sprites y puntos de patrulla en x, y del flujo
+        // (uno = quieto en su sitio). Posiciones en tierra y lejos de obstáculos.
         static readonly (string id, string sprites, Vector2[] points)[] Settlers =
         {
             (OlmecaNarrativeAssets.SpiritId, "Figura", new[] { new Vector2(18.6f, 23.6f) }),
             (OlmecaNarrativeAssets.ArtisanId, "Artesano", new[] { new Vector2(13.5f, 2.8f), new Vector2(14.6f, 2.8f) }),
-            (OlmecaNarrativeAssets.ElderId, "Anciana", new[] { new Vector2(12.4f, 14.2f) }),
-            (OlmecaNarrativeAssets.WarriorId, "Guerrero", new[] { new Vector2(12.0f, 8.5f) }),
-            (OlmecaNarrativeAssets.MerchantId, "Comerciante", new[] { new Vector2(19.0f, -3.2f) }),
+            (OlmecaNarrativeAssets.ElderId, "Anciana", new[] { new Vector2(12.4f, 14.2f), new Vector2(13.6f, 14.2f) }),
+            (OlmecaNarrativeAssets.WarriorId, "Guerrero", new[] { new Vector2(12.0f, 8.5f), new Vector2(12.0f, 10.0f) }),
+            (OlmecaNarrativeAssets.MerchantId, "Comerciante", new[] { new Vector2(19.0f, -3.2f), new Vector2(19.0f, -1.8f) }),
+            ("curandera", "Curandera", new[] { new Vector2(14.0f, 8.0f), new Vector2(14.0f, 9.4f) }),
+            ("anciano", "Anciano", new[] { new Vector2(5.5f, 0.5f), new Vector2(5.5f, 2.0f) }),
+            ("sacerdote", "Sacerdote", new[] { new Vector2(-5.2f, 5.2f), new Vector2(-3.8f, 5.2f) }),
+            ("agricultor", "Agricultor", new[] { new Vector2(15.0f, -11.0f), new Vector2(16.4f, -11.0f) }),
+            ("pescador", "Pescador", new[] { new Vector2(19.2f, -6.5f), new Vector2(19.2f, -8.0f) }),
+            ("mensajero", "Mensajero", new[] { new Vector2(3.5f, -3.0f), new Vector2(8.5f, -3.0f) }),
+            ("comerciante_mujer", "ComercianteMujer", new[] { new Vector2(14.5f, -3.2f), new Vector2(14.5f, -4.6f) }),
+            // Guardias: los primeros en recibir las incursiones (sendero del oeste) y otro más cerca de la plaza.
+            (OlmecaNarrativeAssets.VillageGuardId, "Guardia", new[] { new Vector2(-18.0f, 3.0f), new Vector2(-18.0f, 6.0f) }),
+            (OlmecaNarrativeAssets.VillageGuardId, "Guardia", new[] { new Vector2(-15.0f, 6.0f), new Vector2(-15.0f, 3.0f) }),
+            (OlmecaNarrativeAssets.VillageGuardId, "Guardia", new[] { new Vector2(-6.0f, 1.0f), new Vector2(-6.0f, 3.0f) }),
+            ("nino_1", "Nino1", new[] { new Vector2(13.5f, 6.5f), new Vector2(14.5f, 6.5f) }),
+            ("nina_1", "Nina1", new[] { new Vector2(15.0f, 5.5f), new Vector2(15.0f, 4.2f) }),
+            ("nino_2", "Nino2", new[] { new Vector2(15.5f, 0.6f), new Vector2(15.5f, -0.5f) }),
+            ("nina_2", "Nina2", new[] { new Vector2(12.5f, 12.5f), new Vector2(13.6f, 12.5f) }),
+            ("nino_3", "Nino3", new[] { new Vector2(13.3f, 11.2f), new Vector2(14.6f, 11.2f) }),
+            ("nina_3", "Nina3", new[] { new Vector2(15.0f, 17.0f), new Vector2(16.2f, 17.0f) }),
+            ("nino_4", "Nino4", new[] { new Vector2(13.0f, -8.0f), new Vector2(14.0f, -8.0f) }),
+            ("nina_4", "Nina4", new[] { new Vector2(13.5f, -10.0f), new Vector2(13.5f, -11.2f) }),
+            ("nino_5", "Nino5", new[] { new Vector2(12.0f, -12.0f), new Vector2(13.2f, -12.0f) }),
+        };
+
+        // Incursión (se reactiva cada vez que se carga la ciudad, tras MP_OLM_03): jaguares corruptos que aparecen en el
+        // sendero del oeste y marchan hacia la plaza. Sin reaparecer: una vez vencidos, hasta la siguiente visita. Uno tras
+        // otro por la misma recta: es la que está libre de palmas y ceibas, y NpcPatrol y EnemyChaser no esquivan.
+        static readonly (Vector2 start, Vector2 march)[] Raiders =
+        {
+            (new Vector2(-19.0f, 1.5f), new Vector2(-8.0f, 3.5f)),
+            (new Vector2(-21.2f, 1.1f), new Vector2(-10.2f, 3.1f)),
         };
 
         [MenuItem("Crónicas/Generar ciudad olmeca")]
@@ -82,7 +111,7 @@ namespace CronicasDeMexico.Editor.SceneGeneration
             var messageChannel = MessageChannel();
             // Después de NewScene, que descarga los ScriptableObjects recién creados que nada referencia.
             var narrative = OlmecaNarrativeAssets.EnsureAssets();
-            OlmecaRewardAssets.EnsureAssets(narrative);
+            var rewards = OlmecaRewardAssets.EnsureAssets(narrative);
 
             var root = BuildScenery("--- Ciudad ---", data, sprites,
                 (placement, renderer) => AddMonumentInscription(placement, renderer, messageChannel));
@@ -94,6 +123,7 @@ namespace CronicasDeMexico.Editor.SceneGeneration
             BuildAwakening(Group("--- Despertar ---", null), narrative, messageChannel);
             BuildPathToJungle(Group("--- Sendero a la selva ---", null), data.puntos);
             BuildServices(Group("--- Servicios ---", null));
+            BuildRaid(Group("--- Incursion ---", null), rewards);
             CreateCamera(player.transform, data.limites);
             CreateHud(messageChannel);
 
@@ -140,23 +170,45 @@ namespace CronicasDeMexico.Editor.SceneGeneration
                 [OlmecaNarrativeAssets.WarriorId] = narrative.Warrior,
                 [OlmecaNarrativeAssets.MerchantId] = narrative.Merchant,
             };
-            var palettes = new Dictionary<string, PlaceholderSpriteFactory.CharacterPalette>
+            foreach (var (id, villager) in narrative.Villagers)
+                characters[id] = villager;
+            // Sin ficha todavía (Docs/Personajes/NPC_Olmecas.md): siguen provisionales. Los demás usan su arte final.
+            var placeholders = new Dictionary<string, PlaceholderSpriteFactory.CharacterPalette>
             {
                 ["Figura"] = PlaceholderSpriteFactory.Spirit,
                 ["Artesano"] = PlaceholderSpriteFactory.Artisan,
                 ["Anciana"] = PlaceholderSpriteFactory.Elder,
-                ["Guerrero"] = PlaceholderSpriteFactory.Warrior,
-                ["Comerciante"] = PlaceholderSpriteFactory.Merchant,
             };
 
             foreach (var (id, spritesName, points) in Settlers)
             {
-                var spriteSet = OlmecaPrototypeGenerator.CreateSpriteSet(spritesName, palettes[spritesName]);
+                var spriteSet = placeholders.TryGetValue(spritesName, out var palette)
+                    ? OlmecaPrototypeGenerator.CreateSpriteSet(spritesName, palette)
+                    : NpcCharacterAssets.Build(spritesName);
                 var settler = CreateSettler(parent, characters[id], spriteSet, messageChannel, points);
                 // El guerrero se adelanta a la entrada de la estructura al dar MP_OLM_03 (lo espera en la selva). Solo
                 // se comprueba al cargar, para que no desaparezca en mitad de la conversación.
                 if (id == OlmecaNarrativeAssets.WarriorId)
                     ShowWhen(settler, null, new[] { OlmecaNarrativeAssets.WarriorInJungleFlag }, liveUpdate: false);
+                if (id == OlmecaNarrativeAssets.VillageGuardId)
+                    AddDefender(settler, spritesName, detectionRadius: 5f);
+            }
+        }
+
+        static void BuildRaid(Transform parent, OlmecaRewardAssets.Content rewards)
+        {
+            var spriteSet = OlmecaPrototypeGenerator.CreateSpriteSet("EspirituCorrompido", PlaceholderSpriteFactory.CorruptedJaguarSpirit);
+            for (var i = 0; i < Raiders.Length; i++)
+            {
+                var (start, march) = Raiders[i];
+                var name = $"Incursor_{i + 1}";
+                var raider = OlmecaJungleGenerator.CreateCorruptedSpirit(Group(name, parent), name, spriteSet, start, null);
+                var chaser = raider.GetComponent<CronicasDeMexico.Gameplay.Enemies.EnemyChaser>();
+                SetProperty(chaser, "marches", property => property.boolValue = true);
+                SetProperty(chaser, "marchPoint", property => property.vector3Value = ToWorld(march));
+                OlmecaRewardAssets.AddLoot(raider, rewards.CommonSpirit, OlmecaRewardAssets.JungleLevel);
+                raider.SetActive(false); // hasta que ActiveWhenFlags vea la bandera
+                ShowWhen(raider, new[] { StoryEvents.QuestCompletedFlag(OlmecaNarrativeAssets.JungleQuestId) }, null, liveUpdate: false);
             }
         }
 

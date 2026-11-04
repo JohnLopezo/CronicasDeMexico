@@ -128,8 +128,15 @@ catálogo de objetos y Bendiciones).
 - **Misión `MP_OLM_06`:** llevar el fragmento a la anciana y al altar-trono.
 - **Menú y HUD:** menú con la tecla I y barras de energía y experiencia en el HUD.
 
+### NPC con arte final y guardias de la aldea, 2026-11-04
+Detalle en `Docs/Personajes/NPC_Olmecas.md` y `Docs/Historia/Misiones.md`.
+- **Arte:** el Guerrero, el Comerciante y 17 personajes nuevos usan las fichas de `Docs/NPC/`, con caminata.
+- **Pueblo vivo:** 3 guardias, curandera, anciano, sacerdote, agricultor, pescador, mensajero, comerciante mujer y 9 niños patrullan y hablan.
+- **Combate de NPC:** los guardias (no son Guardianes) defienden la aldea y el joven guerrero la entrada de la selva (`NpcDefender`). Los enemigos van a por quien tengan más cerca (`EnemyChaser`).
+- **Incursiones:** al completar `MP_OLM_03`, 2 jaguares corruptos entran por el sendero del oeste en cada visita a la ciudad.
+
 ### Pruebas
-EditMode 80/80 y PlayMode 59/59 (al 2026-10-30, tras M5).
+EditMode 80/80 y PlayMode 72/72 (al 2026-11-04).
 
 ## 4. Pendiente de decidir (por el autor)
 
@@ -141,7 +148,8 @@ EditMode 80/80 y PlayMode 59/59 (al 2026-10-30, tras M5).
 ## 5. Pendiente del autor (arte)
 
 - Sprites del **Jaguar** jugable. Hoy el jugador es un humano provisional, aunque el reflejo diga "jaguar".
-- Sprites de los **NPC**, con siluetas propias, y de la **figura espiritual**.
+- Fichas del **artesano de jade**, la **anciana** y la **figura espiritual**. Los demás NPC ya tienen arte (`Docs/NPC/`); les faltan caminata de frente y de espalda y una pose de ataque del guardia.
+- Contrastar con fuentes el penacho del sacerdote, los pergaminos del mensajero y los sombreros de ala ancha (`Docs/Personajes/NPC_Olmecas.md`).
 - Sprites del **espíritu jaguar corrompido** (hoy, la silueta humana provisional con grietas violetas) y del **eco borrado** (hoy, la misma silueta en violeta con franjas borradas).
 - Cabeza colosal y enemigos animados. El **Guardián de la Piedra Viva** ya tiene un modelo de Blender (M4), pendiente de tu aprobación.
 

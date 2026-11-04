@@ -482,6 +482,8 @@ namespace CronicasDeMexico.Editor.SceneGeneration
             spriteRenderer.shadowCastingMode = ShadowCastingMode.Off;
             var billboard = spriteRenderer.GetComponent<SpriteBillboard>();
             SetProperty(billboard, "mode", property => property.enumValueIndex = (int)SpriteBillboard.BillboardMode.CameraPlane);
+            // SpriteBillboard solo gira en Play; sin esto, fuera de Play (capturas, vista de escena) se ve comprimido.
+            spriteRenderer.transform.rotation = IsometricProjection.CameraRotation;
             spriteRenderer.gameObject.AddComponent<PixelGridSnap>();
             return root;
         }
@@ -512,15 +514,21 @@ namespace CronicasDeMexico.Editor.SceneGeneration
 
             var world = points.Select(ToWorld).ToArray();
             root.transform.position = world[0];
-            if (world.Length > 1)
-                SetProperty(patrol, "patrolPoints", property =>
-                {
-                    property.arraySize = world.Length;
-                    for (var i = 0; i < world.Length; i++)
-                        property.GetArrayElementAtIndex(i).vector3Value = world[i];
-                });
+            // También con un solo punto: es su sitio, al que vuelve si un combate lo aleja (NpcDefender).
+            SetProperty(patrol, "patrolPoints", property =>
+            {
+                property.arraySize = world.Length;
+                for (var i = 0; i < world.Length; i++)
+                    property.GetArrayElementAtIndex(i).vector3Value = world[i];
+            });
             return root;
         }
+
+        /// <summary>Hace que un habitante pelee (el guardia de la aldea, el joven guerrero) con su pose de ataque.</summary>
+        internal static void AddDefender(GameObject settler, string spritesName, float detectionRadius) =>
+            settler.AddComponent<CronicasDeMexico.Gameplay.Npc.NpcDefender>().Configure(
+                1 << OlmecaPrototypeGenerator.Layer(OlmecaPrototypeGenerator.EnemyLayerName), detectionRadius,
+                NpcCharacterAssets.BuildAttack(spritesName));
 
         /// <summary>Muestra u oculta target según banderas (ActiveWhenFlags va en el padre, que nunca se desactiva).</summary>
         internal static ActiveWhenFlags ShowWhen(GameObject target, string[] required, string[] forbidden, bool liveUpdate)

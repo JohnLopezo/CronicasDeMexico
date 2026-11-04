@@ -81,3 +81,12 @@ Todos los pasos son de llegar o de vencer en su propio piso, así que ninguno se
 Por ahora no tiene recompensas.
 
 **Falta:** las recompensas del Guardián (fragmento de la Primera Memoria, habilidad de tierra y elección de Bendición) y `MP_OLM_06` (M5, `Docs/Estado_y_Plan.md`).
+
+## Incursiones en la aldea (cambio de historia del autor, 2026-11-04)
+
+No es una misión: es lo que pasa en la ciudad desde que se completa `MP_OLM_03`. **Los guardias de la aldea** (habitantes, no Guardianes; `Docs/Personajes/NPC_Olmecas.md`) la defienden.
+
+- **Cuándo:** cada vez que se carga la ciudad con `MP_OLM_03` completada. Antes de eso el jugador aún no ha peleado.
+- **Qué:** 2 jaguares corruptos aparecen en el sendero del oeste y marchan hacia la plaza (`OlmecaCityGenerator.Raiders`). No reaparecen hasta la siguiente visita.
+- **Combate:** van a por quien tengan más cerca, el jugador o un guardia. Los guardias no pierden vida. Dan la recompensa normal de un espíritu aunque los venza un guardia.
+- **El joven guerrero** pelea igual, pero en la entrada de la selva, con un radio que no alcanza el claro 3: los espíritus de `MP_OLM_03` siguen siendo del jugador.

@@ -1,0 +1,42 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0f3a2dbe737f384da36cc4134724892, type: 3}
+  m_Name: DSS_Npc_Agricultor
+  m_EditorClassIdentifier: 
+  clips:
+  - idle: {fileID: 21300000, guid: 62423b582a63fba4884377aa312b7c8c, type: 3}
+    walk:
+    - {fileID: 21300000, guid: 43f84eb5e849a424497ceaa56ebfbee3, type: 3}
+    - {fileID: 21300000, guid: 222b389d0688f154fa368d8719768402, type: 3}
+  - idle: {fileID: 21300000, guid: 5a9ca181874babe44986f7756442b072, type: 3}
+    walk:
+    - {fileID: 21300000, guid: 462f0ebe680377d45b2a4fcb22c735b5, type: 3}
+    - {fileID: 21300000, guid: 9be825215806fe54b9bf729469c78740, type: 3}
+    - {fileID: 21300000, guid: d5ef82f6ad894db4fa0e30ea9d87e1c0, type: 3}
+    - {fileID: 21300000, guid: 13a5efa6fd3da094192c12555b6f1d3e, type: 3}
+  - idle: {fileID: 21300000, guid: 5a9ca181874babe44986f7756442b072, type: 3}
+    walk:
+    - {fileID: 21300000, guid: 462f0ebe680377d45b2a4fcb22c735b5, type: 3}
+    - {fileID: 21300000, guid: 9be825215806fe54b9bf729469c78740, type: 3}
+    - {fileID: 21300000, guid: d5ef82f6ad894db4fa0e30ea9d87e1c0, type: 3}
+    - {fileID: 21300000, guid: 13a5efa6fd3da094192c12555b6f1d3e, type: 3}
+  - idle: {fileID: 21300000, guid: 5a9ca181874babe44986f7756442b072, type: 3}
+    walk:
+    - {fileID: 21300000, guid: 462f0ebe680377d45b2a4fcb22c735b5, type: 3}
+    - {fileID: 21300000, guid: 9be825215806fe54b9bf729469c78740, type: 3}
+    - {fileID: 21300000, guid: d5ef82f6ad894db4fa0e30ea9d87e1c0, type: 3}
+    - {fileID: 21300000, guid: 13a5efa6fd3da094192c12555b6f1d3e, type: 3}
+  - idle: {fileID: 21300000, guid: 60ea195a4c5d3c846b55843785c3a064, type: 3}
+    walk:
+    - {fileID: 21300000, guid: 2913ae44ffe1a014abc8670fb9892e79, type: 3}
+    - {fileID: 21300000, guid: 60daaee26161e5947800b55c42f48d54, type: 3}
+  walkFramesPerSecond: 6

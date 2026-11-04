@@ -57,16 +57,6 @@ namespace CronicasDeMexico.Editor.SceneGeneration
             new Color32(132, 90, 62, 255), new Color32(206, 202, 192, 255), new Color32(96, 70, 54, 255),
             new Color32(176, 120, 60, 255), new Color32(80, 56, 40, 255), false);
 
-        // Tocado oscuro, faldellín claro y faja roja.
-        public static readonly CharacterPalette Warrior = new(
-            new Color32(146, 98, 66, 255), new Color32(58, 42, 32, 255), new Color32(222, 206, 170, 255),
-            new Color32(164, 52, 40, 255), new Color32(96, 64, 42, 255), false);
-
-        // Sombrero de palma y ropa teñida de azul verdoso.
-        public static readonly CharacterPalette Merchant = new(
-            new Color32(140, 96, 66, 255), new Color32(196, 164, 104, 255), new Color32(70, 112, 116, 255),
-            new Color32(214, 186, 132, 255), new Color32(96, 64, 42, 255), false);
-
         // Figura espiritual: forma clara y luminosa, sin rasgos de ninguna deidad.
         public static readonly CharacterPalette Spirit = new(
             new Color32(196, 232, 222, 255), new Color32(236, 248, 240, 255), new Color32(222, 242, 236, 255),

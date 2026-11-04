@@ -32,6 +32,11 @@ namespace CronicasDeMexico.Editor.SceneGeneration
             ("Artesano", new Vector2(13.5f, 3.5f)),
             ("Anciana", new Vector2(12.4f, 15f)),
             ("Guerrero", new Vector2(11f, 9.5f)),
+            ("Guardias", new Vector2(-16.5f, 4.5f)),
+            ("Sacerdote", new Vector2(-4.5f, 5.5f)),
+            ("NinosNorte", new Vector2(14f, 13f)),
+            ("Agricultor", new Vector2(10f, -12f)),
+            ("Pescador", new Vector2(18.5f, -7f)),
             ("Despertar", new Vector2(18f, 22.5f)), // orilla del río: jugador, figura espiritual y reflejo
             ("SenderoOeste", new Vector2(-19f, 4f)), // salida hacia la selva (MP_OLM_03)
         };

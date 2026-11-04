@@ -39,6 +39,9 @@ Se mide en un **build de desarrollo** (no en el Editor), en cada hito. En PC el 
 | 2026-11-03 | Ciudad con la aldea A3 | i7-10700 / UHD 630 | Bajo | 1920×1080 | Olmeca_Ciudad | 230–256 | 160–174 | 3,9–4,4 (p95 5,2–5,6) | 1113 objetos (antes 1076). Aldea: 4,35 ms, igual que la selva; la plaza, 3,9 ms |
 | 2026-11-03 | Ciudad con la aldea A3 | i7-10700 / UHD 630 | Medio | 1920×1080 | Olmeca_Ciudad | 285–311 | 199–214 | 3,2–3,5 (p95 4,3–4,5) | Aldea: 3,25 ms |
 | 2026-11-03 | Ciudad con la aldea A3 | i7-10700 / UHD 630 | Alto | 1920×1080 | Olmeca_Ciudad | 262–273 | 185–192 | 3,7–3,8 (p95 4,7–4,9) | Aldea: 3,73 ms. Falta medir en el i5 / HD 530 |
+| 2026-11-04 | Ciudad con 24 NPC patrullando | i7-10700 / UHD 630 | Bajo | 1920×1080 | Olmeca_Ciudad | 220–265 | 128–196 | 3,8–4,6 (p95 4,6–5,7) | Dos ejecuciones. Sin la incursión activa. Sin caída clara frente a A3 |
+| 2026-11-04 | Ciudad con 24 NPC patrullando | i7-10700 / UHD 630 | Medio | 1920×1080 | Olmeca_Ciudad | 288–306 | 149–224 | 3,3–3,5 (p95 3,9–4,5) | Ídem |
+| 2026-11-04 | Ciudad con 24 NPC patrullando | i7-10700 / UHD 630 | Alto | 1920×1080 | Olmeca_Ciudad | 232–274 | 56–208 | 3,7–4,3 (p95 4,3–6,4) | Ídem. Picos sueltos de hasta 50 ms, en puntos distintos en cada ejecución (1 % bajo de 56 a 208, frente a 185–192 en A3); causa sin aislar. Falta medir en el i5 / HD 530 y Android |
 
 **Cámara de fondo (2026-10-29):** la cámara que limpia la pantalla bajo `PixelArtScreen` no dibuja nada, pero URP le aplicaba a 1920×1080 lo que pide el nivel: en Alto, HDR, texturas de profundidad y color, y el SSAO de `Renderer_Calidad`; en Medio, HDR y profundidad. Ahora usa el renderer 1 de cada URP Asset (`Renderer_Rendimiento`, sin efectos; `PixelArtScreen.ClearRendererIndex`) y desactiva HDR, MSAA, sombras y texturas. La cámara del escenario conserva el SSAO a la resolución del arte. Lo comprueba `ClearCamera_UsesRendererWithoutEffects_InEveryQualityLevel`.
 

@@ -6,7 +6,9 @@ using CronicasDeMexico.Core.Events;
 using CronicasDeMexico.Core.Narrative;
 using CronicasDeMexico.Core.Services;
 using CronicasDeMexico.Data.Narrative;
+using CronicasDeMexico.Gameplay.Combat;
 using CronicasDeMexico.Gameplay.Interaction;
+using CronicasDeMexico.Gameplay.Npc;
 using CronicasDeMexico.Gameplay.Player;
 using CronicasDeMexico.World.Rendering;
 using NUnit.Framework;
@@ -195,7 +197,8 @@ namespace CronicasDeMexico.Tests
         {
             yield return LoadScene();
 
-            var roof = Object.FindObjectsByType<RoofOverhead>(FindObjectsSortMode.None).FirstOrDefault();
+            // Siempre la misma (la de menor x del flujo): sin ordenar tocaba una cualquiera, y la prueba fallaba solo a veces.
+            var roof = Object.FindObjectsByType<RoofOverhead>(FindObjectsSortMode.None).OrderByDescending(r => r.RestPosition.z).FirstOrDefault();
             Assert.IsNotNull(roof, "La enramada no tiene techo.");
             var player = Object.FindAnyObjectByType<PlayerMovement>();
             Assert.AreSame(player.transform, roof.Target);
@@ -273,7 +276,12 @@ namespace CronicasDeMexico.Tests
 
         // ---------- Asentamiento (fase narrativa 2, N4) ----------
 
-        static readonly string[] SettlerIds = { "figura_espiritual", "artesano_jade", "anciana", "guerrero_joven", "comerciante" };
+        static readonly string[] SettlerIds =
+        {
+            "figura_espiritual", "artesano_jade", "anciana", "guerrero_joven", "comerciante",
+            "curandera", "anciano", "sacerdote", "agricultor", "pescador", "mensajero", "comerciante_mujer", "guardia",
+            "nino_1", "nina_1", "nino_2", "nina_2", "nino_3", "nina_3", "nino_4", "nina_4", "nino_5",
+        };
 
         static Dictionary<string, DialogueInteractable> FindSettlers()
         {
@@ -314,7 +322,111 @@ namespace CronicasDeMexico.Tests
                 Assert.AreEqual(LayerMask.NameToLayer("Interactuable"), dialogue.gameObject.layer, id);
             }
 
+            // Arte final: apoyado en los pies y a un píxel de pantalla por píxel de sprite (45,25 px por unidad).
+            foreach (var id in new[] { "guerrero_joven", "comerciante", "curandera", "sacerdote", "guardia", "nina_3" })
+            {
+                var root = settlers[id].GetComponentInParent<CharacterController>().transform;
+                var sprite = root.GetComponentInChildren<SpriteRenderer>().sprite;
+                StringAssert.StartsWith("Npc_", sprite.name, id);
+                Assert.That(sprite.pivot.y, Is.EqualTo(2f).Within(0.01f), $"{id}: los pies no están en el pivote.");
+                var pixelsOnScreen = sprite.rect.height / sprite.pixelsPerUnit * root.lossyScale.y * 45.254834f;
+                Assert.That(pixelsOnScreen, Is.EqualTo(sprite.rect.height).Within(0.01f), $"{id}: no es pixel perfect.");
+                // Girado respecto a la cámara, el sprite se vería comprimido a lo ancho.
+                Assert.That(Quaternion.Angle(root.GetComponentInChildren<SpriteRenderer>().transform.rotation, Camera.main.transform.rotation),
+                    Is.LessThan(0.1f), $"{id}: el sprite no mira a la cámara.");
+            }
+
             yield return UnloadScene();
+        }
+
+        // Lo que corta el camino en línea recta. Otros personajes y el suelo no cuentan.
+        static IEnumerable<string> RouteObstacles(string who, Vector3 from, Vector3 to, CharacterController controller)
+        {
+            var radius = controller.radius * controller.transform.lossyScale.x;
+            var route = Vector3.ProjectOnPlane(to - from, Vector3.up);
+            foreach (var hit in Physics.SphereCastAll(from + Vector3.up * (radius + 0.2f), radius, route.normalized, route.magnitude, ~0, QueryTriggerInteraction.Ignore))
+                if (hit.collider is not CharacterController && hit.normal.y <= 0.7f)
+                    yield return $"{who}: {hit.collider.name} en {hit.point}";
+        }
+
+        // Los habitantes patrullan: el camino debe estar libre (NpcPatrol va en línea recta) y al andar se anima.
+        [UnityTest]
+        public IEnumerator Settlers_WalkTheirRoutes_WithWalkingAnimation()
+        {
+            yield return LoadScene();
+            yield return new WaitForSeconds(0.5f);
+
+            var pointsField = typeof(NpcPatrol).GetField("patrolPoints", BindingFlags.NonPublic | BindingFlags.Instance)!;
+            var settlers = FindSettlers();
+            var blocked = new List<string>();
+            var patrols = 0;
+            foreach (var patrol in Object.FindObjectsByType<NpcPatrol>(FindObjectsSortMode.None))
+            {
+                var points = (Vector3[])pointsField.GetValue(patrol);
+                if (points.Length < 2)
+                    continue;
+                patrols++;
+                blocked.AddRange(RouteObstacles(patrol.name, points[0], points[1], patrol.GetComponent<CharacterController>()));
+            }
+            Assert.GreaterOrEqual(patrols, 20, "Faltan habitantes patrullando.");
+
+            // Las rutas de la incursión, que está desactivada hasta completar MP_OLM_03.
+            var chaserType = typeof(Gameplay.Enemies.EnemyChaser);
+            var marchField = chaserType.GetField("marchPoint", BindingFlags.NonPublic | BindingFlags.Instance)!;
+            var raiders = Object.FindObjectsByType<Gameplay.Enemies.EnemyChaser>(FindObjectsInactive.Include, FindObjectsSortMode.None);
+            Assert.AreEqual(2, raiders.Length, "Faltan los incursores.");
+            foreach (var raider in raiders)
+            {
+                Assert.IsFalse(raider.gameObject.activeSelf, "La incursión no debe verse antes de MP_OLM_03.");
+                blocked.AddRange(RouteObstacles(raider.name, raider.transform.position, (Vector3)marchField.GetValue(raider), raider.GetComponent<CharacterController>()));
+            }
+            CollectionAssert.IsEmpty(blocked, string.Join("\n", blocked));
+
+            var merchant = settlers["comerciante"].GetComponentInParent<NpcPatrol>();
+            var spriteRenderer = merchant.GetComponentInChildren<SpriteRenderer>();
+            var start = merchant.transform.position;
+            var sawWalking = false;
+            for (var elapsed = 0f; elapsed < 5f && !sawWalking; elapsed += Time.deltaTime)
+            {
+                sawWalking = spriteRenderer.sprite.name.Contains("_Caminar");
+                yield return null;
+            }
+            Assert.IsTrue(sawWalking, "El comerciante no usa los cuadros de caminata.");
+            yield return new WaitForSeconds(0.3f);
+            Assert.Greater(Vector3.Distance(start, merchant.transform.position), 0.1f, "El comerciante no se desplaza.");
+
+            yield return UnloadScene();
+        }
+
+        // De principio a fin en la ciudad real: tras MP_OLM_03 llega la incursión y los guardias la vencen solos (el
+        // jugador está lejos, en la orilla del despertar). Con servicios propios, para no tocar la partida de Boot.
+        [UnityTest]
+        public IEnumerator Raid_ComesAfterTheJungleQuest_AndGuardsDefeatIt()
+        {
+            ServiceLocator.TryGet(out StoryState bootStory);
+            ServiceLocator.TryGet(out QuestService bootQuests);
+            var story = new StoryState();
+            story.SetFlag(StoryEvents.QuestCompletedFlag("MP_OLM_03"));
+            ServiceLocator.Register(story);
+            ServiceLocator.Register(new QuestService(story, Resources.Load<QuestCatalog>(QuestCatalog.ResourcePath)));
+            try
+            {
+                yield return LoadScene();
+                yield return null;
+
+                var raiders = Object.FindObjectsByType<Gameplay.Enemies.EnemyChaser>(FindObjectsSortMode.None);
+                Assert.AreEqual(2, raiders.Length, "No llegó la incursión.");
+                var healths = raiders.Select(raider => raider.GetComponent<Health>()).ToArray();
+                for (var elapsed = 0f; elapsed < 60f && !healths.All(health => health.IsDead); elapsed += Time.deltaTime)
+                    yield return null;
+                Assert.IsTrue(healths.All(health => health.IsDead), "Los guardias no vencieron a la incursión.");
+                yield return UnloadScene();
+            }
+            finally
+            {
+                ServiceLocator.Register(bootStory);
+                ServiceLocator.Register(bootQuests);
+            }
         }
 
         // Recorre MP_OLM_02 con servicios propios, para no dejar la misión completada en los de Boot.

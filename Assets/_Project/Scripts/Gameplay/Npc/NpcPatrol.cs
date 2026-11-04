@@ -51,12 +51,20 @@ namespace CronicasDeMexico.Gameplay.Npc
         public void Hold(Vector3 lookAtPosition)
         {
             IsHeld = true;
-            var toLook = Vector3.ProjectOnPlane(lookAtPosition - transform.position, Vector3.up);
-            if (toLook.sqrMagnitude > 0.0001f)
-                FacingDirection = toLook.normalized;
+            Face(lookAtPosition);
         }
 
         public void Release() => IsHeld = false;
+
+        /// <summary>Punto al que camina en vez de patrullar, mientras tenga valor (NpcDefender persiguiendo a un enemigo).</summary>
+        public Vector3? ChasePoint { get; set; }
+
+        public void Face(Vector3 position)
+        {
+            var toLook = Vector3.ProjectOnPlane(position - transform.position, Vector3.up);
+            if (toLook.sqrMagnitude > 0.0001f)
+                FacingDirection = toLook.normalized;
+        }
 
         void Update()
         {
@@ -77,6 +85,12 @@ namespace CronicasDeMexico.Gameplay.Npc
 
         Vector3 PatrolVelocity(float deltaTime)
         {
+            if (ChasePoint is { } chasePoint)
+            {
+                var toChase = Vector3.ProjectOnPlane(chasePoint - transform.position, Vector3.up);
+                return toChase.magnitude > ArriveDistance ? toChase.normalized * moveSpeed : Vector3.zero;
+            }
+
             if (patrolPoints == null || patrolPoints.Length == 0)
                 return Vector3.zero;
 
@@ -108,6 +122,10 @@ namespace CronicasDeMexico.Gameplay.Npc
             AdvanceTarget();
         }
 
-        void AdvanceTarget() => targetIndex = (targetIndex + 1) % patrolPoints.Length;
+        void AdvanceTarget()
+        {
+            if (patrolPoints != null && patrolPoints.Length > 0) // sin puntos también puede atascarse persiguiendo
+                targetIndex = (targetIndex + 1) % patrolPoints.Length;
+        }
     }
 }

@@ -21,6 +21,23 @@ Plantilla:
 
 ---
 
+## 2026-11-04 — i7-10700: NPC con arte final, guardias e incursiones
+
+- **Rama / último commit:** `feature/prototipo-olmeca`, sobre `f20a2c6`. Todo este trabajo se subió en un solo commit, por petición del usuario.
+- **Hecho:** fichas del autor (`Docs/NPC/`) en el juego. Detalle en `Docs/Personajes/NPC_Olmecas.md` y `Docs/Historia/Misiones.md`.
+  - `recortar_npc.py` y `NpcCharacterAssets`: reposo, caminata y ataque. Van en `Sprites/Npc` porque el flujo de Blender borra de sus carpetas los PNG que no genera.
+  - 19 personajes con arte, 24 NPC en la ciudad, todos patrullan salvo la figura espiritual.
+  - `NpcDefender`, y `EnemyChaser` con objetivo más cercano y marcha.
+  - **Cambio de historia del autor:** el guardia (no confundir con los Guardianes) protege la aldea; puede haber uno o muchos.
+- **Corregido:**
+  - Los personajes salían un 18 % más estrechos fuera de Play (capturas y vista de escena): `SpriteBillboard` solo gira en Play. Ahora la escena los guarda ya orientados.
+  - **Causa probable de la inestabilidad de `Player_CanWalkUnderShelterRoof`** (anotada el 2026-11-03): cogía una enramada cualquiera, sin ordenar, y fallaba siempre con el mismo valor (0,7056). Ahora usa siempre la misma; no se ha repetido en dos ejecuciones. Al fallar dejaba su escena cargada y por eso caían en cadena `Scenery_IsOnPixelGrid` y `Charge_IsTelegraphed`. No se comprobó qué bloquea el paso en la otra enramada.
+- **Pruebas:** EditMode 80/80. PlayMode 72/72, dos ejecuciones seguidas (`NpcDefenderTests` y `Raid_ComesAfterTheJungleQuest_AndGuardsDefeatIt` son nuevas). Medición en `Docs/Rendimiento.md`.
+- **Sin comprobar:** jugar a mano la animación y el combate; el guerrero de la selva en una captura; Android y el i5.
+- **Siguiente:** el usuario revisa en el Editor. Fichas del artesano, la anciana y la figura espiritual.
+
+---
+
 ## 2026-11-03 (tarde) — i7-10700: menú de inicio
 
 - **Rama / último commit:** `feature/prototipo-olmeca` @ `e57e1e3` (aldea A3 y jaguares, subido).

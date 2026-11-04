@@ -54,8 +54,9 @@ namespace CronicasDeMexico.Editor.SceneGeneration
         static readonly (string id, string sprites, Vector2[] points)[] Settlers =
         {
             (OlmecaNarrativeAssets.SpiritId, "Figura", new[] { new Vector2(18.6f, 23.6f) }),
-            (OlmecaNarrativeAssets.ArtisanId, "Artesano", new[] { new Vector2(13.5f, 2.8f), new Vector2(14.6f, 2.8f) }),
-            (OlmecaNarrativeAssets.ElderId, "Anciana", new[] { new Vector2(12.4f, 14.2f), new Vector2(13.6f, 14.2f) }),
+            // Sin ficha propia: usan el arte de otro habitante (decisión del autor), hasta que lleguen las suyas.
+            (OlmecaNarrativeAssets.ArtisanId, NpcCharacterAssets.ArtisanArt, new[] { new Vector2(13.5f, 2.8f), new Vector2(14.6f, 2.8f) }),
+            (OlmecaNarrativeAssets.ElderId, "Curandera", new[] { new Vector2(12.4f, 14.2f), new Vector2(13.6f, 14.2f) }),
             (OlmecaNarrativeAssets.WarriorId, "Guerrero", new[] { new Vector2(12.0f, 8.5f), new Vector2(12.0f, 10.0f) }),
             (OlmecaNarrativeAssets.MerchantId, "Comerciante", new[] { new Vector2(19.0f, -3.2f), new Vector2(19.0f, -1.8f) }),
             ("curandera", "Curandera", new[] { new Vector2(14.0f, 8.0f), new Vector2(14.0f, 9.4f) }),
@@ -172,18 +173,13 @@ namespace CronicasDeMexico.Editor.SceneGeneration
             };
             foreach (var (id, villager) in narrative.Villagers)
                 characters[id] = villager;
-            // Sin ficha todavía (Docs/Personajes/NPC_Olmecas.md): siguen provisionales. Los demás usan su arte final.
-            var placeholders = new Dictionary<string, PlaceholderSpriteFactory.CharacterPalette>
-            {
-                ["Figura"] = PlaceholderSpriteFactory.Spirit,
-                ["Artesano"] = PlaceholderSpriteFactory.Artisan,
-                ["Anciana"] = PlaceholderSpriteFactory.Elder,
-            };
+            NpcCharacterAssets.UpgradeArtisanPrefab();
 
             foreach (var (id, spritesName, points) in Settlers)
             {
-                var spriteSet = placeholders.TryGetValue(spritesName, out var palette)
-                    ? OlmecaPrototypeGenerator.CreateSpriteSet(spritesName, palette)
+                // La figura espiritual sigue provisional (Docs/Personajes/NPC_Olmecas.md).
+                var spriteSet = id == OlmecaNarrativeAssets.SpiritId
+                    ? OlmecaPrototypeGenerator.CreateSpriteSet(spritesName, PlaceholderSpriteFactory.Spirit)
                     : NpcCharacterAssets.Build(spritesName);
                 var settler = CreateSettler(parent, characters[id], spriteSet, messageChannel, points);
                 // El guerrero se adelanta a la entrada de la estructura al dar MP_OLM_03 (lo espera en la selva). Solo

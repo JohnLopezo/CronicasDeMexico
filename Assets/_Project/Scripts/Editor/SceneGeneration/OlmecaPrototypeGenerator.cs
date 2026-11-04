@@ -157,7 +157,7 @@ namespace CronicasDeMexico.Editor.SceneGeneration
             var palette = CreatePalette();
             var spriteMaterial = LoadOrCreateMaterial(SpriteMaterialPath, AssetDatabase.LoadAssetAtPath<Shader>(SpriteShaderPath));
             var playerSprites = CreateSpriteSet("Jugador", PlaceholderSpriteFactory.Player);
-            var artisanSprites = CreateSpriteSet("Artesano", PlaceholderSpriteFactory.Artisan);
+            var artisanSprites = NpcCharacterAssets.Build(NpcCharacterAssets.ArtisanArt);
             var jaguarSprites = CreateSpriteSet("Jaguar", PlaceholderSpriteFactory.JaguarSpirit);
             var promptChannel = LoadOrCreateAsset<StringEventChannel>(PromptChannelPath);
             var messageChannel = LoadOrCreateAsset<StringEventChannel>(MessageChannelPath);

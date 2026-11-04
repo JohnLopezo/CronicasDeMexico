@@ -45,18 +45,6 @@ namespace CronicasDeMexico.Editor.SceneGeneration
             new Color32(141, 94, 64, 255), new Color32(52, 138, 96, 255), new Color32(226, 212, 176, 255),
             new Color32(190, 112, 44, 255), new Color32(96, 64, 42, 255), false);
 
-        // Tocado de algodón y faja de jade.
-        public static readonly CharacterPalette Artisan = new(
-            new Color32(150, 100, 68, 255), new Color32(232, 226, 210, 255), new Color32(176, 74, 52, 255),
-            new Color32(52, 138, 96, 255), new Color32(96, 64, 42, 255), false);
-
-        // Habitantes de la ciudad olmeca (Docs/Personajes/NPC_Olmecas.md). Solo cambian los colores: la silueta
-        // propia de cada uno llegará con el arte definitivo.
-        // Cabello cano, manto oscuro y faja ocre.
-        public static readonly CharacterPalette Elder = new(
-            new Color32(132, 90, 62, 255), new Color32(206, 202, 192, 255), new Color32(96, 70, 54, 255),
-            new Color32(176, 120, 60, 255), new Color32(80, 56, 40, 255), false);
-
         // Figura espiritual: forma clara y luminosa, sin rasgos de ninguna deidad.
         public static readonly CharacterPalette Spirit = new(
             new Color32(196, 232, 222, 255), new Color32(236, 248, 240, 255), new Color32(222, 242, 236, 255),

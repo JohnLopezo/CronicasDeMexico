@@ -67,6 +67,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   prompt: Hablar
+  npc: {fileID: 0}
+  dialogue: {fileID: 0}
   speakerName: Artesano de jade
   lines:
   - "\xA1Bienvenido a la plaza! Trabajo el jade que llega de muy lejos."
@@ -153,7 +155,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 1225427968, guid: 1a6cf23daca6aff48970c1120c1d5335, type: 3}
+  m_Sprite: {fileID: 21300000, guid: eca4701bb49c8d8468b02976e859397c, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -270,5 +272,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   motionSource: {fileID: 2832363562202418343}
   spriteRenderer: {fileID: 7518087688488158376}
-  spriteSet: {fileID: 11400000, guid: 1b2c89d1f0e487743a18ad634c7bb3f1, type: 2}
+  spriteSet: {fileID: 11400000, guid: 05877779b3a857841bada5dd8c353a97, type: 2}
   cameraTransform: {fileID: 0}
+  idleSet: {fileID: 0}

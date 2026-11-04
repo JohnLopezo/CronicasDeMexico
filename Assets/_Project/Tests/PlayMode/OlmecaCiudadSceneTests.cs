@@ -323,7 +323,7 @@ namespace CronicasDeMexico.Tests
             }
 
             // Arte final: apoyado en los pies y a un píxel de pantalla por píxel de sprite (45,25 px por unidad).
-            foreach (var id in new[] { "guerrero_joven", "comerciante", "curandera", "sacerdote", "guardia", "nina_3" })
+            foreach (var id in new[] { "artesano_jade", "anciana", "guerrero_joven", "comerciante", "curandera", "sacerdote", "guardia", "nina_3" })
             {
                 var root = settlers[id].GetComponentInParent<CharacterController>().transform;
                 var sprite = root.GetComponentInChildren<SpriteRenderer>().sprite;

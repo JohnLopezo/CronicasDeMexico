@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using CronicasDeMexico.Data.Characters;
 using CronicasDeMexico.Editor.PixelArt;
+using CronicasDeMexico.Gameplay.Player;
 using UnityEditor;
 using UnityEngine;
 
@@ -14,6 +15,27 @@ namespace CronicasDeMexico.Editor.SceneGeneration
     {
         const string DataFolder = "Assets/_Project/Data/Characters";
         const float WalkFramesPerSecond = 6f;
+
+        /// <summary>El artesano de jade aún no tiene ficha: usa el arte del comerciante (collar verde y bolsa).</summary>
+        public const string ArtisanArt = "Comerciante";
+
+        /// <summary>El prefab del prototipo (Olmeca_Prototipo, congelada) usa el mismo arte que el artesano de la ciudad.</summary>
+        public static void UpgradeArtisanPrefab()
+        {
+            var path = OlmecaPrototypeGenerator.ArtisanPrefabPath;
+            var set = Build(ArtisanArt);
+            var root = PrefabUtility.LoadPrefabContents(path);
+            try
+            {
+                root.GetComponent<DirectionalSpriteAnimator>().SpriteSet = set;
+                root.GetComponentInChildren<SpriteRenderer>().sprite = set.GetIdle(DirectionalSpriteSet.DirectionCount - 1);
+                PrefabUtility.SaveAsPrefabAsset(root, path);
+            }
+            finally
+            {
+                PrefabUtility.UnloadPrefabContents(root);
+            }
+        }
 
         public static DirectionalSpriteSet Build(string npcName)
         {

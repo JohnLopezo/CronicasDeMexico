@@ -69,7 +69,7 @@ Reglas de trabajo: Claude propone un plan por etapas y espera autorización; no 
 ### Arco olmeca jugable en `Olmeca_Ciudad`
 1. **`MP_OLM_01`, "El despertar"**: el jugador aparece en la orilla noreste del río, se asoma al agua (recuerdos y reflejo del jaguar), escucha a la figura espiritual (juramento) y busca al artesano.
 2. **`MP_OLM_02`, "El asentamiento inquieto"**: artesano de jade → anciana → joven guerrero. Al terminar, las estelas lisas cambian su texto, como pista del borrado.
-3. **Habitantes**: figura espiritual, artesano, anciana, guerrero y comerciante, con sprites provisionales (misma silueta, colores distintos).
+3. **Habitantes**: figura espiritual (provisional), artesano, anciana, guerrero y comerciante, con el arte de las fichas de `Docs/NPC/`.
 4. **Datos editables** en `Data/Narrative/Olmeca/`. El generador los crea **solo si faltan**, así que se editan en el Inspector. Para volver al texto del código, se borra el asset.
 
 ### Selva (M1): `MP_OLM_03`, "Rastros en la selva"
@@ -144,12 +144,12 @@ EditMode 80/80 y PlayMode 72/72 (al 2026-11-04).
 2. **Afinidad inicial del Jaguar.** Propuesta: oscuridad; el GDD sugería oscuridad o tierra.
 3. **Si el epiclásico y lo tolteca entran en el arco III**, y qué afinidades corresponden a los arcos III a V.
 4. **Si la figura espiritual desaparece** después del juramento.
-5. **Fichas de `Docs/Guerreros/`** (Balam, Xali, Naira, Itzel, Yaret y Ocel; 2026-11-04). Sin integrar. Solo se revisó la de Balam, que plantea dos dudas: es un humano con piel de jaguar, y el jugador está documentado como jaguar (`Docs/Personajes/Fichas/Jaguar.md`, y el reflejo de `MP_OLM_01`); y su elemento es tierra, mientras que la propuesta del punto 2 es oscuridad.
+5. **Fichas de `Docs/Guerreros/`** (Balam, Xali, Naira, Itzel, Yaret y Ocel; 2026-11-04). Sin integrar: el autor decidió dejar por ahora al jaguar jugable, sus enemigos y jefes. Quedan dos dudas para cuando se retomen: son humanos con atuendo animal, y la historia dice que el protagonista despierta con cuerpo de animal (`Docs/Personajes/Protagonista.md`, reflejo de `MP_OLM_01`); y el elemento de Itzel (luz) no está entre las afinidades adoptadas para el águila real (viento/fuego), ni el de Naira (viento) es la inicial del lobo (tierra).
 
 ## 5. Pendiente del autor (arte)
 
 - Sprites del **Jaguar** jugable. Hoy el jugador es un humano provisional, aunque el reflejo diga "jaguar".
-- Fichas del **artesano de jade**, la **anciana** y la **figura espiritual**. Los demás NPC ya tienen arte (`Docs/NPC/`); les faltan caminata de frente y de espalda y una pose de ataque del guardia.
+- Fichas propias del **artesano de jade** y la **anciana** (hoy usan el arte del Comerciante y de la Curandera, y se ven repetidos) y de la **figura espiritual** (provisional). Los demás NPC ya tienen arte (`Docs/NPC/`); les faltan caminata de frente y de espalda y una pose de ataque del guardia.
 - Contrastar con fuentes el penacho del sacerdote, los pergaminos del mensajero y los sombreros de ala ancha (`Docs/Personajes/NPC_Olmecas.md`).
 - Sprites del **espíritu jaguar corrompido** (hoy, la silueta humana provisional con grietas violetas) y del **eco borrado** (hoy, la misma silueta en violeta con franjas borradas).
 - Cabeza colosal y enemigos animados. El **Guardián de la Piedra Viva** ya tiene un modelo de Blender (M4), pendiente de tu aprobación.

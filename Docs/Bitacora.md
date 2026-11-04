@@ -21,6 +21,17 @@ Plantilla:
 
 ---
 
+## 2026-11-04 (noche) — i7-10700: artesano y anciana sin muñecos
+
+- **Rama / último commit:** `feature/prototipo-olmeca`, sobre `7c291b4`, subido.
+- **Hecho:** a petición del autor, el artesano de jade usa el arte del Comerciante y la anciana el de la Curandera, en la aldea y en el prefab `Artesano`. Mismos id, diálogos, patrullas y misiones. Borrados sus PNG provisionales, `DSS_Artesano`, `DSS_Anciana` y sus paletas.
+- **Decisión del autor:** se quedan por ahora el jaguar jugable, sus enemigos, los jefes y la figura espiritual. `Docs/Guerreros/` queda sin integrar.
+- **Pruebas:** EditMode 80/80, PlayMode 72/72. Capturas de ambos en `Logs/Capturas`.
+- **Sin comprobar:** el prefab `Artesano` visto en `Olmeca_Prototipo` (escena congelada, solo pasan sus pruebas); jugar a mano.
+- **Siguiente:** fichas propias del artesano y la anciana, porque hoy se ven repetidos.
+
+---
+
 ## 2026-11-04 — i7-10700: NPC con arte final, guardias e incursiones
 
 - **Rama / último commit:** `feature/prototipo-olmeca`, sobre `f20a2c6`. Todo este trabajo se subió en un solo commit, por petición del usuario.

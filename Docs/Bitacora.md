@@ -34,7 +34,9 @@ Plantilla:
   - **Causa probable de la inestabilidad de `Player_CanWalkUnderShelterRoof`** (anotada el 2026-11-03): cogía una enramada cualquiera, sin ordenar, y fallaba siempre con el mismo valor (0,7056). Ahora usa siempre la misma; no se ha repetido en dos ejecuciones. Al fallar dejaba su escena cargada y por eso caían en cadena `Scenery_IsOnPixelGrid` y `Charge_IsTelegraphed`. No se comprobó qué bloquea el paso en la otra enramada.
 - **Pruebas:** EditMode 80/80. PlayMode 72/72, dos ejecuciones seguidas (`NpcDefenderTests` y `Raid_ComesAfterTheJungleQuest_AndGuardsDefeatIt` son nuevas). Medición en `Docs/Rendimiento.md`.
 - **Sin comprobar:** jugar a mano la animación y el combate; el guerrero de la selva en una captura; Android y el i5.
-- **Siguiente:** el usuario revisa en el Editor. Fichas del artesano, la anciana y la figura espiritual.
+- **Fichas nuevas sin integrar:** el autor añadió `Docs/Guerreros/` con 6 fichas: Balam (jaguar), Xali (ajolote), Naira (lobo), Itzel (águila real), Yaret (quetzal) y Ocel (xoloitzcuintle). Solo se revisó la de Balam. Nada de esto está en el juego.
+- **Estado al cerrar:** trabajo en `cd1afec`; las fichas y esta nota van en el commit siguiente. Push hecho, sin cambios locales.
+- **Siguiente:** decidir con el autor qué hacer con `Docs/Guerreros/` (`Docs/Estado_y_Plan.md` §4, punto 5); después, revisión del autor en el Editor y fichas del artesano, la anciana y la figura espiritual.
 
 ---
 

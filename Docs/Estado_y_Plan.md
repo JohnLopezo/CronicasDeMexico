@@ -144,6 +144,7 @@ EditMode 80/80 y PlayMode 72/72 (al 2026-11-04).
 2. **Afinidad inicial del Jaguar.** Propuesta: oscuridad; el GDD sugería oscuridad o tierra.
 3. **Si el epiclásico y lo tolteca entran en el arco III**, y qué afinidades corresponden a los arcos III a V.
 4. **Si la figura espiritual desaparece** después del juramento.
+5. **Fichas de `Docs/Guerreros/`** (Balam, Xali, Naira, Itzel, Yaret y Ocel; 2026-11-04). Sin integrar. Solo se revisó la de Balam, que plantea dos dudas: es un humano con piel de jaguar, y el jugador está documentado como jaguar (`Docs/Personajes/Fichas/Jaguar.md`, y el reflejo de `MP_OLM_01`); y su elemento es tierra, mientras que la propuesta del punto 2 es oscuridad.
 
 ## 5. Pendiente del autor (arte)
 

@@ -13,7 +13,7 @@ from mathutils import Matrix, Vector
 import pixelart_comun as pa
 
 # Direcciones de pantalla de DirectionalSpriteSet (N, NE, E, SE, S) = variantes 1–5; el modelo mira a +X (SE).
-GIRO_DIRECCION = (135, 90, 45, 0, -45)
+GIRO_DIRECCION = (90, 45, 0, -45, -90)
 # Lienzo de cada cuadro (px), píxel del centro del cuerpo en el suelo y color del contorno
 LIENZO = (128, 112)
 ANCLA = (64, 44)

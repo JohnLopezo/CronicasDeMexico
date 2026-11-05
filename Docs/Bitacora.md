@@ -21,6 +21,25 @@ Plantilla:
 
 ---
 
+## 2026-11-04 (cierre) — i7-10700: nueva vista 3/4 frontal, en muestra
+
+- **Rama / último commit:** `feature/prototipo-olmeca`, sobre `6d428a1`; subido el 2026-11-05 en el commit siguiente, junto con la ficha de Ameyali (`Docs/Guerreros/`, sin integrar).
+- **Petición del autor:** mejorar el mapa y que no se vea tan diagonal, porque en PC hacen falta dos teclas para seguir un camino. Referencias en `Docs/Creacion de mapa/`.
+- **Causa:** el movimiento ya va con la pantalla; lo diagonal es que los caminos siguen la rejilla, que la cámara ve girada 45°.
+- **Decisiones del autor:**
+  - Vista **3/4 frontal**, aunque sus referencias son isométricas: se adapta su estilo, no su ángulo. Las cambia también selva y mazmorra, porque la cámara es única.
+  - De las referencias se toma la riqueza (selva densa, flores, musgo, enredaderas, bordes de camino, cercas, agua). Se mantiene la base histórica (`Docs/Arte_Olmeca_Demo.md` §8): montículos de tierra, columnas lisas y palmas nativas; sin pirámides de piedra, cabezas sobre ellas ni cocoteros.
+- **Hecho, sin commit:** cámara nueva en `pixelart_comun.py`, `generar_olmeca.py` y `personajes.py`:
+  - `PPU = 48`, tile de 48×32 px, `CAM_ROT` X = 48,19°, `DERECHA`, `ARRIBA`, `VISTA` y `HACIA_SOL` nuevos.
+  - Orden de dibujo por `-Y`, `GIRO_DIRECCION = (90, 45, 0, -45, -90)`, `TAM_` y `CENTRO_` de ciudad y selva.
+  - **Unity no se tocó:** los sprites y escenas siguen siendo los isométricos. **Mientras tanto, ejecutar el flujo solo con `--sin-unity`**, o mezclaría la cámara nueva con el juego sin adaptar.
+- **Muestra:** se ve bien y los caminos quedan rectos; **el autor aprobó la vista y la inclinación el 2026-11-05**. Está en la carpeta temporal de la sesión, así que puede perderse. Para rehacerla (unos 10 minutos en el i7): `blender.exe --background --factory-startup --python Tools\ArtPipeline\generar_olmeca.py -- <carpeta> --sin-unity`. Mirar `Ciudad_2600x1960.png`, `Ciudad_Aldea_...` y `Ciudad_Plaza_...`.
+- **Sin revisar:** la selva y la mazmorra en la muestra; nada de esto se ha probado dentro de Unity. Las pruebas no se ejecutaron, porque el juego no cambió.
+- **Archivos del autor sin commit:** movió `Docs/Referencia_Visual_Olmeca*.png` a `Docs/Creacion de mapa/`; `Docs/Arte_Olmeca_Demo.md` y `generar_olmeca.py` aún citan la ruta antigua. `UpgradeLog.htm` no es del proyecto y no debe subirse.
+- **Siguiente:** plan en `Docs/Estado_y_Plan.md` §6, "Vista 3/4 frontal": paso 1, arte con segunda muestra.
+
+---
+
 ## 2026-11-04 (noche) — i7-10700: artesano y anciana sin muñecos
 
 - **Rama / último commit:** `feature/prototipo-olmeca`, sobre `7c291b4`, subido.

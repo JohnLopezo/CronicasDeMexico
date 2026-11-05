@@ -1736,7 +1736,7 @@ def planificar_aldea():
     """Escena de prueba de la etapa A2: estanque con muelle y canoa, ceiba, enramada, vasijas y troncos."""
     rng = random.Random(31)
     estanque = lambda X, Y: ((X - 3) ** 2) / 9 + ((Y + 3.5) ** 2) / 4.5 < 1
-    celdas = sorted(((X, Y) for X in range(-14, 15) for Y in range(-14, 15) if visible(X, Y)), key=lambda p: p[0] - p[1])
+    celdas = sorted(((X, Y) for X in range(-14, 15) for Y in range(-14, 15) if visible(X, Y)), key=lambda p: -p[1])
     tipo = {c: "agua" if estanque(*c) else "pasto" for c in celdas}
     suelo, mascaras = [], set()
     for X, Y in celdas:
@@ -2239,9 +2239,9 @@ def escalera_bajada(rng, variante):
 
 # ---------------------------------------------------------------- Jaguar de Piedra (M3, mini-jefe del Pantano)
 
-# Direcciones de pantalla de DirectionalSpriteSet (N, NE, E, SE, S) = variantes 1–5. El modelo mira a +X (SE en
-# pantalla); el giro lo lleva a cada dirección.
-GIRO_DIRECCION = (135, 90, 45, 0, -45)
+# Direcciones de pantalla de DirectionalSpriteSet (N, NE, E, SE, S) = variantes 1–5. El modelo mira a +X (a la derecha en
+# pantalla, E); el giro lo lleva a cada dirección.
+GIRO_DIRECCION = (90, 45, 0, -45, -90)
 ESCALA_JAGUAR = 1.45
 # Pose: altura de la cadera, cabeceo (+ = nariz abajo), giro de cada pata alrededor de su cadera (+ = hacia atrás:
 # delantera izquierda, delantera derecha, trasera izquierda, trasera derecha; la derecha es -Y, la que ve la cámara),
@@ -2684,7 +2684,7 @@ def planificar():
     centro_camino = lambda X: round(1.0 * math.sin(X * 0.35))
     estanque = lambda X, Y: ((X + 1.0) ** 2) / 5.0 + ((Y + 6.6) ** 2) / 3.2 < 1.0
 
-    celdas = sorted(((X, Y) for X in range(-14, 15) for Y in range(-14, 15) if visible(X, Y)), key=lambda p: p[0] - p[1])
+    celdas = sorted(((X, Y) for X in range(-14, 15) for Y in range(-14, 15) if visible(X, Y)), key=lambda p: -p[1])
     tipo_celda = {}
     for X, Y in celdas:
         yc = centro_camino(X)
@@ -2766,7 +2766,7 @@ def planificar_ruinas():
     rng = random.Random(11)
     inferior = {(X, Y) for X in range(-3, 3) for Y in range(-2, 3)} - {(2, -2), (2, -1)}
     superior = {(X, Y) for X in range(-2, 1) for Y in range(-1, 2)}
-    celdas = sorted(((X, Y) for X in range(-14, 15) for Y in range(-14, 15) if visible(X, Y)), key=lambda p: p[0] - p[1])
+    celdas = sorted(((X, Y) for X in range(-14, 15) for Y in range(-14, 15) if visible(X, Y)), key=lambda p: -p[1])
     suelo = [(f"Tile_Pasto_Selva_{rng.choice([1, 1, 2, 3]):02d}", X, Y) for X, Y in celdas]
     objetos, mascaras = [], set()
     for nivel, z in ((inferior, 0.0), (superior, H_PLATAFORMA)):
@@ -2834,7 +2834,7 @@ def planificar_ciudad():
 
     mascaras = {"Tile_Camino_Trans": set(), "Tile_Orilla": set(), "Plataforma_Arcilla": set()}
     suelo = []
-    for X, Y in sorted(tipo_celda, key=lambda p: p[0] - p[1]):
+    for X, Y in sorted(tipo_celda, key=lambda p: -p[1]):
         if (X, Y) in bajo_plataforma:
             continue   # los módulos de plataforma cubren la celda entera
         t = tipo_celda[(X, Y)]
@@ -3227,7 +3227,7 @@ def planificar_selva():
 
     mascaras = {"Tile_Camino_Trans": set(), "Tile_Orilla": set(), "Plataforma_Arcilla": set()}
     suelo = []
-    for X, Y in sorted(tipo_celda, key=lambda p: p[0] - p[1]):
+    for X, Y in sorted(tipo_celda, key=lambda p: -p[1]):
         if tipo_celda[(X, Y)] == "camino":
             m = mascara(X, Y, lambda o: o == "pasto")
             if m:
@@ -3401,7 +3401,7 @@ def planificar_piso(piso):
     # grueso de las losas vecinas hace de borde del charco.
     agua = datos.get("agua", set())
     suelo = []
-    for X, Y in sorted(celdas, key=lambda p: p[0] - p[1]):
+    for X, Y in sorted(celdas, key=lambda p: -p[1]):
         suelo.append(("AGUA", X, Y) if (X, Y) in agua else (f"Tile_Losa_Basalto_{rng.choice(datos['losas']):02d}", X, Y))
 
     # Muros en los bordes traseros; la escalera de subida ocupa tres módulos del muro -X
@@ -3460,14 +3460,14 @@ def exportar_ciudad(salida, plan, colision):
 
 
 # Vista previa de la ciudad completa (sin ampliar) y recortes de 640×360 ampliados ×3
-TAM_CIUDAD = (3264, 1800)
-CENTRO_CIUDAD = (1508, 1000)
+TAM_CIUDAD = (2600, 1960)
+CENTRO_CIUDAD = (1240, 1220)
 RECORTES_CIUDAD = {"Plaza": (0, 5), "Montículo": (0, 16), "Recinto": (0, -9), "Aldea": (15, -2)}
 
 
 # La selva: 36×20 m
-TAM_SELVA = (2048, 1216)
-CENTRO_SELVA = (1024, 712)
+TAM_SELVA = (2400, 1600)
+CENTRO_SELVA = (1200, 900)
 RECORTES_SELVA = {"Llegada": (14, 0), "Claro": (2, 0.5), "Entrada": (-11, -2)}
 
 # Los pisos de la mazmorra caben en el lienzo de la selva; fondo casi negro (el vacío bajo el piso)
@@ -3516,7 +3516,7 @@ def componer(salida, metas, plan, cuadro_agua=1, archivo="Composicion", tam=(W_C
     for n, X, Y, Z in plan["objetos"]:
         if "sombra" in metas[n]:
             poner(n, X, Y, Z, sombra=True)
-    for n, X, Y, Z in sorted(plan["objetos"], key=lambda o: (o[1] - o[2], o[3])):   # a igual fondo, lo de abajo primero
+    for n, X, Y, Z in sorted(plan["objetos"], key=lambda o: (-o[2], o[3])):   # a igual fondo, lo de abajo primero
         poner(n, X, Y, Z)
 
     pa.guardar(lienzo, os.path.join(salida, f"{archivo}_{tam[0]}x{tam[1]}.png"))

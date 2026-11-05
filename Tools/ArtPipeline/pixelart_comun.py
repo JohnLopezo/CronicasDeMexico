@@ -7,17 +7,17 @@ import bpy
 import numpy as np
 from mathutils import Vector
 
-PPU = 32 * math.sqrt(2)   # píxeles de pantalla por metro de mundo (rombo de 64x32 por tile de 1 m)
+PPU = 48                  # píxeles de pantalla por metro de mundo (tile de 1 m = 48×32 px)
 SS = 4                    # supersampling: se renderiza a 4x y se reduce
 
-# Ejes de la cámara isométrica 2:1 (rotación X=60, Z=45 en Blender = X=30, Y=45 en Unity)
-CAM_ROT = (math.radians(60), 0.0, math.radians(45))
-DERECHA = Vector((0.70710678, 0.70710678, 0.0))
-ARRIBA = Vector((-0.35355339, 0.35355339, 0.8660254))
-VISTA = Vector((-0.61237244, 0.61237244, -0.5))
+# Ejes de la cámara 3/4 frontal: +X a la derecha, +Y hacia el fondo. sin(elevación) = 2/3 da tiles de 48×32 px.
+CAM_ROT = (math.radians(48.18968), 0.0, 0.0)
+DERECHA = Vector((1.0, 0.0, 0.0))
+ARRIBA = Vector((0.0, 0.66666667, 0.74535599))
+VISTA = Vector((0.0, 0.74535599, -0.66666667))
 
 # Luz común: sol desde arriba-izquierda de la pantalla (cara superior clara, izquierda media, derecha oscura)
-HACIA_SOL = Vector((-0.3, -0.5, 1.2)).normalized()
+HACIA_SOL = Vector((-0.55, -0.2, 1.2)).normalized()
 
 RAMPAS = {
     "tierra": ["#3A2A1A", "#644B2A", "#7B5B33", "#9B713F", "#B6814C", "#C6925A", "#E3B47C", "#F1C891"],

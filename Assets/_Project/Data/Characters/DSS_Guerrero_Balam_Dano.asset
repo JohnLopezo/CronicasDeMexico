@@ -28,4 +28,4 @@ MonoBehaviour:
   - idle: {fileID: 21300000, guid: b2ebdcfd00ecad1448e970eddc291f2b, type: 3}
     walk:
     - {fileID: 21300000, guid: 6b7bd0e03db1a4e49993a4885a82b88e, type: 3}
-  walkFramesPerSecond: 5
+  walkFramesPerSecond: 2.5

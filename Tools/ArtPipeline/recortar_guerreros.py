@@ -4,7 +4,7 @@
 # Escribe Guerrero_<Nombre>_<Animación><cuadro>_<dir>.png (01 Norte, 03 Este, 05 Sur). Las fichas solo animan la vista
 # lateral: las vistas Norte y Sur tienen reposo y pasos_frente() (aproximación desde el reposo), y el ataque, la carrera y el daño
 # existen solo en 03. El pivote normalizado (centro, pies a 2 px) es igual en todos los lienzos.
-# Muerte: su Daño, y Caída y Desplome de la hoja de muerte (el espíritu sería un efecto aparte). Quien no tiene hoja cae con
+# Muerte: su Daño, Caída y Desplome de la hoja de muerte y los cuadros en que se libera el espíritu. Quien no tiene hoja cae con
 # caido(). El suelo y los efectos finos se quitan con limpiar().
 import os
 import sys
@@ -19,6 +19,8 @@ ALTO = 54                 # px de juego de la figura en reposo: como el Guerrero
 LIENZO_VISTA = (48, 64)
 LIENZO_ACCION = (80, 64)  # la capa y las zancadas de lado no caben en 48
 LIENZO_ATAQUE = (112, 64)
+LIENZO_MUERTE = (128, 96)  # el espíritu se eleva: el pivote (2 px) está también en PixelArtSpriteImporter (MuertePivot)
+PIEZAS_ESPIRITU = 260      # px de ficha desde los que se conserva una pieza que no toca el cuerpo
 OSCURO = 70               # valor bajo el que un píxel cuenta como oscuro al reducir (contorno u ojo)
 CONTORNO = 45             # valor bajo el que la inundación del fondo no pasa: es el contorno del personaje
 DOMINANTES = 6            # colores del fondo que cuentan para los huecos encerrados
@@ -28,7 +30,8 @@ FINO = 3                  # px de ficha: lo más delgado que esto y alejado del 
 # dano: caja y su escala frente a la fila (ese panel está dibujado más grande). tol: distancia de color al fondo de la
 # ficha. huecos: quitar también el fondo encerrado (entre piernas); se apaga si borra plumas del color del fondo.
 # tol_cuadro: tolerancia propia de una animación, donde la general borra ropa o deja efectos. muerte: hoja, px de hoja por
-# px de juego, cajas y su tolerancia; contorno, si el fondo es tan oscuro como el contorno normal. defensa y victoria: caja y
+# px de juego, cajas y su tolerancia; contorno, si el fondo es tan oscuro como el contorno normal; espiritu, cajas y valores
+# de los cuadros siguientes, con otros umbrales porque es un brillo sin contorno. defensa y victoria: caja y
 # escala de ese panel, como dano (provisional, una pose; hoy solo el piloto, Balam). especial: igual.
 GUERREROS = {
     "Balam": {
@@ -42,7 +45,8 @@ GUERREROS = {
         "defensa": ((90, 800, 280, 1005), 1.2), "victoria": ((1215, 800, 1450, 1005), 1.2),
         "especial": ((375, 793, 790, 1010), 1.2),  # con el jaguar dorado: en la ficha está fundido con el cuerpo
         "muerte": {"ficha": "Hoja_Muerte_ Balam, Guardián Jaguar.png", "factor": 3.4, "tol": 26, "contorno": 20,
-                   "cajas": ((350, 470, 608, 628), (636, 520, 886, 628))},
+                   "cajas": ((350, 470, 608, 628), (636, 520, 886, 628)),
+                   "espiritu": {"tol": 13, "contorno": 10, "cajas": ((45, 730, 322, 905), (635, 790, 885, 905))}},
     },
     "Xali": {
         "ficha": "Ficha de Personaje Xali, Guardiana Ajolote.png",
@@ -53,7 +57,9 @@ GUERREROS = {
         "ataque": ((1175, 1310), (1310, 1465)), "tol_cuadro": {"Correr": 34, "Ataque": 34},
         "dano": ((880, 795, 1120, 1000), 1.2), "tol": 70, "huecos": True,
         "muerte": {"ficha": "Hoja_muerte_Xali_ Guardiana del Agua.png", "factor": 4.4, "tol": 60, "contorno": 30,
-                   "cajas": ((440, 415, 745, 615), (790, 500, 1135, 610))},
+                   "cajas": ((440, 415, 745, 615), (790, 500, 1135, 610)),
+                   "espiritu": {"tol": 34, "contorno": 25,
+                                "cajas": ((1168, 395, 1522, 620), (25, 692, 392, 930), (412, 692, 768, 930), (782, 692, 1132, 930))}},
     },
     "Naira": {
         "ficha": "Hoja de personaje pixel art de Naira, guardiana lobo.png",
@@ -82,7 +88,9 @@ GUERREROS = {
         "ataque": ((1170, 1310), (1310, 1445)),
         "dano": ((905, 785, 1075, 1005), 1.35), "tol": 70, "huecos": True,
         "muerte": {"ficha": "Itzel_ muerte.png", "factor": 6.2, "tol": 70,
-                   "cajas": ((420, 235, 700, 490), (790, 345, 1085, 490))},
+                   "cajas": ((420, 235, 700, 490), (790, 345, 1085, 490)),
+                   "espiritu": {"tol": 70, "contorno": CONTORNO,
+                                "cajas": ((1160, 240, 1510, 490), (40, 550, 500, 930), (570, 560, 1040, 930), (1060, 560, 1510, 930))}},
     },
     "Yaret": {
         "ficha": "Hoja de personaje_ Yaret, Guardián Quetzal.png",
@@ -93,7 +101,9 @@ GUERREROS = {
         "ataque": ((1145, 1290), (1320, 1460)),
         "dano": ((915, 775, 1170, 1000), 1.4), "tol": 70, "huecos": False,
         "muerte": {"ficha": "muerte de Yaret, Guardián Quetzal.png", "factor": 4.6, "tol": 70,
-                   "cajas": ((428, 240, 690, 510), (785, 390, 1095, 510))},
+                   "cajas": ((428, 240, 690, 510), (785, 390, 1095, 510)),
+                   "espiritu": {"tol": 70, "contorno": 25,
+                                "cajas": ((1170, 245, 1490, 510), (45, 585, 445, 935), (560, 595, 960, 935), (1110, 612, 1520, 935))}},
     },
     "Ocel": {
         "ficha": "Ocel, Guardián del Xoloitzcuintle.png",
@@ -144,7 +154,7 @@ def sin_suelo(c, m):
     return m & ~verde
 
 
-def mascara(c, tol, huecos, umbral_contorno=CONTORNO):
+def mascara(c, tol, huecos, umbral_contorno=CONTORNO, piezas_min=None):
     """Personaje = lo que queda al inundar el fondo desde el borde; el contorno oscuro lo protege."""
     pal = paleta_fondo(c)
     todas = np.sqrt(((c[:, :, None, :].astype(np.float32) - pal[None, None]) ** 2).sum(-1))
@@ -172,9 +182,13 @@ def mascara(c, tol, huecos, umbral_contorno=CONTORNO):
     componentes = npc._componentes(limpiar(~fondo))
     if not componentes:
         raise ValueError("el recorte no contiene personaje")
-    ys, xs = np.array(max(componentes, key=len)).T  # fuera chispas, mariposas y figuras vecinas
+    # Fuera chispas, mariposas y figuras vecinas. Con piezas_min se conservan también las separadas de ese tamaño en
+    # adelante: el espíritu de las hojas de muerte flota sin tocar el cuerpo.
     salida = np.zeros(dist.shape, bool)
-    salida[ys, xs] = True
+    for comp in (componentes if piezas_min else [max(componentes, key=len)]):
+        if not piezas_min or len(comp) >= piezas_min:
+            ys, xs = np.array(comp).T
+            salida[ys, xs] = True
     return salida
 
 
@@ -244,17 +258,22 @@ def pasos_frente(lienzo, levantar=2):
     return cuadros
 
 
+def a_lienzo_muerte(sprite):
+    ys, xs = np.nonzero(sprite[..., 3])
+    return npc.colocar(sprite[ys.min():ys.max() + 1, xs.min():xs.max() + 1], "muerte", por_cuerpo=True, lienzo_px=LIENZO_MUERTE)
+
+
 def caido(dano):
     """Quien no tiene hoja de muerte cae con su pose de daño tumbada. shortcut: es rígida; sustituir al llegar su hoja."""
     ys, xs = np.nonzero(dano[..., 3])
     tumbado = np.rot90(dano[ys.min():ys.max() + 1, xs.min():xs.max() + 1], k=-1)
-    return npc.colocar(tumbado, "caido", por_cuerpo=True, lienzo_px=LIENZO_ATAQUE)
+    return a_lienzo_muerte(tumbado)
 
 
 def hoja(filas, zoom=3, sep=6):
     """Una fila por guerrero, con cada lienzo a su ancho."""
     ancho = max(sum(s.shape[1] * zoom + sep for s in fila) for fila in filas) + sep
-    alto_celda = LIENZO_VISTA[1] * zoom + sep
+    alto_celda = max(s.shape[0] for fila in filas for s in fila) * zoom + sep
     salida = np.full((alto_celda * len(filas) + sep, ancho, 4), (120, 112, 92, 255), np.uint8)
     for i, fila in enumerate(filas):
         x = sep
@@ -276,7 +295,7 @@ def _comprobar():
     dano = np.zeros((64, 80, 4), np.uint8)
     dano[10:62, 30:50, 3] = 255  # 20 × 52 de pie
     tumbado = caido(dano)
-    assert altura(tumbado[..., 3] > 0) == 20 and tumbado[64 - npc.PIES - 1, ..., 3].any()
+    assert altura(tumbado[..., 3] > 0) == 20 and tumbado[tumbado.shape[0] - npc.PIES - 1, ..., 3].any()
     reposo = np.zeros((64, 48, 4), np.uint8)
     reposo[10:62, 14:34, 3] = 255
     pasos = pasos_frente(reposo)
@@ -344,14 +363,20 @@ def main():
         datos = g.get("muerte")
         if datos:
             hoja_muerte = npc.leer_png(os.path.join(FICHAS, datos["ficha"]))
-            muerte = [dano]
-            for n, (x0, y0, x1, y1) in enumerate(datos["cajas"], 2):
+            muerte = [a_lienzo_muerte(dano)]
+            for caja in datos["cajas"]:
+                x0, y0, x1, y1 = caja
                 c = hoja_muerte[y0:y1, x0:x1]
                 m = mascara(c, datos["tol"], huecos, datos.get("contorno", CONTORNO))
-                spr = npc.colocar(reducir(c, m, datos["factor"]), f"{nombre}_Muerte{n}", por_cuerpo=True, lienzo_px=LIENZO_ATAQUE)
-                muerte.append(validar(f"{nombre}_Muerte{n}", spr, alto_min=12))
+                muerte.append(validar(f"{nombre}_Muerte", a_lienzo_muerte(reducir(c, m, datos["factor"])), alto_min=12))
+            espiritu = datos["espiritu"]
+            for x0, y0, x1, y1 in espiritu["cajas"]:
+                c = hoja_muerte[y0:y1, x0:x1]
+                m = mascara(c, espiritu["tol"], huecos, espiritu["contorno"], PIEZAS_ESPIRITU)
+                # Sin validar: al final el cuerpo ya no está y solo quedan piezas sueltas, sin pies ni altura fija.
+                muerte.append(a_lienzo_muerte(reducir(c, m, datos["factor"])))
         else:
-            muerte = [dano, validar(f"{nombre}_Muerte2", caido(dano), alto_min=12)]
+            muerte = [a_lienzo_muerte(dano), validar(f"{nombre}_Muerte2", caido(dano), alto_min=12)]
         for n, cuadro in enumerate(muerte, 1):
             guardar(f"Guerrero_{nombre}_Muerte{n}_03.png", cuadro)
 

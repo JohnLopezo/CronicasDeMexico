@@ -41,6 +41,31 @@ namespace CronicasDeMexico.Tests
             Assert.AreEqual(0.29f, guardian.AttackSet.Duration, 0.001f, "El ataque dura lo mismo con uno o dos cuadros.");
         }
 
+        // Reaparece a los 1,5 s (PlayerDamageResponse, DefeatReturn): la secuencia debe caber entera.
+        [TestCase("jaguar", 5)]
+        [TestCase("ajolote", 7)]
+        [TestCase("aguila", 7)]
+        [TestCase("quetzal", 7)]
+        [TestCase("lobo", 2)]
+        [TestCase("mariposa", 2)]
+        [TestCase("xolo", 2)]
+        public void Death_FitsBeforeRespawning_WithItsFeetOnTheGround(string id, int frames)
+        {
+            var death = AssetDatabase.LoadAssetAtPath<GuardianData>($"Assets/_Project/Data/Characters/GUA_{id}.asset").DeathSet;
+            Assert.AreEqual(1.4f, death.Duration, 0.001f);
+            Assert.AreEqual(frames, Mathf.RoundToInt(death.Duration * death.FramesPerSecond));
+            var last = death.GetOnceFrame(2, 99f);
+            Assert.AreEqual(96f, last.rect.height, "El espíritu se eleva.");
+            Assert.AreEqual(2f, last.pivot.y, 0.01f, "El pivote sigue en los pies.");
+        }
+
+        [Test]
+        public void Hurt_LastsLongerThanTheDamageFlash()
+        {
+            foreach (var guardian in Resources.Load<GuardianCatalog>(GuardianCatalog.ResourcePath).Guardians)
+                Assert.Greater(guardian.HitSet.Duration, 0.3f, guardian.Id);
+        }
+
         [Test]
         public void OnlyThePilot_HasDefenseAndVictoryPoses()
         {

@@ -21,6 +21,16 @@ Plantilla:
 
 ---
 
+## 2026-11-06 — i7-10700: muerte con espíritu y golpe visible
+
+- **Rama / último commit:** `feature/prototipo-olmeca`, sobre `4aa62ae`. EditMode 107/107, PlayMode 80/80. Subido.
+- **Pedido del autor:** poner la animación de muerte y la de golpe, que no se apreciaban.
+- **Causa:** la muerte solo tenía 3 cuadros, sin el espíritu; la pose de golpe duraba 0,2 s y el destello blanco tapaba 0,12.
+- **Hecho:** muerte con espíritu desde sus hojas (Balam 5 cuadros; Xali, Itzel y Yaret 7), en 1,4 s antes de reaparecer, lienzo 128×96 y pivote propio. Golpe de 0,4 s. Naira, Ameyali y Ocel siguen con la muerte provisional.
+- **Límite:** el espíritu de Balam y el de Xali salen incompletos; una hoja con transparencia lo resolvería.
+
+---
+
 ## 2026-11-06 — i7-10700: Habilidad especial de Balam y caminar de frente
 
 - **Rama / último commit:** `feature/prototipo-olmeca`, sobre `16b480b`. EditMode 99/99, PlayMode 80/80 (PlayMode antes de corregir el recorte de la pose). Subido.

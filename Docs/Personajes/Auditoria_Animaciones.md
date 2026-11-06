@@ -40,8 +40,8 @@ Fecha: 2026-11-06. Commit auditado: `f042af4`. **Aprobada por el autor con sus p
 | Attack | `Ataque` | 2 | Solo E | Funciona, **sin la energía del Jaguar** (se quitó al recortar) |
 | **SpecialAttack** | — | 0 | — | **Falta** arte y conexión |
 | **Defense** | — | 0 | — | **Falta** arte, acción, botón y regla |
-| Hurt | `Dano` | 1 | Solo E | Funciona |
-| Death | `Muerte` | 3: Daño, Caída, Desplome | Solo E | **No se toca.** El espíritu no se usa |
+| Hurt | `Dano` | 1, durante 0,4 s (antes 0,2: el destello la tapaba) | Solo E | Funciona |
+| Death | `Muerte` | 5: Daño, Caída, Desplome, Espíritu, Final (añadidos a petición del autor, después de esta auditoría) | Solo E | Funciona |
 | **Victory** | — | 0 | — | **Falta** arte y conexión |
 
 ## 4. Recursos gráficos verificados

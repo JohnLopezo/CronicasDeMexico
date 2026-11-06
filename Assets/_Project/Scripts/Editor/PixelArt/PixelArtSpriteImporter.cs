@@ -21,6 +21,7 @@ namespace CronicasDeMexico.Editor.PixelArt
         public const string GuerrerosFolder = SpritesFolder + "/Guerreros";
         const float NpcPixelsPerUnit = 32f;
         static readonly Vector2 NpcPivot = new(0.5f, 2f / 64f); // lienzos de 64 de alto, pies a 2 px del borde (recortar_npc.py, recortar_guerreros.py)
+        static readonly Vector2 MuertePivot = new(0.5f, 2f / 96f); // recortar_guerreros.py, LIENZO_MUERTE: el espíritu se eleva
         public const float PixelsPerUnit = 48f;
 
         [Serializable]
@@ -42,7 +43,7 @@ namespace CronicasDeMexico.Editor.PixelArt
         static DateTime pivotsStamp;
 
         // Subir el número reimporta los sprites cuando cambian estos ajustes.
-        public override uint GetVersion() => 3;
+        public override uint GetVersion() => 4;
 
         void OnPreprocessTexture()
         {
@@ -79,7 +80,7 @@ namespace CronicasDeMexico.Editor.PixelArt
             {
                 // Guerreros de Tools/ArtPipeline/recortar_guerreros.py. A los PPU del escenario: el jugador no escala su raíz.
                 settings.spriteAlignment = (int)SpriteAlignment.Custom;
-                settings.spritePivot = NpcPivot;
+                settings.spritePivot = spriteName.Contains("_Muerte") ? MuertePivot : NpcPivot;
             }
             else if (assetPath.StartsWith(NpcFolder + "/", StringComparison.Ordinal))
             {

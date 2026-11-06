@@ -18,7 +18,7 @@ Auditoría de animaciones y propuesta técnica: `Docs/Personajes/Auditoria_Anima
 
 Balam conserva el id `jaguar`: es el de las partidas guardadas y el de `OBJ_marca_jaguar`. No cambiarlo.
 
-**Provisional** significa la pose de Daño tumbada (`caido()`), que se ve rígida.
+**Provisional** significa la pose de Daño tumbada (`caido()`), que se ve rígida. Las hojas propias incluyen la liberación del espíritu, recortada de la hoja: 5 cuadros en Balam y 7 en Xali, Itzel y Yaret. El espíritu de Balam y el de Xali salen incompletos, porque son un brillo tenue sobre fondo oscuro. Las muertes usan un lienzo de 128×96 y duran 1,4 s.
 
 ## Cómo está hecho
 

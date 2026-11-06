@@ -1,0 +1,218 @@
+using System;
+using System.IO;
+using CronicasDeMexico.Gameplay.Interaction;
+using CronicasDeMexico.World.Rendering;
+using UnityEditor;
+using UnityEditor.SceneManagement;
+using UnityEngine;
+
+namespace CronicasDeMexico.Editor.SceneGeneration
+{
+    /// <summary>
+    /// Capturas a 1920×1080 de la cámara real de Olmeca_Ciudad, Olmeca_Selva y los pisos de la mazmorra en varios
+    /// puntos, para revisar el resultado en Unity sin abrir el Editor (orden de dibujo, alineación de píxeles). Desde
+    /// consola: Unity.exe -batchmode -quit -projectPath . -executeMethod
+    /// CronicasDeMexico.Editor.SceneGeneration.OlmecaCityCapture.Capture -capturePath &lt;carpeta&gt;
+    /// (CaptureJungle para la selva, CaptureDungeon para los pisos). Sin -capturePath se guardan en Logs/Capturas.
+    /// </summary>
+    public static class OlmecaCityCapture
+    {
+        const int Width = 1920;
+        const int Height = 1080;
+
+        // Puntos que mira la cámara, en coordenadas del flujo de arte (x, y): los mismos recortes que la vista previa.
+        static readonly (string name, Vector2 focus)[] Views =
+        {
+            ("Plaza", new Vector2(0f, 5f)),
+            ("Monticulo", new Vector2(0f, 16f)),
+            ("Recinto", new Vector2(0f, -9f)),
+            ("Aldea", new Vector2(15f, -2f)),
+            ("Muelle", new Vector2(20f, -4f)),
+            // Habitantes del asentamiento (OlmecaCityGenerator.Settlers).
+            ("Artesano", new Vector2(13.5f, 3.5f)),
+            ("Anciana", new Vector2(12.4f, 15f)),
+            ("Guerrero", new Vector2(11f, 9.5f)),
+            ("Guardias", new Vector2(-16.5f, 4.5f)),
+            ("Sacerdote", new Vector2(-4.5f, 5.5f)),
+            ("NinosNorte", new Vector2(14f, 13f)),
+            ("Agricultor", new Vector2(10f, -12f)),
+            ("Pescador", new Vector2(18.5f, -7f)),
+            ("Despertar", new Vector2(18f, 22.5f)), // orilla del río: jugador, figura espiritual y reflejo
+            ("SenderoOeste", new Vector2(-19f, 4f)), // salida hacia la selva (MP_OLM_03)
+        };
+
+        // Selva (planificar_selva): llegada desde la ciudad, los tres claros y la entrada a la estructura.
+        static readonly (string name, Vector2 focus)[] JungleViews =
+        {
+            ("Llegada", new Vector2(15f, 0f)),
+            ("Claro1", new Vector2(11f, 1.6f)),
+            ("Claro2", new Vector2(2f, 0.5f)),
+            ("Claro3", new Vector2(-6.5f, -3f)),
+            ("Entrada", new Vector2(-10.6f, -1f)),
+        };
+
+        [MenuItem("Crónicas/Capturar ciudad olmeca")]
+        public static void Capture() => CaptureScene(OlmecaCityGenerator.ScenePath, "Ciudad", Views);
+
+        [MenuItem("Crónicas/Capturar selva olmeca")]
+        public static void CaptureJungle() => CaptureScene(OlmecaJungleGenerator.ScenePath, "Selva", JungleViews);
+
+        // Pisos de la mazmorra (PISOS en generar_olmeca.py): llegada y santuarios, salas, arena y escalera de bajada.
+        static readonly (string name, Vector2 focus)[][] DungeonViews =
+        {
+            new[]
+            {
+                ("Llegada", new Vector2(-11.5f, -1f)), ("Sala", new Vector2(-1.5f, 0f)), ("Grupo", new Vector2(8f, 0f)),
+                ("Bajada", new Vector2(15.5f, 0f)),
+            },
+            new[]
+            {
+                ("Llegada", new Vector2(-11.5f, 1f)), ("Sala", new Vector2(0f, 0.5f)), ("Vida", new Vector2(0f, -7f)),
+                ("Arena", new Vector2(12f, 1f)),
+            },
+            new[] { ("Llegada", new Vector2(-7f, 0f)), ("Antesala", new Vector2(3.5f, 0.5f)), ("Arena", new Vector2(5f, 12f)) },
+        };
+
+        [MenuItem("Crónicas/Capturar mazmorra olmeca")]
+        public static void CaptureDungeon()
+        {
+            for (var floor = 1; floor <= OlmecaDungeonGenerator.FloorCount; floor++)
+                CaptureScene(OlmecaDungeonGenerator.ScenePath(floor), $"Mazmorra_P{floor}", DungeonViews[floor - 1]);
+        }
+
+        // Etapas A y B del plan de personajes: pasarela de poses en la selva (sin guardar la escena). Fila de arriba, el
+        // jaguar jugable; de abajo, el jaguar corrupto. Mirando al SE y en E, junto al jugador y al primer claro.
+        static readonly (string anim, int frame)[] PlayerPoses =
+            { ("Reposo", 0), ("Caminar", 1), ("Correr", 2), ("Zarpazo", 1), ("Zarpazo", 2), ("Golpeado", 0), ("Muerte", 3) };
+        static readonly (string anim, int frame)[] CorruptedPoses =
+            { ("Reposo", 0), ("Caminar", 3), ("Acecho", 0), ("Salto", 0), ("Salto", 1), ("Golpeado", 0), ("Muerte", 2) };
+
+        [MenuItem("Crónicas/Capturar jaguares (pasarela)")]
+        public static void CaptureJaguars() => CaptureScene(OlmecaJungleGenerator.ScenePath, "Jaguares",
+            new[] { ("Pasarela", new Vector2(12.75f, -1.35f)) }, () =>
+            {
+                // Copias del sprite del jugador de la escena: mismo material, capa y luz que los personajes.
+                var model = UnityEngine.Object.FindAnyObjectByType<Gameplay.Player.PlayerMovement>().GetComponentInChildren<SpriteBillboard>().GetComponent<SpriteRenderer>();
+                var parent = new GameObject("Pasarela").transform;
+                void Row(JaguarCharacterAssets.Sets sets, (string anim, int frame)[] poses, Vector2 start, int direction)
+                {
+                    for (var i = 0; i < poses.Length; i++)
+                    {
+                        var set = sets[poses[i].anim];
+                        var sprite = set.GetOnceFrame(direction, (poses[i].frame + 0.5f) / set.FramesPerSecond);
+                        var point = start + new Vector2(1.55f, 1.55f) * i;
+                        var copy = UnityEngine.Object.Instantiate(model.gameObject, parent);
+                        copy.name = sprite.name;
+                        copy.GetComponent<SpriteRenderer>().sprite = sprite;
+                        copy.transform.localScale = Vector3.one;
+                        copy.transform.position =
+                            IsometricProjection.SnapToPixelGrid(PixelArtSceneBuilder.ToWorld(point), 1f / IsometricProjection.PixelsPerUnit);
+                    }
+                }
+                Row(JaguarCharacterAssets.Player(), PlayerPoses, new Vector2(7.6f, -4.6f), 3);
+                Row(JaguarCharacterAssets.Corrupted(), CorruptedPoses, new Vector2(8.6f, -7.4f), 2);
+            });
+
+        // Los siete guerreros junto al joven guerrero, para comparar tamaños (sin guardar la escena). Fila de arriba, reposo de
+        // frente; luego ataque de lado y último cuadro de la muerte.
+        [MenuItem("Crónicas/Capturar guerreros (pasarela)")]
+        public static void CaptureGuerreros() => CaptureScene(OlmecaCityGenerator.ScenePath, "Guerreros",
+            new[] { ("Pasarela", new Vector2(11f, 9.5f)) }, () =>
+            {
+                var model = UnityEngine.Object.FindAnyObjectByType<Gameplay.Player.PlayerMovement>().GetComponentInChildren<SpriteBillboard>().GetComponent<SpriteRenderer>();
+                var parent = new GameObject("Pasarela").transform;
+                var column = 0;
+                foreach (var guardian in GuerreroCharacterAssets.BuildAll().Values)
+                {
+                    var rows = new[] { guardian.SpriteSet.GetIdle(4), guardian.AttackSet.GetOnceFrame(2, 0f), guardian.DeathSet.GetOnceFrame(2, 99f) };
+                    for (var row = 0; row < rows.Length; row++)
+                    {
+                        var copy = UnityEngine.Object.Instantiate(model.gameObject, parent);
+                        copy.GetComponent<SpriteRenderer>().sprite = rows[row];
+                        copy.transform.localScale = Vector3.one;
+                        copy.transform.position = IsometricProjection.SnapToPixelGrid(
+                            PixelArtSceneBuilder.ToWorld(new Vector2(5.5f + column * 1.6f, 12.5f - row * 1.7f)), 1f / IsometricProjection.PixelsPerUnit);
+                    }
+                    column++;
+                }
+            });
+
+        // Cada cuadro de la muerte de cada guerrero, en el suelo real de la plaza (sin guardar la escena): una fila por guerrero.
+        [MenuItem("Crónicas/Capturar muertes (pasarela)")]
+        public static void CaptureDeaths() => CaptureScene(OlmecaCityGenerator.ScenePath, "Muertes",
+            new[] { ("Pasarela", new Vector2(0f, 4f)) }, () =>
+            {
+                var model = UnityEngine.Object.FindAnyObjectByType<Gameplay.Player.PlayerMovement>().GetComponentInChildren<SpriteBillboard>().GetComponent<SpriteRenderer>();
+                var parent = new GameObject("Pasarela").transform;
+                var row = 0;
+                foreach (var guardian in GuerreroCharacterAssets.BuildAll().Values)
+                {
+                    var set = guardian.DeathSet;
+                    var frames = Mathf.RoundToInt(set.Duration * set.FramesPerSecond);
+                    for (var frame = 0; frame < frames; frame++)
+                    {
+                        var copy = UnityEngine.Object.Instantiate(model.gameObject, parent);
+                        copy.GetComponent<SpriteRenderer>().sprite = set.GetOnceFrame(2, (frame + 0.5f) / set.FramesPerSecond);
+                        copy.transform.localScale = Vector3.one;
+                        copy.transform.position = IsometricProjection.SnapToPixelGrid(
+                            PixelArtSceneBuilder.ToWorld(new Vector2(-8.5f + frame * 2.7f, 9.5f - row * 1.6f)), 1f / IsometricProjection.PixelsPerUnit);
+                    }
+                    row++;
+                }
+            });
+
+        static void CaptureScene(string scenePath, string prefix, (string name, Vector2 focus)[] views, Action prepare = null)
+        {
+            var folder = CommandLineValue("-capturePath") ?? Path.Combine("Logs", "Capturas");
+            Directory.CreateDirectory(folder);
+
+            EditorSceneManager.OpenScene(scenePath, OpenSceneMode.Single);
+            prepare?.Invoke();
+            // Lo que en el juego aparece después (los fragmentos, al vencer a su espíritu) se muestra para revisarlo.
+            // La escena no se guarda.
+            foreach (var fragment in UnityEngine.Object.FindObjectsByType<MemoryFragmentInteractable>(
+                         FindObjectsInactive.Include, FindObjectsSortMode.None))
+                fragment.transform.parent.gameObject.SetActive(true);
+            var camera = UnityEngine.Object.FindAnyObjectByType<IsometricCameraFollow>().GetComponent<Camera>();
+            // SpriteBillboard solo gira en juego: sin esto, el jugador no sale en las capturas.
+            foreach (var billboard in UnityEngine.Object.FindObjectsByType<SpriteBillboard>(FindObjectsSortMode.None))
+                billboard.transform.rotation = camera.transform.rotation;
+            camera.orthographicSize = IsometricProjection.OrthographicSize(Height);
+            var pixel = 1f / (IsometricProjection.PixelsPerUnit * IsometricProjection.IntegerScale(Height));
+
+            var target = new RenderTexture(Width, Height, 24, RenderTextureFormat.ARGB32) { filterMode = FilterMode.Point };
+            var image = new Texture2D(Width, Height, TextureFormat.RGB24, false);
+            try
+            {
+                camera.targetTexture = target;
+                foreach (var (name, focus) in views)
+                {
+                    var point = IsometricProjection.FromPipeline(focus.x, focus.y, 0f);
+                    camera.transform.position = IsometricProjection.SnapToPixelGrid(point - camera.transform.forward * 60f, pixel);
+                    camera.Render();
+
+                    RenderTexture.active = target;
+                    image.ReadPixels(new Rect(0, 0, Width, Height), 0, 0);
+                    image.Apply();
+                    var path = Path.Combine(folder, $"{prefix}_Unity_{name}.png");
+                    File.WriteAllBytes(path, image.EncodeToPNG());
+                    Debug.Log($"[Captura] {path}");
+                }
+            }
+            finally
+            {
+                camera.targetTexture = null;
+                RenderTexture.active = null;
+                UnityEngine.Object.DestroyImmediate(target);
+                UnityEngine.Object.DestroyImmediate(image);
+            }
+        }
+
+        static string CommandLineValue(string flag)
+        {
+            var args = Environment.GetCommandLineArgs();
+            var index = Array.IndexOf(args, flag);
+            return index >= 0 && index + 1 < args.Length ? args[index + 1] : null;
+        }
+    }
+}

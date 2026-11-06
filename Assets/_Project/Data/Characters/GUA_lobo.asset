@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cb296e4cd7603524db49c01b6f9ea99e, type: 3}
+  m_Name: GUA_lobo
+  m_EditorClassIdentifier: 
+  baseStats:
+    maxHealth: 60
+    attack: 11
+    defense: 0
+    maxEnergy: 70
+  growthPerLevel: {x: 7, y: 1.5, z: 0.5, w: 3}
+  id: lobo
+  displayName: Naira
+  title: Guardiana Lobo Mexicano
+  description: "Persecuci\xF3n, velocidad y combate sostenido."
+  initialAffinity: 3
+  status: 1
+  spriteSet: {fileID: 11400000, guid: 9e15a481ddb879448b5a9a327f6b74b2, type: 2}
+  attackSet: {fileID: 11400000, guid: 38a9ff9b76b59784b881436a00b6e5e3, type: 2}
+  runSet: {fileID: 11400000, guid: 6032ec82f4d4443459bac03d873fff6d, type: 2}
+  hitSet: {fileID: 11400000, guid: c3f6cebfc00ce5c4791e0cc525d0ec85, type: 2}
+  deathSet: {fileID: 11400000, guid: 847bfffddfb237a43958b79df6771d7c, type: 2}
+  defenseSet: {fileID: 0}
+  victorySet: {fileID: 0}
+  specialSet: {fileID: 0}

@@ -1,0 +1,39 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0f3a2dbe737f384da36cc4134724892, type: 3}
+  m_Name: DSS_Npc_Pescador
+  m_EditorClassIdentifier: 
+  clips:
+  - idle: {fileID: 21300000, guid: 277511fd589baae428d144d03fe45bed, type: 3}
+    walk:
+    - {fileID: 21300000, guid: 4d66d653b084fdd4cb594c6e59e9e5ad, type: 3}
+    - {fileID: 21300000, guid: b4e882013a5065a45be58ce9b8cc8f29, type: 3}
+  - idle: {fileID: 21300000, guid: 9bcd1bc458e58d54f8367f127cf343b0, type: 3}
+    walk:
+    - {fileID: 21300000, guid: 0416d668145770741940fecd1ed6bf65, type: 3}
+    - {fileID: 21300000, guid: 309d624a7e7f06f408f0890cb3982b42, type: 3}
+    - {fileID: 21300000, guid: f08d608ecd0b3f741b494cfe503b3a6e, type: 3}
+  - idle: {fileID: 21300000, guid: 9bcd1bc458e58d54f8367f127cf343b0, type: 3}
+    walk:
+    - {fileID: 21300000, guid: 0416d668145770741940fecd1ed6bf65, type: 3}
+    - {fileID: 21300000, guid: 309d624a7e7f06f408f0890cb3982b42, type: 3}
+    - {fileID: 21300000, guid: f08d608ecd0b3f741b494cfe503b3a6e, type: 3}
+  - idle: {fileID: 21300000, guid: 9bcd1bc458e58d54f8367f127cf343b0, type: 3}
+    walk:
+    - {fileID: 21300000, guid: 0416d668145770741940fecd1ed6bf65, type: 3}
+    - {fileID: 21300000, guid: 309d624a7e7f06f408f0890cb3982b42, type: 3}
+    - {fileID: 21300000, guid: f08d608ecd0b3f741b494cfe503b3a6e, type: 3}
+  - idle: {fileID: 21300000, guid: e349166f7c7bfaf44888cce086076600, type: 3}
+    walk:
+    - {fileID: 21300000, guid: aea294d8808fb6c4bac2cb6c5c63d6e5, type: 3}
+    - {fileID: 21300000, guid: e11cbda3971090d49bfe91b8c413d22e, type: 3}
+  walkFramesPerSecond: 6

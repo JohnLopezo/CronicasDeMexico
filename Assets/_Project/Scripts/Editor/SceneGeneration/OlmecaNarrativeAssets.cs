@@ -1,0 +1,390 @@
+using System.Linq;
+using CronicasDeMexico.Core.Narrative;
+using CronicasDeMexico.Data.Characters;
+using CronicasDeMexico.Data.Narrative;
+using UnityEditor;
+using UnityEngine;
+
+namespace CronicasDeMexico.Editor.SceneGeneration
+{
+    /// <summary>
+    /// Guardián, personajes, diálogos y misiones del despertar y del asentamiento olmeca (Docs/Personajes y
+    /// Docs/Historia/Misiones.md). Los assets se crean **solo si no existen**: después, el asset es la fuente y se
+    /// edita en el Inspector; regenerar la ciudad no lo pisa. Para volver a este texto, borrar el asset.
+    /// </summary>
+    public static class OlmecaNarrativeAssets
+    {
+        public const string Folder = "Assets/_Project/Data/Narrative/Olmeca";
+        public const string CatalogPath = "Assets/_Project/Resources/" + QuestCatalog.ResourcePath + ".asset";
+
+        public const string ArtisanId = "artesano_jade";
+        public const string ElderId = "anciana";
+        public const string WarriorId = "guerrero_joven";
+        public const string MerchantId = "comerciante";
+        public const string SpiritId = "figura_espiritual";
+        /// <summary>El guardia de la aldea: un habitante, no un Guardián. Puede haber varios, con el mismo NpcData.</summary>
+        public const string VillageGuardId = "guardia";
+
+        // Habitantes de ambiente (Docs/Personajes/NPC_Olmecas.md): id, nombre, papel y frases. Textos de ficción (F).
+        static readonly (string id, string name, string role, string[] lines)[] VillagerTexts =
+        {
+            ("curandera", "Curandera", "sanadora", new[]
+            {
+                "Si vienes herido, siéntate. Si no, no me pises las hojas.",
+                "Ese muchacho no descansa. Yo le preparo el remedio y él se lo quita.",
+            }),
+            ("anciano", "Anciano", "sabio", new[] { "Mi padre me enseñó el nombre de cada montículo. Hoy me falta uno, y no sé cuál." }),
+            ("sacerdote", "Sacerdote", "guía espiritual", new[]
+            {
+                "Cada ofrenda se entierra donde la dejaron los que vinieron antes. Por eso me inquieta no recordar quiénes fueron.",
+            }),
+            ("agricultor", "Agricultor", "agricultor", new[] { "La milpa no pregunta qué pasa en el mundo. Hay que sembrar igual." }),
+            ("pescador", "Pescador", "pescador", new[]
+            {
+                "El río da lo que quiere. Hoy quiso poco.",
+                "Las canoas siguen donde las dejé. Al menos eso sí lo recuerdo.",
+            }),
+            ("mensajero", "Mensajero", "mensajero", new[] { "Lo malo no es correr. Lo malo es llegar y que nadie recuerde quién mandó el aviso." }),
+            ("comerciante_mujer", "Comerciante", "vendedora", new[] { "Mantas, cestos y cuentas. Si buscas cosas de lejos, habla con el del muelle." }),
+            (VillageGuardId, "Guardia de la aldea", "guardia", new[]
+            {
+                "Lo que sale últimamente de la selva ya no se porta como un animal. Si oyes gritos, corre hacia aquí, no al revés.",
+            }),
+            ("nino_1", "Niño", "niño", new[] { "¿De verdad peleas con esa ropa? No te tengo miedo... casi." }),
+            ("nina_1", "Niña", "niña", new[] { "¡Te hice una corona de flores, pero se me cayó al río!" }),
+            ("nino_2", "Niño", "niño", new[] { "Si le dices a mi mamá que fui yo, te escondo las piedritas." }),
+            ("nina_2", "Niña", "niña", new[] { "¿Quién te hizo esa ropa? Yo también quiero una." }),
+            ("nino_3", "Niño", "niño", new[] { "Apuesto a que llego al muelle antes que tú." }),
+            ("nina_3", "Niña", "niña", new[] { "...Hola." }),
+            ("nino_4", "Niño", "niño", new[] { "¡Alguien de fuera! ¡Alguien de fuera! ¡Vengan a ver!" }),
+            ("nina_4", "Niña", "niña", new[] { "Anoche soñé que las piedras hablaban. Luego se me olvidó qué decían." }),
+            ("nino_5", "Niño", "niño", new[] { "Yo no rompí esa vasija. Ya estaba rota. Desde hace... mucho." }),
+        };
+
+        public const string AwakeningQuestId = "MP_OLM_01";
+        public const string SettlementQuestId = "MP_OLM_02";
+        public const string JungleQuestId = "MP_OLM_03";
+        public const string ReflectionId = "reflejo"; // aviso "examinar:reflejo" en la orilla
+        // Selva (MP_OLM_03): avisos "llegar:selva", "vencer:espiritu_corrompido", "examinar:fragmento_menor" y
+        // "llegar:entrada_estructura".
+        public const string JungleZoneId = "selva";
+        public const string EntranceZoneId = "entrada_estructura";
+        public const string CorruptedSpiritId = "espiritu_corrompido";
+        public const string FragmentId = "fragmento_menor";
+        public const int JungleSpiritCount = 3;
+        // Mazmorra (MP_OLM_04, M3): avisos "llegar:mazmorra_pisoN" (OlmecaDungeonGenerator.FloorZoneId) y
+        // "vencer:jaguar_piedra". Todos los pasos son de llegar o de vencer en su piso: ninguno se puede saltar.
+        public const string DungeonQuestId = "MP_OLM_04";
+        public const string StoneJaguarId = "jaguar_piedra";
+        public const string ErasedEchoId = "eco_borrado";
+        // Arena (MP_OLM_05, M4): avisos "examinar:sello_guardian" y "vencer:guardian_piedra_viva".
+        public const string GuardianQuestId = "MP_OLM_05";
+        public const string StoneGuardianId = "guardian_piedra_viva";
+        public const string SealExamineId = "sello_guardian";
+        // Regreso (MP_OLM_06, M5): avisos "hablar:anciana" y "examinar:altar_trono". La empieza DungeonCompletion al
+        // liberar al Guardián.
+        public const string ReturnQuestId = "MP_OLM_06";
+        public const string AltarExamineId = "altar_trono";
+        public const string GuardianPath = "Assets/_Project/Data/Characters/GUA_jaguar.asset";
+        const string PlayerSpriteSetPath = "Assets/_Project/Data/Characters/DSS_Jugador.asset";
+
+        // Banderas propias de este arco. Las de misión las pone QuestService (StoryEvents).
+        public const string OathFlag = "olm.juramento";
+        public const string AwakeningDoneFlag = "olm.despertar_completo";
+        public const string ElderToldFlag = "olm.anciana_conto";
+        public const string EntranceFoundFlag = "olm.entrada_descubierta";
+        public const string WarriorInJungleFlag = "olm.guerrero_en_selva";
+        public const string StructureFoundFlag = "olm.estructura_encontrada";
+        /// <summary>El Jaguar de Piedra fue vencido y liberado: no vuelve y la bajada al piso 3 queda abierta.</summary>
+        public const string StoneJaguarDefeatedFlag = "olm.jaguar_piedra_vencido";
+        public const string AntechamberReachedFlag = "olm.antesala_alcanzada";
+        /// <summary>La losa de la antesala está abierta: se pasa a la arena del Guardián.</summary>
+        public const string SealOpenFlag = "olm.sello_abierto";
+        /// <summary>El Guardián de la Piedra Viva fue vencido y liberado (M4); sus recompensas llegan en M5.</summary>
+        public const string GuardianFreedFlag = "olm.guardian_liberado";
+        /// <summary>La anciana escuchó el final de su relato (MP_OLM_06, paso 1).</summary>
+        public const string ElderRememberedFlag = "olm.anciana_recordo";
+        /// <summary>El Fragmento de la Primera Memoria está en el altar-trono: el asentamiento recuerda (fin de MP_OLM_06).</summary>
+        public const string MemoryRestoredFlag = "olm.memoria_restaurada";
+        static readonly string QuestActive = StoryEvents.QuestActiveFlag(SettlementQuestId);
+        static readonly string QuestDone = StoryEvents.QuestCompletedFlag(SettlementQuestId);
+        static readonly string JungleQuestDone = StoryEvents.QuestCompletedFlag(JungleQuestId);
+
+        /// <summary>Este espíritu corrompido ya fue vencido (no vuelve y deja su fragmento). i empieza en 1.</summary>
+        public static string SpiritDefeatedFlag(int i) => $"olm.selva.espiritu_{i}_vencido";
+
+        /// <summary>Este fragmento de memoria ya se recogió. i empieza en 1.</summary>
+        public static string FragmentFlag(int i) => $"olm.selva.fragmento_{i}";
+
+        // Lo que recuerda cada fragmento al tocarlo. D/I: el basalto se llevó a La Venta desde los Tuxtlas y la piedra
+        // verde se pulía con arena y agua; el resto es ficción del juego.
+        public static readonly string[] FragmentTexts =
+        {
+            "Un fragmento de memoria, tibio como una piedra al sol. Al tocarlo oyes voces que cantan mientras arrastran " +
+            "una piedra enorme río abajo, desde montañas que no conoces.",
+            "Otro fragmento. Ves unas manos que pulen una piedra verde con arena y agua, día tras día, sin prisa.",
+            "El último fragmento. Por un instante la selva entera recuerda un nombre... y lo olvida otra vez.",
+        };
+
+        // Al asomarse al agua (Historia_Mundo §2.1–2.2): recuerdos rotos de la vida anterior y un rostro ajeno.
+        public const string ReflectionText =
+            "Recuerdas, a pedazos: una voz, una luz, piedras que se derrumban y la sensación de caer.\n" +
+            "Te asomas al agua. Quieres hablar y la voz no te sale. En el reflejo te mira un rostro que no es el tuyo, con el atuendo de un animal que sientes respirar contigo.";
+
+        public readonly struct Character
+        {
+            public readonly NpcData Npc;
+            public readonly DialogueData Dialogue;
+
+            public Character(NpcData npc, DialogueData dialogue)
+            {
+                Npc = npc;
+                Dialogue = dialogue;
+            }
+        }
+
+        public sealed class Content
+        {
+            public Character Spirit, Artisan, Elder, Warrior, Merchant;
+            /// <summary>El joven guerrero en la entrada de la estructura (mismo NpcData, otro diálogo).</summary>
+            public Character WarriorAtEntrance;
+            /// <summary>Habitantes de ambiente, por id.</summary>
+            public readonly System.Collections.Generic.Dictionary<string, Character> Villagers = new();
+            public QuestData AwakeningQuest, SettlementQuest, JungleQuest, DungeonQuest, GuardianQuest, ReturnQuest;
+            public GuardianData Guardian;
+        }
+
+        public static Content EnsureAssets()
+        {
+            OlmecaPrototypeGenerator.EnsureFolder(Folder);
+            OlmecaPrototypeGenerator.EnsureFolder(System.IO.Path.GetDirectoryName(CatalogPath)!.Replace('\\', '/'));
+
+            // Solo si falta el asset: lo completa GuerreroCharacterAssets con los demás Guardianes.
+            var guardian = LoadOrCreate(GuardianPath, () => GuardianData.Create("jaguar", "Jaguar",
+                "Fuerza, movilidad y combate cercano.", Affinity.Oscuridad, SpeciesStatus.Nativa,
+                AssetDatabase.LoadAssetAtPath<DirectionalSpriteSet>(PlayerSpriteSetPath)));
+
+            // Las misiones primero: los diálogos las referencian.
+            var awakening = LoadOrCreate($"{Folder}/MIS_{AwakeningQuestId}.asset", () => QuestData.Create(
+                AwakeningQuestId, "El despertar", new[]
+                {
+                    new QuestStep(StoryEvents.Examine(ReflectionId), "Asómate al agua"),
+                    new QuestStep(StoryEvents.Talk(SpiritId), "Escucha a la figura que te espera en la orilla"),
+                    new QuestStep(StoryEvents.Talk(ArtisanId), "Llega al asentamiento y busca al artesano de jade"),
+                }, AwakeningDoneFlag));
+            var quest = LoadOrCreate($"{Folder}/MIS_{SettlementQuestId}.asset", () => QuestData.Create(
+                SettlementQuestId, "El asentamiento inquieto", new[]
+                {
+                    new QuestStep(StoryEvents.Talk(ElderId), "Habla con la anciana, junto a las enramadas"),
+                    new QuestStep(StoryEvents.Talk(WarriorId), "Busca al joven guerrero junto al fogón, cerca de la plaza"),
+                }, EntranceFoundFlag));
+            // Cada fragmento solo aparece con esta misión activa y su espíritu vencido, así que recoger tres implica haber
+            // vencido a tres y ninguno se puede recoger "antes de tiempo" y perderse (OlmecaJungleGenerator).
+            var jungle = LoadOrCreate($"{Folder}/MIS_{JungleQuestId}.asset", () => QuestData.Create(
+                JungleQuestId, "Rastros en la selva", new[]
+                {
+                    new QuestStep(StoryEvents.Reach(JungleZoneId), "Sal de la plaza por el sendero del oeste, hacia la selva"),
+                    new QuestStep(StoryEvents.Examine(FragmentId),
+                        "Vence a los espíritus corrompidos y recoge los fragmentos de memoria que dejan", JungleSpiritCount),
+                    new QuestStep(StoryEvents.Talk(WarriorId), "Sigue el sendero hasta la entrada de piedra; el joven guerrero te espera"),
+                }, StructureFoundFlag));
+            var dungeon = LoadOrCreate($"{Folder}/MIS_{DungeonQuestId}.asset", () => QuestData.Create(
+                DungeonQuestId, "La ciudad bajo la selva", new[]
+                {
+                    new QuestStep(StoryEvents.Reach("mazmorra_piso1"), "Entra en la estructura por la abertura entre las columnas"),
+                    new QuestStep(StoryEvents.Reach("mazmorra_piso2"), "Baja por la escalera del suelo hasta el Pantano"),
+                    new QuestStep(StoryEvents.Defeat(StoneJaguarId), "Cruza el agua y enfréntate al Jaguar de Piedra"),
+                    new QuestStep(StoryEvents.Reach("mazmorra_piso3"), "Baja a lo más hondo de la estructura"),
+                }, AntechamberReachedFlag));
+            // Empieza sola al cargar la antesala (StartQuestOnLoad en el piso 3). Sin recompensas aún: llegan en M5.
+            var guardianQuest = LoadOrCreate($"{Folder}/MIS_{GuardianQuestId}.asset", () => QuestData.Create(
+                GuardianQuestId, "La Piedra Viva", new[]
+                {
+                    new QuestStep(StoryEvents.Examine(SealExamineId), "Empuja la losa que sella el pórtico de la antesala"),
+                    new QuestStep(StoryEvents.Defeat(StoneGuardianId), "Enfréntate al Guardián de la Piedra Viva"),
+                }));
+            var returnQuest = LoadOrCreate($"{Folder}/MIS_{ReturnQuestId}.asset", () => QuestData.Create(
+                ReturnQuestId, "La primera memoria", new[]
+                {
+                    new QuestStep(StoryEvents.Talk(ElderId), "Vuelve al asentamiento y lleva el fragmento a la anciana"),
+                    new QuestStep(StoryEvents.Examine(AltarExamineId), "Deja el fragmento en el altar-trono de la plaza"),
+                }, MemoryRestoredFlag));
+            EnsureInCatalog(awakening);
+            EnsureInCatalog(quest);
+            EnsureInCatalog(jungle);
+            EnsureInCatalog(dungeon);
+            EnsureInCatalog(guardianQuest);
+            EnsureInCatalog(returnQuest);
+
+            var content = new Content
+            {
+                AwakeningQuest = awakening, SettlementQuest = quest, JungleQuest = jungle, DungeonQuest = dungeon,
+                GuardianQuest = guardianQuest, ReturnQuest = returnQuest, Guardian = guardian,
+            };
+
+            // Historia_Mundo §2.2–2.4. No es un dios ni un enemigo; no tiene rasgos de ninguna deidad.
+            content.Spirit = CreateCharacter(SpiritId, "Figura espiritual", "guía", new[]
+            {
+                new DialogueBranch(Lines(
+                        "Ve al asentamiento. Busca al artesano de jade: sus manos todavía recuerdan."),
+                    requiredFlags: new[] { OathFlag }),
+                new DialogueBranch(Lines(
+                        "No intentes hablar. Aquí no hace falta la voz para que te escuche.",
+                        "Has llegado al Mundo de las Memorias. Aquí permanecen los ecos de los pueblos: sus caminos, sus relatos, lo que supieron.",
+                        "No soy un dios, ni vengo a hacerte daño. Solo esperaba a alguien que pudiera ver este mundo desde fuera de sus épocas.",
+                        "Las memorias se están deshaciendo. Las estelas enmudecen, los caminos se borran y hay criaturas que ya no reconocen a nadie.",
+                        "Tu cuerpo es nuevo, y el espíritu de tu animal camina contigo. Con él cruzarás la selva.",
+                        "Cerca de aquí hay un asentamiento. Sus guardianes han dejado de responder. Ve, escucha a su gente y averigua por qué."),
+                    flagsOnFinish: new[] { OathFlag }),
+            });
+
+            content.Artisan = CreateCharacter(ArtisanId, "Artesano de jade", "artesano", new[]
+            {
+                new DialogueBranch(Lines(
+                        "Así que hay rastros en la selva... Yo seguiré con mi piedra. Alguien tiene que recordar cómo se pule."),
+                    requiredFlags: new[] { QuestDone }),
+                new DialogueBranch(Lines(
+                        "Ve con la anciana, junto a las enramadas. Y si ves al joven guerrero, dile que no se esfuerce: aún no sana."),
+                    requiredFlags: new[] { QuestActive }),
+                new DialogueBranch(Lines(
+                        "Alguien que escucha sin hablar... Entonces es cierto lo que cuentan: a veces la selva manda mensajeros.",
+                        "Mira esta piedra verde. La traen de muy lejos y la pulo durante días con arena y agua.",
+                        "Pero las piedras grandes de la plaza están perdiendo sus marcas. No es la lluvia: ayer estaban y hoy ya no.",
+                        "La anciana que vive junto a las enramadas recuerda más que nadie. Habla con ella."),
+                    requiredFlags: new[] { OathFlag },
+                    questToStart: quest),
+                new DialogueBranch(Lines(
+                        "¡Alto ahí! ...Esa ropa no es de por aquí, y no dices palabra. Qué cosa tan rara.",
+                        "Si de verdad entiendes lo que digo, vuelve cuando sepas a qué vienes.")),
+            });
+
+            // M5: las dos primeras ramas son del regreso (MP_OLM_06). Si el asset es anterior, se rehace en su sitio.
+            content.Elder = CreateCharacter(ElderId, "La anciana", "anciana", new[]
+            {
+                new DialogueBranch(Lines(
+                        "Cuando llueva contaré el relato entero. Esta vez llegaré al final."),
+                    requiredFlags: new[] { ElderRememberedFlag }),
+                new DialogueBranch(Lines(
+                        "Esa luz... Acércate. Ahora lo oigo: el final del relato de mi abuela.",
+                        "Habla de una piedra que guardaba lo primero que recordó esta tierra, para que nadie lo perdiera.",
+                        "Llévalo al altar-trono de la plaza. Ahí se sentaban los que hablaban por todos. Que lo recuerde también la piedra."),
+                    requiredFlags: new[] { GuardianFreedFlag },
+                    flagsOnFinish: new[] { ElderRememberedFlag }),
+                new DialogueBranch(Lines(
+                        "Si encuentras el final de mi relato, tráemelo. Todavía recuerdo cómo empieza."),
+                    requiredFlags: new[] { QuestDone }),
+                new DialogueBranch(Lines(
+                        "Busca al joven guerrero junto al fogón, cerca de la plaza. Yo intentaré recordar."),
+                    requiredFlags: new[] { ElderToldFlag }),
+                new DialogueBranch(Lines(
+                        "Así que el artesano te mandó. Acércate.",
+                        "Mi abuela me contó un relato sobre el principio de las cosas. Yo se lo contaba a los niños cada temporada de lluvias.",
+                        "Ahora, cuando llego a la mitad, las palabras se me escapan. Y no soy la única: a todos nos falta un pedazo de algo.",
+                        "El joven guerrero volvió herido de la selva. Vio algo allá. Lo encontrarás junto al fogón, cerca de la plaza."),
+                    requiredFlags: new[] { QuestActive },
+                    flagsOnFinish: new[] { ElderToldFlag }),
+                new DialogueBranch(Lines(
+                        "Las lluvias llegarán pronto. Hay que subir las vasijas antes de que el río crezca.",
+                        "¿Y tú de dónde saliste, con ese atuendo? Qué tiempos tan raros.")),
+            });
+
+            // Al terminar MP_OLM_02 encadena MP_OLM_03 y se adelanta a la entrada (en la selva, DLG_guerrero_joven_entrada).
+            content.Warrior = CreateCharacter(WarriorId, "Joven guerrero", "guerrero", new[]
+            {
+                new DialogueBranch(Lines(
+                        "Sal de la plaza por el sendero del oeste, el que se mete entre las palmas. Te alcanzo en la entrada."),
+                    requiredFlags: new[] { WarriorInJungleFlag }),
+                new DialogueBranch(Lines(
+                        "No me mires así. Es solo un rasguño... bueno, uno grande.",
+                        "Fuimos tres a revisar los caminos de la selva. Los animales no huían de nosotros: nos esperaban.",
+                        "Tenían algo raro. Grietas que brillaban en la piel, como si les faltaran pedazos.",
+                        "Más allá de las ceibas, entre las raíces, encontré una entrada de piedra que no recordaba. Y conozco bien esa parte de la selva.",
+                        "¿Vas a ir? Entonces sal de la plaza por el sendero del oeste. Cuando caían, esas criaturas dejaban una piedrecita con luz. Yo no me atreví a tocarlas.",
+                        "Te alcanzo en la entrada. Conozco un atajo, aunque sea cojeando."),
+                    requiredFlags: new[] { ElderToldFlag },
+                    flagsOnFinish: new[] { WarriorInJungleFlag },
+                    questToStart: jungle),
+                new DialogueBranch(Lines(
+                        "Me dijeron que descansara. Descansar es más difícil que pelear.")),
+            });
+
+            // En la entrada: reconoce el lugar cuando el jugador trae los tres fragmentos (el paso 3 de MP_OLM_03).
+            var allFragments = Enumerable.Range(1, JungleSpiritCount).Select(FragmentFlag).ToArray();
+            var warriorAtEntrance = LoadOrCreate($"{Folder}/DLG_{WarriorId}_entrada.asset", () => DialogueData.Create(
+                $"DLG_{WarriorId}_entrada",
+                // MP_OLM_04 empieza al terminar cualquiera de las dos primeras ramas (QuestService ignora si ya empezó).
+                new DialogueBranch(Lines(
+                        "Yo vigilo aquí afuera. Lo que borra las piedras está ahí abajo, y tú eres quien puede entrar.",
+                        "Yo llegué hasta la primera sala con los otros dos. Oímos agua más abajo... y algo grande que respiraba como la piedra."),
+                    requiredFlags: new[] { JungleQuestDone }, questToStart: dungeon),
+                new DialogueBranch(Lines(
+                        "Llegaste. Y traes esas piedrecitas con luz... ¿las sientes? Son pedazos de algo que alguien recordó.",
+                        "Mira las columnas: son de basalto, como las del recinto de la plaza. Mi abuela decía que bajo los montículos así descansaba alguien importante.",
+                        "Pero yo crecí en esta selva y nunca vi esta entrada. No estaba aquí... o no la recordábamos.",
+                        "Algo allá abajo se está comiendo los recuerdos. Si alguien puede detenerlo, es quien vino de fuera."),
+                    requiredFlags: allFragments, questToStart: dungeon),
+                new DialogueBranch(Lines(
+                        "Aquí es, entre las raíces. Llegué antes que tú: conozco los atajos.",
+                        "No entres todavía. Las criaturas corrompidas siguen en el sendero, y lo que dejan al caer hay que recogerlo antes de que se apague."))));
+            content.WarriorAtEntrance = new Character(content.Warrior.Npc, warriorAtEntrance);
+
+            content.Merchant = CreateCharacter(MerchantId, "Comerciante", "comerciante", new[]
+            {
+                new DialogueBranch(Lines(
+                        "¿Una entrada en la selva? Con razón los caminos están tan raros. Yo me quedo junto al río."),
+                    requiredFlags: new[] { QuestDone }),
+                new DialogueBranch(Lines(
+                        "Traigo obsidiana, conchas y piedra verde de muy lejos... o traía. Los caminos ya no son seguros.",
+                        "Antes sabía cada vuelta del camino. Ahora llego a un cruce y no recuerdo hacia dónde iba.",
+                        "Cuando vuelvan a ser seguros, tendré buenas cosas que cambiar.")),
+            });
+
+            foreach (var (id, name, role, lines) in VillagerTexts)
+                content.Villagers[id] = CreateCharacter(id, name, role, new[] { new DialogueBranch(Lines(lines)) });
+
+            AssetDatabase.SaveAssets();
+            return content;
+        }
+
+        static Character CreateCharacter(string id, string displayName, string role,
+            DialogueBranch[] branches)
+        {
+            var npc = LoadOrCreate($"{Folder}/NPC_{id}.asset", () => NpcData.Create(id, displayName, role));
+            var dialogue = LoadOrCreate($"{Folder}/DLG_{id}.asset", () => DialogueData.Create($"DLG_{id}", branches));
+            // Siempre se rehace con el texto del código, conservando el GUID: si no, cambiarlo aquí no llegaría al juego.
+            var fresh = DialogueData.Create($"DLG_{id}", branches);
+            EditorUtility.CopySerialized(fresh, dialogue);
+            Object.DestroyImmediate(fresh);
+            EditorUtility.SetDirty(dialogue);
+            return new Character(npc, dialogue);
+        }
+
+        static DialogueLine[] Lines(params string[] texts) => texts.Select(text => new DialogueLine(text)).ToArray();
+
+        static T LoadOrCreate<T>(string path, System.Func<T> create) where T : ScriptableObject
+        {
+            var asset = AssetDatabase.LoadAssetAtPath<T>(path);
+            if (asset != null)
+                return asset;
+
+            asset = create();
+            AssetDatabase.CreateAsset(asset, path);
+            return asset;
+        }
+
+        // El catálogo se conserva si ya existe: solo se añade la misión que falte.
+        static void EnsureInCatalog(QuestData quest)
+        {
+            var catalog = LoadOrCreate(CatalogPath, () => QuestCatalog.Create());
+            if (catalog.Quests.Contains(quest))
+                return;
+
+            var serialized = new SerializedObject(catalog);
+            var list = serialized.FindProperty("quests");
+            list.arraySize++;
+            list.GetArrayElementAtIndex(list.arraySize - 1).objectReferenceValue = quest;
+            serialized.ApplyModifiedPropertiesWithoutUndo();
+            EditorUtility.SetDirty(catalog);
+        }
+    }
+}

@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c1bcf8a6523d46b449d5a43175f5e5fb, type: 3}
+  m_Name: CatalogoBendiciones
+  m_EditorClassIdentifier: 
+  blessings:
+  - {fileID: 11400000, guid: 09c31395a72b67f4d9ec8687e7502b70, type: 2}
+  - {fileID: 11400000, guid: 3b036d6339b8e8145b88178c8e47ceec, type: 2}
+  - {fileID: 11400000, guid: 041648ddee04be44cb3acb3a06c85c79, type: 2}
+  - {fileID: 11400000, guid: 66578869e0c7d974697e9f905d3c8c54, type: 2}

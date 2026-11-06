@@ -1,0 +1,46 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0f3a2dbe737f384da36cc4134724892, type: 3}
+  m_Name: DSS_Jaguar
+  m_EditorClassIdentifier: 
+  clips:
+  - idle: {fileID: -1007566766, guid: 58c8a94c3c2987645acd10f59c10dc7d, type: 3}
+    walk:
+    - {fileID: -734263662, guid: 58c8a94c3c2987645acd10f59c10dc7d, type: 3}
+    - {fileID: 1884598647, guid: 58c8a94c3c2987645acd10f59c10dc7d, type: 3}
+    - {fileID: 1191148815, guid: 58c8a94c3c2987645acd10f59c10dc7d, type: 3}
+    - {fileID: 1315176438, guid: 58c8a94c3c2987645acd10f59c10dc7d, type: 3}
+  - idle: {fileID: -255534543, guid: 58c8a94c3c2987645acd10f59c10dc7d, type: 3}
+    walk:
+    - {fileID: -688576856, guid: 58c8a94c3c2987645acd10f59c10dc7d, type: 3}
+    - {fileID: 3174430, guid: 58c8a94c3c2987645acd10f59c10dc7d, type: 3}
+    - {fileID: -1556275131, guid: 58c8a94c3c2987645acd10f59c10dc7d, type: 3}
+    - {fileID: -802999914, guid: 58c8a94c3c2987645acd10f59c10dc7d, type: 3}
+  - idle: {fileID: 363124137, guid: 58c8a94c3c2987645acd10f59c10dc7d, type: 3}
+    walk:
+    - {fileID: 1561381771, guid: 58c8a94c3c2987645acd10f59c10dc7d, type: 3}
+    - {fileID: 1867486995, guid: 58c8a94c3c2987645acd10f59c10dc7d, type: 3}
+    - {fileID: -2053426872, guid: 58c8a94c3c2987645acd10f59c10dc7d, type: 3}
+    - {fileID: 1615921099, guid: 58c8a94c3c2987645acd10f59c10dc7d, type: 3}
+  - idle: {fileID: 71662721, guid: 58c8a94c3c2987645acd10f59c10dc7d, type: 3}
+    walk:
+    - {fileID: 1664003190, guid: 58c8a94c3c2987645acd10f59c10dc7d, type: 3}
+    - {fileID: -337848538, guid: 58c8a94c3c2987645acd10f59c10dc7d, type: 3}
+    - {fileID: -1126672762, guid: 58c8a94c3c2987645acd10f59c10dc7d, type: 3}
+    - {fileID: 1192211201, guid: 58c8a94c3c2987645acd10f59c10dc7d, type: 3}
+  - idle: {fileID: -761341044, guid: 58c8a94c3c2987645acd10f59c10dc7d, type: 3}
+    walk:
+    - {fileID: 1650625206, guid: 58c8a94c3c2987645acd10f59c10dc7d, type: 3}
+    - {fileID: 341244029, guid: 58c8a94c3c2987645acd10f59c10dc7d, type: 3}
+    - {fileID: 597084746, guid: 58c8a94c3c2987645acd10f59c10dc7d, type: 3}
+    - {fileID: -90984343, guid: 58c8a94c3c2987645acd10f59c10dc7d, type: 3}
+  walkFramesPerSecond: 8

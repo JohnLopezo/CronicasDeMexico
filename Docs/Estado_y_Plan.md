@@ -1,0 +1,195 @@
+# Estado del proyecto y plan para continuar
+
+*Recopilación al 2026-10-29, actualizada el 2026-10-30 tras M2, M3, M4 (la mazmorra hasta el Guardián liberado) y M5 (recompensas), en el i7-10700. Rama `feature/prototipo-olmeca`.* Léela al retomar, junto con la última entrada de `Docs/Bitacora.md`.
+
+## 1. Cómo retomar (en cualquier PC)
+
+1. Cerrar Unity. `git status` limpio. `git pull`.
+2. Comprobar que `git log -1` coincide con el último commit anotado en `Docs/Bitacora.md`.
+3. Abrir Unity 6000.0.85f1 y esperar la importación.
+4. Para jugar: abrir `Scenes/Boot/Boot.unity` y pulsar Play.
+   - Aparece el **menú de inicio**:
+     - **Continuar** lleva al santuario de Memoria de la partida guardada.
+     - **Nueva partida** empieza en **`Olmeca_Ciudad`** y borra la anterior tras confirmar.
+     - También tiene **Opciones** (calidad gráfica) y **Salir** (solo en el build).
+   - Al pulsar Play en una escena de juego no hay menú.
+   - **Crónicas → Borrar partida guardada** sigue disponible en el Editor.
+   - La selva (`Olmeca_Selva`) se alcanza por el sendero del oeste de la ciudad.
+   - Los pisos `Olmeca_Mazmorra_P1` a `P3` se alcanzan por la entrada de la selva, que se abre al completar `MP_OLM_03`.
+   - Cualquier escena también se puede abrir directamente; al pulsar Play así no se carga la partida.
+   - El prototipo (`Olmeca_Prototipo`) se abre a mano.
+5. En Claude Code, abrirlo desde la carpeta del proyecto (lee `CLAUDE.md`) y decirle: "continuamos; lee `Docs/Estado_y_Plan.md` y la bitácora".
+
+Reglas de trabajo: Claude propone un plan por etapas y espera autorización; no hace commit ni push sin que se le pida (`CLAUDE.md`, `Docs/DesarrolloMultiPC.md`).
+
+## 2. Documentos de referencia
+
+| Documento | Para qué |
+|---|---|
+| `Docs/Historia_Mundo.md` | **Biblia narrativa** (manda en historia, nombres, personajes y capítulos) |
+| `Docs/Diseno.md` | GDD: sistemas, combate, mazmorras, UI, rendimiento (alineado con la biblia) |
+| `Docs/Historia/` | `Capitulos.md`, `Misiones.md`, `Glosario.md` |
+| `Docs/Personajes/` | `Guerreros.md` (estado y cómo mejorarlos), `Protagonista.md`, `NPC_Olmecas.md` |
+| `Docs/Culturas/Olmeca.md`, `Docs/Enemigos/Olmeca.md`, `Docs/Mazmorras/Olmeca.md` | Arco I |
+| `Docs/Arte_Olmeca_Demo.md` | Dirección de arte pixel art y flujo de Blender (§12: estado del arte) |
+| `Docs/Rendimiento.md` | Mediciones de FPS y presupuestos |
+| `Docs/DesarrolloMultiPC.md` | Trabajo entre el i5-6500 y el i7-10700 |
+| `Docs/Bitacora.md` | Qué se hizo en cada sesión |
+
+## 3. Lo que está hecho
+
+### Arte y escena
+- Dirección de arte en **pixel art isométrico** producido con scripts de Blender (`Tools/ArtPipeline/`).
+- Escena jugable **`Olmeca_Ciudad`**, generada por `OlmecaCityGenerator` desde `Ciudad.json`: centro ceremonial, montículo, recinto de columnas, aldea, enramadas que se cruzan por debajo, muelle, canoas y un sendero al oeste hacia la selva. **No se edita a mano: se regenera.**
+- Escena jugable **`Olmeca_Selva`** (M1), generada por `OlmecaJungleGenerator` desde `Selva.json`: sendero entre tres claros, grietas del olvido y la entrada a la antigua estructura. Las piezas comunes de ambos generadores están en `PixelArtSceneBuilder`.
+- **Viaje entre escenas** (`SceneTravel`, `ScenePortal`, `SpawnPoint`): fundido a negro, una escena sustituye a la otra y el jugador conserva su vida.
+
+### Rendimiento
+- La cámara de fondo usa un renderer sin efectos. En el i7, **Alto pasó de unos 105 a unos 290 FPS**.
+- La herramienta de medición ya no se pausa si la ventana pierde el foco.
+
+### Narrativa: decisiones tomadas
+- Se usan los nombres de la biblia (Mundo de las Memorias, Sombra del Olvido, Guardián de la Piedra Viva, Fragmento de la Primera Memoria).
+- El protagonista no tiene género definido.
+- **Guardianes:** siete guerreros elegibles (`Docs/Personajes/Guerreros.md`); antes, el Jaguar.
+- No hay prólogo aparte: los primeros pisos de la mazmorra olmeca hacen de tutorial.
+- Hay **cinco arcos**, con las culturas del GDD repartidas dentro.
+- La mazmorra olmeca tiene **3 pisos** en el vertical slice y **8** como meta.
+- Cada jefe da el fragmento, una habilidad fija, el acceso a la siguiente región y la elección de una entre tres Bendiciones.
+
+### Sistemas narrativos (en `Core/Narrative`, `Core/Save`, `Data/Narrative`; resumen técnico en `CLAUDE.md`)
+- **`StoryState`**: guarda banderas y recibe avisos (`hablar:`, `examinar:`, `vencer:`, `llegar:`).
+- **Diálogos por ramas** (`DialogueData`) y **personajes** (`NpcData`).
+- **Misiones** (`QuestData`, `QuestService`): avanzan por pasos con esos avisos y dan las recompensas una sola vez.
+- **Catálogo de misiones**: `Resources/Narrativa/CatalogoMisiones`.
+- **Objetivo de la misión activa en el HUD.**
+- **`SaveService`**: guarda en JSON con versión y copia de respaldo. **Todavía no se llama en el juego.**
+- **Guardián**: `GuardianData`, siete assets `GUA_` en `Resources/Personajes/CatalogoGuardianes`, elegidos en Nueva partida.
+
+### Arco olmeca jugable en `Olmeca_Ciudad`
+1. **`MP_OLM_01`, "El despertar"**: el jugador aparece en la orilla noreste del río, se asoma al agua (recuerdos y un rostro ajeno), escucha a la figura espiritual (juramento) y busca al artesano.
+2. **`MP_OLM_02`, "El asentamiento inquieto"**: artesano de jade → anciana → joven guerrero. Al terminar, las estelas lisas cambian su texto, como pista del borrado.
+3. **Habitantes**: figura espiritual (provisional), artesano, anciana, guerrero y comerciante, con el arte de las fichas de `Docs/NPC/`.
+4. **Datos editables** en `Data/Narrative/Olmeca/`. El generador los crea **solo si faltan**, así que se editan en el Inspector. Para volver al texto del código, se borra el asset.
+
+### Selva (M1): `MP_OLM_03`, "Rastros en la selva"
+- El guerrero la da al cerrar `MP_OLM_02` y se adelanta a la entrada.
+- Tres espíritus corrompidos (arte provisional con grietas violetas que laten). No reaparecen, y cada uno deja un fragmento de memoria.
+- Con los tres fragmentos, el guerrero reconoce la entrada. Detalle en `Docs/Historia/Misiones.md`.
+- Rendimiento en el i7: unos 290 FPS en Bajo, 345 en Medio y 300 en Alto (`Docs/Rendimiento.md`).
+
+### Mazmorra (M2): la base, 2026-10-30
+Detalle en `Docs/Mazmorras/Olmeca.md`.
+- **Pisos:** `Olmeca_Mazmorra_P1` a `P3`, generados por `OlmecaDungeonGenerator`. Son salas de losas sobre el vacío, con muros de columnas de basalto, unidas por escaleras. La entrada de la selva lleva al piso 1 cuando `MP_OLM_03` está completada.
+- **Santuario de Memoria** (pisos 1 y 3): fija el punto de control y **guarda la partida**.
+- **Santuario de Vida** (piso 2): cura la mitad de la vida, una vez por incursión. Se reenciende al volver a la selva.
+- **Derrota:** con punto de control se vuelve a él con la vida completa; los enemigos normales del piso vuelven y la historia se conserva. Sin punto de control se reaparece en el sitio.
+- **Continuar:** Boot carga la partida y aparece en el santuario.
+- **Contenido provisional:** 2 y 3 espíritus en los pisos 1 y 2, y en el piso 3 una antesala con la losa sellada del Guardián.
+- **Arte nuevo en Blender**, pendiente de tu aprobación (`Docs/Arte_Olmeca_Demo.md` §12).
+- **Rendimiento en el i7, piso 2:** unos 290 FPS en Bajo, 300–370 en Medio y 280–310 en Alto.
+
+### Mazmorra (M3): El Umbral, El Pantano y el Jaguar de Piedra, 2026-10-30
+Detalle en `Docs/Mazmorras/Olmeca.md`, `Docs/Enemigos/Olmeca.md` y `Docs/Historia/Misiones.md`.
+- **Esquiva:** Espacio o el botón Sur. Es corta, invulnerable y con espera entre usos.
+- **El Umbral** es el tutorial: salas seguidas con pistas que aparecen una sola vez y tres espíritus.
+- **El Pantano:** agua baja que frena, dos **ecos borrados** (disparan avisando y saltan de sitio), el santuario de Vida y la arena del **Jaguar de Piedra**.
+- **Jaguar de Piedra:** sus tres ataques avisan con una marca en el suelo, tiene barra de jefe en el HUD y, vencido, queda liberado y abre la bajada.
+- **Misión `MP_OLM_04`:** la da el guerrero en la entrada y llega hasta la antesala del piso 3.
+- **Arte nuevo en Blender:** el Jaguar en 5 poses × 5 direcciones y los charcos. Pendiente de tu aprobación.
+- **Rendimiento del Pantano en el i7:** unos 300 FPS en Bajo, 360 en Medio y 310 en Alto.
+
+### Mazmorra (M4): la arena y el Guardián de la Piedra Viva, 2026-10-30
+Detalle en `Docs/Mazmorras/Olmeca.md` y `Docs/Enemigos/Olmeca.md`.
+- **La losa** de la antesala se abre al examinarla. Detrás está la arena circular, con columnas.
+- **El Guardián** tiene tres fases:
+  - Fase 1: zarpazo, embestida en franja (si choca con una columna queda aturdido) y golpe de tierra.
+  - Fase 2: sube el agua del borde, ondas en anillo, fragmentos en abanico y rugido.
+  - Fase 3: todo más rápido y la Furia de la Primera Piedra.
+- **Al vencerlo** se libera (sentado, con el disco de jade) y cuenta su recuerdo.
+- **Misión `MP_OLM_05`:** empieza al llegar a la antesala y termina al liberarlo. Sus recompensas son de M5.
+- **Arte nuevo en Blender:** el Guardián en 7 poses. Pendiente de tu aprobación.
+- **Rendimiento de la arena en el i7:** unos 245 FPS en Bajo, 300–325 en Medio y 280 en Alto.
+
+### Recompensas (M5): sistema integral, 2026-10-30
+Detalle en `Docs/Sistemas/` (Recompensas, Inventario, Progresión y Fabricación) y en `Docs/Contenido/` (tabla olmeca,
+catálogo de objetos y Bendiciones).
+- **Escala ×10:** el jugador tiene 50 de vida y hace 10 de daño, y los enemigos y jefes se escalaron igual.
+- **Progresión:** nivel y experiencia, con menos experiencia sobre el nivel de la zona y protección contra el
+  farmeo.
+- **Energía** sin regeneración: se recupera en los santuarios de Memoria y con consumibles.
+- **Bolsa:** materiales, consumibles, 2 ranuras de reliquia, coleccionables y ecos (moneda ficticia).
+- **Ofrendas:** dos o tres por piso. Las ocultas están tras basalto agrietado y se abren con el golpe de tierra
+  (tecla C).
+- **Cierre de la mazmorra:** al liberar al Guardián se reciben la Bendición de la Tierra y el Fragmento de la Primera
+  Memoria. La ofrenda final da la nota C/B/A/S y la elección de una Bendición secundaria entre tres.
+- **En la ciudad:** fabricación con el artesano y comercio y trueque con el comerciante.
+- **Museo de la Memoria:** se abre desde el santuario de Memoria.
+- **Misión `MP_OLM_06`:** llevar el fragmento a la anciana y al altar-trono.
+- **Menú y HUD:** menú con la tecla I y barras de energía y experiencia en el HUD.
+
+### NPC con arte final y guardias de la aldea, 2026-11-04
+Detalle en `Docs/Personajes/NPC_Olmecas.md` y `Docs/Historia/Misiones.md`.
+- **Arte:** el Guerrero, el Comerciante y 17 personajes nuevos usan las fichas de `Docs/NPC/`, con caminata.
+- **Pueblo vivo:** 3 guardias, curandera, anciano, sacerdote, agricultor, pescador, mensajero, comerciante mujer y 9 niños patrullan y hablan.
+- **Combate de NPC:** los guardias (no son Guardianes) defienden la aldea y el joven guerrero la entrada de la selva (`NpcDefender`). Los enemigos van a por quien tengan más cerca (`EnemyChaser`).
+- **Incursiones:** al completar `MP_OLM_03`, 2 jaguares corruptos entran por el sendero del oeste en cada visita a la ciudad.
+
+### Pruebas
+EditMode 80/80 y PlayMode 72/72 (al 2026-11-04).
+
+## 4. Pendiente de decidir (por el autor)
+
+1. ~~¿Boot arranca en `Olmeca_Ciudad`?~~ **Hecho (2026-10-29).**
+2. ~~Afinidad inicial del Jaguar.~~ **Decidido (2026-11-06):** mandan las fichas; Balam empieza en tierra.
+3. **Si el epiclásico y lo tolteca entran en el arco III**, y qué afinidades corresponden a los arcos III a V.
+4. **Si la figura espiritual desaparece** después del juramento.
+5. **Fichas de `Docs/Guerreros/`** (Balam, Xali, Naira, Ameyali, Itzel, Yaret y Ocel). El 2026-11-06 el autor decidió que serán seleccionables en lugar del jaguar; sus enemigos y jefes no cambian. Sprites en `Sprites/Guerreros`; se eligen en Nueva partida (`Docs/Bitacora.md`). Decidido por el autor el mismo día: son guerreros humanos ligados al espíritu de su animal y mandan las afinidades de las fichas (`Docs/Personajes/Protagonista.md`).
+
+## 5. Pendiente del autor (arte)
+
+- ~~Sprites del Jaguar jugable.~~ **Sustituido (2026-11-06)** por los guerreros; lo que falta de ellos está en `Docs/Personajes/Guerreros.md`.
+- Fichas propias del **artesano de jade** y la **anciana** (hoy usan el arte del Comerciante y de la Curandera, y se ven repetidos) y de la **figura espiritual** (provisional). Los demás NPC ya tienen arte (`Docs/NPC/`); les faltan caminata de frente y de espalda y una pose de ataque del guardia.
+- Contrastar con fuentes el penacho del sacerdote, los pergaminos del mensajero y los sombreros de ala ancha (`Docs/Personajes/NPC_Olmecas.md`).
+- Sprites del **espíritu jaguar corrompido** (hoy, la silueta humana provisional con grietas violetas) y del **eco borrado** (hoy, la misma silueta en violeta con franjas borradas).
+- Cabeza colosal y enemigos animados. El **Guardián de la Piedra Viva** ya tiene un modelo de Blender (M4), pendiente de tu aprobación.
+
+## 6. Plan propuesto (cada etapa se presenta y espera autorización)
+
+### Vista 3/4 frontal y mapa más rico (en curso desde 2026-11-04; contexto en `Docs/Bitacora.md`)
+
+**Aplicada en Unity el 2026-11-05 y subida el 2026-11-06** (detalle en `Docs/Bitacora.md`). EditMode 80/80, PlayMode 72/72. El flujo ya se ejecuta normal, sin `--sin-unity`.
+
+**Falta:**
+1. El autor la jugó el 2026-11-06 y "se siente bien". Falta confirmar: subir a la cima del montículo, entrar a la mazmorra, volver por la escalera y si se nota un tirón en la aldea.
+2. Medir el rendimiento: 170 celdas de agua más fuera de los límites y suelo de 3120×2200 en la ciudad. Luego, i5 y Android.
+3. Arte: cimas del montículo planas, patrón del agua y `Basalto_Agrietado` (mira a +X).
+4. Decidir qué hacer con `Olmeca_Prototipo`, que conserva su arte isométrico.
+5. Documentos: reescribir `Docs/Arte_Olmeca_Demo.md` §3 a §6 (`Fichas/Jaguar.md` ya queda como histórico).
+
+### Inmediato
+- **Probar en el Editor** el arco completo, de `MP_OLM_01` a `MP_OLM_03` (Boot → ciudad → selva), y después la mazmorra:
+  - Hacer el tutorial de El Umbral y bajar al Pantano.
+  - Vencer a los ecos y al Jaguar de Piedra, bajar a la antesala, abrir la losa y vencer al Guardián en sus tres fases.
+  - Descansar en el santuario de Memoria, caer en combate y volver al santuario.
+  - Usar el santuario de Vida.
+  - Cerrar el juego y continuar desde Boot.
+  - Anotar lo que se sienta mal: textos, posiciones, ritmo, dificultad del Jaguar y de los ecos, y la esquiva.
+- Aprobar o corregir el arte de M1 (la entrada, las grietas y el fragmento), el de M2 (losas, muros, santuarios y escaleras) el de M3 (el Jaguar de Piedra y los charcos) y el de M4 (el Guardián y la arena). Ver `Docs/Arte_Olmeca_Demo.md` §12.
+
+### Fase narrativa 2, continuación: selva y mazmorra (corresponde a las fases 5 y 6 del GDD)
+
+| Etapa | Contenido |
+|---|---|
+| ~~**M1. Rastros en la selva**~~ | **Hecha (2026-10-29).** Viaje entre escenas, arte nuevo, escena `Olmeca_Selva`, `MP_OLM_03` y medición. |
+| ~~**M2. Base de mazmorra**~~ | **Hecha (2026-10-30).** Tres pisos y sus escaleras, santuarios de Memoria (guardado) y de Vida, regreso al santuario tras la derrota y continuar desde Boot. |
+| ~~**M3. Pisos 1 y 2**~~ | **Hecha (2026-10-30).** Esquiva, El Umbral como tutorial, El Pantano con agua baja y ecos borrados, el Jaguar de Piedra y `MP_OLM_04` hasta la antesala. |
+| ~~**M4. Piso 3 y jefe**~~ | **Hecha (2026-10-30).** Losa que se abre, arena circular y Guardián de la Piedra Viva en tres fases (avisos de círculo, anillo y franja; agua en la fase 2; Furia en la 3), con su liberación y `MP_OLM_05`. |
+| **M5. Recompensas y cierre** | **Hecha (2026-10-30).** Sistema integral de recompensas (ver §3), Fragmento de la Primera Memoria, golpe de tierra, elección de Bendición y `MP_OLM_06`. Queda pendiente la conexión al arco II. |
+
+### Otros pendientes técnicos
+- ~~Menú de inicio con **Continuar o Nueva partida**.~~ **Hecho (2026-11-03).** También tiene Opciones y Salir; el fondo es liso y la imagen de título queda para cuando haya arte.
+- ~~Pantalla de elección de Guardián.~~ **Hecho (2026-11-06)**, en Nueva partida; faltan atributos propios por guerrero.
+- Misiones secundarias del arco I (`MS_OLM_01` a `MS_OLM_05`, en `Docs/Historia/Misiones.md`) y la tienda del comerciante.
+- Arte de las ruinas que falta: escombros de basalto y mosaico de serpentina (`Arte_Olmeca_Demo.md` §12).
+- **Medir en Android**, en el i7, y hacer el **benchmark del i5** (`Docs/Rendimiento.md`).

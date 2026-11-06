@@ -1,0 +1,36 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0f3a2dbe737f384da36cc4134724892, type: 3}
+  m_Name: DSS_Npc_ComercianteMujer
+  m_EditorClassIdentifier: 
+  clips:
+  - idle: {fileID: 21300000, guid: 830cc6181ba40b34e8957e5bb03eb8d2, type: 3}
+    walk:
+    - {fileID: 21300000, guid: 466b866eec7c24644a97292ddf47eaeb, type: 3}
+    - {fileID: 21300000, guid: eca369b0c8017c941ae0ea4a01b693ab, type: 3}
+  - idle: {fileID: 21300000, guid: 19cfc6e98c1132340af76aa19426e95f, type: 3}
+    walk:
+    - {fileID: 21300000, guid: 1a684d887fa9f764eb2741459917c37e, type: 3}
+    - {fileID: 21300000, guid: e40ac0ff87d74b8498f407ce14dab255, type: 3}
+  - idle: {fileID: 21300000, guid: 19cfc6e98c1132340af76aa19426e95f, type: 3}
+    walk:
+    - {fileID: 21300000, guid: 1a684d887fa9f764eb2741459917c37e, type: 3}
+    - {fileID: 21300000, guid: e40ac0ff87d74b8498f407ce14dab255, type: 3}
+  - idle: {fileID: 21300000, guid: 19cfc6e98c1132340af76aa19426e95f, type: 3}
+    walk:
+    - {fileID: 21300000, guid: 1a684d887fa9f764eb2741459917c37e, type: 3}
+    - {fileID: 21300000, guid: e40ac0ff87d74b8498f407ce14dab255, type: 3}
+  - idle: {fileID: 21300000, guid: 3380fbdaf1f273149957cc178b66f47d, type: 3}
+    walk:
+    - {fileID: 21300000, guid: b4ad04e035d4f7d4db40b10bea90fdb5, type: 3}
+    - {fileID: 21300000, guid: bc1442403e59aca439015792b5f0f07d, type: 3}
+  walkFramesPerSecond: 6

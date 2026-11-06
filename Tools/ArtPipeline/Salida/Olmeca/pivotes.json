@@ -1,0 +1,5374 @@
+{
+  "Tile_Camino_Tierra_01": {
+    "lienzo": [
+      64,
+      64
+    ],
+    "pivote_px": [
+      32,
+      40
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Tile_Camino_Tierra_02": {
+    "lienzo": [
+      64,
+      64
+    ],
+    "pivote_px": [
+      32,
+      40
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Tile_Camino_Tierra_03": {
+    "lienzo": [
+      64,
+      64
+    ],
+    "pivote_px": [
+      32,
+      40
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Tile_Camino_Tierra_04": {
+    "lienzo": [
+      64,
+      64
+    ],
+    "pivote_px": [
+      32,
+      40
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Tile_Pasto_Selva_01": {
+    "lienzo": [
+      64,
+      64
+    ],
+    "pivote_px": [
+      32,
+      40
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Tile_Pasto_Selva_02": {
+    "lienzo": [
+      64,
+      64
+    ],
+    "pivote_px": [
+      32,
+      40
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Tile_Pasto_Selva_03": {
+    "lienzo": [
+      64,
+      64
+    ],
+    "pivote_px": [
+      32,
+      40
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Tile_Pasto_Selva_04": {
+    "lienzo": [
+      64,
+      64
+    ],
+    "pivote_px": [
+      32,
+      40
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Tile_Pasto_Selva_05": {
+    "lienzo": [
+      64,
+      64
+    ],
+    "pivote_px": [
+      32,
+      40
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Tile_Agua_Anim_01": {
+    "lienzo": [
+      64,
+      64
+    ],
+    "pivote_px": [
+      32,
+      40
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Tile_Agua_Anim_02": {
+    "lienzo": [
+      64,
+      64
+    ],
+    "pivote_px": [
+      32,
+      40
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Tile_Agua_Anim_03": {
+    "lienzo": [
+      64,
+      64
+    ],
+    "pivote_px": [
+      32,
+      40
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Tile_Agua_Anim_04": {
+    "lienzo": [
+      64,
+      64
+    ],
+    "pivote_px": [
+      32,
+      40
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Cerca_Basalto_01": {
+    "lienzo": [
+      64,
+      96
+    ],
+    "pivote_px": [
+      32,
+      14
+    ],
+    "ppu": 45.254833995939045,
+    "sombra": {
+      "lienzo": [
+        128,
+        64
+      ],
+      "pivote_px": [
+        40,
+        32
+      ]
+    }
+  },
+  "Cerca_Basalto_02": {
+    "lienzo": [
+      64,
+      96
+    ],
+    "pivote_px": [
+      32,
+      14
+    ],
+    "ppu": 45.254833995939045,
+    "sombra": {
+      "lienzo": [
+        128,
+        64
+      ],
+      "pivote_px": [
+        40,
+        32
+      ]
+    }
+  },
+  "Cerca_Basalto_03": {
+    "lienzo": [
+      64,
+      96
+    ],
+    "pivote_px": [
+      32,
+      14
+    ],
+    "ppu": 45.254833995939045,
+    "sombra": {
+      "lienzo": [
+        128,
+        64
+      ],
+      "pivote_px": [
+        40,
+        32
+      ]
+    }
+  },
+  "Palma_Corozo_01": {
+    "lienzo": [
+      64,
+      128
+    ],
+    "pivote_px": [
+      36,
+      12
+    ],
+    "ppu": 45.254833995939045,
+    "sombra": {
+      "lienzo": [
+        160,
+        64
+      ],
+      "pivote_px": [
+        50,
+        32
+      ]
+    }
+  },
+  "Palma_Corozo_02": {
+    "lienzo": [
+      64,
+      128
+    ],
+    "pivote_px": [
+      36,
+      12
+    ],
+    "ppu": 45.254833995939045,
+    "sombra": {
+      "lienzo": [
+        160,
+        64
+      ],
+      "pivote_px": [
+        50,
+        32
+      ]
+    }
+  },
+  "Arbusto_Selva_01": {
+    "lienzo": [
+      48,
+      48
+    ],
+    "pivote_px": [
+      24,
+      10
+    ],
+    "ppu": 45.254833995939045,
+    "sombra": {
+      "lienzo": [
+        96,
+        48
+      ],
+      "pivote_px": [
+        30,
+        24
+      ]
+    }
+  },
+  "Arbusto_Selva_02": {
+    "lienzo": [
+      48,
+      48
+    ],
+    "pivote_px": [
+      24,
+      10
+    ],
+    "ppu": 45.254833995939045,
+    "sombra": {
+      "lienzo": [
+        96,
+        48
+      ],
+      "pivote_px": [
+        30,
+        24
+      ]
+    }
+  },
+  "Matorral_Selva_01": {
+    "lienzo": [
+      64,
+      64
+    ],
+    "pivote_px": [
+      32,
+      16
+    ],
+    "ppu": 45.254833995939045,
+    "sombra": {
+      "lienzo": [
+        128,
+        64
+      ],
+      "pivote_px": [
+        40,
+        32
+      ]
+    }
+  },
+  "Matorral_Selva_02": {
+    "lienzo": [
+      64,
+      64
+    ],
+    "pivote_px": [
+      32,
+      16
+    ],
+    "ppu": 45.254833995939045,
+    "sombra": {
+      "lienzo": [
+        128,
+        64
+      ],
+      "pivote_px": [
+        40,
+        32
+      ]
+    }
+  },
+  "Matorral_Selva_03": {
+    "lienzo": [
+      64,
+      64
+    ],
+    "pivote_px": [
+      32,
+      16
+    ],
+    "ppu": 45.254833995939045,
+    "sombra": {
+      "lienzo": [
+        128,
+        64
+      ],
+      "pivote_px": [
+        40,
+        32
+      ]
+    }
+  },
+  "Pasto_Alto_01": {
+    "lienzo": [
+      32,
+      48
+    ],
+    "pivote_px": [
+      16,
+      8
+    ],
+    "ppu": 45.254833995939045,
+    "sombra": {
+      "lienzo": [
+        64,
+        40
+      ],
+      "pivote_px": [
+        20,
+        20
+      ]
+    }
+  },
+  "Pasto_Alto_02": {
+    "lienzo": [
+      32,
+      48
+    ],
+    "pivote_px": [
+      16,
+      8
+    ],
+    "ppu": 45.254833995939045,
+    "sombra": {
+      "lienzo": [
+        64,
+        40
+      ],
+      "pivote_px": [
+        20,
+        20
+      ]
+    }
+  },
+  "Helecho_01": {
+    "lienzo": [
+      48,
+      48
+    ],
+    "pivote_px": [
+      24,
+      12
+    ],
+    "ppu": 45.254833995939045,
+    "sombra": {
+      "lienzo": [
+        80,
+        40
+      ],
+      "pivote_px": [
+        26,
+        20
+      ]
+    }
+  },
+  "Helecho_02": {
+    "lienzo": [
+      48,
+      48
+    ],
+    "pivote_px": [
+      24,
+      12
+    ],
+    "ppu": 45.254833995939045,
+    "sombra": {
+      "lienzo": [
+        80,
+        40
+      ],
+      "pivote_px": [
+        26,
+        20
+      ]
+    }
+  },
+  "Roca_Basalto_01": {
+    "lienzo": [
+      48,
+      48
+    ],
+    "pivote_px": [
+      24,
+      14
+    ],
+    "ppu": 45.254833995939045,
+    "sombra": {
+      "lienzo": [
+        80,
+        40
+      ],
+      "pivote_px": [
+        26,
+        20
+      ]
+    }
+  },
+  "Roca_Basalto_02": {
+    "lienzo": [
+      48,
+      48
+    ],
+    "pivote_px": [
+      24,
+      14
+    ],
+    "ppu": 45.254833995939045,
+    "sombra": {
+      "lienzo": [
+        80,
+        40
+      ],
+      "pivote_px": [
+        26,
+        20
+      ]
+    }
+  },
+  "Roca_Basalto_03": {
+    "lienzo": [
+      48,
+      48
+    ],
+    "pivote_px": [
+      24,
+      14
+    ],
+    "ppu": 45.254833995939045,
+    "sombra": {
+      "lienzo": [
+        80,
+        40
+      ],
+      "pivote_px": [
+        26,
+        20
+      ]
+    }
+  },
+  "Nenufar_01": {
+    "lienzo": [
+      32,
+      32
+    ],
+    "pivote_px": [
+      16,
+      14
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Tule_01": {
+    "lienzo": [
+      32,
+      64
+    ],
+    "pivote_px": [
+      16,
+      8
+    ],
+    "ppu": 45.254833995939045,
+    "sombra": {
+      "lienzo": [
+        64,
+        40
+      ],
+      "pivote_px": [
+        20,
+        20
+      ]
+    }
+  },
+  "Sombra_Dosel_01": {
+    "lienzo": [
+      160,
+      96
+    ],
+    "pivote_px": [
+      80,
+      48
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Sombra_Dosel_02": {
+    "lienzo": [
+      160,
+      96
+    ],
+    "pivote_px": [
+      80,
+      48
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Altar_Trono_01": {
+    "lienzo": [
+      136,
+      120
+    ],
+    "pivote_px": [
+      68,
+      36
+    ],
+    "ppu": 45.254833995939045,
+    "sombra": {
+      "lienzo": [
+        160,
+        88
+      ],
+      "pivote_px": [
+        70,
+        40
+      ]
+    }
+  },
+  "Estela_Lisa_01": {
+    "lienzo": [
+      32,
+      64
+    ],
+    "pivote_px": [
+      16,
+      12
+    ],
+    "ppu": 45.254833995939045,
+    "sombra": {
+      "lienzo": [
+        80,
+        56
+      ],
+      "pivote_px": [
+        26,
+        24
+      ]
+    }
+  },
+  "Estela_Grande_01": {
+    "lienzo": [
+      64,
+      88
+    ],
+    "pivote_px": [
+      32,
+      22
+    ],
+    "ppu": 45.254833995939045,
+    "sombra": {
+      "lienzo": [
+        112,
+        72
+      ],
+      "pivote_px": [
+        36,
+        30
+      ]
+    }
+  },
+  "Estela_Grande_02": {
+    "lienzo": [
+      64,
+      88
+    ],
+    "pivote_px": [
+      32,
+      22
+    ],
+    "ppu": 45.254833995939045,
+    "sombra": {
+      "lienzo": [
+        112,
+        72
+      ],
+      "pivote_px": [
+        36,
+        30
+      ]
+    }
+  },
+  "Estela_Grande_03": {
+    "lienzo": [
+      64,
+      88
+    ],
+    "pivote_px": [
+      32,
+      22
+    ],
+    "ppu": 45.254833995939045,
+    "sombra": {
+      "lienzo": [
+        112,
+        72
+      ],
+      "pivote_px": [
+        36,
+        30
+      ]
+    }
+  },
+  "Rampa_Arcilla_01": {
+    "lienzo": [
+      136,
+      112
+    ],
+    "pivote_px": [
+      68,
+      30
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Rampa_Arcilla_02": {
+    "lienzo": [
+      136,
+      112
+    ],
+    "pivote_px": [
+      68,
+      30
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Casa_Bajareque_01": {
+    "lienzo": [
+      160,
+      152
+    ],
+    "pivote_px": [
+      80,
+      40
+    ],
+    "ppu": 45.254833995939045,
+    "sombra": {
+      "lienzo": [
+        208,
+        112
+      ],
+      "pivote_px": [
+        76,
+        52
+      ]
+    }
+  },
+  "Casa_Bajareque_02": {
+    "lienzo": [
+      160,
+      152
+    ],
+    "pivote_px": [
+      80,
+      40
+    ],
+    "ppu": 45.254833995939045,
+    "sombra": {
+      "lienzo": [
+        208,
+        112
+      ],
+      "pivote_px": [
+        76,
+        52
+      ]
+    }
+  },
+  "Casa_Bajareque_03": {
+    "lienzo": [
+      160,
+      152
+    ],
+    "pivote_px": [
+      80,
+      40
+    ],
+    "ppu": 45.254833995939045,
+    "sombra": {
+      "lienzo": [
+        208,
+        112
+      ],
+      "pivote_px": [
+        76,
+        52
+      ]
+    }
+  },
+  "Fogon_01": {
+    "lienzo": [
+      48,
+      48
+    ],
+    "pivote_px": [
+      22,
+      14
+    ],
+    "ppu": 45.254833995939045,
+    "sombra": {
+      "lienzo": [
+        80,
+        40
+      ],
+      "pivote_px": [
+        26,
+        20
+      ]
+    }
+  },
+  "Escombros_Basalto_01": {
+    "lienzo": [
+      48,
+      48
+    ],
+    "pivote_px": [
+      24,
+      14
+    ],
+    "ppu": 45.254833995939045,
+    "sombra": {
+      "lienzo": [
+        80,
+        40
+      ],
+      "pivote_px": [
+        26,
+        20
+      ]
+    }
+  },
+  "Escombros_Basalto_02": {
+    "lienzo": [
+      48,
+      48
+    ],
+    "pivote_px": [
+      24,
+      14
+    ],
+    "ppu": 45.254833995939045,
+    "sombra": {
+      "lienzo": [
+        80,
+        40
+      ],
+      "pivote_px": [
+        26,
+        20
+      ]
+    }
+  },
+  "Escombros_Basalto_03": {
+    "lienzo": [
+      48,
+      48
+    ],
+    "pivote_px": [
+      24,
+      14
+    ],
+    "ppu": 45.254833995939045,
+    "sombra": {
+      "lienzo": [
+        80,
+        40
+      ],
+      "pivote_px": [
+        26,
+        20
+      ]
+    }
+  },
+  "Cerca_Basalto_Y_01": {
+    "lienzo": [
+      64,
+      96
+    ],
+    "pivote_px": [
+      32,
+      14
+    ],
+    "ppu": 45.254833995939045,
+    "sombra": {
+      "lienzo": [
+        128,
+        64
+      ],
+      "pivote_px": [
+        40,
+        32
+      ]
+    }
+  },
+  "Cerca_Basalto_Y_02": {
+    "lienzo": [
+      64,
+      96
+    ],
+    "pivote_px": [
+      32,
+      14
+    ],
+    "ppu": 45.254833995939045,
+    "sombra": {
+      "lienzo": [
+        128,
+        64
+      ],
+      "pivote_px": [
+        40,
+        32
+      ]
+    }
+  },
+  "Cerca_Basalto_Y_03": {
+    "lienzo": [
+      64,
+      96
+    ],
+    "pivote_px": [
+      32,
+      14
+    ],
+    "ppu": 45.254833995939045,
+    "sombra": {
+      "lienzo": [
+        128,
+        64
+      ],
+      "pivote_px": [
+        40,
+        32
+      ]
+    }
+  },
+  "Ceiba_01": {
+    "lienzo": [
+      192,
+      208
+    ],
+    "pivote_px": [
+      96,
+      28
+    ],
+    "ppu": 45.254833995939045,
+    "sombra": {
+      "lienzo": [
+        256,
+        128
+      ],
+      "pivote_px": [
+        48,
+        56
+      ]
+    }
+  },
+  "Tronco_Caido_01": {
+    "lienzo": [
+      64,
+      48
+    ],
+    "pivote_px": [
+      32,
+      16
+    ],
+    "ppu": 45.254833995939045,
+    "sombra": {
+      "lienzo": [
+        96,
+        48
+      ],
+      "pivote_px": [
+        30,
+        24
+      ]
+    }
+  },
+  "Tronco_Caido_02": {
+    "lienzo": [
+      64,
+      48
+    ],
+    "pivote_px": [
+      32,
+      16
+    ],
+    "ppu": 45.254833995939045,
+    "sombra": {
+      "lienzo": [
+        96,
+        48
+      ],
+      "pivote_px": [
+        30,
+        24
+      ]
+    }
+  },
+  "Vasijas_01": {
+    "lienzo": [
+      48,
+      48
+    ],
+    "pivote_px": [
+      24,
+      12
+    ],
+    "ppu": 45.254833995939045,
+    "sombra": {
+      "lienzo": [
+        80,
+        40
+      ],
+      "pivote_px": [
+        26,
+        20
+      ]
+    }
+  },
+  "Vasijas_02": {
+    "lienzo": [
+      48,
+      48
+    ],
+    "pivote_px": [
+      24,
+      12
+    ],
+    "ppu": 45.254833995939045,
+    "sombra": {
+      "lienzo": [
+        80,
+        40
+      ],
+      "pivote_px": [
+        26,
+        20
+      ]
+    }
+  },
+  "Enramada_01": {
+    "lienzo": [
+      160,
+      152
+    ],
+    "pivote_px": [
+      80,
+      40
+    ],
+    "ppu": 45.254833995939045,
+    "sombra": {
+      "lienzo": [
+        208,
+        112
+      ],
+      "pivote_px": [
+        76,
+        52
+      ]
+    }
+  },
+  "Enramada_Poste_01": {
+    "lienzo": [
+      160,
+      152
+    ],
+    "pivote_px": [
+      80,
+      40
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Enramada_Techo_01": {
+    "lienzo": [
+      160,
+      152
+    ],
+    "pivote_px": [
+      80,
+      40
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Muelle_Madera_01": {
+    "lienzo": [
+      64,
+      64
+    ],
+    "pivote_px": [
+      32,
+      22
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Muelle_Madera_02": {
+    "lienzo": [
+      64,
+      64
+    ],
+    "pivote_px": [
+      32,
+      22
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Canoa_01": {
+    "lienzo": [
+      96,
+      64
+    ],
+    "pivote_px": [
+      48,
+      26
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Grieta_Olvido_01": {
+    "lienzo": [
+      96,
+      64
+    ],
+    "pivote_px": [
+      48,
+      32
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Grieta_Olvido_02": {
+    "lienzo": [
+      96,
+      64
+    ],
+    "pivote_px": [
+      48,
+      32
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Fragmento_Memoria_01": {
+    "lienzo": [
+      32,
+      40
+    ],
+    "pivote_px": [
+      16,
+      10
+    ],
+    "ppu": 45.254833995939045,
+    "sombra": {
+      "lienzo": [
+        80,
+        40
+      ],
+      "pivote_px": [
+        26,
+        20
+      ]
+    }
+  },
+  "Entrada_Estructura_01": {
+    "lienzo": [
+      192,
+      176
+    ],
+    "pivote_px": [
+      96,
+      64
+    ],
+    "ppu": 45.254833995939045,
+    "sombra": {
+      "lienzo": [
+        256,
+        160
+      ],
+      "pivote_px": [
+        100,
+        56
+      ]
+    }
+  },
+  "Tile_Losa_Basalto_01": {
+    "lienzo": [
+      64,
+      64
+    ],
+    "pivote_px": [
+      32,
+      40
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Tile_Losa_Basalto_02": {
+    "lienzo": [
+      64,
+      64
+    ],
+    "pivote_px": [
+      32,
+      40
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Tile_Losa_Basalto_03": {
+    "lienzo": [
+      64,
+      64
+    ],
+    "pivote_px": [
+      32,
+      40
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Muro_Basalto_01": {
+    "lienzo": [
+      64,
+      112
+    ],
+    "pivote_px": [
+      32,
+      18
+    ],
+    "ppu": 45.254833995939045,
+    "sombra": {
+      "lienzo": [
+        192,
+        112
+      ],
+      "pivote_px": [
+        64,
+        48
+      ]
+    }
+  },
+  "Muro_Basalto_02": {
+    "lienzo": [
+      64,
+      112
+    ],
+    "pivote_px": [
+      32,
+      18
+    ],
+    "ppu": 45.254833995939045,
+    "sombra": {
+      "lienzo": [
+        192,
+        112
+      ],
+      "pivote_px": [
+        64,
+        48
+      ]
+    }
+  },
+  "Muro_Basalto_03": {
+    "lienzo": [
+      64,
+      112
+    ],
+    "pivote_px": [
+      32,
+      18
+    ],
+    "ppu": 45.254833995939045,
+    "sombra": {
+      "lienzo": [
+        192,
+        112
+      ],
+      "pivote_px": [
+        64,
+        48
+      ]
+    }
+  },
+  "Muro_Basalto_Y_01": {
+    "lienzo": [
+      64,
+      112
+    ],
+    "pivote_px": [
+      32,
+      18
+    ],
+    "ppu": 45.254833995939045,
+    "sombra": {
+      "lienzo": [
+        192,
+        112
+      ],
+      "pivote_px": [
+        64,
+        48
+      ]
+    }
+  },
+  "Muro_Basalto_Y_02": {
+    "lienzo": [
+      64,
+      112
+    ],
+    "pivote_px": [
+      32,
+      18
+    ],
+    "ppu": 45.254833995939045,
+    "sombra": {
+      "lienzo": [
+        192,
+        112
+      ],
+      "pivote_px": [
+        64,
+        48
+      ]
+    }
+  },
+  "Muro_Basalto_Y_03": {
+    "lienzo": [
+      64,
+      112
+    ],
+    "pivote_px": [
+      32,
+      18
+    ],
+    "ppu": 45.254833995939045,
+    "sombra": {
+      "lienzo": [
+        192,
+        112
+      ],
+      "pivote_px": [
+        64,
+        48
+      ]
+    }
+  },
+  "Santuario_Memoria_01": {
+    "lienzo": [
+      96,
+      128
+    ],
+    "pivote_px": [
+      48,
+      30
+    ],
+    "ppu": 45.254833995939045,
+    "sombra": {
+      "lienzo": [
+        160,
+        96
+      ],
+      "pivote_px": [
+        56,
+        44
+      ]
+    }
+  },
+  "Santuario_Memoria_02": {
+    "lienzo": [
+      96,
+      128
+    ],
+    "pivote_px": [
+      48,
+      30
+    ],
+    "ppu": 45.254833995939045,
+    "sombra": {
+      "lienzo": [
+        160,
+        96
+      ],
+      "pivote_px": [
+        56,
+        44
+      ]
+    }
+  },
+  "Santuario_Vida_01": {
+    "lienzo": [
+      64,
+      72
+    ],
+    "pivote_px": [
+      32,
+      20
+    ],
+    "ppu": 45.254833995939045,
+    "sombra": {
+      "lienzo": [
+        80,
+        40
+      ],
+      "pivote_px": [
+        26,
+        20
+      ]
+    }
+  },
+  "Santuario_Vida_02": {
+    "lienzo": [
+      64,
+      72
+    ],
+    "pivote_px": [
+      32,
+      20
+    ],
+    "ppu": 45.254833995939045,
+    "sombra": {
+      "lienzo": [
+        80,
+        40
+      ],
+      "pivote_px": [
+        26,
+        20
+      ]
+    }
+  },
+  "Escalera_Subida_01": {
+    "lienzo": [
+      128,
+      160
+    ],
+    "pivote_px": [
+      64,
+      40
+    ],
+    "ppu": 45.254833995939045,
+    "sombra": {
+      "lienzo": [
+        192,
+        112
+      ],
+      "pivote_px": [
+        70,
+        48
+      ]
+    }
+  },
+  "Escalera_Bajada_01": {
+    "lienzo": [
+      96,
+      80
+    ],
+    "pivote_px": [
+      48,
+      40
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Ofrenda_01": {
+    "lienzo": [
+      64,
+      64
+    ],
+    "pivote_px": [
+      32,
+      20
+    ],
+    "ppu": 45.254833995939045,
+    "sombra": {
+      "lienzo": [
+        80,
+        40
+      ],
+      "pivote_px": [
+        26,
+        20
+      ]
+    }
+  },
+  "Ofrenda_02": {
+    "lienzo": [
+      64,
+      64
+    ],
+    "pivote_px": [
+      32,
+      20
+    ],
+    "ppu": 45.254833995939045,
+    "sombra": {
+      "lienzo": [
+        80,
+        40
+      ],
+      "pivote_px": [
+        26,
+        20
+      ]
+    }
+  },
+  "Ofrenda_03": {
+    "lienzo": [
+      64,
+      64
+    ],
+    "pivote_px": [
+      32,
+      20
+    ],
+    "ppu": 45.254833995939045,
+    "sombra": {
+      "lienzo": [
+        80,
+        40
+      ],
+      "pivote_px": [
+        26,
+        20
+      ]
+    }
+  },
+  "Ofrenda_04": {
+    "lienzo": [
+      64,
+      64
+    ],
+    "pivote_px": [
+      32,
+      20
+    ],
+    "ppu": 45.254833995939045,
+    "sombra": {
+      "lienzo": [
+        80,
+        40
+      ],
+      "pivote_px": [
+        26,
+        20
+      ]
+    }
+  },
+  "Basalto_Agrietado_01": {
+    "lienzo": [
+      128,
+      144
+    ],
+    "pivote_px": [
+      64,
+      40
+    ],
+    "ppu": 45.254833995939045,
+    "sombra": {
+      "lienzo": [
+        160,
+        96
+      ],
+      "pivote_px": [
+        56,
+        44
+      ]
+    }
+  },
+  "Cestos_01": {
+    "lienzo": [
+      48,
+      48
+    ],
+    "pivote_px": [
+      24,
+      12
+    ],
+    "ppu": 45.254833995939045,
+    "sombra": {
+      "lienzo": [
+        80,
+        40
+      ],
+      "pivote_px": [
+        26,
+        20
+      ]
+    }
+  },
+  "Cestos_02": {
+    "lienzo": [
+      48,
+      48
+    ],
+    "pivote_px": [
+      24,
+      12
+    ],
+    "ppu": 45.254833995939045,
+    "sombra": {
+      "lienzo": [
+        80,
+        40
+      ],
+      "pivote_px": [
+        26,
+        20
+      ]
+    }
+  },
+  "Petate_01": {
+    "lienzo": [
+      96,
+      64
+    ],
+    "pivote_px": [
+      48,
+      32
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Lena_01": {
+    "lienzo": [
+      48,
+      48
+    ],
+    "pivote_px": [
+      24,
+      14
+    ],
+    "ppu": 45.254833995939045,
+    "sombra": {
+      "lienzo": [
+        80,
+        40
+      ],
+      "pivote_px": [
+        26,
+        20
+      ]
+    }
+  },
+  "Cerca_Varas_01": {
+    "lienzo": [
+      80,
+      72
+    ],
+    "pivote_px": [
+      40,
+      20
+    ],
+    "ppu": 45.254833995939045,
+    "sombra": {
+      "lienzo": [
+        128,
+        64
+      ],
+      "pivote_px": [
+        40,
+        32
+      ]
+    }
+  },
+  "Cerca_Varas_02": {
+    "lienzo": [
+      80,
+      72
+    ],
+    "pivote_px": [
+      40,
+      20
+    ],
+    "ppu": 45.254833995939045,
+    "sombra": {
+      "lienzo": [
+        128,
+        64
+      ],
+      "pivote_px": [
+        40,
+        32
+      ]
+    }
+  },
+  "Poste_Manta_01": {
+    "lienzo": [
+      64,
+      96
+    ],
+    "pivote_px": [
+      32,
+      18
+    ],
+    "ppu": 45.254833995939045,
+    "sombra": {
+      "lienzo": [
+        128,
+        64
+      ],
+      "pivote_px": [
+        40,
+        32
+      ]
+    }
+  },
+  "Poste_Manta_02": {
+    "lienzo": [
+      64,
+      96
+    ],
+    "pivote_px": [
+      32,
+      18
+    ],
+    "ppu": 45.254833995939045,
+    "sombra": {
+      "lienzo": [
+        128,
+        64
+      ],
+      "pivote_px": [
+        40,
+        32
+      ]
+    }
+  },
+  "Planta_Hoja_Ancha_01": {
+    "lienzo": [
+      64,
+      64
+    ],
+    "pivote_px": [
+      32,
+      14
+    ],
+    "ppu": 45.254833995939045,
+    "sombra": {
+      "lienzo": [
+        96,
+        48
+      ],
+      "pivote_px": [
+        30,
+        24
+      ]
+    }
+  },
+  "Planta_Hoja_Ancha_02": {
+    "lienzo": [
+      64,
+      64
+    ],
+    "pivote_px": [
+      32,
+      14
+    ],
+    "ppu": 45.254833995939045,
+    "sombra": {
+      "lienzo": [
+        96,
+        48
+      ],
+      "pivote_px": [
+        30,
+        24
+      ]
+    }
+  },
+  "Flor_Selva_01": {
+    "lienzo": [
+      48,
+      48
+    ],
+    "pivote_px": [
+      24,
+      10
+    ],
+    "ppu": 45.254833995939045,
+    "sombra": {
+      "lienzo": [
+        80,
+        40
+      ],
+      "pivote_px": [
+        26,
+        20
+      ]
+    }
+  },
+  "Flor_Selva_02": {
+    "lienzo": [
+      48,
+      48
+    ],
+    "pivote_px": [
+      24,
+      10
+    ],
+    "ppu": 45.254833995939045,
+    "sombra": {
+      "lienzo": [
+        80,
+        40
+      ],
+      "pivote_px": [
+        26,
+        20
+      ]
+    }
+  },
+  "Roca_Musgo_01": {
+    "lienzo": [
+      64,
+      64
+    ],
+    "pivote_px": [
+      32,
+      18
+    ],
+    "ppu": 45.254833995939045,
+    "sombra": {
+      "lienzo": [
+        128,
+        64
+      ],
+      "pivote_px": [
+        40,
+        32
+      ]
+    }
+  },
+  "Roca_Musgo_02": {
+    "lienzo": [
+      64,
+      64
+    ],
+    "pivote_px": [
+      32,
+      18
+    ],
+    "ppu": 45.254833995939045,
+    "sombra": {
+      "lienzo": [
+        128,
+        64
+      ],
+      "pivote_px": [
+        40,
+        32
+      ]
+    }
+  },
+  "Roca_Musgo_03": {
+    "lienzo": [
+      64,
+      64
+    ],
+    "pivote_px": [
+      32,
+      18
+    ],
+    "ppu": 45.254833995939045,
+    "sombra": {
+      "lienzo": [
+        128,
+        64
+      ],
+      "pivote_px": [
+        40,
+        32
+      ]
+    }
+  },
+  "Tronco_Grueso_01": {
+    "lienzo": [
+      96,
+      64
+    ],
+    "pivote_px": [
+      48,
+      22
+    ],
+    "ppu": 45.254833995939045,
+    "sombra": {
+      "lienzo": [
+        128,
+        64
+      ],
+      "pivote_px": [
+        40,
+        32
+      ]
+    }
+  },
+  "Fogon_Piedras_01": {
+    "lienzo": [
+      48,
+      48
+    ],
+    "pivote_px": [
+      24,
+      14
+    ],
+    "ppu": 45.254833995939045,
+    "sombra": {
+      "lienzo": [
+        80,
+        40
+      ],
+      "pivote_px": [
+        26,
+        20
+      ]
+    }
+  },
+  "Jaguar_Piedra_Acecho_01": {
+    "lienzo": [
+      176,
+      176
+    ],
+    "pivote_px": [
+      88,
+      48
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Jaguar_Piedra_Acecho_02": {
+    "lienzo": [
+      176,
+      176
+    ],
+    "pivote_px": [
+      88,
+      48
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Jaguar_Piedra_Acecho_03": {
+    "lienzo": [
+      176,
+      176
+    ],
+    "pivote_px": [
+      88,
+      48
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Jaguar_Piedra_Acecho_04": {
+    "lienzo": [
+      176,
+      176
+    ],
+    "pivote_px": [
+      88,
+      48
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Jaguar_Piedra_Acecho_05": {
+    "lienzo": [
+      176,
+      176
+    ],
+    "pivote_px": [
+      88,
+      48
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Jaguar_Piedra_Zancada_01": {
+    "lienzo": [
+      176,
+      176
+    ],
+    "pivote_px": [
+      88,
+      48
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Jaguar_Piedra_Zancada_02": {
+    "lienzo": [
+      176,
+      176
+    ],
+    "pivote_px": [
+      88,
+      48
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Jaguar_Piedra_Zancada_03": {
+    "lienzo": [
+      176,
+      176
+    ],
+    "pivote_px": [
+      88,
+      48
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Jaguar_Piedra_Zancada_04": {
+    "lienzo": [
+      176,
+      176
+    ],
+    "pivote_px": [
+      88,
+      48
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Jaguar_Piedra_Zancada_05": {
+    "lienzo": [
+      176,
+      176
+    ],
+    "pivote_px": [
+      88,
+      48
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Jaguar_Piedra_Agazapado_01": {
+    "lienzo": [
+      176,
+      176
+    ],
+    "pivote_px": [
+      88,
+      48
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Jaguar_Piedra_Agazapado_02": {
+    "lienzo": [
+      176,
+      176
+    ],
+    "pivote_px": [
+      88,
+      48
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Jaguar_Piedra_Agazapado_03": {
+    "lienzo": [
+      176,
+      176
+    ],
+    "pivote_px": [
+      88,
+      48
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Jaguar_Piedra_Agazapado_04": {
+    "lienzo": [
+      176,
+      176
+    ],
+    "pivote_px": [
+      88,
+      48
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Jaguar_Piedra_Agazapado_05": {
+    "lienzo": [
+      176,
+      176
+    ],
+    "pivote_px": [
+      88,
+      48
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Jaguar_Piedra_Salto_01": {
+    "lienzo": [
+      176,
+      176
+    ],
+    "pivote_px": [
+      88,
+      48
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Jaguar_Piedra_Salto_02": {
+    "lienzo": [
+      176,
+      176
+    ],
+    "pivote_px": [
+      88,
+      48
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Jaguar_Piedra_Salto_03": {
+    "lienzo": [
+      176,
+      176
+    ],
+    "pivote_px": [
+      88,
+      48
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Jaguar_Piedra_Salto_04": {
+    "lienzo": [
+      176,
+      176
+    ],
+    "pivote_px": [
+      88,
+      48
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Jaguar_Piedra_Salto_05": {
+    "lienzo": [
+      176,
+      176
+    ],
+    "pivote_px": [
+      88,
+      48
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Jaguar_Piedra_Zarpazo_01": {
+    "lienzo": [
+      176,
+      176
+    ],
+    "pivote_px": [
+      88,
+      48
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Jaguar_Piedra_Zarpazo_02": {
+    "lienzo": [
+      176,
+      176
+    ],
+    "pivote_px": [
+      88,
+      48
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Jaguar_Piedra_Zarpazo_03": {
+    "lienzo": [
+      176,
+      176
+    ],
+    "pivote_px": [
+      88,
+      48
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Jaguar_Piedra_Zarpazo_04": {
+    "lienzo": [
+      176,
+      176
+    ],
+    "pivote_px": [
+      88,
+      48
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Jaguar_Piedra_Zarpazo_05": {
+    "lienzo": [
+      176,
+      176
+    ],
+    "pivote_px": [
+      88,
+      48
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Jaguar_Piedra_Liberado_01": {
+    "lienzo": [
+      176,
+      176
+    ],
+    "pivote_px": [
+      88,
+      48
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Guardian_Piedra_Sentado_01": {
+    "lienzo": [
+      256,
+      288
+    ],
+    "pivote_px": [
+      128,
+      64
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Guardian_Piedra_Erguido_01": {
+    "lienzo": [
+      256,
+      288
+    ],
+    "pivote_px": [
+      128,
+      64
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Guardian_Piedra_Erguido_02": {
+    "lienzo": [
+      256,
+      288
+    ],
+    "pivote_px": [
+      128,
+      64
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Guardian_Piedra_Erguido_03": {
+    "lienzo": [
+      256,
+      288
+    ],
+    "pivote_px": [
+      128,
+      64
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Guardian_Piedra_Erguido_04": {
+    "lienzo": [
+      256,
+      288
+    ],
+    "pivote_px": [
+      128,
+      64
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Guardian_Piedra_Erguido_05": {
+    "lienzo": [
+      256,
+      288
+    ],
+    "pivote_px": [
+      128,
+      64
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Guardian_Piedra_Paso_01": {
+    "lienzo": [
+      256,
+      288
+    ],
+    "pivote_px": [
+      128,
+      64
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Guardian_Piedra_Paso_02": {
+    "lienzo": [
+      256,
+      288
+    ],
+    "pivote_px": [
+      128,
+      64
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Guardian_Piedra_Paso_03": {
+    "lienzo": [
+      256,
+      288
+    ],
+    "pivote_px": [
+      128,
+      64
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Guardian_Piedra_Paso_04": {
+    "lienzo": [
+      256,
+      288
+    ],
+    "pivote_px": [
+      128,
+      64
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Guardian_Piedra_Paso_05": {
+    "lienzo": [
+      256,
+      288
+    ],
+    "pivote_px": [
+      128,
+      64
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Guardian_Piedra_Embestida_01": {
+    "lienzo": [
+      256,
+      288
+    ],
+    "pivote_px": [
+      128,
+      64
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Guardian_Piedra_Embestida_02": {
+    "lienzo": [
+      256,
+      288
+    ],
+    "pivote_px": [
+      128,
+      64
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Guardian_Piedra_Embestida_03": {
+    "lienzo": [
+      256,
+      288
+    ],
+    "pivote_px": [
+      128,
+      64
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Guardian_Piedra_Embestida_04": {
+    "lienzo": [
+      256,
+      288
+    ],
+    "pivote_px": [
+      128,
+      64
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Guardian_Piedra_Embestida_05": {
+    "lienzo": [
+      256,
+      288
+    ],
+    "pivote_px": [
+      128,
+      64
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Guardian_Piedra_Golpe_01": {
+    "lienzo": [
+      256,
+      288
+    ],
+    "pivote_px": [
+      128,
+      64
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Guardian_Piedra_Golpe_02": {
+    "lienzo": [
+      256,
+      288
+    ],
+    "pivote_px": [
+      128,
+      64
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Guardian_Piedra_Golpe_03": {
+    "lienzo": [
+      256,
+      288
+    ],
+    "pivote_px": [
+      128,
+      64
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Guardian_Piedra_Golpe_04": {
+    "lienzo": [
+      256,
+      288
+    ],
+    "pivote_px": [
+      128,
+      64
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Guardian_Piedra_Golpe_05": {
+    "lienzo": [
+      256,
+      288
+    ],
+    "pivote_px": [
+      128,
+      64
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Guardian_Piedra_Rugido_01": {
+    "lienzo": [
+      256,
+      288
+    ],
+    "pivote_px": [
+      128,
+      64
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Guardian_Piedra_Rugido_02": {
+    "lienzo": [
+      256,
+      288
+    ],
+    "pivote_px": [
+      128,
+      64
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Guardian_Piedra_Rugido_03": {
+    "lienzo": [
+      256,
+      288
+    ],
+    "pivote_px": [
+      128,
+      64
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Guardian_Piedra_Rugido_04": {
+    "lienzo": [
+      256,
+      288
+    ],
+    "pivote_px": [
+      128,
+      64
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Guardian_Piedra_Rugido_05": {
+    "lienzo": [
+      256,
+      288
+    ],
+    "pivote_px": [
+      128,
+      64
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Guardian_Piedra_Liberado_01": {
+    "lienzo": [
+      256,
+      288
+    ],
+    "pivote_px": [
+      128,
+      64
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Jaguar_Reposo1_01": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Jaguar_Reposo1_02": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Jaguar_Reposo1_03": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Jaguar_Reposo1_04": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Jaguar_Reposo1_05": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Jaguar_Reposo2_01": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Jaguar_Reposo2_02": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Jaguar_Reposo2_03": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Jaguar_Reposo2_04": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Jaguar_Reposo2_05": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Jaguar_Reposo3_01": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Jaguar_Reposo3_02": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Jaguar_Reposo3_03": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Jaguar_Reposo3_04": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Jaguar_Reposo3_05": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Jaguar_Reposo4_01": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Jaguar_Reposo4_02": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Jaguar_Reposo4_03": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Jaguar_Reposo4_04": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Jaguar_Reposo4_05": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Jaguar_Caminar1_01": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Jaguar_Caminar1_02": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Jaguar_Caminar1_03": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Jaguar_Caminar1_04": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Jaguar_Caminar1_05": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Jaguar_Caminar2_01": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Jaguar_Caminar2_02": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Jaguar_Caminar2_03": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Jaguar_Caminar2_04": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Jaguar_Caminar2_05": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Jaguar_Caminar3_01": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Jaguar_Caminar3_02": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Jaguar_Caminar3_03": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Jaguar_Caminar3_04": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Jaguar_Caminar3_05": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Jaguar_Caminar4_01": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Jaguar_Caminar4_02": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Jaguar_Caminar4_03": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Jaguar_Caminar4_04": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Jaguar_Caminar4_05": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Jaguar_Caminar5_01": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Jaguar_Caminar5_02": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Jaguar_Caminar5_03": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Jaguar_Caminar5_04": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Jaguar_Caminar5_05": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Jaguar_Caminar6_01": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Jaguar_Caminar6_02": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Jaguar_Caminar6_03": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Jaguar_Caminar6_04": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Jaguar_Caminar6_05": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Jaguar_Correr1_01": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Jaguar_Correr1_02": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Jaguar_Correr1_03": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Jaguar_Correr1_04": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Jaguar_Correr1_05": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Jaguar_Correr2_01": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Jaguar_Correr2_02": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Jaguar_Correr2_03": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Jaguar_Correr2_04": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Jaguar_Correr2_05": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Jaguar_Correr3_01": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Jaguar_Correr3_02": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Jaguar_Correr3_03": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Jaguar_Correr3_04": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Jaguar_Correr3_05": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Jaguar_Correr4_01": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Jaguar_Correr4_02": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Jaguar_Correr4_03": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Jaguar_Correr4_04": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Jaguar_Correr4_05": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Jaguar_Correr5_01": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Jaguar_Correr5_02": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Jaguar_Correr5_03": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Jaguar_Correr5_04": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Jaguar_Correr5_05": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Jaguar_Correr6_01": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Jaguar_Correr6_02": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Jaguar_Correr6_03": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Jaguar_Correr6_04": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Jaguar_Correr6_05": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Jaguar_Zarpazo1_01": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Jaguar_Zarpazo1_02": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Jaguar_Zarpazo1_03": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Jaguar_Zarpazo1_04": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Jaguar_Zarpazo1_05": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Jaguar_Zarpazo2_01": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Jaguar_Zarpazo2_02": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Jaguar_Zarpazo2_03": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Jaguar_Zarpazo2_04": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Jaguar_Zarpazo2_05": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Jaguar_Zarpazo3_01": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Jaguar_Zarpazo3_02": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Jaguar_Zarpazo3_03": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Jaguar_Zarpazo3_04": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Jaguar_Zarpazo3_05": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Jaguar_Zarpazo4_01": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Jaguar_Zarpazo4_02": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Jaguar_Zarpazo4_03": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Jaguar_Zarpazo4_04": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Jaguar_Zarpazo4_05": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Jaguar_Golpeado1_01": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Jaguar_Golpeado1_02": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Jaguar_Golpeado1_03": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Jaguar_Golpeado1_04": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Jaguar_Golpeado1_05": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Jaguar_Golpeado2_01": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Jaguar_Golpeado2_02": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Jaguar_Golpeado2_03": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Jaguar_Golpeado2_04": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Jaguar_Golpeado2_05": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Jaguar_Muerte1_01": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Jaguar_Muerte1_02": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Jaguar_Muerte1_03": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Jaguar_Muerte1_04": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Jaguar_Muerte1_05": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Jaguar_Muerte2_01": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Jaguar_Muerte2_02": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Jaguar_Muerte2_03": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Jaguar_Muerte2_04": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Jaguar_Muerte2_05": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Jaguar_Muerte3_01": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Jaguar_Muerte3_02": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Jaguar_Muerte3_03": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Jaguar_Muerte3_04": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Jaguar_Muerte3_05": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Jaguar_Muerte4_01": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Jaguar_Muerte4_02": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Jaguar_Muerte4_03": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Jaguar_Muerte4_04": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Jaguar_Muerte4_05": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "JaguarCorrupto_Reposo1_01": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "JaguarCorrupto_Reposo1_02": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "JaguarCorrupto_Reposo1_03": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "JaguarCorrupto_Reposo1_04": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "JaguarCorrupto_Reposo1_05": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "JaguarCorrupto_Reposo2_01": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "JaguarCorrupto_Reposo2_02": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "JaguarCorrupto_Reposo2_03": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "JaguarCorrupto_Reposo2_04": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "JaguarCorrupto_Reposo2_05": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "JaguarCorrupto_Reposo3_01": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "JaguarCorrupto_Reposo3_02": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "JaguarCorrupto_Reposo3_03": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "JaguarCorrupto_Reposo3_04": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "JaguarCorrupto_Reposo3_05": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "JaguarCorrupto_Reposo4_01": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "JaguarCorrupto_Reposo4_02": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "JaguarCorrupto_Reposo4_03": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "JaguarCorrupto_Reposo4_04": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "JaguarCorrupto_Reposo4_05": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "JaguarCorrupto_Caminar1_01": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "JaguarCorrupto_Caminar1_02": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "JaguarCorrupto_Caminar1_03": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "JaguarCorrupto_Caminar1_04": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "JaguarCorrupto_Caminar1_05": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "JaguarCorrupto_Caminar2_01": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "JaguarCorrupto_Caminar2_02": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "JaguarCorrupto_Caminar2_03": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "JaguarCorrupto_Caminar2_04": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "JaguarCorrupto_Caminar2_05": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "JaguarCorrupto_Caminar3_01": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "JaguarCorrupto_Caminar3_02": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "JaguarCorrupto_Caminar3_03": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "JaguarCorrupto_Caminar3_04": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "JaguarCorrupto_Caminar3_05": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "JaguarCorrupto_Caminar4_01": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "JaguarCorrupto_Caminar4_02": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "JaguarCorrupto_Caminar4_03": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "JaguarCorrupto_Caminar4_04": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "JaguarCorrupto_Caminar4_05": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "JaguarCorrupto_Caminar5_01": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "JaguarCorrupto_Caminar5_02": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "JaguarCorrupto_Caminar5_03": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "JaguarCorrupto_Caminar5_04": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "JaguarCorrupto_Caminar5_05": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "JaguarCorrupto_Caminar6_01": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "JaguarCorrupto_Caminar6_02": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "JaguarCorrupto_Caminar6_03": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "JaguarCorrupto_Caminar6_04": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "JaguarCorrupto_Caminar6_05": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "JaguarCorrupto_Acecho1_01": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "JaguarCorrupto_Acecho1_02": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "JaguarCorrupto_Acecho1_03": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "JaguarCorrupto_Acecho1_04": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "JaguarCorrupto_Acecho1_05": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "JaguarCorrupto_Acecho2_01": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "JaguarCorrupto_Acecho2_02": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "JaguarCorrupto_Acecho2_03": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "JaguarCorrupto_Acecho2_04": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "JaguarCorrupto_Acecho2_05": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "JaguarCorrupto_Salto1_01": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "JaguarCorrupto_Salto1_02": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "JaguarCorrupto_Salto1_03": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "JaguarCorrupto_Salto1_04": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "JaguarCorrupto_Salto1_05": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "JaguarCorrupto_Salto2_01": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "JaguarCorrupto_Salto2_02": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "JaguarCorrupto_Salto2_03": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "JaguarCorrupto_Salto2_04": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "JaguarCorrupto_Salto2_05": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "JaguarCorrupto_Golpeado1_01": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "JaguarCorrupto_Golpeado1_02": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "JaguarCorrupto_Golpeado1_03": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "JaguarCorrupto_Golpeado1_04": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "JaguarCorrupto_Golpeado1_05": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "JaguarCorrupto_Golpeado2_01": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "JaguarCorrupto_Golpeado2_02": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "JaguarCorrupto_Golpeado2_03": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "JaguarCorrupto_Golpeado2_04": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "JaguarCorrupto_Golpeado2_05": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "JaguarCorrupto_Muerte1_01": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "JaguarCorrupto_Muerte1_02": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "JaguarCorrupto_Muerte1_03": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "JaguarCorrupto_Muerte1_04": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "JaguarCorrupto_Muerte1_05": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "JaguarCorrupto_Muerte2_01": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "JaguarCorrupto_Muerte2_02": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "JaguarCorrupto_Muerte2_03": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "JaguarCorrupto_Muerte2_04": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "JaguarCorrupto_Muerte2_05": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "JaguarCorrupto_Muerte3_01": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "JaguarCorrupto_Muerte3_02": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "JaguarCorrupto_Muerte3_03": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "JaguarCorrupto_Muerte3_04": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "JaguarCorrupto_Muerte3_05": {
+    "lienzo": [
+      128,
+      112
+    ],
+    "pivote_px": [
+      64,
+      44
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Tile_Camino_Trans_01": {
+    "lienzo": [
+      64,
+      64
+    ],
+    "pivote_px": [
+      32,
+      40
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Tile_Camino_Trans_02": {
+    "lienzo": [
+      64,
+      64
+    ],
+    "pivote_px": [
+      32,
+      40
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Tile_Camino_Trans_04": {
+    "lienzo": [
+      64,
+      64
+    ],
+    "pivote_px": [
+      32,
+      40
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Tile_Camino_Trans_05": {
+    "lienzo": [
+      64,
+      64
+    ],
+    "pivote_px": [
+      32,
+      40
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Tile_Camino_Trans_06": {
+    "lienzo": [
+      64,
+      64
+    ],
+    "pivote_px": [
+      32,
+      40
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Tile_Camino_Trans_08": {
+    "lienzo": [
+      64,
+      64
+    ],
+    "pivote_px": [
+      32,
+      40
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Tile_Camino_Trans_09": {
+    "lienzo": [
+      64,
+      64
+    ],
+    "pivote_px": [
+      32,
+      40
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Tile_Camino_Trans_10": {
+    "lienzo": [
+      64,
+      64
+    ],
+    "pivote_px": [
+      32,
+      40
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Tile_Camino_Trans_16": {
+    "lienzo": [
+      64,
+      64
+    ],
+    "pivote_px": [
+      32,
+      40
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Tile_Camino_Trans_24": {
+    "lienzo": [
+      64,
+      64
+    ],
+    "pivote_px": [
+      32,
+      40
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Tile_Camino_Trans_32": {
+    "lienzo": [
+      64,
+      64
+    ],
+    "pivote_px": [
+      32,
+      40
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Tile_Camino_Trans_36": {
+    "lienzo": [
+      64,
+      64
+    ],
+    "pivote_px": [
+      32,
+      40
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Tile_Camino_Trans_64": {
+    "lienzo": [
+      64,
+      64
+    ],
+    "pivote_px": [
+      32,
+      40
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Tile_Camino_Trans_72": {
+    "lienzo": [
+      64,
+      64
+    ],
+    "pivote_px": [
+      32,
+      40
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Tile_Camino_Trans_96": {
+    "lienzo": [
+      64,
+      64
+    ],
+    "pivote_px": [
+      32,
+      40
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Tile_Camino_Trans_128": {
+    "lienzo": [
+      64,
+      64
+    ],
+    "pivote_px": [
+      32,
+      40
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Tile_Camino_Trans_129": {
+    "lienzo": [
+      64,
+      64
+    ],
+    "pivote_px": [
+      32,
+      40
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Tile_Camino_Trans_132": {
+    "lienzo": [
+      64,
+      64
+    ],
+    "pivote_px": [
+      32,
+      40
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Tile_Camino_Trans_144": {
+    "lienzo": [
+      64,
+      64
+    ],
+    "pivote_px": [
+      32,
+      40
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Tile_Orilla_01": {
+    "lienzo": [
+      64,
+      64
+    ],
+    "pivote_px": [
+      32,
+      40
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Tile_Orilla_02": {
+    "lienzo": [
+      64,
+      64
+    ],
+    "pivote_px": [
+      32,
+      40
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Tile_Orilla_04": {
+    "lienzo": [
+      64,
+      64
+    ],
+    "pivote_px": [
+      32,
+      40
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Tile_Orilla_05": {
+    "lienzo": [
+      64,
+      64
+    ],
+    "pivote_px": [
+      32,
+      40
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Tile_Orilla_06": {
+    "lienzo": [
+      64,
+      64
+    ],
+    "pivote_px": [
+      32,
+      40
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Tile_Orilla_08": {
+    "lienzo": [
+      64,
+      64
+    ],
+    "pivote_px": [
+      32,
+      40
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Tile_Orilla_09": {
+    "lienzo": [
+      64,
+      64
+    ],
+    "pivote_px": [
+      32,
+      40
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Tile_Orilla_10": {
+    "lienzo": [
+      64,
+      64
+    ],
+    "pivote_px": [
+      32,
+      40
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Tile_Orilla_16": {
+    "lienzo": [
+      64,
+      64
+    ],
+    "pivote_px": [
+      32,
+      40
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Tile_Orilla_32": {
+    "lienzo": [
+      64,
+      64
+    ],
+    "pivote_px": [
+      32,
+      40
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Tile_Orilla_64": {
+    "lienzo": [
+      64,
+      64
+    ],
+    "pivote_px": [
+      32,
+      40
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Tile_Orilla_128": {
+    "lienzo": [
+      64,
+      64
+    ],
+    "pivote_px": [
+      32,
+      40
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Plataforma_Arcilla_00": {
+    "lienzo": [
+      64,
+      96
+    ],
+    "pivote_px": [
+      32,
+      18
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Plataforma_Arcilla_01": {
+    "lienzo": [
+      64,
+      96
+    ],
+    "pivote_px": [
+      32,
+      18
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Plataforma_Arcilla_02": {
+    "lienzo": [
+      64,
+      96
+    ],
+    "pivote_px": [
+      32,
+      18
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Plataforma_Arcilla_04": {
+    "lienzo": [
+      64,
+      96
+    ],
+    "pivote_px": [
+      32,
+      18
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Plataforma_Arcilla_05": {
+    "lienzo": [
+      64,
+      96
+    ],
+    "pivote_px": [
+      32,
+      18
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Plataforma_Arcilla_06": {
+    "lienzo": [
+      64,
+      96
+    ],
+    "pivote_px": [
+      32,
+      18
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Plataforma_Arcilla_08": {
+    "lienzo": [
+      64,
+      96
+    ],
+    "pivote_px": [
+      32,
+      18
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Plataforma_Arcilla_09": {
+    "lienzo": [
+      64,
+      96
+    ],
+    "pivote_px": [
+      32,
+      18
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Plataforma_Arcilla_10": {
+    "lienzo": [
+      64,
+      96
+    ],
+    "pivote_px": [
+      32,
+      18
+    ],
+    "ppu": 45.254833995939045
+  },
+  "Plataforma_Arcilla_32": {
+    "lienzo": [
+      64,
+      96
+    ],
+    "pivote_px": [
+      32,
+      18
+    ],
+    "ppu": 45.254833995939045
+  }
+}

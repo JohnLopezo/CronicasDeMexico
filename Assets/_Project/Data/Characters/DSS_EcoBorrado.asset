@@ -1,0 +1,46 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0f3a2dbe737f384da36cc4134724892, type: 3}
+  m_Name: DSS_EcoBorrado
+  m_EditorClassIdentifier: 
+  clips:
+  - idle: {fileID: -1886041034, guid: d6d992a9a796eb04e91e9d58aaf1ffb7, type: 3}
+    walk:
+    - {fileID: -335871811, guid: d6d992a9a796eb04e91e9d58aaf1ffb7, type: 3}
+    - {fileID: -1481614892, guid: d6d992a9a796eb04e91e9d58aaf1ffb7, type: 3}
+    - {fileID: -2030663148, guid: d6d992a9a796eb04e91e9d58aaf1ffb7, type: 3}
+    - {fileID: 1031764388, guid: d6d992a9a796eb04e91e9d58aaf1ffb7, type: 3}
+  - idle: {fileID: -1654970543, guid: d6d992a9a796eb04e91e9d58aaf1ffb7, type: 3}
+    walk:
+    - {fileID: -629413175, guid: d6d992a9a796eb04e91e9d58aaf1ffb7, type: 3}
+    - {fileID: 173888259, guid: d6d992a9a796eb04e91e9d58aaf1ffb7, type: 3}
+    - {fileID: -413338885, guid: d6d992a9a796eb04e91e9d58aaf1ffb7, type: 3}
+    - {fileID: 32463001, guid: d6d992a9a796eb04e91e9d58aaf1ffb7, type: 3}
+  - idle: {fileID: -1242329999, guid: d6d992a9a796eb04e91e9d58aaf1ffb7, type: 3}
+    walk:
+    - {fileID: 1970950080, guid: d6d992a9a796eb04e91e9d58aaf1ffb7, type: 3}
+    - {fileID: 917407419, guid: d6d992a9a796eb04e91e9d58aaf1ffb7, type: 3}
+    - {fileID: 1448338092, guid: d6d992a9a796eb04e91e9d58aaf1ffb7, type: 3}
+    - {fileID: -356316657, guid: d6d992a9a796eb04e91e9d58aaf1ffb7, type: 3}
+  - idle: {fileID: 23938453, guid: d6d992a9a796eb04e91e9d58aaf1ffb7, type: 3}
+    walk:
+    - {fileID: -919588452, guid: d6d992a9a796eb04e91e9d58aaf1ffb7, type: 3}
+    - {fileID: 1119418983, guid: d6d992a9a796eb04e91e9d58aaf1ffb7, type: 3}
+    - {fileID: 2001848371, guid: d6d992a9a796eb04e91e9d58aaf1ffb7, type: 3}
+    - {fileID: 1064205764, guid: d6d992a9a796eb04e91e9d58aaf1ffb7, type: 3}
+  - idle: {fileID: -461112654, guid: d6d992a9a796eb04e91e9d58aaf1ffb7, type: 3}
+    walk:
+    - {fileID: 473573723, guid: d6d992a9a796eb04e91e9d58aaf1ffb7, type: 3}
+    - {fileID: 1609152223, guid: d6d992a9a796eb04e91e9d58aaf1ffb7, type: 3}
+    - {fileID: 1212704463, guid: d6d992a9a796eb04e91e9d58aaf1ffb7, type: 3}
+    - {fileID: -309498890, guid: d6d992a9a796eb04e91e9d58aaf1ffb7, type: 3}
+  walkFramesPerSecond: 8

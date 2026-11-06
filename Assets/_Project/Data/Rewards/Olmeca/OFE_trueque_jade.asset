@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fb023599bea0a3b47972cd172ec772d5, type: 3}
+  m_Name: OFE_trueque_jade
+  m_EditorClassIdentifier: 
+  id: trueque_jade
+  item: {fileID: 11400000, guid: c521ff384c8bc684fba887f42a98e159, type: 2}
+  itemCount: 1
+  price: {fileID: 11400000, guid: a29ed94e12703594cb5f976de8cd1df9, type: 2}
+  priceCount: 2
+  unlockFlag: 

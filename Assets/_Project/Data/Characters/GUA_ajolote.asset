@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cb296e4cd7603524db49c01b6f9ea99e, type: 3}
+  m_Name: GUA_ajolote
+  m_EditorClassIdentifier: 
+  baseStats:
+    maxHealth: 65
+    attack: 8
+    defense: 1
+    maxEnergy: 80
+  growthPerLevel: {x: 8.5, y: 1, z: 0.5, w: 5}
+  id: ajolote
+  displayName: Xali
+  title: Guardiana Ajolote
+  description: "Recuperaci\xF3n, resistencia y afinidad acu\xE1tica."
+  initialAffinity: 0
+  status: 0
+  spriteSet: {fileID: 11400000, guid: 3bec2f8d6b0e47e4ca1bb0225d153476, type: 2}
+  attackSet: {fileID: 11400000, guid: 789d6230c0c5e3340b58f59c87d77974, type: 2}
+  runSet: {fileID: 11400000, guid: ba45fc12388d47d419004c8369b1af1d, type: 2}
+  hitSet: {fileID: 11400000, guid: 196130f00add4b94ca32b8d257ba1bc2, type: 2}
+  deathSet: {fileID: 11400000, guid: 546a99cedad96c64784183990c3cb7b3, type: 2}
+  defenseSet: {fileID: 0}
+  victorySet: {fileID: 0}
+  specialSet: {fileID: 0}

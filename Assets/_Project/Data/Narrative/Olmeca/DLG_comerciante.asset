@@ -1,0 +1,37 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a33fe671ef33db241a91794b922ee781, type: 3}
+  m_Name: DLG_comerciante
+  m_EditorClassIdentifier: 
+  branches:
+  - requiredFlags:
+    - mision.MP_OLM_02.completada
+    forbiddenFlags: []
+    lines:
+    - speaker: {fileID: 0}
+      text: "\xBFUna entrada en la selva? Con raz\xF3n los caminos est\xE1n tan raros.
+        Yo me quedo junto al r\xEDo."
+    flagsOnFinish: []
+    questToStart: {fileID: 0}
+  - requiredFlags: []
+    forbiddenFlags: []
+    lines:
+    - speaker: {fileID: 0}
+      text: "Traigo obsidiana, conchas y piedra verde de muy lejos... o tra\xEDa.
+        Los caminos ya no son seguros."
+    - speaker: {fileID: 0}
+      text: "Antes sab\xEDa cada vuelta del camino. Ahora llego a un cruce y no recuerdo
+        hacia d\xF3nde iba."
+    - speaker: {fileID: 0}
+      text: "Cuando vuelvan a ser seguros, tendr\xE9 buenas cosas que cambiar."
+    flagsOnFinish: []
+    questToStart: {fileID: 0}

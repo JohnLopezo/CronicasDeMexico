@@ -1,0 +1,38 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 822e6260ef1f75648861e154a79904af, type: 3}
+  m_Name: OBJ_semilla_preparada
+  m_EditorClassIdentifier: 
+  id: semilla_preparada
+  displayName: Semilla medicinal preparada
+  description: Semillas molidas en un cuenco de barro.
+  category: 1
+  rarity: 1
+  origin: 1
+  originNote: "I: preparaci\xF3n medicinal; F: sus efectos en el juego."
+  icon: {fileID: 21300000, guid: f8ce31a8419372747b7bf2e198754cb7, type: 3}
+  maxStack: 5
+  value: 8
+  sellable: 1
+  bonus:
+    maxHealth: 0
+    attack: 0
+    defense: 0
+    maxEnergy: 0
+  guardianOnly: 
+  effect:
+    heal: 20
+    energy: 0
+    defenseBonus: 0
+    duration: 0
+  recordEntry: 
+  usage: Recupera 20 de vida (40 % al nivel 1). Lleva hasta 5.

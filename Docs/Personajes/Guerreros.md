@@ -26,6 +26,8 @@ Balam conserva el id `jaguar`: es el de las partidas guardadas y el de `OBJ_marc
 - **Datos:** `GuerreroCharacterAssets` crea un `GUA_<id>` y sus `DSS_Guerrero_*`, y el catálogo `Resources/Personajes/CatalogoGuardianes`. Los textos, afinidades y atributos se editan en su tabla: el asset se sobrescribe.
 - **Elección:** al principio: sin partida guardada, es lo primero que se ve; con ella, tras Nueva partida. Al pulsar Play desde una escena de juego también se pide, con el juego en pausa (`StartMenuController`). Después, en la pestaña Guardián del menú de juego (`GameMenuController`).
 - **Juego:** `Progression.Profile` es el elegido y se guarda en `guardianId`. `PlayerStats` aplica sus sprites al aparecer el jugador en cada escena. Cambiar a mitad de partida no cura ni recupera energía.
+- **Defensa:** Q, clic derecho o LB, mantenidos: quieto, sin atacar y a mitad de daño (`PlayerDefense`). Funciona con los siete; **solo Balam muestra su pose**.
+- **Victoria:** 1,5 s al abrir la ofrenda final, antes de los resultados. **Solo Balam**; los demás pasan directo. Ambas poses son provisionales y están en la tabla `GUERREROS` del script.
 - **Marcas:** hay una por guerrero; `RewardService` retira del paquete las de otro Guardián.
 
 ## Cómo mejorarlos

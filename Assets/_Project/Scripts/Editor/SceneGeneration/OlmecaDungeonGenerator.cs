@@ -93,7 +93,7 @@ namespace CronicasDeMexico.Editor.SceneGeneration
                 "El nicho del hacha de jade es un santuario de Memoria. Descansa en él para guardar la partida: si caes, " +
                 "volverás aquí. Descansar no cura."),
             (1, "atacar", new Vector2(-3.5f, 0f), new Vector2(1f, 3f),
-                "Un espíritu corrompido. Ataca con clic izquierdo (o el botón Oeste). Esquiva con Espacio (o el botón Sur): " +
+                "Un espíritu corrompido. Ataca con clic izquierdo (o el botón Oeste). Mantén Q o clic derecho (o LB) para defenderte. Esquiva con Espacio (o el botón Sur): " +
                 "mientras esquivas, nada te daña."),
             (1, "grupo", new Vector2(5.5f, 0f), new Vector2(1f, 3f),
                 "Dos a la vez. No dejes que te rodeen: golpea y apártate con la esquiva."),

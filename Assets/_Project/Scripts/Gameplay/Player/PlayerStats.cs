@@ -86,6 +86,7 @@ namespace CronicasDeMexico.Gameplay.Player
                 return;
             animator.SpriteSet = guardian.SpriteSet;
             driver.Configure(animator, guardian.AttackSet, guardian.RunSet, null, null, guardian.HitSet, guardian.DeathSet);
+            driver.ConfigureDefenseAndVictory(guardian.DefenseSet, guardian.VictorySet);
         }
 
         void Update()

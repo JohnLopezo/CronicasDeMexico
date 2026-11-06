@@ -29,3 +29,5 @@ MonoBehaviour:
   runSet: {fileID: 11400000, guid: b5fe3fe48db612544a3ab9c3ae9b88f1, type: 2}
   hitSet: {fileID: 11400000, guid: 88df9ec0ed1069843bae918e2d87e0cf, type: 2}
   deathSet: {fileID: 11400000, guid: 234e4e780bdb08b46ac1484b6595489a, type: 2}
+  defenseSet: {fileID: 0}
+  victorySet: {fileID: 0}

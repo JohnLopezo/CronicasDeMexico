@@ -35,6 +35,7 @@ namespace CronicasDeMexico.Gameplay.Player
         readonly Health[] struck = new Health[16];
         PlayerAttack attack;
         Health ownHealth;
+        PlayerDefense defense;
         InputAction ability;
         float nextUse;
         float visualUntil;
@@ -45,6 +46,7 @@ namespace CronicasDeMexico.Gameplay.Player
         {
             attack = GetComponent<PlayerAttack>();
             ownHealth = GetComponent<Health>();
+            defense = GetComponent<PlayerDefense>();
             ability = abilityAction != null ? abilityAction.action
                 : GetComponent<PlayerMovement>() is { } movement ? movement.FindSiblingAction(AbilityActionName) : null;
         }
@@ -68,7 +70,7 @@ namespace CronicasDeMexico.Gameplay.Player
         public bool TryUse()
         {
             if (!ServiceLocator.TryGet(out Progression progression) || progression.PrimaryBlessing != blessingId ||
-                !IsReady || (ownHealth != null && ownHealth.IsDead))
+                !IsReady || (ownHealth != null && ownHealth.IsDead) || (defense != null && defense.IsDefending))
                 return false;
 
             var info = progression.BlessingCatalog?.Find(blessingId);

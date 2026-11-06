@@ -91,6 +91,9 @@ namespace CronicasDeMexico.Editor.SceneGeneration
 
             var driver = root.GetComponent<CharacterAnimationDriver>() ?? root.AddComponent<CharacterAnimationDriver>();
             driver.Configure(animator, guardian.AttackSet, guardian.RunSet, null, null, guardian.HitSet, guardian.DeathSet);
+            driver.ConfigureDefenseAndVictory(guardian.DefenseSet, guardian.VictorySet);
+            if (root.GetComponent<PlayerDefense>() == null)
+                root.AddComponent<PlayerDefense>();
             EditorUtility.SetDirty(animator);
             EditorUtility.SetDirty(driver);
         }

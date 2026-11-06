@@ -94,6 +94,42 @@ namespace CronicasDeMexico.Tests
         }
 
         [UnityTest]
+        public IEnumerator Defense_RootsThePlayer_HalvesTheDamage_AndShowsItsPose()
+        {
+            yield return Load(Floor1);
+            var player = Object.FindAnyObjectByType<PlayerMovement>();
+            var defense = player.GetComponent<PlayerDefense>();
+            Assert.IsNotNull(defense, "El prefab del jugador debe poder defender.");
+            var animator = player.GetComponent<DirectionalSpriteAnimator>();
+            var health = player.GetComponent<Health>();
+            var source = player.transform.position + Vector3.right;
+            health.Defense = 0;
+
+            defense.Held = true;
+            yield return null;
+            yield return null;
+            Assert.IsTrue(defense.IsDefending);
+            Assert.AreEqual("DSS_Guerrero_Balam_Defensa", ActionName(animator));
+            Assert.IsTrue(player.Rooted, "Quieto mientras defiende.");
+            Assert.IsFalse(player.TryDodge(Vector3.left), "Defendiendo no esquiva.");
+
+            var before = health.Current;
+            Assert.IsTrue(health.TryDamage(11, source));
+            Assert.AreEqual(before - 6, health.Current, "Mitad de 11, redondeada hacia arriba.");
+
+            defense.Held = false;
+            yield return null;
+            yield return null;
+            Assert.IsFalse(defense.IsDefending);
+            Assert.IsFalse(player.Rooted);
+            Assert.AreNotEqual("DSS_Guerrero_Balam_Defensa", ActionName(animator));
+            yield return new WaitForSeconds(1.1f); // invulnerable tras el golpe
+            before = health.Current;
+            Assert.IsTrue(health.TryDamage(4, source));
+            Assert.AreEqual(before - 4, health.Current, "Sin defender, daño completo.");
+        }
+
+        [UnityTest]
         public IEnumerator CorruptedJaguar_TelegraphsItsLeap_HitsOnTheLine_AndCanBeInterrupted()
         {
             yield return Load(Floor1);

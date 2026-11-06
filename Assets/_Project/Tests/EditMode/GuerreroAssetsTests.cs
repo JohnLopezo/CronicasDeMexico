@@ -41,6 +41,18 @@ namespace CronicasDeMexico.Tests
             Assert.AreEqual(0.29f, guardian.AttackSet.Duration, 0.001f, "El ataque dura lo mismo con uno o dos cuadros.");
         }
 
+        [Test]
+        public void OnlyThePilot_HasDefenseAndVictoryPoses()
+        {
+            var catalog = Resources.Load<GuardianCatalog>(GuardianCatalog.ResourcePath);
+            foreach (var guardian in catalog.Guardians)
+            {
+                var pilot = guardian.Id == "jaguar";
+                Assert.AreEqual(pilot, guardian.DefenseSet != null, guardian.Id);
+                Assert.AreEqual(pilot, guardian.VictorySet != null, guardian.Id);
+            }
+        }
+
         [TestCase("jaguar", Affinity.Tierra)]
         [TestCase("lobo", Affinity.Viento)]
         [TestCase("aguila", Affinity.Luz)]

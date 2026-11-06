@@ -8,7 +8,8 @@ namespace CronicasDeMexico.Gameplay.Player
     /// <summary>
     /// Traduce lo que pasa en el juego a animaciones de acción de DirectionalSpriteAnimator (caminar y reposo los elige
     /// el animador solo): zarpazo al atacar (PlayerAttack), galope al esquivar (PlayerMovement), agazapado y salto
-    /// del jaguar corrupto (EnemyChaser), golpe al recibir daño y caída al morir (Health). Las animaciones que falten
+    /// del jaguar corrupto (EnemyChaser), golpe al recibir daño, caída al morir (Health), defensa (PlayerDefense) y
+    /// victoria (DungeonCompletion). Las animaciones que falten
     /// se omiten, así que sirve para cualquier personaje.
     /// </summary>
     [DefaultExecutionOrder(100)]
@@ -22,8 +23,12 @@ namespace CronicasDeMexico.Gameplay.Player
         [SerializeField, Tooltip("Al recibir daño.")] DirectionalSpriteSet hit;
         [SerializeField, Tooltip("Al morir; se queda en el último cuadro.")] DirectionalSpriteSet death;
 
+        [SerializeField, Tooltip("Mientras defiende (PlayerDefense).")] DirectionalSpriteSet defense;
+        [SerializeField, Tooltip("Al ganar (DungeonCompletion).")] DirectionalSpriteSet victory;
+
         Health health;
         PlayerAttack playerAttack;
+        PlayerDefense playerDefense;
         PlayerMovement playerMovement;
         EnemyChaser chaser;
         bool wasDead;
@@ -40,6 +45,27 @@ namespace CronicasDeMexico.Gameplay.Player
             death = deathSet;
         }
 
+        public void ConfigureDefenseAndVictory(DirectionalSpriteSet defenseSet, DirectionalSpriteSet victorySet)
+        {
+            defense = defenseSet;
+            victory = victorySet;
+        }
+
+        /// <summary>Muestra la victoria hasta StopVictory. Devuelve false si este personaje aún no tiene esa animación.</summary>
+        public bool PlayVictory()
+        {
+            if (animator == null || victory == null)
+                return false;
+            animator.Play(victory, hold: true);
+            return true;
+        }
+
+        public void StopVictory()
+        {
+            if (animator != null && victory != null)
+                animator.Stop(victory);
+        }
+
         void Awake()
         {
             if (animator == null)
@@ -47,6 +73,7 @@ namespace CronicasDeMexico.Gameplay.Player
             health = GetComponent<Health>();
             playerAttack = GetComponent<PlayerAttack>();
             playerMovement = GetComponent<PlayerMovement>();
+            playerDefense = GetComponent<PlayerDefense>();
             chaser = GetComponent<EnemyChaser>();
         }
 
@@ -84,6 +111,7 @@ namespace CronicasDeMexico.Gameplay.Player
                 return;
 
             Hold(run, playerMovement != null && playerMovement.IsDodging);
+            Hold(defense, playerDefense != null && playerDefense.IsDefending);
             Hold(crouch, chaser != null && chaser.Lunge == EnemyChaser.LungePhase.Windup);
             Hold(leap, chaser != null && chaser.Lunge == EnemyChaser.LungePhase.Leap);
         }

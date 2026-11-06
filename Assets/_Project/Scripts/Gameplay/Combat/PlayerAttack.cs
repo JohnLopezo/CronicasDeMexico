@@ -36,6 +36,7 @@ namespace CronicasDeMexico.Gameplay.Combat
         readonly Health[] struck = new Health[8];
         PlayerMovement movement;
         Health ownHealth;
+        PlayerDefense defense;
         float nextAttackTime;
 
         public int Damage
@@ -50,6 +51,7 @@ namespace CronicasDeMexico.Gameplay.Combat
         {
             movement = GetComponent<PlayerMovement>();
             ownHealth = GetComponent<Health>();
+            defense = GetComponent<PlayerDefense>();
         }
 
         void OnEnable()
@@ -67,7 +69,7 @@ namespace CronicasDeMexico.Gameplay.Combat
         void Update()
         {
             // En pausa (panel de opciones) o muerto no se ataca.
-            if (attackAction == null || Time.timeScale == 0f || (ownHealth != null && ownHealth.IsDead))
+            if (attackAction == null || Time.timeScale == 0f || (ownHealth != null && ownHealth.IsDead) || (defense != null && defense.IsDefending))
                 return;
 
             if (!attackAction.action.WasPressedThisFrame() || Time.time < nextAttackTime)

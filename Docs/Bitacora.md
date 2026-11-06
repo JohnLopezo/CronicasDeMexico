@@ -21,6 +21,15 @@ Plantilla:
 
 ---
 
+## 2026-11-06 — i7-10700: Defensa y Victoria de Balam (piloto)
+
+- **Rama / último commit:** `feature/prototipo-olmeca`, sobre `52d0f12`. EditMode 98/98, PlayMode 79/79. Subido.
+- **Aprobado por el autor:** las propuestas de `Auditoria_Animaciones.md` §8.
+- **Hecho:** `PlayerDefense` (acción `Defense`: Q, clic derecho, LB; quieto, sin atacar, mitad de daño) para los siete; poses y `Victoria` solo de Balam, recortadas de su ficha. La victoria dura 1,5 s antes de los resultados, y los demás pasan directo. Pista en el tutorial de El Umbral; pisos regenerados.
+- **Pendiente:** táctil (decisión del autor: después del piloto); arte de la Habilidad especial y hoja nueva de Balam.
+
+---
+
 ## 2026-11-06 — i7-10700: bloqueo de la entrada y selección al principio
 
 - **Rama / último commit:** `feature/prototipo-olmeca`, sobre `f042af4`. EditMode 97/97, PlayMode 78/78. Subido.

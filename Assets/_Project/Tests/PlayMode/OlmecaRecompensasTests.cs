@@ -231,6 +231,18 @@ namespace CronicasDeMexico.Tests
             Assert.IsNotNull(result);
             Assert.AreEqual(2, result.SecretsFound);
             Assert.AreEqual("A", result.Grade, "dos de tres secretos y sin caer");
+            // Balam celebra antes de los resultados: el menú pausaría la animación.
+            Assert.IsFalse(GameMenuController.IsOpen, "Primero la victoria.");
+            var animator = Player().GetComponent<DirectionalSpriteAnimator>();
+            Assert.AreEqual("DSS_Guerrero_Balam_Victoria", animator.CurrentAction.name);
+            Assert.IsFalse(Player().GetComponent<PlayerMovement>().enabled, "Quieto mientras celebra.");
+            // En tiempo real: al abrirse, el menú pone Time.timeScale en 0 y un WaitForSeconds no terminaría nunca.
+            var limit = Time.realtimeSinceStartup + 5f;
+            while (!GameMenuController.IsOpen && Time.realtimeSinceStartup < limit)
+                yield return null;
+
+            Assert.IsNull(animator.CurrentAction);
+            Assert.IsTrue(Player().GetComponent<PlayerMovement>().enabled);
             Assert.IsTrue(GameMenuController.IsOpen, "se abre la elección de Bendición");
             var menu = Object.FindAnyObjectByType<GameMenuController>();
             Assert.AreEqual(MenuTabs.BlessingChoice, menu.CurrentTab);

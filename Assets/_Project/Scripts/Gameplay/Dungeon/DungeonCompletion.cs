@@ -1,10 +1,13 @@
 using System;
+using System.Collections;
 using CronicasDeMexico.Core.Events;
 using CronicasDeMexico.Core.Narrative;
 using CronicasDeMexico.Core.Progress;
 using CronicasDeMexico.Core.Services;
 using CronicasDeMexico.Data.Narrative;
 using CronicasDeMexico.Data.Rewards;
+using CronicasDeMexico.Gameplay.Combat;
+using CronicasDeMexico.Gameplay.Player;
 using UnityEngine;
 
 namespace CronicasDeMexico.Gameplay.Dungeon
@@ -21,6 +24,7 @@ namespace CronicasDeMexico.Gameplay.Dungeon
     public sealed class DungeonCompletion : MonoBehaviour
     {
         public const string FallenFlag = "incursion.caido";
+        const float VictorySeconds = 1.5f;
 
         [SerializeField, Tooltip("Id de la cultura (claves de recompensa).")] string cultureId = "olmeca";
         [SerializeField] string title = "La ciudad bajo la selva";
@@ -110,8 +114,34 @@ namespace CronicasDeMexico.Gameplay.Dungeon
             }
             rewards.LastResult = result;
 
+            StartCoroutine(CelebrateThenShow(string.IsNullOrEmpty(rewards.Progression.SecondaryBlessing) ? MenuTabs.BlessingChoice : MenuTabs.Results));
+        }
+
+        // Antes de abrir la pantalla: el menú pausa el juego y la animación quedaría congelada. Quien aún no tiene esa
+        // animación pasa directo a los resultados.
+        IEnumerator CelebrateThenShow(string tab)
+        {
+            var player = GameObject.FindWithTag("Player");
+            if (player != null && player.TryGetComponent(out CharacterAnimationDriver driver) && driver.PlayVictory())
+            {
+                var controls = new MonoBehaviour[]
+                {
+                    player.GetComponent<PlayerMovement>(), player.GetComponent<PlayerAttack>(), player.GetComponent<PlayerAbility>(), player.GetComponent<PlayerDefense>(),
+                };
+                SetEnabled(controls, false);
+                yield return new WaitForSeconds(VictorySeconds);
+                driver.StopVictory();
+                SetEnabled(controls, true);
+            }
             if (menuChannel != null)
-                menuChannel.Raise(string.IsNullOrEmpty(rewards.Progression.SecondaryBlessing) ? MenuTabs.BlessingChoice : MenuTabs.Results);
+                menuChannel.Raise(tab);
+        }
+
+        static void SetEnabled(MonoBehaviour[] components, bool value)
+        {
+            foreach (var component in components)
+                if (component != null)
+                    component.enabled = value;
         }
     }
 }

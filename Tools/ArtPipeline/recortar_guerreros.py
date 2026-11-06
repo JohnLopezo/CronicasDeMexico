@@ -28,7 +28,8 @@ FINO = 3                  # px de ficha: lo más delgado que esto y alejado del 
 # dano: caja y su escala frente a la fila (ese panel está dibujado más grande). tol: distancia de color al fondo de la
 # ficha. huecos: quitar también el fondo encerrado (entre piernas); se apaga si borra plumas del color del fondo.
 # tol_cuadro: tolerancia propia de una animación, donde la general borra ropa o deja efectos. muerte: hoja, px de hoja por
-# px de juego, cajas y su tolerancia; contorno, si el fondo es tan oscuro como el contorno normal.
+# px de juego, cajas y su tolerancia; contorno, si el fondo es tan oscuro como el contorno normal. defensa y victoria: caja y
+# escala de ese panel, como dano (provisional, una pose; hoy solo el piloto, Balam).
 GUERREROS = {
     "Balam": {
         "ficha": "Hoja de sprites de Balam, Guardián Jaguar.png",
@@ -38,6 +39,7 @@ GUERREROS = {
         "correr": ((740, 865), (868, 990), (1005, 1145)),
         "ataque": ((1185, 1340), (1340, 1475)),
         "dano": ((870, 800, 1060, 1005), 1.2), "tol": 70, "huecos": True,
+        "defensa": ((90, 800, 280, 1005), 1.2), "victoria": ((1215, 800, 1450, 1005), 1.2),
         "muerte": {"ficha": "Hoja_Muerte_ Balam, Guardián Jaguar.png", "factor": 3.4, "tol": 26, "contorno": 20,
                    "cajas": ((350, 470, 608, 628), (636, 520, 886, 628))},
     },
@@ -319,8 +321,16 @@ def main():
         for n, cuadro in enumerate(muerte, 1):
             guardar(f"Guerrero_{nombre}_Muerte{n}_03.png", cuadro)
 
+        poses = []
+        for clave, animacion in (("defensa", "Defensa"), ("victoria", "Victoria")):
+            if clave in g:
+                caja, escala = g[clave]
+                pose = recorte(caja, factor_fila * escala, f"{nombre}_{animacion}", LIENZO_ACCION)
+                guardar(f"Guerrero_{nombre}_{animacion}1_03.png", pose)
+                poses.append(pose)
+
         filas_a.append(vistas + caminar)
-        filas_b.append(correr + ataque + [dano])
+        filas_b.append(correr + ataque + [dano] + poses)
         filas_c.append(muerte)
         print(nombre, "factor", round(float(factor), 2), "fila", round(float(factor_fila), 2))
 

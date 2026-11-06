@@ -122,6 +122,7 @@ GameObject:
   - component: {fileID: 2784412969086955806}
   - component: {fileID: 8246834595236470100}
   - component: {fileID: 5463689997651834027}
+  - component: {fileID: 5848652060610820828}
   m_Layer: 0
   m_Name: Jugador
   m_TagString: Player
@@ -348,6 +349,21 @@ MonoBehaviour:
   leap: {fileID: 0}
   hit: {fileID: 11400000, guid: 8c2e6f49cfa705444a16633658ec689a, type: 2}
   death: {fileID: 11400000, guid: 8c2cf89089b96f34aab8b3f8ffac4c61, type: 2}
+  defense: {fileID: 11400000, guid: d5564642f40e8cf46b89e8c8d704d446, type: 2}
+  victory: {fileID: 11400000, guid: fed8012685111b842af224c301b31101, type: 2}
+--- !u!114 &5848652060610820828
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3936822071325029381}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f0cc5ea7e1ba8a848848a04687283b28, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  damageFactor: 0.5
 --- !u!1 &7862478236392693040
 GameObject:
   m_ObjectHideFlags: 0

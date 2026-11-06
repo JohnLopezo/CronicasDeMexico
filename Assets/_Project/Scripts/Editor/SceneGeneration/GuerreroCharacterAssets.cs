@@ -70,6 +70,7 @@ namespace CronicasDeMexico.Editor.SceneGeneration
                     AssetDatabase.CreateAsset(guardian, path);
                 }
                 guardian.Configure(name, title, description, affinity, status, stats, growth, walk, attack, run, hit, death);
+                guardian.ConfigureDefenseAndVictory(OptionalSet(name, "Defensa"), OptionalSet(name, "Victoria"));
                 EditorUtility.SetDirty(guardian);
                 guardians[name] = guardian;
                 ordered.Add(guardian);
@@ -105,6 +106,10 @@ namespace CronicasDeMexico.Editor.SceneGeneration
             EditorUtility.SetDirty(set);
             return set;
         }
+
+        // Una pose fija. Hoy solo la tiene el piloto, Balam (Docs/Personajes/Auditoria_Animaciones.md).
+        static DirectionalSpriteSet OptionalSet(string name, string animation) =>
+            LoadSprite(name, $"{animation}1", "03") != null ? BuildSet(name, animation, 1f, out _) : null;
 
         static DirectionalSpriteSet.DirectionClip Clip(string name, string animation, string direction)
         {

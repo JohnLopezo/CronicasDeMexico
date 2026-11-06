@@ -29,6 +29,9 @@ namespace CronicasDeMexico.Gameplay.Combat
         /// <summary>Resta a cada golpe (reliquias, Bendiciones, consumibles). Un golpe siempre quita al menos 1.</summary>
         public int Defense { get; set; }
 
+        /// <summary>Parte del daño que se recibe, después de restar la defensa (PlayerDefense). Nunca baja de 1 de daño.</summary>
+        public float DamageFactor { get; set; } = 1f;
+
         /// <summary>Recibió daño; el argumento es la posición de quien lo causó.</summary>
         public event Action<Vector3> Damaged;
 
@@ -48,7 +51,7 @@ namespace CronicasDeMexico.Gameplay.Combat
             if (amount <= 0 || IsDead || Time.time < invulnerableUntil)
                 return false;
 
-            current = Mathf.Max(0, current - Mathf.Max(1, amount - Defense));
+            current = Mathf.Max(0, current - Mathf.CeilToInt(Mathf.Max(1, amount - Defense) * DamageFactor));
             invulnerableUntil = Time.time + invulnerabilityTime;
             Publish();
             Damaged?.Invoke(sourcePosition);

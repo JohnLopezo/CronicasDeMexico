@@ -115,7 +115,7 @@ namespace CronicasDeMexico.Gameplay.Player
         /// </summary>
         public bool TryDodge(Vector3 direction)
         {
-            if (!enabled || Time.time < nextDodgeTime || (health != null && health.IsDead))
+            if (!enabled || Rooted || Time.time < nextDodgeTime || (health != null && health.IsDead))
                 return false;
 
             direction = Vector3.ProjectOnPlane(direction, Vector3.up);
@@ -129,6 +129,9 @@ namespace CronicasDeMexico.Gameplay.Player
         }
 
         public void ApplySlow(float speedFactor) => slow.Apply(speedFactor);
+
+        /// <summary>Quieto en el sitio y sin esquivar, pero con gravedad (al defender).</summary>
+        public bool Rooted { get; set; }
 
         void Update()
         {
@@ -149,7 +152,7 @@ namespace CronicasDeMexico.Gameplay.Player
             }
             else
             {
-                var desiredVelocity = inputDirection * (moveSpeed * slow.Multiplier);
+                var desiredVelocity = Rooted ? Vector3.zero : inputDirection * (moveSpeed * slow.Multiplier);
                 planarVelocity = Vector3.MoveTowards(planarVelocity, desiredVelocity, acceleration * deltaTime);
 
                 if (desiredVelocity.sqrMagnitude > 0.0001f)

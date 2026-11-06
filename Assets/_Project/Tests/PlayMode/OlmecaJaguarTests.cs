@@ -55,37 +55,42 @@ namespace CronicasDeMexico.Tests
             Object.FindObjectsByType<EnemyChaser>(FindObjectsSortMode.None).Single(e => e.name == name);
 
         [UnityTest]
-        public IEnumerator Player_IsTheJaguar_AndAnimatesItsActions()
+        public IEnumerator Player_IsBalam_AndAnimatesItsActions()
         {
             yield return Load(Floor1);
             var player = Object.FindAnyObjectByType<PlayerMovement>();
             var animator = player.GetComponent<DirectionalSpriteAnimator>();
             var spriteRenderer = player.GetComponentInChildren<SpriteBillboard>().GetComponent<SpriteRenderer>();
 
-            Assert.AreEqual(Vector3.one, player.transform.localScale, "Los sprites del jaguar no se escalan.");
-            StringAssert.StartsWith("Jaguar_", spriteRenderer.sprite.name);
-            Assert.AreEqual(0.9f, player.GetComponent<CharacterController>().height, 0.01f, "Cápsula de cuadrúpedo.");
-            Assert.IsNotNull(animator.IdleSet, "Reposo animado.");
+            Assert.AreEqual(Vector3.one, player.transform.localScale, "Los sprites de los guerreros no se escalan.");
+            Assert.AreEqual(IsometricProjection.PixelsPerUnit, spriteRenderer.sprite.pixelsPerUnit, "A la resolución del escenario.");
+            StringAssert.StartsWith("Guerrero_Balam_", spriteRenderer.sprite.name);
+            Assert.AreEqual(1.1f, player.GetComponent<CharacterController>().height, 0.01f, "Cápsula de figura humana.");
             yield return new WaitForSeconds(0.4f);
-            StringAssert.StartsWith("Jaguar_Reposo", spriteRenderer.sprite.name);
+            StringAssert.StartsWith("Guerrero_Balam_Reposo", spriteRenderer.sprite.name);
 
             player.GetComponent<PlayerAttack>().Strike();
-            Assert.AreEqual("DSS_Jaguar_Zarpazo", ActionName(animator));
+            Assert.AreEqual("DSS_Guerrero_Balam_Ataque", ActionName(animator));
             yield return null;
-            StringAssert.StartsWith("Jaguar_Zarpazo", spriteRenderer.sprite.name);
+            StringAssert.StartsWith("Guerrero_Balam_Ataque", spriteRenderer.sprite.name);
             yield return new WaitForSeconds(0.4f);
-            Assert.IsNull(animator.CurrentAction, "El zarpazo termina solo.");
+            Assert.IsNull(animator.CurrentAction, "El ataque termina solo.");
 
             Assert.IsTrue(player.TryDodge(Vector3.left)); // hacia la cámara: la escalera de subida, con su portal, queda al fondo
             yield return null;
-            Assert.AreEqual("DSS_Jaguar_Correr", ActionName(animator), "La esquiva usa el galope.");
+            Assert.AreEqual("DSS_Guerrero_Balam_Correr", ActionName(animator), "La esquiva usa la carrera.");
             yield return new WaitForSeconds(0.6f);
             Assert.IsNull(animator.CurrentAction);
 
             var health = player.GetComponent<Health>();
             Assert.IsTrue(health.TryDamage(10, player.transform.position + Vector3.right));
             yield return null;
-            Assert.AreEqual("DSS_Jaguar_Golpeado", ActionName(animator));
+            Assert.AreEqual("DSS_Guerrero_Balam_Dano", ActionName(animator));
+
+            yield return new WaitForSeconds(1.1f); // invulnerable tras el golpe
+            Assert.IsTrue(health.TryDamage(100000, player.transform.position + Vector3.right));
+            yield return null;
+            Assert.AreEqual("DSS_Guerrero_Balam_Muerte", ActionName(animator), "Cae con su hoja de muerte.");
         }
 
         [UnityTest]

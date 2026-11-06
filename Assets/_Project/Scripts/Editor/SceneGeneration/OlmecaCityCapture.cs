@@ -113,6 +113,30 @@ namespace CronicasDeMexico.Editor.SceneGeneration
                 Row(JaguarCharacterAssets.Corrupted(), CorruptedPoses, new Vector2(8.6f, -7.4f), 2);
             });
 
+        // Los siete guerreros junto al joven guerrero, para comparar tamaños (sin guardar la escena). Fila de arriba, reposo de
+        // frente; luego ataque de lado y último cuadro de la muerte.
+        [MenuItem("Crónicas/Capturar guerreros (pasarela)")]
+        public static void CaptureGuerreros() => CaptureScene(OlmecaCityGenerator.ScenePath, "Guerreros",
+            new[] { ("Pasarela", new Vector2(11f, 9.5f)) }, () =>
+            {
+                var model = UnityEngine.Object.FindAnyObjectByType<Gameplay.Player.PlayerMovement>().GetComponentInChildren<SpriteBillboard>().GetComponent<SpriteRenderer>();
+                var parent = new GameObject("Pasarela").transform;
+                var column = 0;
+                foreach (var guardian in GuerreroCharacterAssets.BuildAll().Values)
+                {
+                    var rows = new[] { guardian.SpriteSet.GetIdle(4), guardian.AttackSet.GetOnceFrame(2, 0f), guardian.DeathSet.GetOnceFrame(2, 99f) };
+                    for (var row = 0; row < rows.Length; row++)
+                    {
+                        var copy = UnityEngine.Object.Instantiate(model.gameObject, parent);
+                        copy.GetComponent<SpriteRenderer>().sprite = rows[row];
+                        copy.transform.localScale = Vector3.one;
+                        copy.transform.position = IsometricProjection.SnapToPixelGrid(
+                            PixelArtSceneBuilder.ToWorld(new Vector2(5.5f + column * 1.6f, 12.5f - row * 1.7f)), 1f / IsometricProjection.PixelsPerUnit);
+                    }
+                    column++;
+                }
+            });
+
         static void CaptureScene(string scenePath, string prefix, (string name, Vector2 focus)[] views, Action prepare = null)
         {
             var folder = CommandLineValue("-capturePath") ?? Path.Combine("Logs", "Capturas");
@@ -126,6 +150,9 @@ namespace CronicasDeMexico.Editor.SceneGeneration
                          FindObjectsInactive.Include, FindObjectsSortMode.None))
                 fragment.transform.parent.gameObject.SetActive(true);
             var camera = UnityEngine.Object.FindAnyObjectByType<IsometricCameraFollow>().GetComponent<Camera>();
+            // SpriteBillboard solo gira en juego: sin esto, el jugador no sale en las capturas.
+            foreach (var billboard in UnityEngine.Object.FindObjectsByType<SpriteBillboard>(FindObjectsSortMode.None))
+                billboard.transform.rotation = camera.transform.rotation;
             camera.orthographicSize = IsometricProjection.OrthographicSize(Height);
             var pixel = 1f / (IsometricProjection.PixelsPerUnit * IsometricProjection.IntegerScale(Height));
 

@@ -604,10 +604,10 @@ namespace CronicasDeMexico.Editor.SceneGeneration
                 ?? throw new InvalidOperationException($"No se encontró {OlmecaPrototypeGenerator.PlayerPrefabPath}.");
             var player = (GameObject)PrefabUtility.InstantiatePrefab(prefab, scene);
             player.transform.position = ToWorld(start);
-            // El jaguar (etapa A) ya está a la resolución del escenario. El sprite provisional, a 32 px por unidad, se
+            // Los guerreros ya están a la resolución del escenario. El sprite provisional, a 32 px por unidad, se
             // escalaba para que cada píxel coincidiera con los del escenario (48 px por unidad), en la raíz porque el
             // animador voltea el sprite con su escala X.
-            if (!JaguarCharacterAssets.SpritesExist())
+            if (!GuerreroCharacterAssets.SpritesExist())
                 player.transform.localScale = Vector3.one * (PlaceholderPixelsPerUnit / IsometricProjection.PixelsPerUnit);
 
             var sprite = player.GetComponentInChildren<SpriteBillboard>();

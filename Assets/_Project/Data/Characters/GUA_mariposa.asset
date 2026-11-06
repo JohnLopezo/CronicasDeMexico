@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cb296e4cd7603524db49c01b6f9ea99e, type: 3}
+  m_Name: GUA_mariposa
+  m_EditorClassIdentifier: 
+  baseStats:
+    maxHealth: 50
+    attack: 10
+    defense: 0
+    maxEnergy: 100
+  growthPerLevel: {x: 6, y: 1.5, z: 0.5, w: 5}
+  id: mariposa
+  displayName: Ameyali
+  description: "Velocidad, evasi\xF3n y poderes de luz."
+  initialAffinity: 4
+  status: 1
+  spriteSet: {fileID: 11400000, guid: 98fcf0fd77389cc41914947b77782ff5, type: 2}
+  attackSet: {fileID: 11400000, guid: 4a5ead79eb9701b479ce197e0525bea4, type: 2}
+  runSet: {fileID: 11400000, guid: 5b676c55e8497a54e9edad63a56efcfc, type: 2}
+  hitSet: {fileID: 11400000, guid: 1516d883aed8fe8448d9995b36351085, type: 2}
+  deathSet: {fileID: 11400000, guid: 6fd0a36b7b76b054e82ad7913d694f45, type: 2}

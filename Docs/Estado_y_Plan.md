@@ -64,7 +64,7 @@ Reglas de trabajo: Claude propone un plan por etapas y espera autorización; no 
 - **Catálogo de misiones**: `Resources/Narrativa/CatalogoMisiones`.
 - **Objetivo de la misión activa en el HUD.**
 - **`SaveService`**: guarda en JSON con versión y copia de respaldo. **Todavía no se llama en el juego.**
-- **Guardián**: `GuardianData`, con el asset `GUA_jaguar`.
+- **Guardián**: `GuardianData`, siete assets `GUA_` (se juega con Balam, `GUA_jaguar`; falta la pantalla de elección).
 
 ### Arco olmeca jugable en `Olmeca_Ciudad`
 1. **`MP_OLM_01`, "El despertar"**: el jugador aparece en la orilla noreste del río, se asoma al agua (recuerdos y reflejo del jaguar), escucha a la figura espiritual (juramento) y busca al artesano.
@@ -144,7 +144,7 @@ EditMode 80/80 y PlayMode 72/72 (al 2026-11-04).
 2. **Afinidad inicial del Jaguar.** Propuesta: oscuridad; el GDD sugería oscuridad o tierra.
 3. **Si el epiclásico y lo tolteca entran en el arco III**, y qué afinidades corresponden a los arcos III a V.
 4. **Si la figura espiritual desaparece** después del juramento.
-5. **Fichas de `Docs/Guerreros/`** (Balam, Xali, Naira, Ameyali, Itzel, Yaret y Ocel). El 2026-11-06 el autor decidió que serán seleccionables en lugar del jaguar; sus enemigos y jefes no cambian. Sprites recortados en `Sprites/Guerreros` y sin usar todavía (`Docs/Bitacora.md`). Quedan dos dudas: son humanos con atuendo animal, y la historia dice que el protagonista despierta con cuerpo de animal (`Docs/Personajes/Protagonista.md`, reflejo de `MP_OLM_01`); y el elemento de Itzel (luz) no está entre las afinidades adoptadas para el águila real (viento/fuego), ni el de Naira (viento) es la inicial del lobo (tierra).
+5. **Fichas de `Docs/Guerreros/`** (Balam, Xali, Naira, Ameyali, Itzel, Yaret y Ocel). El 2026-11-06 el autor decidió que serán seleccionables en lugar del jaguar; sus enemigos y jefes no cambian. Sprites en `Sprites/Guerreros`; el jugador ya es Balam y falta elegir entre ellos (`Docs/Bitacora.md`). Quedan dos dudas: son humanos con atuendo animal, y la historia dice que el protagonista despierta con cuerpo de animal (`Docs/Personajes/Protagonista.md`, reflejo de `MP_OLM_01`); y el elemento de Itzel (luz) no está entre las afinidades adoptadas para el águila real (viento/fuego), ni el de Naira (viento) es la inicial del lobo (tierra).
 
 ## 5. Pendiente del autor (arte)
 

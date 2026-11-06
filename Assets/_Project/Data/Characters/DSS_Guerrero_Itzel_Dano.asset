@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0f3a2dbe737f384da36cc4134724892, type: 3}
+  m_Name: DSS_Guerrero_Itzel_Dano
+  m_EditorClassIdentifier: 
+  clips:
+  - idle: {fileID: 21300000, guid: 5d03ba997085c3542abd0d3956a2bb23, type: 3}
+    walk:
+    - {fileID: 21300000, guid: c57787a2aaef1564cacbe7a1ceb122c6, type: 3}
+  - idle: {fileID: 21300000, guid: ca6f1634b5b49134993e3fabc25bd830, type: 3}
+    walk:
+    - {fileID: 21300000, guid: c57787a2aaef1564cacbe7a1ceb122c6, type: 3}
+  - idle: {fileID: 21300000, guid: ca6f1634b5b49134993e3fabc25bd830, type: 3}
+    walk:
+    - {fileID: 21300000, guid: c57787a2aaef1564cacbe7a1ceb122c6, type: 3}
+  - idle: {fileID: 21300000, guid: ca6f1634b5b49134993e3fabc25bd830, type: 3}
+    walk:
+    - {fileID: 21300000, guid: c57787a2aaef1564cacbe7a1ceb122c6, type: 3}
+  - idle: {fileID: 21300000, guid: 67a55c4cb1de97a478be5ef2f83bf6d6, type: 3}
+    walk:
+    - {fileID: 21300000, guid: c57787a2aaef1564cacbe7a1ceb122c6, type: 3}
+  walkFramesPerSecond: 5

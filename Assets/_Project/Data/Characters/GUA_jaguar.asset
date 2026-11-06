@@ -12,9 +12,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cb296e4cd7603524db49c01b6f9ea99e, type: 3}
   m_Name: GUA_jaguar
   m_EditorClassIdentifier: 
+  baseStats:
+    maxHealth: 50
+    attack: 10
+    defense: 0
+    maxEnergy: 100
+  growthPerLevel: {x: 6, y: 1.5, z: 0.5, w: 5}
   id: jaguar
-  displayName: Jaguar
+  displayName: Balam
   description: Fuerza, movilidad y combate cercano.
   initialAffinity: 5
   status: 1
-  spriteSet: {fileID: 11400000, guid: 4ab5056b146b7ab438643131a533fd3c, type: 2}
+  spriteSet: {fileID: 11400000, guid: defc45a0a09cc5346be480cad68d5c3d, type: 2}
+  attackSet: {fileID: 11400000, guid: 21017bb216ef5dd489eb88a56e4624ff, type: 2}
+  runSet: {fileID: 11400000, guid: 752d08dc2a19a034bacbf36eda1c8202, type: 2}
+  hitSet: {fileID: 11400000, guid: 8c2e6f49cfa705444a16633658ec689a, type: 2}
+  deathSet: {fileID: 11400000, guid: 8c2cf89089b96f34aab8b3f8ffac4c61, type: 2}

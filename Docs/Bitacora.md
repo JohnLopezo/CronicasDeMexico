@@ -21,6 +21,19 @@ Plantilla:
 
 ---
 
+## 2026-11-06 — i7-10700: Balam reemplaza al jaguar jugable (etapa 2)
+
+- **Rama / último commit:** `feature/prototipo-olmeca`, sobre `31e2f4d` (etapa 1). Sin push.
+- **Hecho:** `GuerreroCharacterAssets` crea 35 `DSS_Guerrero_*` y 7 `GUA_` con todas sus animaciones. `PlayerPrefabUpgrade` pone a Balam en `Jugador.prefab` (cápsula 1,1 m). Balam conserva el id `jaguar`: partidas guardadas y `OBJ_marca_jaguar` siguen valiendo. Las escenas no se regeneraron: heredan del prefab.
+- **Cambio frente a la etapa 1:** los guerreros van a **48 PPU**, no 32: el jugador no escala su raíz y a 32 mediría 1,69 m frente a 1,125 m de los NPC.
+- **Capturas:** la herramienta no mostraba al jugador en ninguna (en modo edición el billboard no gira); corregido. Nuevo menú **Crónicas → Capturar guerreros (pasarela)**.
+- **Pruebas:** EditMode 87/87, PlayMode 72/72 (PlayMode antes de tocar la herramienta de captura, que es solo de editor).
+- **Pendiente de probar:** jugarlo; rendimiento en i5 y Android sin cambios esperados. Los 3 `caido()` se ven mal en la pasarela.
+- **Incoherencia conocida hasta la etapa 4:** los diálogos siguen llamando "jaguar" al jugador; atributos iguales en los 7.
+- **Siguiente:** etapa 3 (pantalla de selección en Nueva partida, guardar `guardianId`, aplicar al cargar).
+
+---
+
 ## 2026-11-06 — i7-10700: sprites de los 7 guerreros (etapa 1)
 
 - **Rama / último commit:** `feature/prototipo-olmeca`, sobre `6e9a5f4`. EditMode 80/80; PlayMode sin ejecutar. Sin push.

@@ -42,7 +42,7 @@ namespace CronicasDeMexico.Editor.PixelArt
         static DateTime pivotsStamp;
 
         // Subir el número reimporta los sprites cuando cambian estos ajustes.
-        public override uint GetVersion() => 2;
+        public override uint GetVersion() => 3;
 
         void OnPreprocessTexture()
         {
@@ -75,10 +75,15 @@ namespace CronicasDeMexico.Editor.PixelArt
             settings.spriteGenerateFallbackPhysicsShape = false;
 
             var spriteName = Path.GetFileNameWithoutExtension(assetPath);
-            if (assetPath.StartsWith(NpcFolder + "/", StringComparison.Ordinal)
-                || assetPath.StartsWith(GuerrerosFolder + "/", StringComparison.Ordinal))
+            if (assetPath.StartsWith(GuerrerosFolder + "/", StringComparison.Ordinal))
             {
-                // NPC de Tools/ArtPipeline/recortar_npc.py y guerreros de recortar_guerreros.py. A 32 PPU, como los provisionales: la escala de la raíz de
+                // Guerreros de Tools/ArtPipeline/recortar_guerreros.py. A los PPU del escenario: el jugador no escala su raíz.
+                settings.spriteAlignment = (int)SpriteAlignment.Custom;
+                settings.spritePivot = NpcPivot;
+            }
+            else if (assetPath.StartsWith(NpcFolder + "/", StringComparison.Ordinal))
+            {
+                // NPC de Tools/ArtPipeline/recortar_npc.py. A 32 PPU, como los provisionales: la escala de la raíz de
                 // CreateCharacter los deja a un píxel de pantalla por píxel de sprite, sin cambiar colisiones ni radios.
                 importer.spritePixelsPerUnit = NpcPixelsPerUnit;
                 settings.spritePixelsPerUnit = NpcPixelsPerUnit;

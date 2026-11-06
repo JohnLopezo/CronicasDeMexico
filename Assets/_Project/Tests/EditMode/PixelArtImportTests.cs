@@ -29,10 +29,8 @@ namespace CronicasDeMexico.Tests
             {
                 var importer = (TextureImporter)AssetImporter.GetAtPath(path);
                 Assert.AreEqual(TextureImporterType.Sprite, importer.textureType, path);
-                // Los NPC y los guerreros van a 32 PPU, como los provisionales: la escala de la raíz los deja a la resolución del escenario.
-                var expectedPixelsPerUnit = path.StartsWith(SpritesFolder + "/Npc/") || path.StartsWith(SpritesFolder + "/Guerreros/")
-                    ? 32f
-                    : PixelsPerUnit;
+                // Los NPC van a 32 PPU, como los provisionales: la escala de la raíz los deja a la resolución del escenario.
+                var expectedPixelsPerUnit = path.StartsWith(SpritesFolder + "/Npc/") ? 32f : PixelsPerUnit;
                 Assert.AreEqual(expectedPixelsPerUnit, importer.spritePixelsPerUnit, 1e-3f, path);
                 Assert.AreEqual(FilterMode.Point, importer.filterMode, path);
                 Assert.IsFalse(importer.mipmapEnabled, path);

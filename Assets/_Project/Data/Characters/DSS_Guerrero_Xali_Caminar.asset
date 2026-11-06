@@ -1,0 +1,42 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0f3a2dbe737f384da36cc4134724892, type: 3}
+  m_Name: DSS_Guerrero_Xali_Caminar
+  m_EditorClassIdentifier: 
+  clips:
+  - idle: {fileID: 21300000, guid: d77a86bc1d5eeaf488959eb0f87658ee, type: 3}
+    walk:
+    - {fileID: 21300000, guid: e8e6eabbae83b5843893c72cfac831f7, type: 3}
+    - {fileID: 21300000, guid: 69577e9c508bc944bbc31ee26f26161a, type: 3}
+  - idle: {fileID: 21300000, guid: 5a386b40ba348ac449706b35e465a49f, type: 3}
+    walk:
+    - {fileID: 21300000, guid: b008877d697bfd34e93a25819534b6ed, type: 3}
+    - {fileID: 21300000, guid: ae7a3a6892159a440a170e0991f079c4, type: 3}
+    - {fileID: 21300000, guid: 8a748c0feb3e2044c95a324386117059, type: 3}
+    - {fileID: 21300000, guid: 1cae9d9ded01f764d9bd9b23e783cad0, type: 3}
+  - idle: {fileID: 21300000, guid: 5a386b40ba348ac449706b35e465a49f, type: 3}
+    walk:
+    - {fileID: 21300000, guid: b008877d697bfd34e93a25819534b6ed, type: 3}
+    - {fileID: 21300000, guid: ae7a3a6892159a440a170e0991f079c4, type: 3}
+    - {fileID: 21300000, guid: 8a748c0feb3e2044c95a324386117059, type: 3}
+    - {fileID: 21300000, guid: 1cae9d9ded01f764d9bd9b23e783cad0, type: 3}
+  - idle: {fileID: 21300000, guid: 5a386b40ba348ac449706b35e465a49f, type: 3}
+    walk:
+    - {fileID: 21300000, guid: b008877d697bfd34e93a25819534b6ed, type: 3}
+    - {fileID: 21300000, guid: ae7a3a6892159a440a170e0991f079c4, type: 3}
+    - {fileID: 21300000, guid: 8a748c0feb3e2044c95a324386117059, type: 3}
+    - {fileID: 21300000, guid: 1cae9d9ded01f764d9bd9b23e783cad0, type: 3}
+  - idle: {fileID: 21300000, guid: 5850388aafe642145b8f0dd18ff73349, type: 3}
+    walk:
+    - {fileID: 21300000, guid: e1d56a2050de32f45bb28c3c8d515384, type: 3}
+    - {fileID: 21300000, guid: d37c479bf204db64ab1161cb1ccbff5e, type: 3}
+  walkFramesPerSecond: 8

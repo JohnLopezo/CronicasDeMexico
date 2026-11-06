@@ -62,10 +62,11 @@ namespace CronicasDeMexico.Editor.SceneGeneration
                     changed = true;
                 }
 
-                // Etapa A del plan de personajes: el jugador es el jaguar (sprites del flujo, sin escalar la raíz).
-                if (JaguarCharacterAssets.SpritesExist())
+                // El jugador es un guerrero, a la resolución del escenario, sin escalar la raíz. Hasta que exista la pantalla
+                // de elección, Balam.
+                if (GuerreroCharacterAssets.SpritesExist())
                 {
-                    ApplyJaguar(root);
+                    ApplyGuardian(root, GuerreroCharacterAssets.BuildAll()[GuerreroCharacterAssets.DefaultGuerrero]);
                     changed = true;
                 }
 
@@ -78,19 +79,18 @@ namespace CronicasDeMexico.Editor.SceneGeneration
             }
         }
 
-        static void ApplyJaguar(GameObject root)
+        static void ApplyGuardian(GameObject root, GuardianData guardian)
         {
-            var sets = JaguarCharacterAssets.Player();
             var animator = root.GetComponent<DirectionalSpriteAnimator>();
-            animator.SpriteSet = sets.Walk;
-            animator.IdleSet = sets.Idle;
+            animator.SpriteSet = guardian.SpriteSet;
+            animator.IdleSet = null; // las fichas traen una sola pose de reposo
             var spriteRenderer = root.GetComponentInChildren<SpriteBillboard>().GetComponent<SpriteRenderer>();
-            spriteRenderer.sprite = sets.Idle.GetIdle(DirectionalSpriteSet.DirectionCount - 1);
+            spriteRenderer.sprite = guardian.SpriteSet.GetIdle(DirectionalSpriteSet.DirectionCount - 1);
             spriteRenderer.sharedMaterial = PixelArtSceneBuilder.CharacterMaterial();
-            JaguarCharacterAssets.ConfigureController(root.GetComponent<CharacterController>());
+            GuerreroCharacterAssets.ConfigureController(root.GetComponent<CharacterController>());
 
             var driver = root.GetComponent<CharacterAnimationDriver>() ?? root.AddComponent<CharacterAnimationDriver>();
-            driver.Configure(animator, sets["Zarpazo"], sets["Correr"], null, null, sets["Golpeado"], sets["Muerte"]);
+            driver.Configure(animator, guardian.AttackSet, guardian.RunSet, null, null, guardian.HitSet, guardian.DeathSet);
             EditorUtility.SetDirty(animator);
             EditorUtility.SetDirty(driver);
         }

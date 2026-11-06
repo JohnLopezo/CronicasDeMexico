@@ -1,0 +1,41 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0f3a2dbe737f384da36cc4134724892, type: 3}
+  m_Name: DSS_Guerrero_Xali_Correr
+  m_EditorClassIdentifier: 
+  clips:
+  - idle: {fileID: 21300000, guid: d77a86bc1d5eeaf488959eb0f87658ee, type: 3}
+    walk:
+    - {fileID: 21300000, guid: 3830a572a44f9dc448db726bc5a5826f, type: 3}
+    - {fileID: 21300000, guid: 3c09b01c421f5cc44bfa11b7af536360, type: 3}
+    - {fileID: 21300000, guid: f139f7c869bb26144b622a84886a2366, type: 3}
+  - idle: {fileID: 21300000, guid: 5a386b40ba348ac449706b35e465a49f, type: 3}
+    walk:
+    - {fileID: 21300000, guid: 3830a572a44f9dc448db726bc5a5826f, type: 3}
+    - {fileID: 21300000, guid: 3c09b01c421f5cc44bfa11b7af536360, type: 3}
+    - {fileID: 21300000, guid: f139f7c869bb26144b622a84886a2366, type: 3}
+  - idle: {fileID: 21300000, guid: 5a386b40ba348ac449706b35e465a49f, type: 3}
+    walk:
+    - {fileID: 21300000, guid: 3830a572a44f9dc448db726bc5a5826f, type: 3}
+    - {fileID: 21300000, guid: 3c09b01c421f5cc44bfa11b7af536360, type: 3}
+    - {fileID: 21300000, guid: f139f7c869bb26144b622a84886a2366, type: 3}
+  - idle: {fileID: 21300000, guid: 5a386b40ba348ac449706b35e465a49f, type: 3}
+    walk:
+    - {fileID: 21300000, guid: 3830a572a44f9dc448db726bc5a5826f, type: 3}
+    - {fileID: 21300000, guid: 3c09b01c421f5cc44bfa11b7af536360, type: 3}
+    - {fileID: 21300000, guid: f139f7c869bb26144b622a84886a2366, type: 3}
+  - idle: {fileID: 21300000, guid: 5850388aafe642145b8f0dd18ff73349, type: 3}
+    walk:
+    - {fileID: 21300000, guid: 3830a572a44f9dc448db726bc5a5826f, type: 3}
+    - {fileID: 21300000, guid: 3c09b01c421f5cc44bfa11b7af536360, type: 3}
+    - {fileID: 21300000, guid: f139f7c869bb26144b622a84886a2366, type: 3}
+  walkFramesPerSecond: 12

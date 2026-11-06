@@ -77,7 +77,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 70130ea16410e294ebfac6d933c3de20, type: 3}
+  m_Sprite: {fileID: 21300000, guid: b2ebdcfd00ecad1448e970eddc291f2b, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -164,13 +164,13 @@ CharacterController:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Height: 0.9
+  m_Height: 1.1
   m_Radius: 0.24
   m_SlopeLimit: 45
   m_StepOffset: 0.3
   m_SkinWidth: 0.03
   m_MinMoveDistance: 0
-  m_Center: {x: 0, y: 0.45, z: 0}
+  m_Center: {x: 0, y: 0.55, z: 0}
 --- !u!114 &1840376728134561718
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -207,9 +207,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   motionSource: {fileID: 1840376728134561718}
   spriteRenderer: {fileID: 3110209773335240238}
-  spriteSet: {fileID: 11400000, guid: e1ffe2b08b58be34a9a5ff3d55426f25, type: 2}
+  spriteSet: {fileID: 11400000, guid: defc45a0a09cc5346be480cad68d5c3d, type: 2}
   cameraTransform: {fileID: 0}
-  idleSet: {fileID: 11400000, guid: 24496a8b1c54eaf4bb0668c8510910d1, type: 2}
+  idleSet: {fileID: 0}
 --- !u!114 &8155768554170281419
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -342,12 +342,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animator: {fileID: 1161331672111561633}
-  attack: {fileID: 11400000, guid: f9fc9f3364cedbd44a9bc48a3701079e, type: 2}
-  run: {fileID: 11400000, guid: 82f053dda1017de469c243a1d81c4a8e, type: 2}
+  attack: {fileID: 11400000, guid: 21017bb216ef5dd489eb88a56e4624ff, type: 2}
+  run: {fileID: 11400000, guid: 752d08dc2a19a034bacbf36eda1c8202, type: 2}
   crouch: {fileID: 0}
   leap: {fileID: 0}
-  hit: {fileID: 11400000, guid: fadde8f18f4e06f4697ce16505cf5b83, type: 2}
-  death: {fileID: 11400000, guid: 95810eea96aa3db4d991cf27b8ec4ca4, type: 2}
+  hit: {fileID: 11400000, guid: 8c2e6f49cfa705444a16633658ec689a, type: 2}
+  death: {fileID: 11400000, guid: 8c2cf89089b96f34aab8b3f8ffac4c61, type: 2}
 --- !u!1 &7862478236392693040
 GameObject:
   m_ObjectHideFlags: 0

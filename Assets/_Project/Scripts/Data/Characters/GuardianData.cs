@@ -23,8 +23,8 @@ namespace CronicasDeMexico.Data.Characters
     }
 
     /// <summary>
-    /// Forma animal que el jugador elige como Guardián. Su id es el que se guarda (SaveData.guardianId). El vertical
-    /// slice solo tiene el Jaguar; la pantalla de elección se hará cuando haya más de uno.
+    /// Guerrero que el jugador elige como Guardián, ligado a un animal. Su id es el que se guarda (SaveData.guardianId).
+    /// Hoy se juega con Balam; falta la pantalla de elección.
     /// </summary>
     [CreateAssetMenu(menuName = "Crónicas/Personajes/Guardián", fileName = "GUA_")]
     public sealed class GuardianData : ScriptableObject, IStatProfile
@@ -49,8 +49,18 @@ namespace CronicasDeMexico.Data.Characters
 
         [SerializeField] SpeciesStatus status;
 
-        [SerializeField, Tooltip("Sprites del personaje (provisionales hasta el arte final).")]
+        [SerializeField, Tooltip("Sprites del personaje: reposo y caminata.")]
         DirectionalSpriteSet spriteSet;
+
+        [SerializeField] DirectionalSpriteSet attackSet;
+        [SerializeField] DirectionalSpriteSet runSet;
+        [SerializeField] DirectionalSpriteSet hitSet;
+        [SerializeField] DirectionalSpriteSet deathSet;
+
+        public DirectionalSpriteSet AttackSet => attackSet;
+        public DirectionalSpriteSet RunSet => runSet;
+        public DirectionalSpriteSet HitSet => hitSet;
+        public DirectionalSpriteSet DeathSet => deathSet;
 
         public string Id => id;
         public string DisplayName => displayName;
@@ -65,6 +75,17 @@ namespace CronicasDeMexico.Data.Characters
             var gained = Mathf.Max(0, level - 1);
             return baseStats + new CharacterStats(Mathf.FloorToInt(growthPerLevel.x * gained), Mathf.FloorToInt(growthPerLevel.y * gained),
                 Mathf.FloorToInt(growthPerLevel.z * gained), Mathf.FloorToInt(growthPerLevel.w * gained));
+        }
+
+        public void Configure(string name, DirectionalSpriteSet walk, DirectionalSpriteSet attack, DirectionalSpriteSet run,
+            DirectionalSpriteSet hit, DirectionalSpriteSet death)
+        {
+            displayName = name;
+            spriteSet = walk;
+            attackSet = attack;
+            runSet = run;
+            hitSet = hit;
+            deathSet = death;
         }
 
         public static GuardianData Create(string id, string displayName, string description, Affinity initialAffinity,

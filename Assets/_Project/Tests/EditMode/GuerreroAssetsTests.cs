@@ -42,19 +42,17 @@ namespace CronicasDeMexico.Tests
         }
 
         // Reaparece a los 3 s (PlayerDamageResponse, DefeatReturn): la secuencia debe caber entera.
-        [TestCase("jaguar", 5)]
+        [TestCase("jaguar", 7)]
         [TestCase("ajolote", 7)]
         [TestCase("aguila", 7)]
         [TestCase("quetzal", 7)]
-        [TestCase("lobo", 2)]
-        [TestCase("mariposa", 2)]
-        [TestCase("xolo", 2)]
+        [TestCase("lobo", 3)]
+        [TestCase("mariposa", 3)]
+        [TestCase("xolo", 3)]
         public void Death_FitsBeforeRespawning_WithItsFeetOnTheGround(string id, int frames)
         {
             var death = AssetDatabase.LoadAssetAtPath<GuardianData>($"Assets/_Project/Data/Characters/GUA_{id}.asset").DeathSet;
-            // Con pocos cuadros dura menos: el mínimo es 1 por segundo, y se queda tumbado hasta reaparecer.
-            Assert.LessOrEqual(death.Duration, 2.8f + 0.001f);
-            Assert.GreaterOrEqual(death.Duration, 2f);
+            Assert.AreEqual(2.8f, death.Duration, 0.001f);
             Assert.AreEqual(frames, Mathf.RoundToInt(death.Duration * death.FramesPerSecond));
             var last = death.GetOnceFrame(2, 99f);
             Assert.AreEqual(96f, last.rect.height, "El espíritu se eleva.");

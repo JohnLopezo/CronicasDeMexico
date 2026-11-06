@@ -21,6 +21,14 @@ Plantilla:
 
 ---
 
+## 2026-11-06 — i7-10700: muertes con el espíritu completo
+
+- **Rama / último commit:** `feature/prototipo-olmeca`, sobre `4a11457`. EditMode 107/107, PlayMode 80/80. Subido.
+- **Pedido del autor:** mejor resultado en las muertes, que perdían detalles.
+- **Hecho:** Balam y Xali separan el espíritu por su brillo sobre el fondo oscuro (`brillo_sobre_fondo`): se ven completos el jaguar y el ajolote, en 7 cuadros cada uno. Balam se aclara con `gamma`, que no quema las luces. Naira, Ameyali y Ocel caen en 3 cuadros: daño, inclinada y tumbada.
+
+---
+
 ## 2026-11-06 — i7-10700: sprites sin cortar
 
 - **Rama / último commit:** `feature/prototipo-olmeca`, sobre `e333b0a`. EditMode 107/107, PlayMode 80/80. Subido.

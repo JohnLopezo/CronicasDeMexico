@@ -9,7 +9,7 @@ El proyecto busca ofrecer una experiencia de exploración y fantasía inspirada 
 - **Exploración:** escenarios inspirados en antiguas civilizaciones mexicanas.
 - **Combate:** enfrentamientos contra criaturas, enemigos y guardianes.
 - **Mazmorras:** templos y desafíos con distintos niveles de dificultad.
-- **Personajes:** protagonistas inspirados en animales representativos de México.
+- **Personajes:** guerreros y guerreras elegibles, ligados al espíritu de animales representativos de México.
 - **Habilidades elementales:** poderes de agua, fuego, tierra, viento, luz y oscuridad.
 - **Progresión:** desbloqueo de habilidades, mejoras y nuevas regiones.
 - **Estilo HD-2D:** personajes pixel art integrados en escenarios 3D con iluminación y efectos visuales modernos.

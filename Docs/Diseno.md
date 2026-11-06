@@ -8,7 +8,7 @@
 
 ## 1. Visión y pilares
 
-Crónicas de México es una aventura fantástica sobre la memoria de las culturas que habitaron el actual territorio mexicano. Un protagonista renacido como un Guardián animal viaja entre memorias de distintas épocas, explora asentamientos y regiones, conoce personajes, supera mazmorras y recibe poderes que transforman su estilo de combate. Pilares: (1) identidad mexicana investigada y respetuosa; (2) exploración y narrativa ambiental; (3) combate accesible, preciso y variado; (4) progresión por culturas, recuerdos y bendiciones; (5) rendimiento y legibilidad en móviles.
+Crónicas de México es una aventura fantástica sobre la memoria de las culturas que habitaron el actual territorio mexicano. Un protagonista renacido como guerrero o guerrera, ligado al espíritu de un animal, viaja entre memorias de distintas épocas, explora asentamientos y regiones, conoce personajes, supera mazmorras y recibe poderes que transforman su estilo de combate. Pilares: (1) identidad mexicana investigada y respetuosa; (2) exploración y narrativa ambiental; (3) combate accesible, preciso y variado; (4) progresión por culturas, recuerdos y bendiciones; (5) rendimiento y legibilidad en móviles.
 
 La inspiración funcional combina viaje entre asentamientos y rutas regionales con mazmorras de acción por salas. No copiar material protegido de Pokémon, Soul Knight ni otras obras.
 
@@ -16,7 +16,7 @@ La inspiración funcional combina viaje entre asentamientos y rutas regionales c
 
 > **Alineado con `Docs/Historia_Mundo.md` (2026-10-29), que es la referencia narrativa.** Cambia: *Mundo de la Memoria* → **Mundo de las Memorias**; *El Olvido* → **Sombra del Olvido**; el protagonista es **una persona sin género definido** que muere en un accidente durante una expedición arqueológica (el "objeto antiguo" queda como posible detalle). El texto siguiente se conserva como antecedente.
 
-Un joven muere tras una expedición vinculada a un objeto antiguo. Su conciencia despierta en el **Mundo de la Memoria**, una dimensión fantástica que conserva ecos de comunidades y civilizaciones de México. No vuelve como humano: su alma se vincula al animal Guardián que el jugador elige. Una fuerza denominada provisionalmente **El Olvido** altera recuerdos, lugares y guardianes espirituales. El protagonista recupera Fragmentos de Memoria y aprende que las culturas no son piezas congeladas: nacen, se transforman, conviven e influyen unas en otras. Su misión es impedir la destrucción de esas memorias, no borrar el cambio histórico.
+Una persona muere tras una expedición vinculada a un objeto antiguo. Su conciencia despierta en el **Mundo de la Memoria**, una dimensión fantástica que conserva ecos de comunidades y civilizaciones de México. Vuelve en un cuerpo nuevo: es el Guardián que el jugador elige, un guerrero o guerrera ligado al espíritu de su animal. Una fuerza denominada provisionalmente **El Olvido** altera recuerdos, lugares y guardianes espirituales. El protagonista recupera Fragmentos de Memoria y aprende que las culturas no son piezas congeladas: nacen, se transforman, conviven e influyen unas en otras. Su misión es impedir la destrucción de esas memorias, no borrar el cambio histórico.
 
 Tono: aventura colorida, misteriosa, emotiva y ocasionalmente solemne; los dioses o entidades importantes deben tener presencia y motivaciones, no ser simples monstruos. La revelación final enfrenta al protagonista con El Olvido y una decisión sobre la preservación de las memorias. Los finales y diálogos definitivos están pendientes de guion.
 
@@ -41,22 +41,24 @@ Las culturas coexistieron durante periodos extensos. La transición entre capít
 
 ## 4. Personaje y Guardianes
 
+> **Decisión del autor (2026-11-06):** los Guardianes son personas, no animales. Estado y mejoras en `Docs/Personajes/Guerreros.md`. Los roles de esta tabla siguen siendo la meta para los estilos de combate propios, que aún no existen.
+>
 > **Alineado con `Docs/Historia_Mundo.md` §2.3 (2026-10-29):** la **Mariposa monarca** pasa a ser Guardián inicial (velocidad, evasión, luz); la **Vaquita marina** se conserva como Guardián posible a futuro. Ficha completa en `Docs/Personajes/Protagonista.md`.
 
-El jugador define un nombre y elige **un Guardián inicial**, que puede mantener durante la aventura. Cada Guardián tiene silueta, personalidad, movimiento, estadísticas, ataque básico, ataque pesado, tres habilidades activas, definitiva y pasiva; evolución espiritual cosmética y funcional en etapas posteriores. Los elementos base son **Agua, Tierra, Fuego, Viento, Luz y Oscuridad**. Las afinidades no determinan la personalidad.
+El jugador elige **un Guardián** (Balam, Xali, Naira, Ameyali, Itzel, Yaret u Ocel), que puede cambiar en el menú durante la aventura. Cada Guardián tiene silueta, personalidad, movimiento, estadísticas, ataque básico, ataque pesado, tres habilidades activas, definitiva y pasiva; evolución espiritual cosmética y funcional en etapas posteriores. Los elementos base son **Agua, Tierra, Fuego, Viento, Luz y Oscuridad**. Las afinidades no determinan la personalidad.
 
 | Guardián | Rol propuesto | Afinidad propuesta | Identidad jugable |
 |---|---|---|---|
-| Jaguar | Daño cercano | Oscuridad/Tierra | Garras, salto, agresividad y remates |
-| Águila real | Movilidad/distancia | Viento | Ataques aéreos, detección y reposicionamiento |
-| Ajolote | Control/soporte | Agua | Proyectiles y curación limitada |
-| Lobo mexicano | Equilibrado | Viento/Tierra | Embestidas, aullido, supervivencia |
-| Quetzal | Distancia/apoyo | Viento/Luz | Energía espiritual y exploración |
-| Xoloitzcuintle | Protección/espiritual | Por definir | Vínculo con memorias y defensa |
+| Balam (jaguar) | Daño cercano | Tierra/Oscuridad | Golpes, salto, agresividad y remates |
+| Itzel (águila real) | Movilidad/distancia | Luz/Viento | Ataques aéreos, detección y reposicionamiento |
+| Xali (ajolote) | Control/soporte | Agua/Luz | Proyectiles y curación limitada |
+| Naira (lobo mexicano) | Equilibrado | Viento/Tierra | Embestidas, aullido, supervivencia |
+| Yaret (quetzal) | Distancia/apoyo | Viento/Luz | Energía espiritual y exploración |
+| Ocel (xoloitzcuintle) | Protección/espiritual | Oscuridad/Luz | Vínculo con memorias y defensa |
 | Vaquita marina | Control acuático | Agua | Olas y empuje; viabilidad de movilidad terrestre por definir |
-| Mariposa monarca | Por definir | Por definir | Personaje futuro o fauna/NPC |
+| Ameyali (mariposa monarca) | Velocidad/evasión | Luz | Polvo, danza y alas espirituales |
 
-**Alcance inicial:** implementar completamente **un** Guardián y usar los demás como diseño futuro; Jaguar es candidato recomendado, sujeto a lo existente en el proyecto. No todos los animales mencionados son endémicos exclusivos; verificar distribución y contexto cultural.
+**Alcance actual:** los siete se pueden elegir y jugar, con el mismo combate y atributos propios. No todos los animales mencionados son endémicos exclusivos; verificar distribución y contexto cultural.
 
 ## 5. Dirección artística y cámara
 
@@ -141,7 +143,7 @@ Arquetipos: melee, rápido, tanque, distancia, mágico/apoyo, volador, control, 
 
 Cada jefe de capítulo concede una **elección entre tres Bendiciones**, de la cual el jugador toma una; la Bendición acompaña al personaje a capítulos posteriores. Ejemplos olmecas: **Fuerza de la Tierra** (defensa), **Instinto del Jaguar** (daño cercano/movilidad) y **Memoria del Agua** (mejora limitada de recuperación). Números y efectos definitivos pendientes de balance.
 
-Evolución espiritual por etapas (Guardián → Despierto → Ancestral), sin obligar a que el animal evolucione como una criatura de colección. Builds defensivas, ofensivas, movilidad y soporte; limitar ranuras/capacidad para impedir acumulación desequilibrada. XP, materiales, equipo ligero, cosméticos y Códice complementan la progresión. Las habilidades obtenidas de entidades divinas deben modificar significativamente opciones de la siguiente mazmorra.
+Evolución espiritual por etapas (Guardián → Despierto → Ancestral), sin obligar a que el Guardián evolucione como una criatura de colección. Builds defensivas, ofensivas, movilidad y soporte; limitar ranuras/capacidad para impedir acumulación desequilibrada. XP, materiales, equipo ligero, cosméticos y Códice complementan la progresión. Las habilidades obtenidas de entidades divinas deben modificar significativamente opciones de la siguiente mazmorra.
 
 ## 12. NPC, misiones y narrativa interactiva
 

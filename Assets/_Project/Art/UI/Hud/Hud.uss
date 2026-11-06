@@ -282,6 +282,15 @@
     white-space: normal;
 }
 
+/* Múltiplo exacto del lienzo de 48×64, para que los píxeles no se deformen. */
+.hud-menu__portrait {
+    width: 96px;
+    height: 128px;
+    flex-shrink: 0;
+    margin-right: 12px;
+    -unity-background-scale-mode: scale-to-fit;
+}
+
 .hud-menu__row-button {
     min-width: 140px;
     height: 48px;

@@ -17,7 +17,7 @@ Implementación: `Core/Progress/Inventory.cs` (sin dependencias de Unity más al
 
 - **Topes.** El tope (`maxStack`) va en cada `ItemData`. Lo que no cabe se descarta y el aviso solo cuenta lo que
   entró. Los topes bajos de los consumibles evitan acumular curaciones: los combates siguen siendo exigentes.
-- **Reliquias.** Son accesorios del animal: amuletos, collares, marcas o talismanes, nunca armaduras humanas. Hay dos
+- **Reliquias.** Son accesorios: amuletos, collares, marcas o talismanes, nunca armaduras. Hay dos
   ranuras. Las que tienen `guardianOnly` solo suman con ese Guardián; por ejemplo, la Marca del jaguar.
 - **Objetos únicos y narrativos.** No se venden ni se dan en trueque, y tampoco se pierden al caer (la penalización
   es 0). Una reliquia equipada tampoco se puede vender.

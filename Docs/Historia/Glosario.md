@@ -6,7 +6,7 @@ Términos, nombres y conceptos recurrentes. **F** = ficción del juego; **D** = 
 |---|---|---|
 | **Mundo de las Memorias** | Plano fantástico donde permanecen los ecos de los pueblos, sus paisajes, relatos y conocimientos. No reconstruye el mundo de los muertos de ninguna cultura. Sustituye al "Mundo de la Memoria" del GDD | F |
 | **Sombra del Olvido** | Entidad ficticia antagonista, nacida de la ruptura entre la memoria y la comprensión. Se alimenta de lo que deja de contarse; quiere detener el cambio borrando toda diferencia. Sustituye a "El Olvido" del GDD | F |
-| **Guardián** (protagonista) | El alma humana renacida en forma animal, elegida por el jugador | F |
+| **Guardián** (protagonista) | El alma humana renacida como guerrero o guerrera ligado al espíritu de un animal, elegido por el jugador | F |
 | **Guardianes** (de las mazmorras) | Seres que protegen memorias, reliquias o conocimientos. Pueden ser originales o, si se investiga, representaciones de tradiciones religiosas concretas. Se enfrentan al protagonista por corrupción, confusión o deber, no por maldad | F (o D si se investiga) |
 | **Guardián de la Piedra Viva** | Jefe de la mazmorra olmeca, figura original inspirada en la monumentalidad escultórica olmeca; no es una deidad histórica | F |
 | **Figura espiritual** | Presencia que recibe al protagonista al despertar. No es un dios ni un enemigo | F |

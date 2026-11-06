@@ -125,7 +125,7 @@ Distinción: **D** = documentado arqueológicamente; **I** = interpretación art
 | 2 | Suelo | Tiles de camino, tierra, pasto, orillas | Por posición en la rejilla |
 | 3 | Detalles de suelo | Guijarros, hojas caídas, sombras pintadas | Sobre el suelo |
 | 4 | Objetos | Columnas, palmas, ruinas, cabeza colosal, Jaguar, NPC | **Ordenados por su punto de apoyo** (lo más cercano a la cámara se dibuja después) |
-| 5 | Primer plano | Copas y follaje delantero | Se vuelven semitransparentes o se disuelven con tramado cuando el Jaguar queda detrás |
+| 5 | Primer plano | Copas y follaje delantero | Se vuelven semitransparentes o se disuelven con tramado cuando el jugador queda detrás |
 | 6 | Efectos | Partículas, interacción | Encima |
 | 7 | UI | HUD (UI Toolkit) | Resolución nativa |
 

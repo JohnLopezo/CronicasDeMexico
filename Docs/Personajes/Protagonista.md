@@ -50,7 +50,7 @@ afinidades; la primera es la inicial.
 La Mariposa monarca (luz, en la biblia) y la Vaquita marina (agua, a futuro) no aparecen en la imagen; sus afinidades
 siguen abiertas. Estas afinidades sustituyen las propuestas del GDD de la tabla anterior. **2026-11-06:** mandan las fichas, así que Naira empieza en viento e Itzel en luz; el águila deja el fuego.
 
-**Diseño visual del Jaguar:** ficha en `Docs/Personajes/Fichas/Jaguar.md`.
+**Diseño visual, estado y mejoras:** `Docs/Personajes/Guerreros.md`.
 
 ## Alcance inicial
 
@@ -58,7 +58,7 @@ Primero se implementó **un** Guardián, el Jaguar (2026-10-29). Desde el 2026-1
 
 **Datos:** siete `GUA_` (`GuardianData`) en `Resources/Personajes/CatalogoGuardianes`; Balam conserva el id `jaguar`. `SaveData.guardianId` guarda el elegido. Tablas de afinidad arriba y de atributos en `Docs/Sistemas/Sistema_Progresion.md`.
 
-**Decisión del autor (2026-11-06):** son guerreros humanos, con nombre y género, ligados al espíritu de su animal; sustituye a la forma animal original de la biblia.
+**Decisión del autor (2026-11-06):** son guerreros humanos, con nombre y género, ligados al espíritu de su animal; sustituye a la forma animal original de la biblia. Se puede cambiar de guerrero durante la partida en la pestaña Guardián del menú, sin recuperar vida ni energía.
 
 ## Reglas (Historia_Mundo §16)
 

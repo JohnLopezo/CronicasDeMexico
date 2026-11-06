@@ -29,7 +29,7 @@ Reglas de trabajo: Claude propone un plan por etapas y espera autorización; no 
 | `Docs/Historia_Mundo.md` | **Biblia narrativa** (manda en historia, nombres, personajes y capítulos) |
 | `Docs/Diseno.md` | GDD: sistemas, combate, mazmorras, UI, rendimiento (alineado con la biblia) |
 | `Docs/Historia/` | `Capitulos.md`, `Misiones.md`, `Glosario.md` |
-| `Docs/Personajes/` | `Protagonista.md` (Guardianes), `NPC_Olmecas.md` |
+| `Docs/Personajes/` | `Guerreros.md` (estado y cómo mejorarlos), `Protagonista.md`, `NPC_Olmecas.md` |
 | `Docs/Culturas/Olmeca.md`, `Docs/Enemigos/Olmeca.md`, `Docs/Mazmorras/Olmeca.md` | Arco I |
 | `Docs/Arte_Olmeca_Demo.md` | Dirección de arte pixel art y flujo de Blender (§12: estado del arte) |
 | `Docs/Rendimiento.md` | Mediciones de FPS y presupuestos |
@@ -51,7 +51,7 @@ Reglas de trabajo: Claude propone un plan por etapas y espera autorización; no 
 ### Narrativa: decisiones tomadas
 - Se usan los nombres de la biblia (Mundo de las Memorias, Sombra del Olvido, Guardián de la Piedra Viva, Fragmento de la Primera Memoria).
 - El protagonista no tiene género definido.
-- **Guardián del vertical slice: el Jaguar**.
+- **Guardianes:** siete guerreros elegibles (`Docs/Personajes/Guerreros.md`); antes, el Jaguar.
 - No hay prólogo aparte: los primeros pisos de la mazmorra olmeca hacen de tutorial.
 - Hay **cinco arcos**, con las culturas del GDD repartidas dentro.
 - La mazmorra olmeca tiene **3 pisos** en el vertical slice y **8** como meta.
@@ -67,7 +67,7 @@ Reglas de trabajo: Claude propone un plan por etapas y espera autorización; no 
 - **Guardián**: `GuardianData`, siete assets `GUA_` en `Resources/Personajes/CatalogoGuardianes`, elegidos en Nueva partida.
 
 ### Arco olmeca jugable en `Olmeca_Ciudad`
-1. **`MP_OLM_01`, "El despertar"**: el jugador aparece en la orilla noreste del río, se asoma al agua (recuerdos y reflejo del jaguar), escucha a la figura espiritual (juramento) y busca al artesano.
+1. **`MP_OLM_01`, "El despertar"**: el jugador aparece en la orilla noreste del río, se asoma al agua (recuerdos y un rostro ajeno), escucha a la figura espiritual (juramento) y busca al artesano.
 2. **`MP_OLM_02`, "El asentamiento inquieto"**: artesano de jade → anciana → joven guerrero. Al terminar, las estelas lisas cambian su texto, como pista del borrado.
 3. **Habitantes**: figura espiritual (provisional), artesano, anciana, guerrero y comerciante, con el arte de las fichas de `Docs/NPC/`.
 4. **Datos editables** en `Data/Narrative/Olmeca/`. El generador los crea **solo si faltan**, así que se editan en el Inspector. Para volver al texto del código, se borra el asset.
@@ -141,14 +141,14 @@ EditMode 80/80 y PlayMode 72/72 (al 2026-11-04).
 ## 4. Pendiente de decidir (por el autor)
 
 1. ~~¿Boot arranca en `Olmeca_Ciudad`?~~ **Hecho (2026-10-29).**
-2. **Afinidad inicial del Jaguar.** Propuesta: oscuridad; el GDD sugería oscuridad o tierra.
+2. ~~Afinidad inicial del Jaguar.~~ **Decidido (2026-11-06):** mandan las fichas; Balam empieza en tierra.
 3. **Si el epiclásico y lo tolteca entran en el arco III**, y qué afinidades corresponden a los arcos III a V.
 4. **Si la figura espiritual desaparece** después del juramento.
 5. **Fichas de `Docs/Guerreros/`** (Balam, Xali, Naira, Ameyali, Itzel, Yaret y Ocel). El 2026-11-06 el autor decidió que serán seleccionables en lugar del jaguar; sus enemigos y jefes no cambian. Sprites en `Sprites/Guerreros`; se eligen en Nueva partida (`Docs/Bitacora.md`). Decidido por el autor el mismo día: son guerreros humanos ligados al espíritu de su animal y mandan las afinidades de las fichas (`Docs/Personajes/Protagonista.md`).
 
 ## 5. Pendiente del autor (arte)
 
-- Sprites del **Jaguar** jugable. Hoy el jugador es un humano provisional, aunque el reflejo diga "jaguar".
+- ~~Sprites del Jaguar jugable.~~ **Sustituido (2026-11-06)** por los guerreros; lo que falta de ellos está en `Docs/Personajes/Guerreros.md`.
 - Fichas propias del **artesano de jade** y la **anciana** (hoy usan el arte del Comerciante y de la Curandera, y se ven repetidos) y de la **figura espiritual** (provisional). Los demás NPC ya tienen arte (`Docs/NPC/`); les faltan caminata de frente y de espalda y una pose de ataque del guardia.
 - Contrastar con fuentes el penacho del sacerdote, los pergaminos del mensajero y los sombreros de ala ancha (`Docs/Personajes/NPC_Olmecas.md`).
 - Sprites del **espíritu jaguar corrompido** (hoy, la silueta humana provisional con grietas violetas) y del **eco borrado** (hoy, la misma silueta en violeta con franjas borradas).
@@ -165,7 +165,7 @@ EditMode 80/80 y PlayMode 72/72 (al 2026-11-04).
 2. Medir el rendimiento: 170 celdas de agua más fuera de los límites y suelo de 3120×2200 en la ciudad. Luego, i5 y Android.
 3. Arte: cimas del montículo planas, patrón del agua y `Basalto_Agrietado` (mira a +X).
 4. Decidir qué hacer con `Olmeca_Prototipo`, que conserva su arte isométrico.
-5. Documentos: reescribir `Docs/Arte_Olmeca_Demo.md` §3 a §6 y revisar `Docs/Personajes/Fichas/Jaguar.md`.
+5. Documentos: reescribir `Docs/Arte_Olmeca_Demo.md` §3 a §6 (`Fichas/Jaguar.md` ya queda como histórico).
 
 ### Inmediato
 - **Probar en el Editor** el arco completo, de `MP_OLM_01` a `MP_OLM_03` (Boot → ciudad → selva), y después la mazmorra:

@@ -1,5 +1,7 @@
 # Ficha: Jaguar (Guardián jugable)
 
+> **Histórica.** Desde el 2026-11-06 el protagonista es un guerrero humano, no este jaguar cuadrúpedo (`Docs/Personajes/Guerreros.md`). Se conserva porque su cuerpo y flujo sirven para los jaguares enemigos y otros cuadrúpedos.
+
 ## 1. Identidad
 
 - **Papel:** el protagonista despierta en el Mundo de las Memorias con forma de jaguar (`Historia_Mundo.md` §2).

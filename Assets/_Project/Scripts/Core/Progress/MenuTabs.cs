@@ -9,6 +9,7 @@ namespace CronicasDeMexico.Core.Progress
     {
         public const string Inventory = "bolsa";
         public const string Blessings = "bendiciones";
+        public const string Guardian = "guardian";
         public const string Crafting = "fabricar";
         public const string Trading = "comerciar";
         public const string Museum = "museo";

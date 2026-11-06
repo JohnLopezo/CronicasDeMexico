@@ -49,7 +49,7 @@ namespace CronicasDeMexico.Gameplay.Player
             if (progression != null)
             {
                 progression.StatsChanged -= Apply;
-                progression.GuardianChanged -= ApplyGuardian;
+                progression.GuardianChanged -= OnGuardianChanged;
             }
             if (inventory != null)
                 inventory.UseRequested -= OnUseRequested;
@@ -62,11 +62,21 @@ namespace CronicasDeMexico.Gameplay.Player
                 return;
             ServiceLocator.TryGet(out inventory);
             progression.StatsChanged += Apply;
-            progression.GuardianChanged += ApplyGuardian;
+            progression.GuardianChanged += OnGuardianChanged;
             if (inventory != null)
                 inventory.UseRequested += OnUseRequested;
             ApplyGuardian();
             Apply();
+        }
+
+        // Cambiar de guerrero no cura (GDD §9): la vida se conserva y solo se recorta si no cabe en el nuevo máximo.
+        void OnGuardianChanged()
+        {
+            health.SetMaxHealth(progression.Stats.maxHealth, keepCurrent: true);
+            ApplyGuardian();
+            // Con el menú en pausa, la animación en curso (un golpe) seguiría mostrando al guerrero anterior.
+            if (!health.IsDead && TryGetComponent(out DirectionalSpriteAnimator animator))
+                animator.Stop();
         }
 
         void ApplyGuardian()

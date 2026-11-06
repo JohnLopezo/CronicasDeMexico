@@ -24,7 +24,7 @@ namespace CronicasDeMexico.Data.Characters
 
     /// <summary>
     /// Guerrero que el jugador elige como Guardián, ligado a un animal. Su id es el que se guarda (SaveData.guardianId).
-    /// Se elige en Nueva partida (StartMenuController) y no cambia durante la partida.
+    /// Se elige en Nueva partida (StartMenuController) y se puede cambiar en la pestaña Guardián del menú (GameMenuController).
     /// </summary>
     [CreateAssetMenu(menuName = "Crónicas/Personajes/Guardián", fileName = "GUA_")]
     public sealed class GuardianData : ScriptableObject, IStatProfile

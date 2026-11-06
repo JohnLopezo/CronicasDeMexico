@@ -4,6 +4,7 @@ using CronicasDeMexico.Core.Events;
 using CronicasDeMexico.Core.Narrative;
 using CronicasDeMexico.Core.Progress;
 using CronicasDeMexico.Core.Services;
+using CronicasDeMexico.Data.Characters;
 using CronicasDeMexico.Data.Rewards;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -294,6 +295,7 @@ namespace CronicasDeMexico.UI.Hud
             switch (currentTab)
             {
                 case MenuTabs.Blessings: RenderBlessings(); break;
+                case MenuTabs.Guardian: RenderGuardians(); break;
                 case MenuTabs.Crafting: RenderCrafting(); break;
                 case MenuTabs.Trading: RenderTrading(); break;
                 case MenuTabs.Museum: RenderMuseum(); break;
@@ -310,6 +312,7 @@ namespace CronicasDeMexico.UI.Hud
                 return; // pantallas de cierre, sin pestañas
             AddTab(MenuTabs.Inventory, "Bolsa");
             AddTab(MenuTabs.Blessings, "Bendiciones");
+            AddTab(MenuTabs.Guardian, "Guardián");
             if (contextTab == MenuTabs.Crafting)
                 AddTab(MenuTabs.Crafting, "Fabricar");
             if (contextTab == MenuTabs.Trading)
@@ -372,6 +375,28 @@ namespace CronicasDeMexico.UI.Hud
             }
             if (!any)
                 Note("La bolsa está vacía. Vence enemigos, abre ofrendas y explora para encontrar materiales.");
+        }
+
+        void RenderGuardians()
+        {
+            Section("Elige con quién jugar");
+            Note("Conservas nivel, objetos y Bendiciones. Cambiar no recupera vida ni energía, y se guarda al descansar en un santuario.");
+            var catalog = Resources.Load<GuardianCatalog>(GuardianCatalog.ResourcePath);
+            if (catalog == null)
+                return;
+            foreach (var guardian in catalog.Guardians)
+            {
+                var stats = guardian.At(progression.Level);
+                var row = Row($"{guardian.DisplayName}, {guardian.Title}\n{guardian.Description}\n" +
+                              $"Vida {stats.maxHealth} · Ataque {stats.attack} · Defensa {stats.defense} · Energía {stats.maxEnergy}", null);
+                row.name = $"guardian-{guardian.Id}";
+                var portrait = new VisualElement();
+                portrait.AddToClassList("hud-menu__portrait");
+                portrait.style.backgroundImage = new StyleBackground(guardian.SpriteSet.GetIdle(DirectionalSpriteSet.DirectionCount - 1));
+                row.Insert(0, portrait);
+                var current = progression.Profile.GuardianId == guardian.Id;
+                RowButton(row, current ? "En uso" : "Elegir", () => progression.SelectGuardian(guardian.Id, fillEnergy: false), !current);
+            }
         }
 
         void RenderBlessings()

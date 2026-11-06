@@ -57,17 +57,23 @@ namespace CronicasDeMexico.Core.Progress
         public event Action BlessingsChanged;
         public event Action GuardianChanged;
 
-        /// <summary>Elige el Guardián al empezar una partida, con la energía llena. Devuelve false si no existe.</summary>
-        public bool SelectGuardian(string guardianId)
+        /// <summary>
+        /// Elige el Guardián. Al empezar una partida, con la energía llena; a mitad de partida, con
+        /// <paramref name="fillEnergy"/> en false, para que cambiar de guerrero no recupere nada. Devuelve false si no existe.
+        /// </summary>
+        public bool SelectGuardian(string guardianId, bool fillEnergy = true)
         {
             var guardian = guardians?.Find(guardianId);
             if (guardian == null)
                 return false;
             Profile = guardian;
-            Energy = Stats.maxEnergy;
+            if (fillEnergy)
+            {
+                Energy = Stats.maxEnergy;
+                EnergyChanged?.Invoke();
+            }
             GuardianChanged?.Invoke();
-            EnergyChanged?.Invoke();
-            StatsChanged?.Invoke();
+            RaiseStats();
             return true;
         }
 

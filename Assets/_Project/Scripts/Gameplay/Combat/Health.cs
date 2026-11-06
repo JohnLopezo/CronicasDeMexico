@@ -110,13 +110,13 @@ namespace CronicasDeMexico.Gameplay.Combat
         /// Cambia la vida máxima (sube de nivel, equipa una reliquia). La vida actual se mueve lo mismo que el máximo:
         /// subir de nivel no cura, solo añade la vida nueva. Nunca mata ni revive.
         /// </summary>
-        public void SetMaxHealth(int value)
+        public void SetMaxHealth(int value, bool keepCurrent = false)
         {
             value = Mathf.Max(1, value);
             if (value == maxHealth)
                 return;
             if (!IsDead)
-                current = Mathf.Clamp(current + value - maxHealth, 1, value);
+                current = keepCurrent ? Mathf.Min(current, value) : Mathf.Clamp(current + value - maxHealth, 1, value);
             maxHealth = value;
             Publish();
         }

@@ -21,6 +21,16 @@ Plantilla:
 
 ---
 
+## 2026-11-06 — i7-10700: pestaña Guardián en el menú de juego
+
+- **Rama / último commit:** `feature/prototipo-olmeca`, sobre `fb83a44`. EditMode 97/97, PlayMode 75/75. Subido.
+- **Documentación:** nueva `Docs/Personajes/Guerreros.md` (estado, cómo mejorarlos y mejoras previstas); GDD, glosario, plan y README alineados con que el Guardián es una persona; `Fichas/Jaguar.md` queda como histórica.
+- **Decisión del autor:** se puede cambiar de guerrero a mitad de partida, desde cualquier escena (menú con I o el botón Bolsa).
+- **Hecho:** pestaña Guardián en `GameMenuController`. Cambiar conserva nivel, objetos y Bendiciones y no cura ni recupera energía: `SetMaxHealth(keepCurrent)` y `SelectGuardian(fillEnergy: false)`, porque sumar la diferencia de vida máxima permitía curarse cambiando.
+- **Límite conocido:** la marca de la ofrenda oculta es del guerrero con que se abrió; al cambiar, la nueva no se recibe y la anterior no da bonificación. Si se pulsa Play en una escena, Boot se carga después; hasta guardar en un santuario, el cambio se pierde al cerrar.
+
+---
+
 ## 2026-11-06 — i7-10700: historia, afinidades y atributos de los guerreros (etapa 4)
 
 - **Rama / último commit:** `feature/prototipo-olmeca`, sobre `cb8ae9c` (etapa 3). EditMode 97/97, PlayMode 74/74. Subido junto con las etapas 1 a 3.

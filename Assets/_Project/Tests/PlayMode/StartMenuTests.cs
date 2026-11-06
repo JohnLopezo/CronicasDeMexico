@@ -147,6 +147,61 @@ namespace CronicasDeMexico.Tests
         }
 
         [UnityTest]
+        public IEnumerator GuardianTab_ChangesTheWarrior_WithoutHealingOrRestoringEnergy()
+        {
+            var progression = ServiceLocator.Get<Progression>();
+            var (save, checkpoint) = SavedGame(false);
+            menu.Show(save, checkpoint, ServiceLocator.Get<SceneTravel>(), CityScene);
+            var gameMenu = default(GameMenuController);
+            try
+            {
+                menu.StartWithGuardian("ajolote");
+                for (var i = 0; i < 300 && !SceneManager.GetSceneByName(CityScene).isLoaded; i++)
+                    yield return null;
+                yield return null;
+
+                var player = Object.FindAnyObjectByType<PlayerStats>();
+                var health = player.GetComponent<Health>();
+                // Según el nivel: los servicios de Boot se comparten con las demás pruebas, que pueden haberlo subido.
+                Assert.AreEqual(progression.Stats.maxHealth, health.Max, "Vida de Xali.");
+                Assert.IsTrue(health.TryDamage(30, player.transform.position + Vector3.right));
+                var hurt = health.Current;
+                Assert.IsTrue(progression.SpendEnergy(30));
+                var energy = progression.Energy;
+
+                gameMenu = Object.FindAnyObjectByType<GameMenuController>();
+                gameMenu.Open(MenuTabs.Guardian);
+                var row = gameMenu.GetComponent<UIDocument>().rootVisualElement.Q("guardian-aguila");
+                Assert.IsNotNull(row, "La pestaña lista a Itzel.");
+                Assert.IsTrue(row.Q<Button>().enabledSelf);
+                Assert.IsFalse(gameMenu.GetComponent<UIDocument>().rootVisualElement.Q("guardian-ajolote").Q<Button>().enabledSelf, "El que está en uso no se elige.");
+                using (var click = NavigationSubmitEvent.GetPooled())
+                {
+                    click.target = row.Q<Button>();
+                    row.Q<Button>().SendEvent(click);
+                }
+                yield return null;
+
+                Assert.AreEqual("aguila", progression.Profile.GuardianId);
+                Assert.AreEqual(progression.Stats.maxHealth, health.Max, "Vida de Itzel.");
+                Assert.AreEqual(Mathf.Min(hurt, health.Max), health.Current, "Se conserva la vida; solo se recorta al nuevo máximo.");
+                Assert.AreEqual(Mathf.Min(energy, progression.Stats.maxEnergy), progression.Energy, "Cambiar no recupera energía.");
+                Assert.AreEqual("DSS_Guerrero_Itzel_Caminar", player.GetComponent<DirectionalSpriteAnimator>().SpriteSet.name);
+                StringAssert.StartsWith("Guerrero_Itzel_", player.GetComponentInChildren<SpriteBillboard>().GetComponent<SpriteRenderer>().sprite.name);
+
+                var afterItzel = health.Current;
+                progression.SelectGuardian("ajolote", fillEnergy: false);
+                Assert.AreEqual(afterItzel, health.Current, "Volver a una vida máxima mayor tampoco cura.");
+            }
+            finally
+            {
+                if (gameMenu != null)
+                    gameMenu.Close();
+                progression.SelectGuardian("jaguar");
+            }
+        }
+
+        [UnityTest]
         public IEnumerator StartWithGuardian_PutsItsSpritesOnThePlayer()
         {
             var progression = ServiceLocator.Get<Progression>();

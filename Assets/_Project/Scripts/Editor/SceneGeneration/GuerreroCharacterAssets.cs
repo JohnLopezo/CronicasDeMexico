@@ -14,6 +14,7 @@ namespace CronicasDeMexico.Editor.SceneGeneration
     public static class GuerreroCharacterAssets
     {
         const string DataFolder = "Assets/_Project/Data/Characters";
+        const string CatalogFolder = "Assets/_Project/Resources/Personajes";
         public const string DefaultGuerrero = "Balam";
 
         // Una animación de una vez dura lo mismo aunque la ficha traiga menos cuadros (Naira y Ameyali atacan con uno).
@@ -25,15 +26,15 @@ namespace CronicasDeMexico.Editor.SceneGeneration
 
         // Balam conserva el id "jaguar": es el de las partidas guardadas y el de OBJ_marca_jaguar. Afinidad y estado salen
         // de Docs/Personajes/Protagonista.md; donde la ficha dice otra cosa (Naira, Itzel) falta que decida el autor.
-        static readonly (string name, string id, string description, Affinity affinity, SpeciesStatus status)[] Guerreros =
+        static readonly (string name, string id, string title, string description, Affinity affinity, SpeciesStatus status)[] Guerreros =
         {
-            ("Balam", "jaguar", "Fuerza, movilidad y combate cercano.", Affinity.Oscuridad, SpeciesStatus.Nativa),
-            ("Xali", "ajolote", "Recuperación, resistencia y afinidad acuática.", Affinity.Agua, SpeciesStatus.Endemica),
-            ("Naira", "lobo", "Persecución, velocidad y combate sostenido.", Affinity.Tierra, SpeciesStatus.Nativa),
-            ("Ameyali", "mariposa", "Velocidad, evasión y poderes de luz.", Affinity.Luz, SpeciesStatus.Nativa),
-            ("Itzel", "aguila", "Percepción, precisión y ataques a distancia.", Affinity.Viento, SpeciesStatus.Emblematica),
-            ("Yaret", "quetzal", "Agilidad, distancia y movilidad aérea.", Affinity.Viento, SpeciesStatus.Nativa),
-            ("Ocel", "xolo", "Resistencia espiritual, rastreo y protección.", Affinity.Oscuridad, SpeciesStatus.Nativa),
+            ("Balam", "jaguar", "Guardián Jaguar", "Fuerza, movilidad y combate cercano.", Affinity.Oscuridad, SpeciesStatus.Nativa),
+            ("Xali", "ajolote", "Guardiana Ajolote", "Recuperación, resistencia y afinidad acuática.", Affinity.Agua, SpeciesStatus.Endemica),
+            ("Naira", "lobo", "Guardiana Lobo Mexicano", "Persecución, velocidad y combate sostenido.", Affinity.Tierra, SpeciesStatus.Nativa),
+            ("Ameyali", "mariposa", "Guardiana Mariposa Monarca", "Velocidad, evasión y poderes de luz.", Affinity.Luz, SpeciesStatus.Nativa),
+            ("Itzel", "aguila", "Guardiana Águila Real", "Percepción, precisión y ataques a distancia.", Affinity.Viento, SpeciesStatus.Emblematica),
+            ("Yaret", "quetzal", "Guardián Quetzal", "Agilidad, distancia y movilidad aérea.", Affinity.Viento, SpeciesStatus.Nativa),
+            ("Ocel", "xolo", "Guardián Xoloitzcuintle", "Resistencia espiritual, rastreo y protección.", Affinity.Oscuridad, SpeciesStatus.Nativa),
         };
 
         public static bool SpritesExist() => LoadSprite(DefaultGuerrero, "Caminar1", "03") != null;
@@ -42,7 +43,8 @@ namespace CronicasDeMexico.Editor.SceneGeneration
         public static Dictionary<string, GuardianData> BuildAll()
         {
             var guardians = new Dictionary<string, GuardianData>();
-            foreach (var (name, id, description, affinity, status) in Guerreros)
+            var ordered = new List<GuardianData>();
+            foreach (var (name, id, title, description, affinity, status) in Guerreros)
             {
                 var walk = BuildSet(name, "Caminar", WalkFramesPerSecond, out _);
                 var run = BuildSet(name, "Correr", RunFramesPerSecond, out _);
@@ -58,10 +60,16 @@ namespace CronicasDeMexico.Editor.SceneGeneration
                     guardian = GuardianData.Create(id, name, description, affinity, status, walk);
                     AssetDatabase.CreateAsset(guardian, path);
                 }
-                guardian.Configure(name, walk, attack, run, hit, death);
+                guardian.Configure(name, title, walk, attack, run, hit, death);
                 EditorUtility.SetDirty(guardian);
                 guardians[name] = guardian;
+                ordered.Add(guardian);
             }
+
+            OlmecaPrototypeGenerator.EnsureFolder(CatalogFolder);
+            var catalog = OlmecaPrototypeGenerator.LoadOrCreateAsset<GuardianCatalog>($"Assets/_Project/Resources/{GuardianCatalog.ResourcePath}.asset");
+            catalog.Guardians = ordered.ToArray();
+            EditorUtility.SetDirty(catalog);
             AssetDatabase.SaveAssets();
             return guardians;
         }

@@ -20,6 +20,7 @@ MonoBehaviour:
   growthPerLevel: {x: 6, y: 1.5, z: 0.5, w: 5}
   id: jaguar
   displayName: Balam
+  title: "Guardi\xE1n Jaguar"
   description: Fuerza, movilidad y combate cercano.
   initialAffinity: 5
   status: 1

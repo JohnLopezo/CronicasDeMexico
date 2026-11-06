@@ -21,11 +21,16 @@ namespace CronicasDeMexico.Core.Progress
         readonly Dictionary<string, int> defeats = new();
         readonly List<string> unlocked = new();
 
-        public Progression(IProgressionConfig config = null, Inventory inventory = null, IBlessingCatalog blessings = null)
+        readonly IGuardianCatalog guardians;
+
+        public Progression(IProgressionConfig config = null, Inventory inventory = null, IBlessingCatalog blessings = null,
+            IGuardianCatalog guardians = null)
         {
             Config = config ?? DefaultProgressionConfig.Instance;
+            Profile = Config.Profile;
             this.inventory = inventory;
             this.blessings = blessings;
+            this.guardians = guardians;
             if (inventory != null)
                 inventory.RelicsChanged += RaiseStats;
             Level = 1;
@@ -33,6 +38,8 @@ namespace CronicasDeMexico.Core.Progress
         }
 
         public IProgressionConfig Config { get; }
+        /// <summary>Guardián en uso: el elegido en Nueva partida o el de la partida guardada; si no, el de la configuración.</summary>
+        public IStatProfile Profile { get; private set; }
         public IBlessingCatalog BlessingCatalog => blessings;
         public int Level { get; private set; }
         /// <summary>Experiencia acumulada dentro del nivel actual.</summary>
@@ -48,18 +55,33 @@ namespace CronicasDeMexico.Core.Progress
         public event Action StatsChanged;
         public event Action EnergyChanged;
         public event Action BlessingsChanged;
+        public event Action GuardianChanged;
+
+        /// <summary>Elige el Guardián al empezar una partida, con la energía llena. Devuelve false si no existe.</summary>
+        public bool SelectGuardian(string guardianId)
+        {
+            var guardian = guardians?.Find(guardianId);
+            if (guardian == null)
+                return false;
+            Profile = guardian;
+            Energy = Stats.maxEnergy;
+            GuardianChanged?.Invoke();
+            EnergyChanged?.Invoke();
+            StatsChanged?.Invoke();
+            return true;
+        }
 
         /// <summary>Atributos actuales: los del animal en su nivel, más reliquias equipadas y Bendiciones.</summary>
         public CharacterStats Stats
         {
             get
             {
-                var stats = Config.Profile.At(Level);
+                var stats = Profile.At(Level);
                 if (inventory?.Catalog != null)
                     foreach (var relic in inventory.EquippedRelics)
                     {
                         var info = inventory.Catalog.Find(relic);
-                        if (info != null && (string.IsNullOrEmpty(info.GuardianOnly) || info.GuardianOnly == Config.Profile.GuardianId))
+                        if (info != null && (string.IsNullOrEmpty(info.GuardianOnly) || info.GuardianOnly == Profile.GuardianId))
                             stats += info.Bonus;
                     }
                 stats += BlessingBonus(PrimaryBlessing) + BlessingBonus(SecondaryBlessing);
@@ -196,7 +218,7 @@ namespace CronicasDeMexico.Core.Progress
 
         public void Capture(SaveData data)
         {
-            data.guardianId = Config.Profile.GuardianId;
+            data.guardianId = Profile.GuardianId;
             data.level = Level;
             data.experience = Experience;
             data.energy = Energy;
@@ -211,6 +233,10 @@ namespace CronicasDeMexico.Core.Progress
 
         public void Restore(SaveData data)
         {
+            // Las partidas anteriores a la elección traen "jaguar" o nada: siguen con el Guardián de la configuración.
+            Profile = guardians?.Find(data.guardianId) ?? Config.Profile;
+            if (!string.IsNullOrEmpty(data.guardianId) && Profile.GuardianId != data.guardianId)
+                Debug.LogWarning($"[Progresión] Guardián '{data.guardianId}' desconocido; se usa '{Profile.GuardianId}'.");
             Level = Mathf.Clamp(data.level, 1, Config.MaxLevel);
             Experience = Mathf.Max(0, data.experience);
             unlocked.Clear();
@@ -225,6 +251,7 @@ namespace CronicasDeMexico.Core.Progress
                     defeats[entry.key] = entry.count;
             var max = Stats.maxEnergy;
             Energy = data.energy < 0 ? max : Mathf.Min(data.energy, max);
+            GuardianChanged?.Invoke();
             LevelChanged?.Invoke(Level);
             BlessingsChanged?.Invoke();
             StatsChanged?.Invoke();

@@ -20,6 +20,7 @@ MonoBehaviour:
   growthPerLevel: {x: 6, y: 1.5, z: 0.5, w: 5}
   id: ajolote
   displayName: Xali
+  title: Guardiana Ajolote
   description: "Recuperaci\xF3n, resistencia y afinidad acu\xE1tica."
   initialAffinity: 0
   status: 0

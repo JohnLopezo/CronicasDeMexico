@@ -1,5 +1,6 @@
 using CronicasDeMexico.Core.Progress;
 using CronicasDeMexico.Core.Services;
+using CronicasDeMexico.Data.Characters;
 using CronicasDeMexico.Gameplay.Combat;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -11,7 +12,7 @@ namespace CronicasDeMexico.Gameplay.Player
     /// Health, ataque en PlayerAttack. Subir de nivel no cura: solo añade la vida nueva. También usa consumibles: la
     /// acción UseItem toma el que más falta hace (curar si hay vida perdida, si no energía) y el inventario puede pedir
     /// uno concreto (Inventory.UseRequested). Actúa antes que SpawnPoint, para que la vida que trae el jugador se aplique
-    /// sobre el máximo de su nivel.
+    /// sobre el máximo de su nivel. También le pone los sprites del Guardián elegido.
     /// </summary>
     [DefaultExecutionOrder(50)]
     [RequireComponent(typeof(Health), typeof(PlayerAttack))]
@@ -46,7 +47,10 @@ namespace CronicasDeMexico.Gameplay.Player
         void OnDestroy()
         {
             if (progression != null)
+            {
                 progression.StatsChanged -= Apply;
+                progression.GuardianChanged -= ApplyGuardian;
+            }
             if (inventory != null)
                 inventory.UseRequested -= OnUseRequested;
         }
@@ -58,9 +62,20 @@ namespace CronicasDeMexico.Gameplay.Player
                 return;
             ServiceLocator.TryGet(out inventory);
             progression.StatsChanged += Apply;
+            progression.GuardianChanged += ApplyGuardian;
             if (inventory != null)
                 inventory.UseRequested += OnUseRequested;
+            ApplyGuardian();
             Apply();
+        }
+
+        void ApplyGuardian()
+        {
+            if (progression.Profile is not GuardianData guardian || guardian.SpriteSet == null
+                || !TryGetComponent(out DirectionalSpriteAnimator animator) || !TryGetComponent(out CharacterAnimationDriver driver))
+                return;
+            animator.SpriteSet = guardian.SpriteSet;
+            driver.Configure(animator, guardian.AttackSet, guardian.RunSet, null, null, guardian.HitSet, guardian.DeathSet);
         }
 
         void Update()

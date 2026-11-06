@@ -20,6 +20,7 @@ MonoBehaviour:
   growthPerLevel: {x: 6, y: 1.5, z: 0.5, w: 5}
   id: xolo
   displayName: Ocel
+  title: "Guardi\xE1n Xoloitzcuintle"
   description: "Resistencia espiritual, rastreo y protecci\xF3n."
   initialAffinity: 5
   status: 1

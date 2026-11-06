@@ -2,10 +2,15 @@ using System;
 using System.Collections;
 using System.IO;
 using CronicasDeMexico.Core.Boot;
+using CronicasDeMexico.Core.Progress;
 using CronicasDeMexico.Core.Save;
 using CronicasDeMexico.Core.Services;
 using CronicasDeMexico.Core.Travel;
+using CronicasDeMexico.Data.Characters;
+using CronicasDeMexico.Gameplay.Combat;
+using CronicasDeMexico.Gameplay.Player;
 using CronicasDeMexico.UI.Hud;
+using CronicasDeMexico.World.Rendering;
 using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -109,11 +114,64 @@ namespace CronicasDeMexico.Tests
             Assert.IsTrue(save.HasSave, "Sin confirmar no se borra nada.");
 
             menu.ConfirmNewGame();
+            Assert.IsFalse(Panel("start-guardians").ClassListContains("hidden"), "Después toca elegir Guardián.");
+            Assert.IsTrue(save.HasSave, "Volver atrás desde la elección no debe haber borrado nada.");
+
+            menu.StartWithGuardian("jaguar");
             Assert.IsFalse(save.HasSave);
             Assert.IsFalse(menu.IsVisible);
             for (var i = 0; i < 300 && !SceneManager.GetSceneByName(CityScene).isLoaded; i++)
                 yield return null;
             Assert.IsTrue(SceneManager.GetSceneByName(CityScene).isLoaded);
+        }
+
+        [UnityTest]
+        public IEnumerator GuardianPanel_ListsTheSeven_AndHighlightingDescribesThem()
+        {
+            var (save, checkpoint) = SavedGame(false);
+            menu.Show(save, checkpoint, ServiceLocator.Get<SceneTravel>(), CityScene);
+            menu.NewGame();
+            yield return null;
+
+            var catalog = Resources.Load<GuardianCatalog>(GuardianCatalog.ResourcePath);
+            Assert.AreEqual(7, catalog.Guardians.Length);
+            foreach (var guardian in catalog.Guardians)
+                Assert.IsNotNull(Get($"start-guardian-{guardian.Id}"), guardian.Id);
+
+            menu.HighlightGuardian(catalog.Guardians[3]);
+            StringAssert.Contains("Ameyali", Get("start-guardian-start").text);
+            Assert.AreEqual(catalog.Guardians[3].Description, Panel("start-guardian-description").Q<Label>("start-guardian-description").text);
+            Assert.IsTrue(Get("start-guardian-mariposa").ClassListContains("start-menu__button--selected"));
+            Assert.IsFalse(save.HasSave);
+            Assert.IsFalse(SceneManager.GetSceneByName(CityScene).isLoaded, "Marcar una tarjeta no empieza la partida.");
+        }
+
+        [UnityTest]
+        public IEnumerator StartWithGuardian_PutsItsSpritesOnThePlayer()
+        {
+            var progression = ServiceLocator.Get<Progression>();
+            var (save, checkpoint) = SavedGame(false);
+            menu.Show(save, checkpoint, ServiceLocator.Get<SceneTravel>(), CityScene);
+            try
+            {
+                menu.StartWithGuardian("xolo");
+                Assert.AreEqual("xolo", progression.Profile.GuardianId);
+                for (var i = 0; i < 300 && !SceneManager.GetSceneByName(CityScene).isLoaded; i++)
+                    yield return null;
+                yield return null;
+
+                var player = Object.FindAnyObjectByType<PlayerStats>();
+                var animator = player.GetComponent<DirectionalSpriteAnimator>();
+                Assert.AreEqual("DSS_Guerrero_Ocel_Caminar", animator.SpriteSet.name);
+                StringAssert.StartsWith("Guerrero_Ocel_", player.GetComponentInChildren<SpriteBillboard>().GetComponent<SpriteRenderer>().sprite.name);
+
+                player.GetComponent<PlayerAttack>().Strike();
+                Assert.AreEqual("DSS_Guerrero_Ocel_Ataque", animator.CurrentAction.name);
+            }
+            finally
+            {
+                progression.SelectGuardian("jaguar"); // los servicios de Boot se comparten con las demás pruebas
+            }
         }
 
         [UnityTest]

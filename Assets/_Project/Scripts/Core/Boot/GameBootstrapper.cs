@@ -47,6 +47,7 @@ namespace CronicasDeMexico.Core.Boot
         const string ItemCatalogResource = "Recompensas/CatalogoObjetos";
         const string BlessingCatalogResource = "Recompensas/CatalogoBendiciones";
         const string ProgressionConfigResource = "Recompensas/ConfigProgresion";
+        const string GuardianCatalogResource = "Personajes/CatalogoGuardianes";
 
         static void RegisterServices()
         {
@@ -70,7 +71,8 @@ namespace CronicasDeMexico.Core.Boot
             // Recompensas y progresión (M5). El inventario se restaura antes que la progresión, que suma sus reliquias.
             var inventory = new Inventory(Resources.Load<ScriptableObject>(ItemCatalogResource) as IItemCatalog);
             var progression = new Progression(Resources.Load<ScriptableObject>(ProgressionConfigResource) as IProgressionConfig,
-                inventory, Resources.Load<ScriptableObject>(BlessingCatalogResource) as IBlessingCatalog);
+                inventory, Resources.Load<ScriptableObject>(BlessingCatalogResource) as IBlessingCatalog,
+                Resources.Load<ScriptableObject>(GuardianCatalogResource) as IGuardianCatalog);
             var rewards = new RewardService(inventory, progression, story, quests);
             save.Register(inventory);
             save.Register(progression);

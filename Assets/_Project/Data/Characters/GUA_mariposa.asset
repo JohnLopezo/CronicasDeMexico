@@ -20,6 +20,7 @@ MonoBehaviour:
   growthPerLevel: {x: 6, y: 1.5, z: 0.5, w: 5}
   id: mariposa
   displayName: Ameyali
+  title: Guardiana Mariposa Monarca
   description: "Velocidad, evasi\xF3n y poderes de luz."
   initialAffinity: 4
   status: 1

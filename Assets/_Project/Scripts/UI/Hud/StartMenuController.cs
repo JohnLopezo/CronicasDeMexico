@@ -1,15 +1,17 @@
 using CronicasDeMexico.Core.Boot;
+using CronicasDeMexico.Core.Progress;
 using CronicasDeMexico.Core.Save;
 using CronicasDeMexico.Core.Services;
 using CronicasDeMexico.Core.Travel;
+using CronicasDeMexico.Data.Characters;
 using UnityEngine;
 using UnityEngine.UIElements;
 
 namespace CronicasDeMexico.UI.Hud
 {
     /// <summary>
-    /// Menú de inicio, en la escena Boot: Continuar, Nueva partida (pide confirmar si hay partida guardada), Opciones
-    /// (calidad) y Salir. Solo se muestra cuando el juego arranca desde Boot (GameBootstrapper.StartMenuRequested); al
+    /// Menú de inicio, en la escena Boot: Continuar, Nueva partida (pide confirmar si hay partida guardada y luego elegir
+    /// Guardián), Opciones (calidad) y Salir. Solo se muestra cuando el juego arranca desde Boot (GameBootstrapper.StartMenuRequested); al
     /// pulsar Play desde una escena de juego no aparece. La interfaz se construye en código sobre un fondo liso.
     /// La cámara de fondo y el EventSystem (navegación con teclado o mando) son hijos inactivos que solo se activan
     /// mientras el menú está a la vista, para no duplicar los de las escenas de juego.
@@ -24,9 +26,10 @@ namespace CronicasDeMexico.UI.Hud
         [SerializeField, Tooltip("Cámara que limpia la pantalla mientras no hay escena de juego.")] Camera backgroundCamera;
         [SerializeField, Tooltip("EventSystem propio del menú (navegación con teclado o mando).")] GameObject eventSystem;
 
-        VisualElement root, main, confirm, options, qualityButtons;
-        Button continueButton, newGameButton, confirmYes;
-        Label message;
+        VisualElement root, main, confirm, options, qualityButtons, guardians, guardianCards;
+        Button continueButton, newGameButton, confirmYes, guardianStart;
+        Label message, guardianTitle, guardianDescription;
+        GuardianData highlighted;
         SaveService save;
         PlayerCheckpoint checkpoint;
         SceneTravel travel;
@@ -93,14 +96,79 @@ namespace CronicasDeMexico.UI.Hud
                 ConfirmNewGame();
         }
 
+        /// <summary>Pasa a la elección de Guardián. La partida guardada no se borra hasta empezar con uno.</summary>
         public void ConfirmNewGame()
-        {            if (GameBootstrapper.StartNewGame(save, initialScene))
+        {
+            if (guardianCards.childCount > 0)
+                ShowPanel(guardians);
+            else
+                StartWithGuardian(null); // sin catálogo: el Guardián de la configuración
+        }
+
+        /// <summary>Marca un Guardián en la pantalla de elección y muestra su descripción.</summary>
+        public void HighlightGuardian(GuardianData guardian)
+        {
+            highlighted = guardian;
+            foreach (var card in guardianCards.Children())
+                card.EnableInClassList(SelectedClass, card.name == CardName(guardian));
+            guardianTitle.text = $"{guardian.DisplayName}, {guardian.Title}";
+            guardianDescription.text = guardian.Description;
+            guardianStart.text = $"Empezar con {guardian.DisplayName}";
+        }
+
+        public void StartWithGuardian(string guardianId)
+        {
+            if (ServiceLocator.TryGet(out Progression progression))
+                progression.SelectGuardian(guardianId);
+            if (GameBootstrapper.StartNewGame(save, initialScene))
             {
                 SetVisible(false);
                 return;
             }
             message.text = "No se pudo empezar la partida.";
             ShowPanel(main);
+        }
+
+        static string CardName(GuardianData guardian) => $"start-guardian-{guardian.Id}";
+
+        void BuildGuardians(VisualElement screen)
+        {
+            guardians = Panel(screen, "start-guardians");
+            var heading = new Label("Elige tu Guardián");
+            heading.AddToClassList("start-menu__text");
+            guardians.Add(heading);
+            guardianCards = new VisualElement();
+            guardianCards.AddToClassList("start-menu__row");
+            guardians.Add(guardianCards);
+
+            guardianTitle = new Label { name = "start-guardian-title" };
+            guardianTitle.AddToClassList("start-menu__guardian-title");
+            guardians.Add(guardianTitle);
+            guardianDescription = new Label { name = "start-guardian-description" };
+            guardianDescription.AddToClassList("start-menu__text");
+            guardians.Add(guardianDescription);
+            guardianStart = AddButton(guardians, "start-guardian-start", "Empezar", () => StartWithGuardian(highlighted.Id));
+            AddButton(guardians, "start-guardian-back", "Volver", () => ShowPanel(main));
+
+            var catalog = Resources.Load<GuardianCatalog>(GuardianCatalog.ResourcePath);
+            if (catalog == null)
+                return;
+            foreach (var guardian in catalog.Guardians)
+            {
+                var card = new Button(() => HighlightGuardian(guardian)) { name = CardName(guardian) };
+                card.AddToClassList("start-menu__button");
+                card.AddToClassList("start-menu__guardian");
+                // Con teclado o mando basta moverse por las tarjetas para leerlas.
+                card.RegisterCallback<FocusInEvent>(_ => HighlightGuardian(guardian));
+                var portrait = new VisualElement();
+                portrait.AddToClassList("start-menu__guardian-portrait");
+                portrait.style.backgroundImage = new StyleBackground(guardian.SpriteSet.GetIdle(DirectionalSpriteSet.DirectionCount - 1));
+                card.Add(portrait);
+                var label = new Label(guardian.DisplayName);
+                label.AddToClassList("start-menu__guardian-name");
+                card.Add(label);
+                guardianCards.Add(card);
+            }
         }
 
         void Build()
@@ -130,6 +198,8 @@ namespace CronicasDeMexico.UI.Hud
             confirm.Add(warning);
             confirmYes = AddButton(confirm, "start-confirm-yes", "Borrar y empezar", ConfirmNewGame);
             AddButton(confirm, "start-confirm-no", "Cancelar", () => ShowPanel(main));
+
+            BuildGuardians(screen);
 
             options = Panel(screen, "start-options-panel");
             var quality = new Label("Calidad gráfica");
@@ -173,12 +243,14 @@ namespace CronicasDeMexico.UI.Hud
 
         void ShowPanel(VisualElement panel)
         {
-            foreach (var p in new[] { main, confirm, options })
+            foreach (var p in new[] { main, confirm, options, guardians })
                 p.EnableInClassList(Hidden, p != panel);
             if (panel == main)
                 (continueButton.enabledSelf ? continueButton : newGameButton).Focus();
             else if (panel == confirm)
                 confirmYes.Focus();
+            else if (panel == guardians)
+                guardianCards[0].Focus();
             else
                 qualityButtons[QualitySettings.GetQualityLevel()].Focus();
         }

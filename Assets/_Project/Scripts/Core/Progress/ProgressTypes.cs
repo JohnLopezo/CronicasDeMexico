@@ -161,6 +161,12 @@ namespace CronicasDeMexico.Core.Progress
         CharacterStats At(int level);
     }
 
+    /// <summary>Guardianes que se pueden elegir (GuardianCatalog en Data).</summary>
+    public interface IGuardianCatalog
+    {
+        IStatProfile Find(string guardianId);
+    }
+
     /// <summary>
     /// Reglas de la progresión (ConfigProgresion en Data): curva de experiencia, protección contra el farmeo y el
     /// Guardián en uso. Todos los números son configurables sin tocar código.

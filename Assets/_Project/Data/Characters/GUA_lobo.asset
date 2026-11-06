@@ -20,6 +20,7 @@ MonoBehaviour:
   growthPerLevel: {x: 6, y: 1.5, z: 0.5, w: 5}
   id: lobo
   displayName: Naira
+  title: Guardiana Lobo Mexicano
   description: "Persecuci\xF3n, velocidad y combate sostenido."
   initialAffinity: 1
   status: 1

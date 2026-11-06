@@ -21,6 +21,18 @@ Plantilla:
 
 ---
 
+## 2026-11-06 — i7-10700: elección de Guardián (etapa 3)
+
+- **Rama / último commit:** `feature/prototipo-olmeca`, sobre `563d882` (etapa 2). EditMode 92/92, PlayMode 74/74. Sin push.
+- **Hecho:** Nueva partida pasa por un panel con los 7 guerreros (`StartMenuController`): tocar una tarjeta la describe y "Empezar con X" inicia; la partida guardada no se borra hasta ese momento. `Progression.Profile` guarda y restaura el elegido por `guardianId`, sin cambiar el formato de la partida; `PlayerStats` le pone sus sprites al jugador. Catálogo en `Resources/Personajes/CatalogoGuardianes`, que rehace `GuerreroCharacterAssets`.
+- **Partidas viejas:** traen `jaguar` o nada: siguen como Balam. Un id desconocido también, con un aviso en el log.
+- **Comprobado:** captura del panel a 1920×1080 y a 1280×576, sin desbordes (con una prueba temporal, ya borrada).
+- **Sin probar:** con mando, táctil en un dispositivo real, y jugando en un build.
+- **Pendiente (etapa 4):** diálogos que llaman "jaguar" al jugador; atributos iguales en los 7; `OBJ_marca_jaguar` no da nada a los demás (`guardianOnly: jaguar`) y hay que revisar `BEN_instinto_jaguar`; afinidades de Naira, Itzel y Balam.
+- **Siguiente:** que el autor decida si cambia la regla de la forma animal (`Docs/Personajes/Protagonista.md`).
+
+---
+
 ## 2026-11-06 — i7-10700: Balam reemplaza al jaguar jugable (etapa 2)
 
 - **Rama / último commit:** `feature/prototipo-olmeca`, sobre `31e2f4d` (etapa 1). Sin push.

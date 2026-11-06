@@ -66,6 +66,37 @@
     -unity-font-style: bold;
 }
 
+.start-menu__guardian {
+    width: 200px;
+    min-width: 200px;
+    height: 248px;
+    margin: 6px;
+    padding: 4px;
+    align-items: center;
+    justify-content: flex-end;
+    background-color: rgb(42, 62, 50);
+}
+
+/* Múltiplo exacto del lienzo de 48×64, para que los píxeles no se deformen. */
+.start-menu__guardian-portrait {
+    width: 144px;
+    height: 192px;
+    -unity-background-scale-mode: scale-to-fit;
+}
+
+.start-menu__guardian-name {
+    color: rgb(240, 232, 214);
+    font-size: 26px;
+    -unity-text-align: middle-center;
+}
+
+.start-menu__guardian-title {
+    margin-bottom: 4px;
+    color: rgb(240, 200, 120);
+    font-size: 34px;
+    -unity-font-style: bold;
+}
+
 .start-menu__message {
     margin-top: 24px;
     color: rgb(230, 150, 120);

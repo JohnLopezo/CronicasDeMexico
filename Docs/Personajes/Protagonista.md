@@ -56,7 +56,9 @@ siguen abiertas. Estas afinidades sustituyen las propuestas del GDD de la tabla 
 
 Se implementa **un** Guardián completo para el vertical slice (GDD §4, §17): **el Jaguar** (decidido el 2026-10-29). Los demás quedan como diseño. Conviene diferenciarlo visual y narrativamente de los **espíritus jaguar** enemigos del prototipo (o renombrar a estos), para no confundir al jugador.
 
-**Datos (N5):** `Data/Characters/GUA_jaguar.asset` (`GuardianData`: id `jaguar`, nativo, afinidad inicial **oscuridad**, que es la propuesta del GDD; la tierra la concede el jefe olmeca). Usa todavía el sprite provisional humano del jugador, aunque el reflejo diga "te mira un jaguar": falta el arte del Jaguar, que hace el autor. Sin pantalla de elección mientras haya un solo Guardián; `SaveData.guardianId` se rellenará cuando exista.
+**Datos (N5):** `Data/Characters/GUA_jaguar.asset` (`GuardianData`: id `jaguar`, nativo, afinidad inicial **oscuridad**, que es la propuesta del GDD; la tierra la concede el jefe olmeca). 
+
+**Guerreros seleccionables (2026-11-06, decisión del autor):** sustituyen al jaguar único y se eligen en Nueva partida; hay siete `GUA_` con las fichas de `Docs/Guerreros` (Balam conserva el id `jaguar`) y `SaveData.guardianId` guarda el elegido. **Contradice por ahora las reglas de abajo y este documento:** son humanos con atuendo animal y nombre propio, mientras la biblia dice forma animal y sin género, y los diálogos siguen hablando de un jaguar. Falta que el autor decida qué versión prevalece.
 
 ## Reglas (Historia_Mundo §16)
 

@@ -20,6 +20,7 @@ MonoBehaviour:
   growthPerLevel: {x: 6, y: 1.5, z: 0.5, w: 5}
   id: aguila
   displayName: Itzel
+  title: "Guardiana \xC1guila Real"
   description: "Percepci\xF3n, precisi\xF3n y ataques a distancia."
   initialAffinity: 3
   status: 2

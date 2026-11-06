@@ -24,7 +24,7 @@ namespace CronicasDeMexico.Data.Characters
 
     /// <summary>
     /// Guerrero que el jugador elige como Guardián, ligado a un animal. Su id es el que se guarda (SaveData.guardianId).
-    /// Hoy se juega con Balam; falta la pantalla de elección.
+    /// Se elige en Nueva partida (StartMenuController) y no cambia durante la partida.
     /// </summary>
     [CreateAssetMenu(menuName = "Crónicas/Personajes/Guardián", fileName = "GUA_")]
     public sealed class GuardianData : ScriptableObject, IStatProfile
@@ -41,6 +41,9 @@ namespace CronicasDeMexico.Data.Characters
         string id;
 
         [SerializeField] string displayName;
+
+        [SerializeField, Tooltip("Como lo presenta su ficha, p. ej. \"Guardián Jaguar\".")]
+        string title;
 
         [SerializeField, TextArea(2, 4), Tooltip("Estilo de juego, como lo describe la biblia.")]
         string description;
@@ -64,6 +67,7 @@ namespace CronicasDeMexico.Data.Characters
 
         public string Id => id;
         public string DisplayName => displayName;
+        public string Title => title;
         public string Description => description;
         public Affinity InitialAffinity => initialAffinity;
         public SpeciesStatus Status => status;
@@ -77,10 +81,11 @@ namespace CronicasDeMexico.Data.Characters
                 Mathf.FloorToInt(growthPerLevel.z * gained), Mathf.FloorToInt(growthPerLevel.w * gained));
         }
 
-        public void Configure(string name, DirectionalSpriteSet walk, DirectionalSpriteSet attack, DirectionalSpriteSet run,
-            DirectionalSpriteSet hit, DirectionalSpriteSet death)
+        public void Configure(string name, string guardianTitle, DirectionalSpriteSet walk, DirectionalSpriteSet attack,
+            DirectionalSpriteSet run, DirectionalSpriteSet hit, DirectionalSpriteSet death)
         {
             displayName = name;
+            title = guardianTitle;
             spriteSet = walk;
             attackSet = attack;
             runSet = run;

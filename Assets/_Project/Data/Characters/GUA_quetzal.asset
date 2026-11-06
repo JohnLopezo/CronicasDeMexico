@@ -20,6 +20,7 @@ MonoBehaviour:
   growthPerLevel: {x: 6, y: 1.5, z: 0.5, w: 5}
   id: quetzal
   displayName: Yaret
+  title: "Guardi\xE1n Quetzal"
   description: "Agilidad, distancia y movilidad a\xE9rea."
   initialAffinity: 3
   status: 1

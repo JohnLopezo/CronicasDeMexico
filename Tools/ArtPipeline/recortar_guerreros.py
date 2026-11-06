@@ -16,11 +16,15 @@ import recortar_npc as npc  # noqa: E402
 
 FICHAS = os.path.join(npc.RAIZ, "Docs", "Guerreros")
 ALTO = 54                 # px de juego de la figura en reposo: como el Guerrero de los NPC
-LIENZO_VISTA = (48, 64)
+LIENZO_VISTA = (64, 64)  # sin recortar la capa, de frente no cabe en 48
 LIENZO_ACCION = (80, 64)  # la capa y las zancadas de lado no caben en 48
 LIENZO_ATAQUE = (112, 64)
 LIENZO_MUERTE = (128, 96)  # el espíritu se eleva: el pivote (2 px) está también en PixelArtSpriteImporter (MuertePivot)
 PIEZAS_ESPIRITU = 260      # px de ficha desde los que se conserva una pieza que no toca el cuerpo
+MARGEN = (45, 10)         # px de ficha (x, y) alrededor de cada caja: una capa o un brazo que se sale no debe quedar cortado
+MARGEN_EFECTOS = (10, 4)  # ataques y poses: uno mayor vuelve a meter los efectos que las cajas dejan fuera
+MARGEN_SELVA = (14, 3)    # fondos de selva muy variados: con más margen el fondo se pega a la figura
+SIN_MARGEN = (0, 0)       # donde hasta un margen pequeño arrastra fondo o efectos (tol_cuadro no basta)
 OSCURO = 70               # valor bajo el que un píxel cuenta como oscuro al reducir (contorno u ojo)
 CONTORNO = 45             # valor bajo el que la inundación del fondo no pasa: es el contorno del personaje
 DOMINANTES = 6            # colores del fondo que cuentan para los huecos encerrados
@@ -62,7 +66,7 @@ GUERREROS = {
                                 "cajas": ((1168, 395, 1522, 620), (25, 692, 392, 930), (412, 692, 768, 930), (782, 692, 1132, 930))}},
     },
     "Naira": {
-        "ficha": "Hoja de personaje pixel art de Naira, guardiana lobo.png",
+        "ficha": "Hoja de personaje pixel art de Naira, guardiana lobo.png", "margen": MARGEN_SELVA,
         "vistas": (168, 488, (786, 978), (992, 1165), (425, 628)),
         "fila": (540, 720), "reposo": (70, 200),
         "caminar": ((240, 368), (378, 490), (495, 605), (605, 735)),
@@ -71,7 +75,7 @@ GUERREROS = {
         "dano": ((895, 780, 1115, 1000), 1.45), "tol": 34, "huecos": True,
     },
     "Ameyali": {
-        "ficha": "Hoja de personaje_ Ameyali, Guardiana Mariposa.png",
+        "ficha": "Hoja de personaje_ Ameyali, Guardiana Mariposa.png", "margen": MARGEN_SELVA,
         "vistas": (172, 490, (778, 978), (993, 1138), (435, 620)),
         "fila": (540, 725), "reposo": (60, 215),
         "caminar": ((240, 360), (375, 485), (490, 595), (600, 720)),
@@ -80,7 +84,7 @@ GUERREROS = {
         "dano": ((918, 775, 1112, 1005), 1.3), "tol": 70, "huecos": True,
     },
     "Itzel": {
-        "ficha": "Hoja de personaje_ Itzel, Guardiana Águila Real.png",
+        "ficha": "Hoja de personaje_ Itzel, Guardiana Águila Real.png", "suelo": True,
         "vistas": (168, 488, (790, 970), (982, 1132), (410, 592)),
         "fila": (550, 730), "reposo": (58, 190),
         "caminar": ((235, 350), (358, 470), (470, 580), (585, 695)),
@@ -106,7 +110,7 @@ GUERREROS = {
                                 "cajas": ((1170, 245, 1490, 510), (45, 585, 445, 935), (560, 595, 960, 935), (1110, 612, 1520, 935))}},
     },
     "Ocel": {
-        "ficha": "Ocel, Guardián del Xoloitzcuintle.png",
+        "ficha": "Ocel, Guardián del Xoloitzcuintle.png", "margen": MARGEN_SELVA, "margen_ataque": SIN_MARGEN,
         "vistas": (172, 488, (798, 990), (982, 1125), (412, 625)),
         "fila": (545, 715), "reposo": (65, 195),
         "caminar": ((220, 345), (355, 465), (470, 580), (580, 700)),
@@ -144,6 +148,14 @@ def limpiar(m):
     return _crecer(_crecer(grueso, FINO) & m, FINO) & m  # el segundo paso devuelve las esquinas que el primero no alcanza
 
 
+def figura(img, caja, tol, huecos, margen=MARGEN):
+    """Recorte y máscara de la figura de una caja, con margen: la caja la localiza, pero no la corta."""
+    x0, y0, x1, y1 = caja
+    xa, ya = max(0, x0 - margen[0]), max(0, y0 - margen[1])
+    c = img[ya:y1 + margen[1], xa:x1 + margen[0]]
+    return c, mascara(c, tol, huecos, interior=(y0 - ya, y1 - ya, x0 - xa, x1 - xa))
+
+
 def sin_suelo(c, m):
     """El suelo pintado bajo los pies es verde y pasa la inundación por pegarse a ellos; en esa franja no hay ropa verde."""
     ys = np.nonzero(m.any(axis=1))[0]
@@ -154,7 +166,7 @@ def sin_suelo(c, m):
     return m & ~verde
 
 
-def mascara(c, tol, huecos, umbral_contorno=CONTORNO, piezas_min=None):
+def mascara(c, tol, huecos, umbral_contorno=CONTORNO, piezas_min=None, interior=None):
     """Personaje = lo que queda al inundar el fondo desde el borde; el contorno oscuro lo protege."""
     pal = paleta_fondo(c)
     todas = np.sqrt(((c[:, :, None, :].astype(np.float32) - pal[None, None]) ** 2).sum(-1))
@@ -185,6 +197,15 @@ def mascara(c, tol, huecos, umbral_contorno=CONTORNO, piezas_min=None):
     # Fuera chispas, mariposas y figuras vecinas. Con piezas_min se conservan también las separadas de ese tamaño en
     # adelante: el espíritu de las hojas de muerte flota sin tocar el cuerpo.
     salida = np.zeros(dist.shape, bool)
+    if interior is not None:
+        # Con margen entra la figura vecina: se conserva la que más ocupa la caja medida, no la mayor.
+        ya, yb, xa, xb = interior
+
+        def dentro(comp):
+            ys, xs = np.array(comp).T
+            return int(((ys >= ya) & (ys < yb) & (xs >= xa) & (xs < xb)).sum())
+
+        componentes = [max(componentes, key=dentro)]
     for comp in (componentes if piezas_min else [max(componentes, key=len)]):
         if not piezas_min or len(comp) >= piezas_min:
             ys, xs = np.array(comp).T
@@ -318,17 +339,21 @@ def main():
         img = npc.leer_png(os.path.join(FICHAS, g["ficha"]))
         tol, huecos = g["tol"], g["huecos"]
 
-        def recorte(caja, factor, etiqueta, lienzo, por_cuerpo=True):
-            x0, y0, x1, y1 = caja
-            c = img[y0:y1, x0:x1]
-            m = mascara(c, tol, huecos)
-            spr = reducir(c, sin_suelo(c, m) if g.get("suelo") else m, factor)
+        margen = g.get("margen", MARGEN)
+
+        def recorte(caja, factor, etiqueta, lienzo, por_cuerpo=True, margen_caja=None):
+            c, m = figura(img, caja, tol, huecos, margen_caja or margen)
+            if g.get("suelo"):
+                # Quitar el suelo deja restos sueltos: otra vez, solo la figura.
+                ys, xs = np.array(max(npc._componentes(limpiar(sin_suelo(c, m))), key=len)).T
+                m = np.zeros(m.shape, bool)
+                m[ys, xs] = True
+            spr = reducir(c, m, factor)
             return validar(etiqueta, npc.colocar(spr, etiqueta, por_cuerpo=por_cuerpo, lienzo_px=lienzo))
 
         # El factor es por personaje, no por vista, para que el cuerpo mida lo mismo en todas: manda la vista de frente.
         y0, y1, norte, este, sur = g["vistas"]
-        c_sur = img[y0:y1, sur[0]:sur[1]]
-        factor = altura(mascara(c_sur, tol, huecos)) / ALTO
+        factor = altura(figura(img, (sur[0], y0, sur[1], y1), tol, huecos, margen)[1]) / ALTO
         vistas = []
         for tramo, direccion in zip((norte, este, sur), npc.DIRECCIONES):
             lienzo = recorte((tramo[0], y0, tramo[1], y1), factor, f"{nombre}_{direccion}", LIENZO_VISTA, por_cuerpo=False)
@@ -339,15 +364,15 @@ def main():
                     guardar(f"Guerrero_{nombre}_Caminar{n}_{direccion}.png", cuadro)
 
         fy0, fy1 = g["fila"]
-        c_rep = img[fy0:fy1, g["reposo"][0]:g["reposo"][1]]
-        factor_fila = altura(mascara(c_rep, tol, huecos)) / ALTO
+        factor_fila = altura(figura(img, (g["reposo"][0], fy0, g["reposo"][1], fy1), tol, huecos, margen)[1]) / ALTO
 
         def fila(animacion, tramos, lienzo):
             nonlocal tol
             cuadros = []
             general, tol = tol, g.get("tol_cuadro", {}).get(animacion, tol)
             for n, (xa, xb) in enumerate(tramos, 1):
-                cuadro = recorte((xa, fy0, xb, fy1), factor_fila, f"{nombre}_{animacion}{n}", lienzo)
+                cuadro = recorte((xa, fy0, xb, fy1), factor_fila, f"{nombre}_{animacion}{n}", lienzo,
+                                 margen_caja=g.get("margen_ataque", MARGEN_EFECTOS) if animacion == "Ataque" else None)
                 guardar(f"Guerrero_{nombre}_{animacion}{n}_03.png", cuadro)
                 cuadros.append(cuadro)
             tol = general
@@ -357,7 +382,7 @@ def main():
         correr = fila("Correr", g["correr"], LIENZO_ACCION)
         ataque = fila("Ataque", g["ataque"], LIENZO_ATAQUE)
         caja_dano, escala = g["dano"]
-        dano = recorte(caja_dano, factor_fila * escala, f"{nombre}_Dano", LIENZO_ACCION)
+        dano = recorte(caja_dano, factor_fila * escala, f"{nombre}_Dano", LIENZO_ACCION, margen_caja=MARGEN_EFECTOS)
         guardar(f"Guerrero_{nombre}_Dano1_03.png", dano)
 
         datos = g.get("muerte")
@@ -384,7 +409,8 @@ def main():
         for clave, animacion, lienzo_pose in (("defensa", "Defensa", LIENZO_ACCION), ("victoria", "Victoria", LIENZO_ACCION), ("especial", "Especial", LIENZO_ATAQUE)):
             if clave in g:
                 caja, escala = g[clave]
-                pose = recorte(caja, factor_fila * escala, f"{nombre}_{animacion}", lienzo_pose)
+                pose = recorte(caja, factor_fila * escala, f"{nombre}_{animacion}", lienzo_pose,
+                               margen_caja=SIN_MARGEN if clave == "especial" else MARGEN_EFECTOS)
                 guardar(f"Guerrero_{nombre}_{animacion}1_03.png", pose)
                 poses.append(pose)
 

@@ -21,6 +21,16 @@ Plantilla:
 
 ---
 
+## 2026-11-06 — i7-10700: sprites sin cortar
+
+- **Rama / último commit:** `feature/prototipo-olmeca`, sobre `e333b0a`. EditMode 107/107, PlayMode 80/80. Subido.
+- **Pedido del autor:** "se ve cortada la animación".
+- **Causa:** las cajas de recorte cortaban la figura (caras al correr, pies de Ocel, capas), 68 casos medidos. No afectaba solo a la muerte.
+- **Hecho:** `recortar_guerreros.py` recorta con margen y conserva la figura que más ocupa la caja (`figura`, `MARGEN*`). Vistas en lienzo de 64 de ancho. Nuevo menú **Crónicas → Capturar muertes (pasarela)**.
+- **Aviso:** las capturas en lote pueden salir con los personajes en negro o en blanco, también los NPC, y cambia entre ejecuciones: es de la captura, no del juego; repetirla.
+
+---
+
 ## 2026-11-06 — i7-10700: más tiempo antes de reaparecer
 
 - **Rama / último commit:** `feature/prototipo-olmeca`, sobre `f3cf3d3`. EditMode 107/107, PlayMode 80/80. Subido.

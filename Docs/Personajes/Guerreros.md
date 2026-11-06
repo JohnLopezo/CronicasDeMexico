@@ -49,6 +49,8 @@ Pendientes: **Naira, Ameyali y Ocel**. En su entrada de `GUERREROS`, añadir `"m
 
 ### Rehacer una ficha
 
+Cada caja localiza la figura, pero no la corta: se recorta con margen (`MARGEN`) y se conserva lo que más ocupa la caja. Si entra fondo o un efecto, usar un margen menor para ese guerrero (`margen`, `margen_ataque`).
+
 Si la nueva ficha cambia de distribución, hay que medir de nuevo sus cajas: le pasó a Ameyali, cuyas coordenadas dejaron de valer. Los nombres de los PNG de `Docs/Guerreros` están en la tabla del script.
 
 **Las fichas se recortan mejor sobre fondo liso y claro, sin efectos ni suelo.** Casi todos los defectos actuales vienen de separar la figura del fondo y de sus poderes.

@@ -137,6 +137,30 @@ namespace CronicasDeMexico.Editor.SceneGeneration
                 }
             });
 
+        // Cada cuadro de la muerte de cada guerrero, en el suelo real de la plaza (sin guardar la escena): una fila por guerrero.
+        [MenuItem("Crónicas/Capturar muertes (pasarela)")]
+        public static void CaptureDeaths() => CaptureScene(OlmecaCityGenerator.ScenePath, "Muertes",
+            new[] { ("Pasarela", new Vector2(0f, 4f)) }, () =>
+            {
+                var model = UnityEngine.Object.FindAnyObjectByType<Gameplay.Player.PlayerMovement>().GetComponentInChildren<SpriteBillboard>().GetComponent<SpriteRenderer>();
+                var parent = new GameObject("Pasarela").transform;
+                var row = 0;
+                foreach (var guardian in GuerreroCharacterAssets.BuildAll().Values)
+                {
+                    var set = guardian.DeathSet;
+                    var frames = Mathf.RoundToInt(set.Duration * set.FramesPerSecond);
+                    for (var frame = 0; frame < frames; frame++)
+                    {
+                        var copy = UnityEngine.Object.Instantiate(model.gameObject, parent);
+                        copy.GetComponent<SpriteRenderer>().sprite = set.GetOnceFrame(2, (frame + 0.5f) / set.FramesPerSecond);
+                        copy.transform.localScale = Vector3.one;
+                        copy.transform.position = IsometricProjection.SnapToPixelGrid(
+                            PixelArtSceneBuilder.ToWorld(new Vector2(-8.5f + frame * 2.7f, 9.5f - row * 1.6f)), 1f / IsometricProjection.PixelsPerUnit);
+                    }
+                    row++;
+                }
+            });
+
         static void CaptureScene(string scenePath, string prefix, (string name, Vector2 focus)[] views, Action prepare = null)
         {
             var folder = CommandLineValue("-capturePath") ?? Path.Combine("Logs", "Capturas");

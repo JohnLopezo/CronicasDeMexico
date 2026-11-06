@@ -21,9 +21,10 @@ LIENZO_ACCION = (80, 64)  # la capa y las zancadas de lado no caben en 48
 LIENZO_ATAQUE = (112, 64)
 LIENZO_MUERTE = (128, 96)  # el espíritu se eleva: el pivote (2 px) está también en PixelArtSpriteImporter (MuertePivot)
 PIEZAS_ESPIRITU = 260      # px de ficha desde los que se conserva una pieza que no toca el cuerpo
+HUECO_MIN = 250            # px de ficha desde los que un hueco encerrado es fondo (entre las piernas), no ropa o piel
 MARGEN = (45, 10)         # px de ficha (x, y) alrededor de cada caja: una capa o un brazo que se sale no debe quedar cortado
-MARGEN_EFECTOS = (10, 4)  # ataques y poses: uno mayor vuelve a meter los efectos que las cajas dejan fuera
-MARGEN_SELVA = (14, 3)    # fondos de selva muy variados: con más margen el fondo se pega a la figura
+MARGEN_EFECTOS = (10, 0)  # ataques y poses: uno mayor vuelve a meter los efectos que las cajas dejan fuera
+MARGEN_SELVA = (14, 1)    # fondos de selva muy variados: con más margen el fondo se pega a la figura
 SIN_MARGEN = (0, 0)       # donde hasta un margen pequeño arrastra fondo o efectos (tol_cuadro no basta)
 OSCURO = 70               # valor bajo el que un píxel cuenta como oscuro al reducir (contorno u ojo)
 CONTORNO = 45             # valor bajo el que la inundación del fondo no pasa: es el contorno del personaje
@@ -48,9 +49,9 @@ GUERREROS = {
         "dano": ((870, 800, 1060, 1005), 1.2), "tol": 70, "huecos": True,
         "defensa": ((90, 800, 280, 1005), 1.2), "victoria": ((1215, 800, 1450, 1005), 1.2),
         "especial": ((375, 793, 790, 1010), 1.2),  # con el jaguar dorado: en la ficha está fundido con el cuerpo
-        "muerte": {"ficha": "Hoja_Muerte_ Balam, Guardián Jaguar.png", "factor": 3.4, "tol": 26, "contorno": 20,
+        "muerte": {"ficha": "Hoja_Muerte_ Balam, Guardián Jaguar.png", "factor": 3.4, "tol": 26, "contorno": 20, "brillo": 1.5,
                    "cajas": ((350, 470, 608, 628), (636, 520, 886, 628)),
-                   "espiritu": {"tol": 13, "contorno": 10, "cajas": ((45, 730, 322, 905), (635, 790, 885, 905))}},
+                   "espiritu": {"tol": 8, "contorno": 0, "cajas": ((45, 730, 322, 905), (635, 790, 885, 905))}},
     },
     "Xali": {
         "ficha": "Ficha de Personaje Xali, Guardiana Ajolote.png",
@@ -62,7 +63,7 @@ GUERREROS = {
         "dano": ((880, 795, 1120, 1000), 1.2), "tol": 70, "huecos": True,
         "muerte": {"ficha": "Hoja_muerte_Xali_ Guardiana del Agua.png", "factor": 4.4, "tol": 60, "contorno": 30,
                    "cajas": ((440, 415, 745, 615), (790, 500, 1135, 610)),
-                   "espiritu": {"tol": 34, "contorno": 25,
+                   "espiritu": {"tol": 18, "contorno": 12,
                                 "cajas": ((1168, 395, 1522, 620), (25, 692, 392, 930), (412, 692, 768, 930), (782, 692, 1132, 930))}},
     },
     "Naira": {
@@ -168,13 +169,17 @@ def sin_suelo(c, m):
 
 def mascara(c, tol, huecos, umbral_contorno=CONTORNO, piezas_min=None, interior=None):
     """Personaje = lo que queda al inundar el fondo desde el borde; el contorno oscuro lo protege."""
-    pal = paleta_fondo(c)
+    # El fondo se mira en el borde de la caja medida, no en el del margen: ahí entra la figura vecina, y tomar su piel por
+    # fondo borraba la cara de la propia.
+    ya, yb, xa, xb = interior if interior is not None else (0, c.shape[0], 0, c.shape[1])
+    interna = c[ya:yb, xa:xb]
+    pal = paleta_fondo(interna)
     todas = np.sqrt(((c[:, :, None, :].astype(np.float32) - pal[None, None]) ** 2).sum(-1))
     dist = todas.min(-1)
     contorno = c.max(axis=-1) < umbral_contorno
 
     # La sombra pintada bajo los pies es el mismo matiz del fondo, más oscuro (igual que recortar_npc.separar)
-    borde = np.concatenate((c[0], c[-1], c[:, 0], c[:, -1]))
+    borde = np.concatenate((interna[0], interna[-1], interna[:, 0], interna[:, -1]))
     matiz_b, _, _ = npc._matiz_y_sat(np.median(borde, axis=0, keepdims=True).astype(np.uint8))
     matiz, sat, _ = npc._matiz_y_sat(c)
     sombra = (np.abs((matiz - matiz_b[0] + 180) % 360 - 180) < 22) & (sat > 0.18)
@@ -187,7 +192,7 @@ def mascara(c, tol, huecos, umbral_contorno=CONTORNO, piezas_min=None, interior=
             fondo[ys, xs] = True
     if huecos:
         for comp in npc._componentes((todas[..., :DOMINANTES].min(-1) < tol * 0.5) & ~fondo & ~contorno):
-            if len(comp) >= 30:
+            if len(comp) >= HUECO_MIN:
                 ys, xs = np.array(comp).T
                 fondo[ys, xs] = True
 
@@ -199,8 +204,6 @@ def mascara(c, tol, huecos, umbral_contorno=CONTORNO, piezas_min=None, interior=
     salida = np.zeros(dist.shape, bool)
     if interior is not None:
         # Con margen entra la figura vecina: se conserva la que más ocupa la caja medida, no la mayor.
-        ya, yb, xa, xb = interior
-
         def dentro(comp):
             ys, xs = np.array(comp).T
             return int(((ys >= ya) & (ys < yb) & (xs >= xa) & (xs < xb)).sum())
@@ -209,6 +212,12 @@ def mascara(c, tol, huecos, umbral_contorno=CONTORNO, piezas_min=None, interior=
     for comp in (componentes if piezas_min else [max(componentes, key=len)]):
         if not piezas_min or len(comp) >= piezas_min:
             ys, xs = np.array(comp).T
+            salida[ys, xs] = True
+    # Un agujero pequeño dentro de la figura deja ver el suelo a través del cuerpo: se rellena con los píxeles de la ficha.
+    alto_c, ancho_c = salida.shape
+    for comp in npc._componentes(~salida):
+        ys, xs = np.array(comp).T
+        if len(comp) < HUECO_MIN and ys.min() > 0 and xs.min() > 0 and ys.max() < alto_c - 1 and xs.max() < ancho_c - 1:
             salida[ys, xs] = True
     return salida
 
@@ -277,6 +286,12 @@ def pasos_frente(lienzo, levantar=2):
         pegar(c[baja:corte + baja], cuerpo)
         cuadros.append(c)
     return cuadros
+
+
+def aclarar(sprite, brillo):
+    """Las hojas de muerte con fondo oscuro pintan el cuerpo apagado: casi negro sobre la selva del juego."""
+    sprite[..., :3] = np.clip(sprite[..., :3].astype(np.float32) * brillo, 0, 255).astype(np.uint8)
+    return sprite
 
 
 def a_lienzo_muerte(sprite):
@@ -393,13 +408,14 @@ def main():
                 x0, y0, x1, y1 = caja
                 c = hoja_muerte[y0:y1, x0:x1]
                 m = mascara(c, datos["tol"], huecos, datos.get("contorno", CONTORNO))
-                muerte.append(validar(f"{nombre}_Muerte", a_lienzo_muerte(reducir(c, m, datos["factor"])), alto_min=12))
+                spr = aclarar(reducir(c, m, datos["factor"]), datos.get("brillo", 1.0))
+                muerte.append(validar(f"{nombre}_Muerte", a_lienzo_muerte(spr), alto_min=12))
             espiritu = datos["espiritu"]
             for x0, y0, x1, y1 in espiritu["cajas"]:
                 c = hoja_muerte[y0:y1, x0:x1]
                 m = mascara(c, espiritu["tol"], huecos, espiritu["contorno"], PIEZAS_ESPIRITU)
                 # Sin validar: al final el cuerpo ya no está y solo quedan piezas sueltas, sin pies ni altura fija.
-                muerte.append(a_lienzo_muerte(reducir(c, m, datos["factor"])))
+                muerte.append(a_lienzo_muerte(aclarar(reducir(c, m, datos["factor"]), datos.get("brillo", 1.0))))
         else:
             muerte = [a_lienzo_muerte(dano), validar(f"{nombre}_Muerte2", caido(dano), alto_min=12)]
         for n, cuadro in enumerate(muerte, 1):

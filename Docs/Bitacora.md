@@ -27,6 +27,7 @@ Plantilla:
 - **Pedido del autor:** "se ve cortada la animación".
 - **Causa:** las cajas de recorte cortaban la figura (caras al correr, pies de Ocel, capas), 68 casos medidos. No afectaba solo a la muerte.
 - **Hecho:** `recortar_guerreros.py` recorta con margen y conserva la figura que más ocupa la caja (`figura`, `MARGEN*`). Vistas en lienzo de 64 de ancho. Nuevo menú **Crónicas → Capturar muertes (pasarela)**.
+- **Regresión corregida (reportada por el autor en `Docs/Bus`):** el margen metía la piel de la figura vecina en el color de fondo y borraba caras y parte del cuerpo. El fondo se mira ahora en el borde de la caja medida y los huecos solo se quitan desde 250 px de ficha. Muerte de Balam aclarada ×1,5: su hoja es muy oscura.
 - **Aviso:** las capturas en lote pueden salir con los personajes en negro o en blanco, también los NPC, y cambia entre ejecuciones: es de la captura, no del juego; repetirla.
 
 ---

@@ -1,6 +1,6 @@
 # Auditoría de animaciones de los protagonistas (piloto: Balam)
 
-Fecha: 2026-11-06. Commit auditado: `f042af4`. **Aprobada por el autor con sus propuestas de §8**, salvo la hoja nueva de Balam, que falta. Hechos después: Defense y Victory de Balam, con un cuadro provisional (paso 1 de §9). Estado general y cómo regenerar: `Docs/Personajes/Guerreros.md`.
+Fecha: 2026-11-06. Commit auditado: `f042af4`. **Aprobada por el autor con sus propuestas de §8**, salvo la hoja nueva de Balam, que falta. Hechos después, con un cuadro provisional: Defense, Victory y SpecialAttack de Balam (F; el Golpe de tierra se queda en C). Walk de frente y de espalda: 4 cuadros generados para los siete. Estado general y cómo regenerar: `Docs/Personajes/Guerreros.md`.
 
 ## 1. Conclusión
 

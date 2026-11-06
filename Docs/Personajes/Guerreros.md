@@ -28,6 +28,7 @@ Balam conserva el id `jaguar`: es el de las partidas guardadas y el de `OBJ_marc
 - **Juego:** `Progression.Profile` es el elegido y se guarda en `guardianId`. `PlayerStats` aplica sus sprites al aparecer el jugador en cada escena. Cambiar a mitad de partida no cura ni recupera energía.
 - **Defensa:** Q, clic derecho o LB, mantenidos: quieto, sin atacar y a mitad de daño (`PlayerDefense`). Funciona con los siete; **solo Balam muestra su pose**.
 - **Victoria:** 1,5 s al abrir la ofrenda final, antes de los resultados. **Solo Balam**; los demás pasan directo. Ambas poses son provisionales y están en la tabla `GUERREROS` del script.
+- **Habilidad especial:** F o RB, desde el inicio: 25 de energía, 5 s de espera, daño de 2,5 × ataque enfrente (`PlayerSpecial`). **Solo Balam**, que también usa una pose provisional: el jaguar dorado va fundido en su sprite, como en la ficha. El Golpe de tierra sigue en C.
 - **Marcas:** hay una por guerrero; `RewardService` retira del paquete las de otro Guardián.
 
 ## Cómo mejorarlos
@@ -62,7 +63,7 @@ Si la nueva ficha cambia de distribución, hay que medir de nuevo sus cajas: le 
 ## Mejoras previstas
 
 - **Hojas de muerte** de Naira, Ameyali y Ocel.
-- **Más cuadros:** reposo animado (hoy 1), caminar de frente y de espalda (hoy 2 aproximados), ataque de Naira y Ameyali, y ataque hacia el norte y el sur (hoy usan la pose de lado).
+- **Más cuadros:** reposo animado (hoy 1), caminar de frente y de espalda (hoy 4 generados desde el reposo, sin brazos ni capa), ataque de Naira y Ameyali, y ataque hacia el norte y el sur (hoy usan la pose de lado).
 - **Atributos:** ajustar jugando. A 8 de ataque, un espíritu de 30 cae en 4 golpes y no en 3.
 - **Estilo:** los guerreros se ven más oscuros y recargados que los NPC.
 - **Estilos de combate propios** (`Docs/Diseno.md` §4): hoy todos pelean igual y solo cambian los números. Xali, Itzel y Yaret deberían atacar o apoyar a distancia. Necesita arte de efectos; es una etapa aparte.

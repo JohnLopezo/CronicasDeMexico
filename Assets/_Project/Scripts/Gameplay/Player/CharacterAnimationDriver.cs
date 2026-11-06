@@ -25,10 +25,12 @@ namespace CronicasDeMexico.Gameplay.Player
 
         [SerializeField, Tooltip("Mientras defiende (PlayerDefense).")] DirectionalSpriteSet defense;
         [SerializeField, Tooltip("Al ganar (DungeonCompletion).")] DirectionalSpriteSet victory;
+        [SerializeField, Tooltip("Al lanzar la habilidad (PlayerSpecial).")] DirectionalSpriteSet special;
 
         Health health;
         PlayerAttack playerAttack;
         PlayerDefense playerDefense;
+        PlayerSpecial playerSpecial;
         PlayerMovement playerMovement;
         EnemyChaser chaser;
         bool wasDead;
@@ -45,10 +47,11 @@ namespace CronicasDeMexico.Gameplay.Player
             death = deathSet;
         }
 
-        public void ConfigureDefenseAndVictory(DirectionalSpriteSet defenseSet, DirectionalSpriteSet victorySet)
+        public void ConfigureDefenseVictorySpecial(DirectionalSpriteSet defenseSet, DirectionalSpriteSet victorySet, DirectionalSpriteSet specialSet)
         {
             defense = defenseSet;
             victory = victorySet;
+            special = specialSet;
         }
 
         /// <summary>Muestra la victoria hasta StopVictory. Devuelve false si este personaje aún no tiene esa animación.</summary>
@@ -74,6 +77,7 @@ namespace CronicasDeMexico.Gameplay.Player
             playerAttack = GetComponent<PlayerAttack>();
             playerMovement = GetComponent<PlayerMovement>();
             playerDefense = GetComponent<PlayerDefense>();
+            playerSpecial = GetComponent<PlayerSpecial>();
             chaser = GetComponent<EnemyChaser>();
         }
 
@@ -86,6 +90,8 @@ namespace CronicasDeMexico.Gameplay.Player
             }
             if (playerAttack != null)
                 playerAttack.Struck += OnStruck;
+            if (playerSpecial != null)
+                playerSpecial.Used += OnSpecial;
         }
 
         void OnDisable()
@@ -97,6 +103,8 @@ namespace CronicasDeMexico.Gameplay.Player
             }
             if (playerAttack != null)
                 playerAttack.Struck -= OnStruck;
+            if (playerSpecial != null)
+                playerSpecial.Used -= OnSpecial;
         }
 
         void Update()
@@ -131,6 +139,12 @@ namespace CronicasDeMexico.Gameplay.Player
         {
             if (animator != null && (health == null || !health.IsDead))
                 animator.Play(attack);
+        }
+
+        void OnSpecial()
+        {
+            if (animator != null)
+                animator.Play(special);
         }
 
         void OnDamaged(Vector3 source)

@@ -2,7 +2,7 @@
 # Solo usa numpy; se ejecuta con el Python que trae Blender:
 #   "<Blender>/5.2/python/bin/python.exe" -I Tools/ArtPipeline/recortar_guerreros.py Assets/_Project/Art/Environment/Olmeca/Sprites/Guerreros <hoja_revision.png>
 # Escribe Guerrero_<Nombre>_<Animación><cuadro>_<dir>.png (01 Norte, 03 Este, 05 Sur). Las fichas solo animan la vista
-# lateral: las vistas Norte y Sur tienen reposo y pasos() (aproximación de recortar_npc), y el ataque, la carrera y el daño
+# lateral: las vistas Norte y Sur tienen reposo y pasos_frente() (aproximación desde el reposo), y el ataque, la carrera y el daño
 # existen solo en 03. El pivote normalizado (centro, pies a 2 px) es igual en todos los lienzos.
 # Muerte: su Daño, y Caída y Desplome de la hoja de muerte (el espíritu sería un efecto aparte). Quien no tiene hoja cae con
 # caido(). El suelo y los efectos finos se quitan con limpiar().
@@ -29,7 +29,7 @@ FINO = 3                  # px de ficha: lo más delgado que esto y alejado del 
 # ficha. huecos: quitar también el fondo encerrado (entre piernas); se apaga si borra plumas del color del fondo.
 # tol_cuadro: tolerancia propia de una animación, donde la general borra ropa o deja efectos. muerte: hoja, px de hoja por
 # px de juego, cajas y su tolerancia; contorno, si el fondo es tan oscuro como el contorno normal. defensa y victoria: caja y
-# escala de ese panel, como dano (provisional, una pose; hoy solo el piloto, Balam).
+# escala de ese panel, como dano (provisional, una pose; hoy solo el piloto, Balam). especial: igual.
 GUERREROS = {
     "Balam": {
         "ficha": "Hoja de sprites de Balam, Guardián Jaguar.png",
@@ -40,6 +40,7 @@ GUERREROS = {
         "ataque": ((1185, 1340), (1340, 1475)),
         "dano": ((870, 800, 1060, 1005), 1.2), "tol": 70, "huecos": True,
         "defensa": ((90, 800, 280, 1005), 1.2), "victoria": ((1215, 800, 1450, 1005), 1.2),
+        "especial": ((375, 793, 790, 1010), 1.2),  # con el jaguar dorado: en la ficha está fundido con el cuerpo
         "muerte": {"ficha": "Hoja_Muerte_ Balam, Guardián Jaguar.png", "factor": 3.4, "tol": 26, "contorno": 20,
                    "cajas": ((350, 470, 608, 628), (636, 520, 886, 628))},
     },
@@ -216,6 +217,33 @@ def validar(nombre, lienzo, alto_min=30):
     return lienzo
 
 
+def pasos_frente(lienzo, levantar=2):
+    """Caminata de cuatro cuadros desde la pose de reposo, para las vistas que las fichas no animan: un pie arriba, cuerpo
+    abajo, el otro pie arriba, cuerpo abajo; el cuerpo se balancea hacia el pie que apoya. shortcut: es una aproximación, sin
+    brazos ni capa que se muevan; sustituir por cuadros reales cuando haya hojas de frente y de espalda."""
+    alfa = lienzo[..., 3] > 0
+    ys = np.nonzero(alfa.any(axis=1))[0]
+    y1 = ys.max() + 1
+    corte = y1 - max(6, (y1 - ys.min()) // 4)
+    medio = lienzo.shape[1] // 2
+    margen = alfa[:, 0].any() or alfa[:, -1].any()  # sin sitio para balancearse: el rodar lo partiría por el borde
+
+    def pegar(destino, trozo):
+        destino[trozo[..., 3] > 0] = trozo[trozo[..., 3] > 0]
+
+    cuadros = []
+    for lado, balanceo, baja in ((0, 1, 0), (None, 0, 1), (1, -1, 0), (None, 0, 1)):
+        c = np.zeros_like(lienzo)
+        for mitad in (0, 1):
+            xs = slice(0, medio) if mitad == 0 else slice(medio, None)
+            sube = levantar if mitad == lado else 0
+            pegar(c[corte - sube:y1 - sube, xs], lienzo[corte:y1, xs])
+        cuerpo = np.roll(lienzo[:corte], 0 if margen else balanceo, axis=1)
+        pegar(c[baja:corte + baja], cuerpo)
+        cuadros.append(c)
+    return cuadros
+
+
 def caido(dano):
     """Quien no tiene hoja de muerte cae con su pose de daño tumbada. shortcut: es rígida; sustituir al llegar su hoja."""
     ys, xs = np.nonzero(dano[..., 3])
@@ -249,6 +277,12 @@ def _comprobar():
     dano[10:62, 30:50, 3] = 255  # 20 × 52 de pie
     tumbado = caido(dano)
     assert altura(tumbado[..., 3] > 0) == 20 and tumbado[64 - npc.PIES - 1, ..., 3].any()
+    reposo = np.zeros((64, 48, 4), np.uint8)
+    reposo[10:62, 14:34, 3] = 255
+    pasos = pasos_frente(reposo)
+    assert len(pasos) == 4 and all(p[61, ..., 3].any() for p in pasos), "un pie siempre apoya"
+    assert not pasos[0][61, 14:24, 3].any() and pasos[0][61, 24:34, 3].all(), "el primer cuadro levanta un pie"
+    assert not pasos[2][61, 24:34, 3].any() and pasos[2][61, 14:24, 3].all(), "el tercero, el otro"
 
 
 def main():
@@ -282,7 +316,7 @@ def main():
             guardar(f"Guerrero_{nombre}_Reposo1_{direccion}.png", lienzo)
             vistas.append(lienzo)
             if direccion != "03":
-                for n, cuadro in enumerate(npc.pasos(lienzo), 1):
+                for n, cuadro in enumerate(pasos_frente(lienzo), 1):
                     guardar(f"Guerrero_{nombre}_Caminar{n}_{direccion}.png", cuadro)
 
         fy0, fy1 = g["fila"]
@@ -322,10 +356,10 @@ def main():
             guardar(f"Guerrero_{nombre}_Muerte{n}_03.png", cuadro)
 
         poses = []
-        for clave, animacion in (("defensa", "Defensa"), ("victoria", "Victoria")):
+        for clave, animacion, lienzo_pose in (("defensa", "Defensa", LIENZO_ACCION), ("victoria", "Victoria", LIENZO_ACCION), ("especial", "Especial", LIENZO_ATAQUE)):
             if clave in g:
                 caja, escala = g[clave]
-                pose = recorte(caja, factor_fila * escala, f"{nombre}_{animacion}", LIENZO_ACCION)
+                pose = recorte(caja, factor_fila * escala, f"{nombre}_{animacion}", lienzo_pose)
                 guardar(f"Guerrero_{nombre}_{animacion}1_03.png", pose)
                 poses.append(pose)
 

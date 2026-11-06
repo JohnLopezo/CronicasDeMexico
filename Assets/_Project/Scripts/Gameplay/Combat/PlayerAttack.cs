@@ -34,6 +34,8 @@ namespace CronicasDeMexico.Gameplay.Combat
 
         readonly Collider[] hits = new Collider[8];
         readonly Health[] struck = new Health[8];
+        readonly Collider[] areaHits = new Collider[16];
+        readonly Health[] areaStruck = new Health[16];
         PlayerMovement movement;
         Health ownHealth;
         PlayerDefense defense;
@@ -81,6 +83,22 @@ namespace CronicasDeMexico.Gameplay.Combat
 
         /// <summary>Se lanzó un golpe (para la animación del zarpazo).</summary>
         public event System.Action Struck;
+
+        /// <summary>Daña una vez a cada enemigo en una esfera con centro a medio metro sobre el punto dado (habilidades).</summary>
+        public void StrikeArea(Vector3 center, float areaRadius, int areaDamage)
+        {
+            var count = Physics.OverlapSphereNonAlloc(center + Vector3.up * 0.5f, areaRadius, areaHits, targetLayers, QueryTriggerInteraction.Ignore);
+            var struckCount = 0;
+            for (var i = 0; i < count && struckCount < areaStruck.Length; i++)
+            {
+                var target = areaHits[i].GetComponentInParent<Health>();
+                if (target == null || target == ownHealth || System.Array.IndexOf(areaStruck, target, 0, struckCount) >= 0)
+                    continue;
+                areaStruck[struckCount++] = target;
+                target.TryDamage(areaDamage, transform.position);
+            }
+            System.Array.Clear(areaStruck, 0, struckCount);
+        }
 
         /// <summary>Lanza un golpe ahora, sin entrada ni enfriamiento. Devuelve cuántos objetivos recibieron daño.</summary>
         public int Strike()

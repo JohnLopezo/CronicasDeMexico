@@ -32,7 +32,6 @@ namespace CronicasDeMexico.Gameplay.Player
         [SerializeField, Tooltip("Para avisar si falta energía.")] StringEventChannel messageChannel;
 
         readonly Collider[] hits = new Collider[16];
-        readonly Health[] struck = new Health[16];
         PlayerAttack attack;
         Health ownHealth;
         PlayerDefense defense;
@@ -93,21 +92,10 @@ namespace CronicasDeMexico.Gameplay.Player
             var damage = Mathf.RoundToInt(attack.Damage * damageFactor);
 
             // Enemigos en el área.
-            var count = Physics.OverlapSphereNonAlloc(center + Vector3.up * 0.5f, radius, hits, attack.TargetLayers,
-                QueryTriggerInteraction.Ignore);
-            var struckCount = 0;
-            for (var i = 0; i < count && struckCount < struck.Length; i++)
-            {
-                var target = hits[i].GetComponentInParent<Health>();
-                if (target == null || target == ownHealth || System.Array.IndexOf(struck, target, 0, struckCount) >= 0)
-                    continue;
-                struck[struckCount++] = target;
-                target.TryDamage(damage, center);
-            }
-            System.Array.Clear(struck, 0, struckCount);
+            attack.StrikeArea(center, radius, damage);
 
             // Basalto agrietado en el área (exploración).
-            count = Physics.OverlapSphereNonAlloc(center + Vector3.up * 0.5f, radius, hits, ~0, QueryTriggerInteraction.Collide);
+            var count = Physics.OverlapSphereNonAlloc(center + Vector3.up * 0.5f, radius, hits, ~0, QueryTriggerInteraction.Collide);
             for (var i = 0; i < count; i++)
                 if (hits[i].GetComponentInParent<BreakableBasalt>() is { } basalt)
                     basalt.Break();

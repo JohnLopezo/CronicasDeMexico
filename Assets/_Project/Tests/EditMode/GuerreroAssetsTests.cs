@@ -50,7 +50,21 @@ namespace CronicasDeMexico.Tests
                 var pilot = guardian.Id == "jaguar";
                 Assert.AreEqual(pilot, guardian.DefenseSet != null, guardian.Id);
                 Assert.AreEqual(pilot, guardian.VictorySet != null, guardian.Id);
+                Assert.AreEqual(pilot, guardian.SpecialSet != null, guardian.Id);
             }
+        }
+
+        [Test]
+        public void Everyone_WalksForwardAndBackward_WithFourFrames()
+        {
+            foreach (var guardian in Resources.Load<GuardianCatalog>(GuardianCatalog.ResourcePath).Guardians)
+                foreach (var direction in new[] { 0, DirectionalSpriteSet.DirectionCount - 1 })
+                {
+                    var frames = new HashSet<Sprite>();
+                    for (var frame = 0; frame < 4; frame++)
+                        frames.Add(guardian.SpriteSet.GetWalkFrame(direction, (frame + 0.5f) / guardian.SpriteSet.FramesPerSecond));
+                    Assert.AreEqual(4, frames.Count, $"{guardian.Id}, dirección {direction}");
+                }
         }
 
         [TestCase("jaguar", Affinity.Tierra)]

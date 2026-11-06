@@ -24,13 +24,14 @@ namespace CronicasDeMexico.Editor.SceneGeneration
         const float RunFramesPerSecond = 12f;
         const float HitFramesPerSecond = 5f;
         const float DeathFramesPerSecond = 5f;
+        const float SpecialFramesPerSecond = 1f / 0.7f; // un cuadro, 0,7 s: se queda quieto mientras dura
 
         // Balam conserva el id "jaguar": es el de las partidas guardadas y el de OBJ_marca_jaguar. La afinidad inicial es la de
         // su ficha (decisión del autor, 2026-11-06). Atributos: mismo presupuesto para todos, repartido según el estilo de la
         // biblia (Docs/Sistemas/Sistema_Progresion.md; lo vigila GuerreroAssetsTests). Yaret es el perfil de referencia.
         static readonly (string name, string id, string title, string description, Affinity affinity, SpeciesStatus status, CharacterStats stats, Vector4 growth)[] Guerreros =
         {
-            ("Balam", "jaguar", "Guardián Jaguar", "Fuerza, movilidad y combate cercano.", Affinity.Tierra, SpeciesStatus.Nativa,
+            ("Balam", "jaguar", "Guardián Jaguar", "Fuerza, movilidad y combate cercano. Habilidad (F): espíritu del jaguar.", Affinity.Tierra, SpeciesStatus.Nativa,
                 new CharacterStats(50, 12, 0, 80), new Vector4(4.5f, 2f, 0.5f, 3f)),
             ("Xali", "ajolote", "Guardiana Ajolote", "Recuperación, resistencia y afinidad acuática.", Affinity.Agua, SpeciesStatus.Endemica,
                 new CharacterStats(65, 8, 1, 80), new Vector4(8.5f, 1f, 0.5f, 5f)),
@@ -70,7 +71,7 @@ namespace CronicasDeMexico.Editor.SceneGeneration
                     AssetDatabase.CreateAsset(guardian, path);
                 }
                 guardian.Configure(name, title, description, affinity, status, stats, growth, walk, attack, run, hit, death);
-                guardian.ConfigureDefenseAndVictory(OptionalSet(name, "Defensa"), OptionalSet(name, "Victoria"));
+                guardian.ConfigureDefenseVictorySpecial(OptionalSet(name, "Defensa", 1f), OptionalSet(name, "Victoria", 1f), OptionalSet(name, "Especial", SpecialFramesPerSecond));
                 EditorUtility.SetDirty(guardian);
                 guardians[name] = guardian;
                 ordered.Add(guardian);
@@ -108,8 +109,8 @@ namespace CronicasDeMexico.Editor.SceneGeneration
         }
 
         // Una pose fija. Hoy solo la tiene el piloto, Balam (Docs/Personajes/Auditoria_Animaciones.md).
-        static DirectionalSpriteSet OptionalSet(string name, string animation) =>
-            LoadSprite(name, $"{animation}1", "03") != null ? BuildSet(name, animation, 1f, out _) : null;
+        static DirectionalSpriteSet OptionalSet(string name, string animation, float framesPerSecond) =>
+            LoadSprite(name, $"{animation}1", "03") != null ? BuildSet(name, animation, framesPerSecond, out _) : null;
 
         static DirectionalSpriteSet.DirectionClip Clip(string name, string animation, string direction)
         {

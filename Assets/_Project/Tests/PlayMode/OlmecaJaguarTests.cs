@@ -1,5 +1,7 @@
 using System.Collections;
 using System.Linq;
+using CronicasDeMexico.Core.Progress;
+using CronicasDeMexico.Core.Services;
 using CronicasDeMexico.Gameplay.Combat;
 using CronicasDeMexico.Gameplay.Enemies;
 using CronicasDeMexico.Gameplay.Player;
@@ -91,6 +93,46 @@ namespace CronicasDeMexico.Tests
             Assert.IsTrue(health.TryDamage(100000, player.transform.position + Vector3.right));
             yield return null;
             Assert.AreEqual("DSS_Guerrero_Balam_Muerte", ActionName(animator), "Cae con su hoja de muerte.");
+        }
+
+        [UnityTest]
+        public IEnumerator Special_SpendsEnergy_HitsInFront_ShowsItsPose_AndWaitsItsCooldown()
+        {
+            yield return Load(Floor1);
+            var player = Object.FindAnyObjectByType<PlayerMovement>();
+            var special = player.GetComponent<PlayerSpecial>();
+            Assert.IsNotNull(special, "El prefab del jugador debe tener la habilidad.");
+            var progression = ServiceLocator.Get<Progression>();
+            progression.FillEnergy();
+            var energy = progression.Energy;
+            var animator = player.GetComponent<DirectionalSpriteAnimator>();
+
+            var spirit = Spirit("EspirituCorrompido_1");
+            var spiritHealth = spirit.GetComponent<Health>();
+            Teleport(spirit, player.transform.position + player.FacingDirection * 1.2f);
+            yield return new WaitForFixedUpdate();
+            var before = spiritHealth.Current;
+
+            Assert.IsTrue(special.TryUse(), "Balam la tiene desde el inicio, sin Bendición.");
+            Assert.AreEqual(energy - 25, progression.Energy);
+            Assert.Less(spiritHealth.Current, before, "Daña lo que tiene enfrente.");
+            Assert.AreEqual("DSS_Guerrero_Balam_Especial", ActionName(animator));
+            Assert.IsTrue(player.Rooted, "Quieto mientras la lanza.");
+            Assert.IsFalse(special.TryUse(), "Tiene tiempo de espera.");
+            Assert.AreEqual(energy - 25, progression.Energy, "Sin usarla no gasta.");
+
+            yield return new WaitForSeconds(0.8f);
+            Assert.IsFalse(player.Rooted);
+
+            try
+            {
+                progression.SelectGuardian("ajolote", fillEnergy: false);
+                Assert.IsFalse(special.IsReady && special.TryUse(), "Quien no tiene su arte aún no tiene habilidad.");
+            }
+            finally
+            {
+                progression.SelectGuardian("jaguar", fillEnergy: true);
+            }
         }
 
         [UnityTest]

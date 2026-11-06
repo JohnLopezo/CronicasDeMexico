@@ -61,6 +61,7 @@ namespace CronicasDeMexico.Data.Characters
         [SerializeField] DirectionalSpriteSet deathSet;
         [SerializeField, Tooltip("Vacío hasta que su arte esté: sin pose, defiende igual.")] DirectionalSpriteSet defenseSet;
         [SerializeField, Tooltip("Vacío hasta que su arte esté: pasa directo a los resultados.")] DirectionalSpriteSet victorySet;
+        [SerializeField, Tooltip("Vacío hasta que su arte esté: aún no tiene habilidad especial.")] DirectionalSpriteSet specialSet;
 
         public DirectionalSpriteSet AttackSet => attackSet;
         public DirectionalSpriteSet RunSet => runSet;
@@ -68,6 +69,7 @@ namespace CronicasDeMexico.Data.Characters
         public DirectionalSpriteSet DeathSet => deathSet;
         public DirectionalSpriteSet DefenseSet => defenseSet;
         public DirectionalSpriteSet VictorySet => victorySet;
+        public DirectionalSpriteSet SpecialSet => specialSet;
 
         public string Id => id;
         public string DisplayName => displayName;
@@ -103,10 +105,11 @@ namespace CronicasDeMexico.Data.Characters
             deathSet = death;
         }
 
-        public void ConfigureDefenseAndVictory(DirectionalSpriteSet defense, DirectionalSpriteSet victory)
+        public void ConfigureDefenseVictorySpecial(DirectionalSpriteSet defense, DirectionalSpriteSet victory, DirectionalSpriteSet special)
         {
             defenseSet = defense;
             victorySet = victory;
+            specialSet = special;
         }
 
         public static GuardianData Create(string id, string displayName, string description, Affinity initialAffinity,

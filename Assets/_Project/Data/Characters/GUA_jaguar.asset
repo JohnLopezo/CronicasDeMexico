@@ -21,7 +21,8 @@ MonoBehaviour:
   id: jaguar
   displayName: Balam
   title: "Guardi\xE1n Jaguar"
-  description: Fuerza, movilidad y combate cercano.
+  description: "Fuerza, movilidad y combate cercano. Habilidad (F): esp\xEDritu del
+    jaguar."
   initialAffinity: 1
   status: 1
   spriteSet: {fileID: 11400000, guid: defc45a0a09cc5346be480cad68d5c3d, type: 2}
@@ -31,3 +32,4 @@ MonoBehaviour:
   deathSet: {fileID: 11400000, guid: 8c2cf89089b96f34aab8b3f8ffac4c61, type: 2}
   defenseSet: {fileID: 11400000, guid: d5564642f40e8cf46b89e8c8d704d446, type: 2}
   victorySet: {fileID: 11400000, guid: fed8012685111b842af224c301b31101, type: 2}
+  specialSet: {fileID: 11400000, guid: 8ec6891694ab06641a7bb8f01d8909af, type: 2}

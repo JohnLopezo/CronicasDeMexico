@@ -21,6 +21,15 @@ Plantilla:
 
 ---
 
+## 2026-11-06 — i7-10700: Habilidad especial de Balam y caminar de frente
+
+- **Rama / último commit:** `feature/prototipo-olmeca`, sobre `16b480b`. EditMode 99/99, PlayMode 80/80 (PlayMode antes de corregir el recorte de la pose). Subido.
+- **Hecho:** `PlayerSpecial` (acción `Special`: F, RB): 25 de energía, 5 s de espera, 2,5 × ataque enfrente, quieto 0,7 s; solo Balam, con el panel de su ficha, donde el jaguar va fundido con el cuerpo. `pasos_frente` da 4 cuadros de frente y de espalda a los siete. El daño en área pasa a `PlayerAttack.StrikeArea`, que usa también el Golpe de tierra.
+- **Distinto de lo propuesto:** el Golpe de tierra se queda en C y la habilidad nueva va en F, para no cambiar lo que ya enseñan los textos.
+- **Pendiente:** cuadros reales de frente y de espalda; la habilidad de los otros seis; hoja con el jaguar aparte para animarlo.
+
+---
+
 ## 2026-11-06 — i7-10700: Defensa y Victoria de Balam (piloto)
 
 - **Rama / último commit:** `feature/prototipo-olmeca`, sobre `52d0f12`. EditMode 98/98, PlayMode 79/79. Subido.

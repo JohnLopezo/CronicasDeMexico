@@ -31,3 +31,4 @@ MonoBehaviour:
   deathSet: {fileID: 11400000, guid: 847bfffddfb237a43958b79df6771d7c, type: 2}
   defenseSet: {fileID: 0}
   victorySet: {fileID: 0}
+  specialSet: {fileID: 0}

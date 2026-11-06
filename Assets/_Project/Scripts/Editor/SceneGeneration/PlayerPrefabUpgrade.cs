@@ -91,7 +91,14 @@ namespace CronicasDeMexico.Editor.SceneGeneration
 
             var driver = root.GetComponent<CharacterAnimationDriver>() ?? root.AddComponent<CharacterAnimationDriver>();
             driver.Configure(animator, guardian.AttackSet, guardian.RunSet, null, null, guardian.HitSet, guardian.DeathSet);
-            driver.ConfigureDefenseAndVictory(guardian.DefenseSet, guardian.VictorySet);
+            driver.ConfigureDefenseVictorySpecial(guardian.DefenseSet, guardian.VictorySet, guardian.SpecialSet);
+            var special = root.GetComponent<PlayerSpecial>();
+            if (special == null)
+            {
+                special = root.AddComponent<PlayerSpecial>();
+                PixelArtSceneBuilder.SetProperty(special, "messageChannel", property => property.objectReferenceValue =
+                    AssetDatabase.LoadAssetAtPath<StringEventChannel>(OlmecaPrototypeGenerator.MessageChannelPath));
+            }
             if (root.GetComponent<PlayerDefense>() == null)
                 root.AddComponent<PlayerDefense>();
             EditorUtility.SetDirty(animator);

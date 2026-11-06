@@ -126,7 +126,7 @@ namespace CronicasDeMexico.Gameplay.Dungeon
             {
                 var controls = new MonoBehaviour[]
                 {
-                    player.GetComponent<PlayerMovement>(), player.GetComponent<PlayerAttack>(), player.GetComponent<PlayerAbility>(), player.GetComponent<PlayerDefense>(),
+                    player.GetComponent<PlayerMovement>(), player.GetComponent<PlayerAttack>(), player.GetComponent<PlayerAbility>(), player.GetComponent<PlayerDefense>(), player.GetComponent<PlayerSpecial>(),
                 };
                 SetEnabled(controls, false);
                 yield return new WaitForSeconds(VictorySeconds);

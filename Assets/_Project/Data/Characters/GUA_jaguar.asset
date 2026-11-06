@@ -14,15 +14,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   baseStats:
     maxHealth: 50
-    attack: 10
+    attack: 12
     defense: 0
-    maxEnergy: 100
-  growthPerLevel: {x: 6, y: 1.5, z: 0.5, w: 5}
+    maxEnergy: 80
+  growthPerLevel: {x: 4.5, y: 2, z: 0.5, w: 3}
   id: jaguar
   displayName: Balam
   title: "Guardi\xE1n Jaguar"
   description: Fuerza, movilidad y combate cercano.
-  initialAffinity: 5
+  initialAffinity: 1
   status: 1
   spriteSet: {fileID: 11400000, guid: defc45a0a09cc5346be480cad68d5c3d, type: 2}
   attackSet: {fileID: 11400000, guid: 21017bb216ef5dd489eb88a56e4624ff, type: 2}

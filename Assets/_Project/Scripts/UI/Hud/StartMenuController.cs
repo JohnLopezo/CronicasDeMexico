@@ -112,7 +112,8 @@ namespace CronicasDeMexico.UI.Hud
             foreach (var card in guardianCards.Children())
                 card.EnableInClassList(SelectedClass, card.name == CardName(guardian));
             guardianTitle.text = $"{guardian.DisplayName}, {guardian.Title}";
-            guardianDescription.text = guardian.Description;
+            var stats = guardian.At(1);
+            guardianDescription.text = $"{guardian.Description}\nVida {stats.maxHealth} · Ataque {stats.attack} · Defensa {stats.defense} · Energía {stats.maxEnergy}";
             guardianStart.text = $"Empezar con {guardian.DisplayName}";
         }
 

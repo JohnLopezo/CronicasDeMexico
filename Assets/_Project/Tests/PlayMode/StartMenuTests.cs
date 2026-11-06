@@ -140,7 +140,7 @@ namespace CronicasDeMexico.Tests
 
             menu.HighlightGuardian(catalog.Guardians[3]);
             StringAssert.Contains("Ameyali", Get("start-guardian-start").text);
-            Assert.AreEqual(catalog.Guardians[3].Description, Panel("start-guardian-description").Q<Label>("start-guardian-description").text);
+            StringAssert.Contains(catalog.Guardians[3].Description, menu.GetComponent<UIDocument>().rootVisualElement.Q<Label>("start-guardian-description").text);
             Assert.IsTrue(Get("start-guardian-mariposa").ClassListContains("start-menu__button--selected"));
             Assert.IsFalse(save.HasSave);
             Assert.IsFalse(SceneManager.GetSceneByName(CityScene).isLoaded, "Marcar una tarjeta no empieza la partida.");

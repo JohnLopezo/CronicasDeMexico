@@ -37,7 +37,8 @@ MonoBehaviour:
       text: "Las memorias se est\xE1n deshaciendo. Las estelas enmudecen, los caminos
         se borran y hay criaturas que ya no reconocen a nadie."
     - speaker: {fileID: 0}
-      text: "Tu forma es la del jaguar. Con ella cruzar\xE1s la selva."
+      text: "Tu cuerpo es nuevo, y el esp\xEDritu de tu animal camina contigo. Con
+        \xE9l cruzar\xE1s la selva."
     - speaker: {fileID: 0}
       text: "Cerca de aqu\xED hay un asentamiento. Sus guardianes han dejado de responder.
         Ve, escucha a su gente y averigua por qu\xE9."

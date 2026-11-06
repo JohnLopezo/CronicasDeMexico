@@ -90,6 +90,10 @@ namespace CronicasDeMexico.Core.Progress
                 Progression.AddExperience(0, zoneLevel, repeatKey);
             }
 
+            // Fuera del paquete, no solo sin entregar: quien lo muestra después (RewardChest) describe lo que queda.
+            package.Items.RemoveAll(stack =>
+                Inventory.Catalog?.Find(stack.id)?.GuardianOnly is { Length: > 0 } only && only != Progression.Profile.GuardianId);
+
             foreach (var stack in package.Items)
             {
                 var added = Inventory.Add(stack.id, stack.count);

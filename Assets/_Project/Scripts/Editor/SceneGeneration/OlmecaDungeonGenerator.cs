@@ -311,7 +311,7 @@ namespace CronicasDeMexico.Editor.SceneGeneration
 
         const string CrackText =
             "Columnas de basalto caídas, partidas por grietas que brillan como brasas. Detrás se adivina un hueco. " +
-            "La piedra no cede a las garras: haría falta que la tierra misma la empujara.";
+            "La piedra no cede a los golpes: haría falta que la tierra misma la empujara.";
 
         static void AddLoot(Transform group, LootTable table, int zoneLevel)
         {

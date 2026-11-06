@@ -2,7 +2,7 @@
 
 Nivel, experiencia, estadísticas del animal, energía y Bendiciones. Implementación: `Core/Progress/Progression.cs`,
 configuración en `Resources/Recompensas/ConfigProgresion` (`Data/Rewards/ProgressionConfig`) y perfil de estadísticas
-en el `GuardianData` del Guardián (`Data/Characters/GUA_jaguar`). `Gameplay/Player/PlayerStats` aplica las
+en el `GuardianData` del Guardián elegido (`Data/Characters/GUA_*`). `Gameplay/Player/PlayerStats` aplica las
 estadísticas a la `Health` y al `PlayerAttack` del jugador.
 
 ## 1. Escala ×10 (decisión 1)
@@ -38,7 +38,14 @@ los mismos golpes que antes.
 
 ```
 nivel N = base + crecimiento × (N − 1)      (con redondeo hacia abajo)
-Jaguar:   base (50, 10, 0, 100)    crecimiento (6, 1,5, 0,5, 5) por nivel
+Presupuesto igual para todos: 1 de vida, 5 de ataque o defensa y 0,5 de energía valen un punto; 150 al nivel 1 y 18,5 por nivel.
+Balam:    base (50, 12, 0,  80)   crecimiento (4,5, 2,   0,5, 3)
+Xali:     base (65,  8, 1,  80)   crecimiento (8,5, 1,   0,5, 5)
+Naira:    base (60, 11, 0,  70)   crecimiento (7,   1,5, 0,5, 3)
+Ameyali:  base (45,  9, 0, 120)   crecimiento (5,   1,5, 0,5, 7)
+Itzel:    base (40, 13, 0,  90)   crecimiento (4,   2,   0,5, 4)
+Yaret:    base (50, 10, 0, 100)   crecimiento (6,   1,5, 0,5, 5)   (perfil de referencia: la tabla siguiente)
+Ocel:     base (55,  8, 2,  90)   crecimiento (6,5, 1,   1,   4)
 ```
 
 | Nivel | Vida | Ataque | Defensa | Energía |

@@ -42,7 +42,7 @@ Las reglas generales están en `Docs/Sistemas/Sistema_Recompensas.md`. Lo aleato
 | 1 | Especial (caja) | `p1_especial` | 20 xp, **Hacha votiva** | `BOT_ofrenda_especial`: 20 xp; 1 jade seguro; obsidiana, esencia, semilla al 50 %; 10–20 ecos | Sala del grupo, junto a la alcoba |
 | 1 | Oculta | `p1_oculta` | 40 xp, **Figurilla de jade**, **Reliquia espiritual** | — | Tras el basalto agrietado: **necesita la Bendición de la Tierra** |
 | 2 | Especial | `p2_especial` | 20 xp, **Fragmento de estela**, infusión de basalto | `BOT_ofrenda_especial` | Sala del santuario de Vida |
-| 2 | Oculta | `p2_oculta` | 40 xp, **Marca del jaguar**, esencia de energía | — | Tras el basalto agrietado: **Bendición de la Tierra** |
+| 2 | Oculta | `p2_oculta` | 40 xp, **Marca de su Guardián**, esencia de energía | — | Tras el basalto agrietado: **Bendición de la Tierra** |
 | 2 | Del Guardián | `p2_guardian` | 30 xp, **Protección de basalto**, 2 jade | — | Aparece al vencer al Jaguar de Piedra |
 | 3 | Oculta | `p3_oculta` | 40 xp, **Espejo de mineral de hierro**, 2 semillas preparadas | — | Tras el basalto agrietado, junto al santuario: se abre en cuanto se tiene la Bendición |
 | 3 | Final | `p3_final` | **Corazón de la Piedra Viva**, basalto de la Piedra Viva, 3 jade, 50 ecos; desbloquea la mejora del Corazón | — | Aparece al liberar al Guardián; cierra la mazmorra |

@@ -17,6 +17,6 @@ MonoBehaviour:
     forbiddenFlags: []
     lines:
     - speaker: {fileID: 0}
-      text: "\xBFEres un jaguar de verdad? No te tengo miedo... casi."
+      text: "\xBFDe verdad peleas con esa ropa? No te tengo miedo... casi."
     flagsOnFinish: []
     questToStart: {fileID: 0}

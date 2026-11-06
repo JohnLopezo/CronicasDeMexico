@@ -36,8 +36,8 @@ MonoBehaviour:
     forbiddenFlags: []
     lines:
     - speaker: {fileID: 0}
-      text: 'Un animal que escucha... Entonces es cierto lo que cuentan: a veces
-        la selva manda mensajeros.'
+      text: 'Alguien que escucha sin hablar... Entonces es cierto lo que cuentan:
+        a veces la selva manda mensajeros.'
     - speaker: {fileID: 0}
       text: "Mira esta piedra verde. La traen de muy lejos y la pulo durante d\xEDas
         con arena y agua."
@@ -53,7 +53,8 @@ MonoBehaviour:
     forbiddenFlags: []
     lines:
     - speaker: {fileID: 0}
-      text: "\xA1Quieto ah\xED! ...Un jaguar que no ataca. Qu\xE9 cosa tan rara."
+      text: "\xA1Alto ah\xED! ...Esa ropa no es de por aqu\xED, y no dices palabra.
+        Qu\xE9 cosa tan rara."
     - speaker: {fileID: 0}
       text: "Si de verdad entiendes lo que digo, vuelve cuando sepas a qu\xE9 vienes."
     flagsOnFinish: []

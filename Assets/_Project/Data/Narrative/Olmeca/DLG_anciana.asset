@@ -79,6 +79,7 @@ MonoBehaviour:
       text: "Las lluvias llegar\xE1n pronto. Hay que subir las vasijas antes de que
         el r\xEDo crezca."
     - speaker: {fileID: 0}
-      text: "\xBFUn jaguar tan tranquilo? Qu\xE9 tiempos tan raros."
+      text: "\xBFY t\xFA de d\xF3nde saliste, con ese atuendo? Qu\xE9 tiempos tan
+        raros."
     flagsOnFinish: []
     questToStart: {fileID: 0}

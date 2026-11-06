@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using CronicasDeMexico.Core.Progress;
 using CronicasDeMexico.Core.Save;
@@ -38,6 +39,49 @@ namespace CronicasDeMexico.Tests
             }
 
             Assert.AreEqual(0.29f, guardian.AttackSet.Duration, 0.001f, "El ataque dura lo mismo con uno o dos cuadros.");
+        }
+
+        [TestCase("jaguar", Affinity.Tierra)]
+        [TestCase("lobo", Affinity.Viento)]
+        [TestCase("aguila", Affinity.Luz)]
+        public void Affinity_IsTheOneOnItsSheet(string id, Affinity affinity) =>
+            Assert.AreEqual(affinity, AssetDatabase.LoadAssetAtPath<GuardianData>($"Assets/_Project/Data/Characters/GUA_{id}.asset").InitialAffinity);
+
+        const float BudgetPoints = 150f, GrowthPoints = 18.5f;
+
+        // Lo que vale un reparto de atributos (Docs/Sistemas/Sistema_Progresion.md).
+        static float Points(CharacterStats stats) => stats.maxHealth + 5f * (stats.attack + stats.defense) + 0.5f * stats.maxEnergy;
+
+        [Test]
+        public void Guardians_ShareTheSameBudget_ButNotTheSameStats()
+        {
+            var seen = new HashSet<string>();
+            foreach (var guardian in Resources.Load<GuardianCatalog>(GuardianCatalog.ResourcePath).Guardians)
+            {
+                CharacterStats one = guardian.At(1), twentyone = guardian.At(21);
+                Assert.AreEqual(BudgetPoints, Points(one), 0.01f, guardian.Id);
+                // A 20 niveles de distancia, para que el redondeo hacia abajo de cada nivel no cuente.
+                Assert.AreEqual(BudgetPoints + 20f * GrowthPoints, Points(twentyone), 0.01f, guardian.Id);
+                Assert.IsTrue(seen.Add($"{one.maxHealth}/{one.attack}/{one.defense}/{one.maxEnergy}"), $"{guardian.Id} repite atributos.");
+            }
+        }
+
+        [Test]
+        public void HiddenOffering_GivesOnlyTheChosenGuardiansMark()
+        {
+            var catalog = Resources.Load<ItemCatalog>(ItemCatalog.ResourcePath);
+            var progression = new Progression(Resources.Load<ProgressionConfig>(ProgressionConfig.ResourcePath), null, null, Resources.Load<GuardianCatalog>(GuardianCatalog.ResourcePath));
+            Assert.IsTrue(progression.SelectGuardian("xolo"));
+            var inventory = new Inventory(catalog);
+            var rewards = new RewardService(inventory, progression, null);
+
+            var package = AssetDatabase.LoadAssetAtPath<RewardBundle>("Assets/_Project/Data/Rewards/Olmeca/REC_ofrenda_p2_oculta.asset").ToPackage(new System.Random(1));
+            Assert.IsTrue(rewards.Grant(package));
+
+            Assert.IsTrue(inventory.Has("marca_xolo"));
+            Assert.IsFalse(inventory.Has("marca_jaguar"));
+            Assert.IsTrue(inventory.Has("esencia_energia"), "Lo demás de la ofrenda se entrega igual.");
+            Assert.AreEqual(2, package.Items.Count, "El mensaje del cofre describe el paquete: no debe nombrar las otras marcas.");
         }
 
         static Progression NewProgression() =>

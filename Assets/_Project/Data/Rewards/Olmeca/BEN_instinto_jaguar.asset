@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: instinto_jaguar
   displayName: Instinto del Jaguar
-  description: El acecho del jaguar en cada zarpazo.
+  description: El acecho del jaguar en cada golpe.
   slot: 1
   bonus:
     maxHealth: 0

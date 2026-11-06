@@ -28,7 +28,7 @@
 
 **Premisa principal:**
 
-Un alma humana muere en el mundo moderno y renace en una forma animal dentro de un mundo espiritual vinculado a las tierras que hoy conocemos como México. Allí descubre que las memorias de los pueblos antiguos están desapareciendo y que las criaturas que habitan sus territorios se están volviendo hostiles.
+Un alma humana muere en el mundo moderno y renace en un cuerpo nuevo, ligado al espíritu de un animal, dentro de un mundo espiritual vinculado a las tierras que hoy conocemos como México. Allí descubre que las memorias de los pueblos antiguos están desapareciendo y que las criaturas que habitan sus territorios se están volviendo hostiles.
 
 Para descubrir la causa, el protagonista deberá recorrer las huellas de distintas culturas, conocer a sus habitantes, enfrentarse a guerreros y criaturas corrompidas, explorar mazmorras ancestrales y superar pruebas relacionadas con las fuerzas que sostienen el mundo.
 
@@ -58,9 +58,9 @@ El protagonista despierta en un lugar que no reconoce.
 
 Se encuentra rodeado de vegetación tropical, agua, enormes piedras cubiertas de musgo y ruinas que parecen pertenecer a una civilización muy antigua.
 
-Intenta hablar, pero no tiene voz humana.
+Intenta hablar, pero la voz no le sale.
 
-Al mirar su reflejo en el agua descubre que ha renacido como un animal.
+Al mirar su reflejo en el agua descubre un rostro que no es el suyo: ha renacido como guerrero o guerrera, con el atuendo de un animal cuyo espíritu siente respirar con su cuerpo.
 
 Una figura espiritual se manifiesta a su lado. No se presenta como un dios ni como un enemigo, sino como una presencia que parece haberlo estado esperando.
 
@@ -76,7 +76,7 @@ Ha sido elegido porque puede observarlo desde una perspectiva diferente: la de u
 
 ## 2.3. La elección del Guardián
 
-Antes de iniciar su viaje, el protagonista deberá elegir su forma animal.
+Antes de iniciar su viaje, el jugador elegirá a su Guardián: un guerrero o guerrera con nombre propio, ligado al espíritu de un animal (Balam, Xali, Naira, Ameyali, Itzel, Yaret u Ocel; fichas en `Docs/Guerreros/`).
 
 La elección determinará su apariencia, atributos iniciales, animaciones y estilo de combate. No determinará toda la historia ni impedirá conocer otras culturas.
 
@@ -807,9 +807,9 @@ La vegetación sigue creciendo. Los habitantes trabajan, conversan y recorren lo
 
 El protagonista se acerca al agua y observa su reflejo.
 
-Durante un instante aparece la silueta humana que tuvo en su vida anterior.
+Durante un instante aparece el rostro que tuvo en su vida anterior.
 
-No sabe si regresará a esa forma ni si volverá a su mundo.
+No sabe si volverá a ser quien fue ni si regresará a su mundo.
 
 Comprende que ya no necesita responder todas las preguntas sobre su propia muerte para saber por qué continúa su viaje.
 
@@ -856,7 +856,7 @@ La historia evitará que todos los habitantes hablen exclusivamente de la amenaz
 
 Estas reglas serán obligatorias para el desarrollo de la historia.
 
-1. El protagonista siempre conserva su identidad como animal elegido por el jugador.
+1. El protagonista siempre es el Guardián elegido por el jugador: un guerrero o guerrera ligado al espíritu de su animal.
 2. Las culturas deben tener identidad visual, social y narrativa propia.
 3. Las transiciones entre culturas deben respetar sus diferencias históricas y temporales.
 4. El Mundo de las Memorias es una construcción fantástica; no se presentará como una creencia histórica compartida por todas las culturas.
@@ -868,7 +868,7 @@ Estas reglas serán obligatorias para el desarrollo de la historia.
 10. Los NPC no serán copias con cambios de color.
 11. Las zonas de descanso y la gestión de vida tendrán relevancia en la exploración.
 12. Las misiones secundarias deben ampliar el mundo, no limitarse a entregar objetos.
-13. El jugador podrá explorar distintas regiones sin que la elección del animal bloquee la historia.
+13. El jugador podrá explorar distintas regiones sin que la elección del Guardián bloquee la historia.
 14. La historia principal no debe obligar a combatir contra una cultura completa.
 15. La derrota de un jefe no implica necesariamente que ese personaje sea malvado.
 16. Las decisiones del jugador pueden modificar misiones y relaciones sin cambiar arbitrariamente los hechos históricos fundamentales.
@@ -941,7 +941,7 @@ Probar:
 - Que la muerte o derrota del protagonista no corrompe el progreso.
 - Que los jefes y las transiciones funcionan.
 - Que las zonas de descanso respetan las reglas de recuperación.
-- Que la historia puede completarse con las distintas especies jugables.
+- Que la historia puede completarse con los distintos Guardianes jugables.
 
 ---
 
@@ -957,7 +957,7 @@ No implementes todas las culturas, jefes y mazmorras de una sola vez.
 
 Comienza por convertir la historia del capítulo olmeca en una experiencia jugable completa y coherente.
 
-Conserva la dirección artística Pixel Art moderna en 2.5D, los personajes animales, los NPC visualmente diversos, los pueblos explorables, las mazmorras progresivas y las zonas de descanso.
+Conserva la dirección artística Pixel Art moderna en 2.5D, los Guardianes ligados a su animal, los NPC visualmente diversos, los pueblos explorables, las mazmorras progresivas y las zonas de descanso.
 
 Cuando necesites representar una cultura o deidad histórica, identifica qué elementos están documentados y cuáles son licencias creativas.
 

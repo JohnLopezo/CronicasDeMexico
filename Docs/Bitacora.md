@@ -21,6 +21,18 @@ Plantilla:
 
 ---
 
+## 2026-11-06 — i7-10700: historia, afinidades y atributos de los guerreros (etapa 4)
+
+- **Rama / último commit:** `feature/prototipo-olmeca`, sobre `cb8ae9c` (etapa 3). EditMode 97/97, PlayMode 74/74. Subido junto con las etapas 1 a 3.
+- **Decisiones del autor:** son guerreros humanos ligados al espíritu de su animal; mandan las afinidades de las fichas; atributos propios sin estilos de combate.
+- **Hecho:** biblia (§1 premisa, §2, §14, §16, §17) y `Protagonista.md`; reflejo, figura espiritual, artesano, anciana y niños; `Docs` de misiones, objetos y progresión. Afinidades: Balam tierra, Naira viento, Itzel luz (el águila deja el fuego). Atributos con presupuesto igual (`Sistema_Progresion.md` §2), visibles en la pantalla de elección. Una marca por Guardián: `RewardService` retira del paquete las de otro.
+- **Regenerado:** `Olmeca_Ciudad` y los tres pisos (el reflejo y la pista del basalto viven en la escena); `Olmeca_Selva` no hacía falta.
+- **Cambio de comportamiento:** los `DLG_*` de `CreateCharacter` se rehacen siempre desde el código; editarlos a mano se perdería al generar. Solo cambiaron los 6 previstos.
+- **Sin probar:** equilibrio jugando: a 8 de ataque (Xali, Ocel) un espíritu de 30 cae en 4 golpes y no en 3, e Itzel aguanta 4 golpes de 10. Partidas viejas: Balam pasa a 12 de ataque y 80 de energía. La línea de atributos del panel no se capturó.
+- **Fuera de alcance:** estilos de combate distintos; muertes de Naira, Ameyali y Ocel; quitar el arte del jaguar jugable; textos del GDD (`Diseno.md`), al que la biblia prevalece.
+
+---
+
 ## 2026-11-06 — i7-10700: elección de Guardián (etapa 3)
 
 - **Rama / último commit:** `feature/prototipo-olmeca`, sobre `563d882` (etapa 2). EditMode 92/92, PlayMode 74/74. Sin push.

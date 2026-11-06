@@ -33,7 +33,7 @@ catálogo `Resources/Recompensas/CatalogoBendiciones`.
 | Id | Nombre | Bonificación | Estilo |
 |---|---|---|---|
 | `fuerza_tierra` | Fuerza de la Tierra | Defensa +4, vida +10 | Aguantar: menos daño de cada golpe |
-| `instinto_jaguar` | Instinto del Jaguar | Ataque +4 | Atacar: desde el nivel 2, los espíritus caen de 2 zarpazos en vez de 3 |
+| `instinto_jaguar` | Instinto del Jaguar | Ataque +4 | Atacar: desde el nivel 2, los espíritus caen de 2 golpes en vez de 3 |
 | `memoria_agua` | Memoria del Agua | Energía +30, vida +10 | Habilidades: un golpe de tierra más antes de descansar |
 
 - **Equilibrio.** Ninguna es obligatoria para avanzar. Instinto acorta los combates, Fuerza los hace más seguros y

@@ -50,13 +50,13 @@ namespace CronicasDeMexico.Editor.SceneGeneration
             {
                 "Lo que sale últimamente de la selva ya no se porta como un animal. Si oyes gritos, corre hacia aquí, no al revés.",
             }),
-            ("nino_1", "Niño", "niño", new[] { "¿Eres un jaguar de verdad? No te tengo miedo... casi." }),
+            ("nino_1", "Niño", "niño", new[] { "¿De verdad peleas con esa ropa? No te tengo miedo... casi." }),
             ("nina_1", "Niña", "niña", new[] { "¡Te hice una corona de flores, pero se me cayó al río!" }),
             ("nino_2", "Niño", "niño", new[] { "Si le dices a mi mamá que fui yo, te escondo las piedritas." }),
-            ("nina_2", "Niña", "niña", new[] { "¿Por qué tienes manchas? ¿Te salieron solas?" }),
+            ("nina_2", "Niña", "niña", new[] { "¿Quién te hizo esa ropa? Yo también quiero una." }),
             ("nino_3", "Niño", "niño", new[] { "Apuesto a que llego al muelle antes que tú." }),
             ("nina_3", "Niña", "niña", new[] { "...Hola." }),
-            ("nino_4", "Niño", "niño", new[] { "¡Un jaguar! ¡Un jaguar! ¡Vengan a ver!" }),
+            ("nino_4", "Niño", "niño", new[] { "¡Alguien de fuera! ¡Alguien de fuera! ¡Vengan a ver!" }),
             ("nina_4", "Niña", "niña", new[] { "Anoche soñé que las piedras hablaban. Luego se me olvidó qué decían." }),
             ("nino_5", "Niño", "niño", new[] { "Yo no rompí esa vasija. Ya estaba rota. Desde hace... mucho." }),
         };
@@ -126,10 +126,10 @@ namespace CronicasDeMexico.Editor.SceneGeneration
             "El último fragmento. Por un instante la selva entera recuerda un nombre... y lo olvida otra vez.",
         };
 
-        // Al asomarse al agua (Historia_Mundo §2.1–2.2): recuerdos rotos de la vida anterior y el reflejo animal.
+        // Al asomarse al agua (Historia_Mundo §2.1–2.2): recuerdos rotos de la vida anterior y un rostro ajeno.
         public const string ReflectionText =
             "Recuerdas, a pedazos: una voz, una luz, piedras que se derrumban y la sensación de caer.\n" +
-            "Te asomas al agua. Quieres hablar y solo sale un gruñido. En el reflejo no hay una persona: te mira un jaguar.";
+            "Te asomas al agua. Quieres hablar y la voz no te sale. En el reflejo te mira un rostro que no es el tuyo, con el atuendo de un animal que sientes respirar contigo.";
 
         public readonly struct Character
         {
@@ -159,8 +159,7 @@ namespace CronicasDeMexico.Editor.SceneGeneration
             OlmecaPrototypeGenerator.EnsureFolder(Folder);
             OlmecaPrototypeGenerator.EnsureFolder(System.IO.Path.GetDirectoryName(CatalogPath)!.Replace('\\', '/'));
 
-            // El Jaguar es el Guardián del vertical slice (Docs/Personajes/Protagonista.md). Afinidad inicial propuesta:
-            // oscuridad (el GDD propone oscuridad/tierra, y tierra es la que concede el jefe olmeca).
+            // Solo si falta el asset: lo completa GuerreroCharacterAssets con los demás Guardianes.
             var guardian = LoadOrCreate(GuardianPath, () => GuardianData.Create("jaguar", "Jaguar",
                 "Fuerza, movilidad y combate cercano.", Affinity.Oscuridad, SpeciesStatus.Nativa,
                 AssetDatabase.LoadAssetAtPath<DirectionalSpriteSet>(PlayerSpriteSetPath)));
@@ -234,7 +233,7 @@ namespace CronicasDeMexico.Editor.SceneGeneration
                         "Has llegado al Mundo de las Memorias. Aquí permanecen los ecos de los pueblos: sus caminos, sus relatos, lo que supieron.",
                         "No soy un dios, ni vengo a hacerte daño. Solo esperaba a alguien que pudiera ver este mundo desde fuera de sus épocas.",
                         "Las memorias se están deshaciendo. Las estelas enmudecen, los caminos se borran y hay criaturas que ya no reconocen a nadie.",
-                        "Tu forma es la del jaguar. Con ella cruzarás la selva.",
+                        "Tu cuerpo es nuevo, y el espíritu de tu animal camina contigo. Con él cruzarás la selva.",
                         "Cerca de aquí hay un asentamiento. Sus guardianes han dejado de responder. Ve, escucha a su gente y averigua por qué."),
                     flagsOnFinish: new[] { OathFlag }),
             });
@@ -248,14 +247,14 @@ namespace CronicasDeMexico.Editor.SceneGeneration
                         "Ve con la anciana, junto a las enramadas. Y si ves al joven guerrero, dile que no se esfuerce: aún no sana."),
                     requiredFlags: new[] { QuestActive }),
                 new DialogueBranch(Lines(
-                        "Un animal que escucha... Entonces es cierto lo que cuentan: a veces la selva manda mensajeros.",
+                        "Alguien que escucha sin hablar... Entonces es cierto lo que cuentan: a veces la selva manda mensajeros.",
                         "Mira esta piedra verde. La traen de muy lejos y la pulo durante días con arena y agua.",
                         "Pero las piedras grandes de la plaza están perdiendo sus marcas. No es la lluvia: ayer estaban y hoy ya no.",
                         "La anciana que vive junto a las enramadas recuerda más que nadie. Habla con ella."),
                     requiredFlags: new[] { OathFlag },
                     questToStart: quest),
                 new DialogueBranch(Lines(
-                        "¡Quieto ahí! ...Un jaguar que no ataca. Qué cosa tan rara.",
+                        "¡Alto ahí! ...Esa ropa no es de por aquí, y no dices palabra. Qué cosa tan rara.",
                         "Si de verdad entiendes lo que digo, vuelve cuando sepas a qué vienes.")),
             });
 
@@ -286,7 +285,7 @@ namespace CronicasDeMexico.Editor.SceneGeneration
                     flagsOnFinish: new[] { ElderToldFlag }),
                 new DialogueBranch(Lines(
                         "Las lluvias llegarán pronto. Hay que subir las vasijas antes de que el río crezca.",
-                        "¿Un jaguar tan tranquilo? Qué tiempos tan raros.")),
+                        "¿Y tú de dónde saliste, con ese atuendo? Qué tiempos tan raros.")),
             });
 
             // Al terminar MP_OLM_02 encadena MP_OLM_03 y se adelanta a la entrada (en la selva, DLG_guerrero_joven_entrada).
@@ -352,14 +351,11 @@ namespace CronicasDeMexico.Editor.SceneGeneration
         {
             var npc = LoadOrCreate($"{Folder}/NPC_{id}.asset", () => NpcData.Create(id, displayName, role));
             var dialogue = LoadOrCreate($"{Folder}/DLG_{id}.asset", () => DialogueData.Create($"DLG_{id}", branches));
-            if (dialogue.Branches.Length < branches.Length)
-            {
-                // Faltan ramas de un hito posterior: se rehace con el texto del código, conservando el GUID.
-                var fresh = DialogueData.Create($"DLG_{id}", branches);
-                EditorUtility.CopySerialized(fresh, dialogue);
-                Object.DestroyImmediate(fresh);
-                EditorUtility.SetDirty(dialogue);
-            }
+            // Siempre se rehace con el texto del código, conservando el GUID: si no, cambiarlo aquí no llegaría al juego.
+            var fresh = DialogueData.Create($"DLG_{id}", branches);
+            EditorUtility.CopySerialized(fresh, dialogue);
+            Object.DestroyImmediate(fresh);
+            EditorUtility.SetDirty(dialogue);
             return new Character(npc, dialogue);
         }
 

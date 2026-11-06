@@ -48,9 +48,9 @@ Assets en `Data/Narrative/Olmeca/` y catálogo en `Resources/Narrativa/CatalogoM
 **`MP_OLM_01` jugable (2026-10-29, N5)** en `Olmeca_Ciudad`:
 
 1. Empieza sola al cargar la escena (`StartQuestOnLoad`). El jugador aparece en la orilla noreste del río, junto a la figura espiritual.
-2. Paso 1, `examinar:reflejo`: al asomarse al agua llegan los recuerdos rotos (una voz, una luz, piedras que se derrumban, la caída) y el reflejo del jaguar.
+2. Paso 1, `examinar:reflejo`: al asomarse al agua llegan los recuerdos rotos (una voz, una luz, piedras que se derrumban, la caída) y el reflejo de un rostro ajeno.
 3. Paso 2, `hablar:figura_espiritual`: explica el Mundo de las Memorias y pide el juramento; activa `olm.juramento`.
-4. Paso 3, `hablar:artesano_jade`: con el juramento, el artesano empieza `MP_OLM_02`; sin él, solo se sorprende de ver un jaguar tranquilo. Recompensa: `olm.despertar_completo`.
+4. Paso 3, `hablar:artesano_jade`: con el juramento, el artesano empieza `MP_OLM_02`; sin él, solo se sorprende de ver a alguien de fuera que no habla. Recompensa: `olm.despertar_completo`.
 
 **`MP_OLM_03` jugable (2026-10-29, M1)**, entre `Olmeca_Ciudad` y la escena nueva `Olmeca_Selva`:
 

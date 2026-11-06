@@ -43,7 +43,7 @@ posteriores (tolteca, mexica). Se dejan para esos arcos, en lugar de forzarlas a
 | `talisman_obsidiana` | Talismán de obsidiana | Poco común | Ataque +3 | Artesano | **F** |
 | `proteccion_basalto` | Protección de basalto | Raro | Defensa +4 | Ofrenda del Guardián (piso 2), artesano | **F** |
 | `reliquia_espiritual` | Reliquia espiritual | Raro | Energía +20 | Ofrenda oculta del piso 1, artesano | **F** |
-| `marca_jaguar` | Marca del jaguar | Raro | **Solo Jaguar:** ataque +2, vida +10 | Ofrenda oculta del piso 2 | **F**; no se vende |
+| `marca_<id>` | Marca del jaguar, ajolote, lobo, mariposa, águila, quetzal o xoloitzcuintle | Raro | **Solo su Guardián:** ataque +2, vida +10 | Ofrenda oculta del piso 2 (solo la del Guardián en juego) | **F**; no se vende |
 | `corazon_piedra_viva` | Corazón de la Piedra Viva | **Legendario** | Vida +20, defensa +3, energía +20 | Ofrenda final | **F**; única, no se vende |
 | `corazon_despierto` | Corazón de la Piedra Viva, despierto | **Legendario** | Vida +30, defensa +4, energía +30 | Mejora con el artesano | **F**; única |
 

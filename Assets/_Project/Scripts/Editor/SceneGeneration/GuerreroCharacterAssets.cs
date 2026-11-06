@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using CronicasDeMexico.Core.Progress;
 using CronicasDeMexico.Data.Characters;
 using CronicasDeMexico.Editor.PixelArt;
 using UnityEditor;
@@ -24,17 +25,25 @@ namespace CronicasDeMexico.Editor.SceneGeneration
         const float HitFramesPerSecond = 5f;
         const float DeathFramesPerSecond = 5f;
 
-        // Balam conserva el id "jaguar": es el de las partidas guardadas y el de OBJ_marca_jaguar. Afinidad y estado salen
-        // de Docs/Personajes/Protagonista.md; donde la ficha dice otra cosa (Naira, Itzel) falta que decida el autor.
-        static readonly (string name, string id, string title, string description, Affinity affinity, SpeciesStatus status)[] Guerreros =
+        // Balam conserva el id "jaguar": es el de las partidas guardadas y el de OBJ_marca_jaguar. La afinidad inicial es la de
+        // su ficha (decisión del autor, 2026-11-06). Atributos: mismo presupuesto para todos, repartido según el estilo de la
+        // biblia (Docs/Sistemas/Sistema_Progresion.md; lo vigila GuerreroAssetsTests). Yaret es el perfil de referencia.
+        static readonly (string name, string id, string title, string description, Affinity affinity, SpeciesStatus status, CharacterStats stats, Vector4 growth)[] Guerreros =
         {
-            ("Balam", "jaguar", "Guardián Jaguar", "Fuerza, movilidad y combate cercano.", Affinity.Oscuridad, SpeciesStatus.Nativa),
-            ("Xali", "ajolote", "Guardiana Ajolote", "Recuperación, resistencia y afinidad acuática.", Affinity.Agua, SpeciesStatus.Endemica),
-            ("Naira", "lobo", "Guardiana Lobo Mexicano", "Persecución, velocidad y combate sostenido.", Affinity.Tierra, SpeciesStatus.Nativa),
-            ("Ameyali", "mariposa", "Guardiana Mariposa Monarca", "Velocidad, evasión y poderes de luz.", Affinity.Luz, SpeciesStatus.Nativa),
-            ("Itzel", "aguila", "Guardiana Águila Real", "Percepción, precisión y ataques a distancia.", Affinity.Viento, SpeciesStatus.Emblematica),
-            ("Yaret", "quetzal", "Guardián Quetzal", "Agilidad, distancia y movilidad aérea.", Affinity.Viento, SpeciesStatus.Nativa),
-            ("Ocel", "xolo", "Guardián Xoloitzcuintle", "Resistencia espiritual, rastreo y protección.", Affinity.Oscuridad, SpeciesStatus.Nativa),
+            ("Balam", "jaguar", "Guardián Jaguar", "Fuerza, movilidad y combate cercano.", Affinity.Tierra, SpeciesStatus.Nativa,
+                new CharacterStats(50, 12, 0, 80), new Vector4(4.5f, 2f, 0.5f, 3f)),
+            ("Xali", "ajolote", "Guardiana Ajolote", "Recuperación, resistencia y afinidad acuática.", Affinity.Agua, SpeciesStatus.Endemica,
+                new CharacterStats(65, 8, 1, 80), new Vector4(8.5f, 1f, 0.5f, 5f)),
+            ("Naira", "lobo", "Guardiana Lobo Mexicano", "Persecución, velocidad y combate sostenido.", Affinity.Viento, SpeciesStatus.Nativa,
+                new CharacterStats(60, 11, 0, 70), new Vector4(7f, 1.5f, 0.5f, 3f)),
+            ("Ameyali", "mariposa", "Guardiana Mariposa Monarca", "Velocidad, evasión y poderes de luz.", Affinity.Luz, SpeciesStatus.Nativa,
+                new CharacterStats(45, 9, 0, 120), new Vector4(5f, 1.5f, 0.5f, 7f)),
+            ("Itzel", "aguila", "Guardiana Águila Real", "Percepción, precisión y ataques a distancia.", Affinity.Luz, SpeciesStatus.Emblematica,
+                new CharacterStats(40, 13, 0, 90), new Vector4(4f, 2f, 0.5f, 4f)),
+            ("Yaret", "quetzal", "Guardián Quetzal", "Agilidad, distancia y movilidad aérea.", Affinity.Viento, SpeciesStatus.Nativa,
+                new CharacterStats(50, 10, 0, 100), new Vector4(6f, 1.5f, 0.5f, 5f)),
+            ("Ocel", "xolo", "Guardián Xoloitzcuintle", "Resistencia espiritual, rastreo y protección.", Affinity.Oscuridad, SpeciesStatus.Nativa,
+                new CharacterStats(55, 8, 2, 90), new Vector4(6.5f, 1f, 1f, 4f)),
         };
 
         public static bool SpritesExist() => LoadSprite(DefaultGuerrero, "Caminar1", "03") != null;
@@ -44,7 +53,7 @@ namespace CronicasDeMexico.Editor.SceneGeneration
         {
             var guardians = new Dictionary<string, GuardianData>();
             var ordered = new List<GuardianData>();
-            foreach (var (name, id, title, description, affinity, status) in Guerreros)
+            foreach (var (name, id, title, description, affinity, status, stats, growth) in Guerreros)
             {
                 var walk = BuildSet(name, "Caminar", WalkFramesPerSecond, out _);
                 var run = BuildSet(name, "Correr", RunFramesPerSecond, out _);
@@ -60,7 +69,7 @@ namespace CronicasDeMexico.Editor.SceneGeneration
                     guardian = GuardianData.Create(id, name, description, affinity, status, walk);
                     AssetDatabase.CreateAsset(guardian, path);
                 }
-                guardian.Configure(name, title, walk, attack, run, hit, death);
+                guardian.Configure(name, title, description, affinity, status, stats, growth, walk, attack, run, hit, death);
                 EditorUtility.SetDirty(guardian);
                 guardians[name] = guardian;
                 ordered.Add(guardian);

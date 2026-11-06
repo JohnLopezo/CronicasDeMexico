@@ -130,7 +130,7 @@ namespace CronicasDeMexico.Editor.SceneGeneration
                 "F.", "Defensa +5 durante 30 s. Lleva hasta 3.", 3, 15, Shape.Frasco, Basalt, BasaltLight,
                 effect: new ConsumableEffect { defenseBonus = 5, duration = 30f });
 
-            // Reliquias (accesorios del animal: amuletos, collares, marcas; nunca armaduras humanas)
+            // Reliquias (accesorios: amuletos, collares, marcas; nunca armaduras)
             Item(c, "amuleto_jade", "Amuleto de jade", "Una cuenta de jade atada al cuello con fibra.", ItemCategory.Reliquia, Rarity.PocoComun, Origin.Interpretado,
                 "I: cuentas de jade como adorno; F: su efecto.", "Defensa +2, vida +10. Se fabrica con el artesano.", 1, 25, Shape.Amuleto, Jade, JadeLight,
                 bonus: new CharacterStats(10, 0, 2, 0));
@@ -141,8 +141,26 @@ namespace CronicasDeMexico.Editor.SceneGeneration
             Item(c, "reliquia_espiritual", "Reliquia espiritual", "Jade y un fragmento de memoria, unidos.", ItemCategory.Reliquia, Rarity.Raro, Origin.Ficticio,
                 "F.", "Energía máxima +20: más golpes de tierra antes de descansar.", 1, 35, Shape.Amuleto, Jade, VioletLight, bonus: new CharacterStats(0, 0, 0, 20));
             Item(c, "marca_jaguar", "Marca del jaguar", "Unas manchas que brillan en la piel cuando acechas.", ItemCategory.Reliquia, Rarity.Raro, Origin.Ficticio,
-                "F. Solo funciona con el Jaguar.", "Solo Jaguar: ataque +2, vida +10.", 1, 0, Shape.Talisman, Gold, GoldLight,
+                "F. Solo funciona con Balam.", "Solo Balam: ataque +2, vida +10.", 1, 0, Shape.Talisman, Gold, GoldLight,
                 bonus: new CharacterStats(10, 2, 0, 0), guardianOnly: "jaguar", sellable: false);
+            Item(c, "marca_ajolote", "Marca del ajolote", "Un brillo húmedo en la piel que se aviva cerca del agua.", ItemCategory.Reliquia, Rarity.Raro, Origin.Ficticio,
+                "F. Solo funciona con Xali.", "Solo Xali: ataque +2, vida +10.", 1, 0, Shape.Talisman, Gold, GoldLight,
+                bonus: new CharacterStats(10, 2, 0, 0), guardianOnly: "ajolote", sellable: false);
+            Item(c, "marca_lobo", "Marca del lobo", "Un rastro de pelo plateado en la muñeca que se eriza al seguir una huella.", ItemCategory.Reliquia, Rarity.Raro, Origin.Ficticio,
+                "F. Solo funciona con Naira.", "Solo Naira: ataque +2, vida +10.", 1, 0, Shape.Talisman, Gold, GoldLight,
+                bonus: new CharacterStats(10, 2, 0, 0), guardianOnly: "lobo", sellable: false);
+            Item(c, "marca_mariposa", "Marca de la mariposa", "Escamas naranjas en el dorso de la mano que brillan al esquivar.", ItemCategory.Reliquia, Rarity.Raro, Origin.Ficticio,
+                "F. Solo funciona con Ameyali.", "Solo Ameyali: ataque +2, vida +10.", 1, 0, Shape.Talisman, Gold, GoldLight,
+                bonus: new CharacterStats(10, 2, 0, 0), guardianOnly: "mariposa", sellable: false);
+            Item(c, "marca_aguila", "Marca del águila", "Una pluma dorada dibujada en el brazo que te aguza la vista.", ItemCategory.Reliquia, Rarity.Raro, Origin.Ficticio,
+                "F. Solo funciona con Itzel.", "Solo Itzel: ataque +2, vida +10.", 1, 0, Shape.Talisman, Gold, GoldLight,
+                bonus: new CharacterStats(10, 2, 0, 0), guardianOnly: "aguila", sellable: false);
+            Item(c, "marca_quetzal", "Marca del quetzal", "Reflejos verdes bajo la piel que se encienden al correr.", ItemCategory.Reliquia, Rarity.Raro, Origin.Ficticio,
+                "F. Solo funciona con Yaret.", "Solo Yaret: ataque +2, vida +10.", 1, 0, Shape.Talisman, Gold, GoldLight,
+                bonus: new CharacterStats(10, 2, 0, 0), guardianOnly: "quetzal", sellable: false);
+            Item(c, "marca_xolo", "Marca del xoloitzcuintle", "Una huella de sombra que te sigue y te cuida.", ItemCategory.Reliquia, Rarity.Raro, Origin.Ficticio,
+                "F. Solo funciona con Ocel.", "Solo Ocel: ataque +2, vida +10.", 1, 0, Shape.Talisman, Gold, GoldLight,
+                bonus: new CharacterStats(10, 2, 0, 0), guardianOnly: "xolo", sellable: false);
             Item(c, "corazon_piedra_viva", "Corazón de la Piedra Viva", "El disco de jade del Guardián, que te dejó al liberarse.", ItemCategory.Reliquia, Rarity.Legendario, Origin.Ficticio,
                 "F: reliquia única de la mazmorra olmeca.", "Vida +20, defensa +3, energía +20. Única: no se vende.", 1, 0, Shape.Corazon, Jade, GoldLight,
                 bonus: new CharacterStats(20, 0, 3, 20), sellable: false);
@@ -204,7 +222,7 @@ namespace CronicasDeMexico.Editor.SceneGeneration
                 c.Earth,
                 Blessing("fuerza_tierra", "Fuerza de la Tierra", "La piedra te sostiene cuando te golpean.", BlessingSlot.Secundaria,
                     new CharacterStats(10, 0, 4, 0), 0, 0f, "Defensa +4 y vida +10.", string.Empty, "Elegir al completar la mazmorra olmeca."),
-                Blessing("instinto_jaguar", "Instinto del Jaguar", "El acecho del jaguar en cada zarpazo.", BlessingSlot.Secundaria,
+                Blessing("instinto_jaguar", "Instinto del Jaguar", "El acecho del jaguar en cada golpe.", BlessingSlot.Secundaria,
                     new CharacterStats(0, 4, 0, 0), 0, 0f, "Ataque +4: daño cercano.", string.Empty, "Elegir al completar la mazmorra olmeca."),
                 Blessing("memoria_agua", "Memoria del Agua", "El río recuerda: te recuperas mejor entre combates.", BlessingSlot.Secundaria,
                     new CharacterStats(10, 0, 0, 30), 0, 0f, "Vida +10 y energía máxima +30 (más habilidades antes de descansar).",
@@ -280,7 +298,16 @@ namespace CronicasDeMexico.Editor.SceneGeneration
             c.Offerings["p1_especial"] = Bundle("REC_ofrenda_p1_especial", 20, new[] { S(c, "hacha_votiva", 1) }, null, null, c.SpecialOffering);
             c.Offerings["p1_oculta"] = Bundle("REC_ofrenda_p1_oculta", 40, new[] { S(c, "figurilla_jade", 1), S(c, "reliquia_espiritual", 1) });
             c.Offerings["p2_especial"] = Bundle("REC_ofrenda_p2_especial", 20, new[] { S(c, "fragmento_estela", 1), S(c, "infusion_basalto", 1) }, null, null, c.SpecialOffering);
-            c.Offerings["p2_oculta"] = Bundle("REC_ofrenda_p2_oculta", 40, new[] { S(c, "marca_jaguar", 1), S(c, "esencia_energia", 1) });
+            // Una marca por Guardián: RewardService solo entrega la del que se está jugando. Se reconfigura para que llegue al
+            // asset que ya existía, que solo traía la del jaguar.
+            var hiddenFloor2 = new[]
+            {
+                S(c, "marca_jaguar", 1), S(c, "marca_ajolote", 1), S(c, "marca_lobo", 1), S(c, "marca_mariposa", 1), S(c, "marca_aguila", 1),
+                S(c, "marca_quetzal", 1), S(c, "marca_xolo", 1), S(c, "esencia_energia", 1),
+            };
+            c.Offerings["p2_oculta"] = Bundle("REC_ofrenda_p2_oculta", 40, hiddenFloor2);
+            c.Offerings["p2_oculta"].Configure(40, hiddenFloor2, null, null, null);
+            EditorUtility.SetDirty(c.Offerings["p2_oculta"]);
             c.Offerings["p2_guardian"] = Bundle("REC_ofrenda_p2_guardian", 30, new[] { S(c, "proteccion_basalto", 1), S(c, "jade", 2) });
             c.Offerings["p3_oculta"] = Bundle("REC_ofrenda_p3_oculta", 40, new[] { S(c, "espejo_mineral", 1), S(c, "semilla_preparada", 2) });
 

@@ -30,7 +30,7 @@ namespace CronicasDeMexico.Data.Characters
     public sealed class GuardianData : ScriptableObject, IStatProfile
     {
         // Atributos por nivel (Docs/Sistemas/Sistema_Progresion.md): cada animal tiene su base y su crecimiento, así no
-        // terminan todos iguales. Escala ×10 desde M5 (el Jaguar empieza con 50 de vida y 10 de ataque).
+        // terminan todos iguales (GuerreroCharacterAssets los reparte con el mismo presupuesto).
         [SerializeField, Tooltip("Atributos en el nivel 1.")]
         CharacterStats baseStats = new(50, 10, 0, 100);
 
@@ -81,11 +81,17 @@ namespace CronicasDeMexico.Data.Characters
                 Mathf.FloorToInt(growthPerLevel.z * gained), Mathf.FloorToInt(growthPerLevel.w * gained));
         }
 
-        public void Configure(string name, string guardianTitle, DirectionalSpriteSet walk, DirectionalSpriteSet attack,
-            DirectionalSpriteSet run, DirectionalSpriteSet hit, DirectionalSpriteSet death)
+        public void Configure(string name, string guardianTitle, string guardianDescription, Affinity affinity, SpeciesStatus speciesStatus,
+            CharacterStats stats, Vector4 growth, DirectionalSpriteSet walk, DirectionalSpriteSet attack, DirectionalSpriteSet run,
+            DirectionalSpriteSet hit, DirectionalSpriteSet death)
         {
             displayName = name;
             title = guardianTitle;
+            description = guardianDescription;
+            initialAffinity = affinity;
+            status = speciesStatus;
+            baseStats = stats;
+            growthPerLevel = growth;
             spriteSet = walk;
             attackSet = attack;
             runSet = run;

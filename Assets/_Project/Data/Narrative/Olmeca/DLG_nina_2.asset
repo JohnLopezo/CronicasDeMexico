@@ -17,6 +17,6 @@ MonoBehaviour:
     forbiddenFlags: []
     lines:
     - speaker: {fileID: 0}
-      text: "\xBFPor qu\xE9 tienes manchas? \xBFTe salieron solas?"
+      text: "\xBFQui\xE9n te hizo esa ropa? Yo tambi\xE9n quiero una."
     flagsOnFinish: []
     questToStart: {fileID: 0}

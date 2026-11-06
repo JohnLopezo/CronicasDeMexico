@@ -41,7 +41,7 @@ Todos patrullan una ruta corta y dicen frases propias (F); aún no dan misiones.
 | Sacerdote | Guía espiritual, junto al altar-trono | Ofrendas enterradas (D en La Venta). El penacho de plumas de la ficha es **interpretación por contrastar**: puede leerse como de otra cultura |
 | Mensajero | Corre entre la plaza y la aldea | Sus pergaminos son **interpretación por contrastar**; los diálogos hablan de "avisos", nunca de cartas |
 | Comerciante mujer | Vendedora de ambiente, sin tienda | La tienda sigue siendo del comerciante |
-| Niñas y niños (9) | Juego y curiosidad | Reaccionan al Guardián animal |
+| Niñas y niños (9) | Juego y curiosidad | Reaccionan al Guardián, que viene de fuera |
 | Alfarera | Pendiente, sin ficha | Junto a las vasijas de la aldea. Cerámica (D: los olmecas fabricaban cerámica) |
 
 ## Lo que ya existe en el proyecto

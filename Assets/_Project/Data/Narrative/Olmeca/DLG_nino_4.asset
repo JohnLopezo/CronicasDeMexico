@@ -17,6 +17,6 @@ MonoBehaviour:
     forbiddenFlags: []
     lines:
     - speaker: {fileID: 0}
-      text: "\xA1Un jaguar! \xA1Un jaguar! \xA1Vengan a ver!"
+      text: "\xA1Alguien de fuera! \xA1Alguien de fuera! \xA1Vengan a ver!"
     flagsOnFinish: []
     questToStart: {fileID: 0}

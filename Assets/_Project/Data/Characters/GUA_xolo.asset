@@ -13,11 +13,11 @@ MonoBehaviour:
   m_Name: GUA_xolo
   m_EditorClassIdentifier: 
   baseStats:
-    maxHealth: 50
-    attack: 10
-    defense: 0
-    maxEnergy: 100
-  growthPerLevel: {x: 6, y: 1.5, z: 0.5, w: 5}
+    maxHealth: 55
+    attack: 8
+    defense: 2
+    maxEnergy: 90
+  growthPerLevel: {x: 6.5, y: 1, z: 1, w: 4}
   id: xolo
   displayName: Ocel
   title: "Guardi\xE1n Xoloitzcuintle"

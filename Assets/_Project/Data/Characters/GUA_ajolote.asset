@@ -13,11 +13,11 @@ MonoBehaviour:
   m_Name: GUA_ajolote
   m_EditorClassIdentifier: 
   baseStats:
-    maxHealth: 50
-    attack: 10
-    defense: 0
-    maxEnergy: 100
-  growthPerLevel: {x: 6, y: 1.5, z: 0.5, w: 5}
+    maxHealth: 65
+    attack: 8
+    defense: 1
+    maxEnergy: 80
+  growthPerLevel: {x: 8.5, y: 1, z: 0.5, w: 5}
   id: ajolote
   displayName: Xali
   title: Guardiana Ajolote

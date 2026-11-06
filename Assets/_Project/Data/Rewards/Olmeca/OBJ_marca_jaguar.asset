@@ -18,7 +18,7 @@ MonoBehaviour:
   category: 2
   rarity: 2
   origin: 2
-  originNote: F. Solo funciona con el Jaguar.
+  originNote: F. Solo funciona con Balam.
   icon: {fileID: 21300000, guid: 384a2e5a1ddd9af4e86c3c40f4ed3244, type: 3}
   maxStack: 1
   value: 0
@@ -35,4 +35,4 @@ MonoBehaviour:
     defenseBonus: 0
     duration: 0
   recordEntry: 
-  usage: 'Solo Jaguar: ataque +2, vida +10.'
+  usage: 'Solo Balam: ataque +2, vida +10.'

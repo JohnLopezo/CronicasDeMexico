@@ -13,11 +13,11 @@ MonoBehaviour:
   m_Name: GUA_mariposa
   m_EditorClassIdentifier: 
   baseStats:
-    maxHealth: 50
-    attack: 10
+    maxHealth: 45
+    attack: 9
     defense: 0
-    maxEnergy: 100
-  growthPerLevel: {x: 6, y: 1.5, z: 0.5, w: 5}
+    maxEnergy: 120
+  growthPerLevel: {x: 5, y: 1.5, z: 0.5, w: 7}
   id: mariposa
   displayName: Ameyali
   title: Guardiana Mariposa Monarca

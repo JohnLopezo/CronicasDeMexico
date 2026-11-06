@@ -14,7 +14,7 @@ namespace CronicasDeMexico.Gameplay.Player
         float knockbackSpeed = 6f;
 
         [SerializeField, Min(0f), Tooltip("Segundos tumbado antes de reaparecer.")]
-        float respawnDelay = 1.5f;
+        float respawnDelay = 3f;
 
         [SerializeField, Min(0f), Tooltip("Segundos de invulnerabilidad al reaparecer.")]
         float respawnInvulnerability = 2f;

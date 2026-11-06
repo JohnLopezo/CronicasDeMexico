@@ -19,7 +19,7 @@ namespace CronicasDeMexico.Gameplay.Dungeon
         [SerializeField] Health player;
 
         [SerializeField, Min(0f), Tooltip("Segundos tumbado antes de volver al santuario.")]
-        float returnDelay = 1.5f;
+        float returnDelay = 3f;
 
         [SerializeField, Range(0.01f, 1f), Tooltip("Penalización: parte de la vida máxima con la que se vuelve (1 = completa).")]
         float returnHealthFraction = 1f;

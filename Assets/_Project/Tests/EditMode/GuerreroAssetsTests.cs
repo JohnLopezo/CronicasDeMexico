@@ -41,7 +41,7 @@ namespace CronicasDeMexico.Tests
             Assert.AreEqual(0.29f, guardian.AttackSet.Duration, 0.001f, "El ataque dura lo mismo con uno o dos cuadros.");
         }
 
-        // Reaparece a los 1,5 s (PlayerDamageResponse, DefeatReturn): la secuencia debe caber entera.
+        // Reaparece a los 3 s (PlayerDamageResponse, DefeatReturn): la secuencia debe caber entera.
         [TestCase("jaguar", 5)]
         [TestCase("ajolote", 7)]
         [TestCase("aguila", 7)]
@@ -52,7 +52,9 @@ namespace CronicasDeMexico.Tests
         public void Death_FitsBeforeRespawning_WithItsFeetOnTheGround(string id, int frames)
         {
             var death = AssetDatabase.LoadAssetAtPath<GuardianData>($"Assets/_Project/Data/Characters/GUA_{id}.asset").DeathSet;
-            Assert.AreEqual(1.4f, death.Duration, 0.001f);
+            // Con pocos cuadros dura menos: el mínimo es 1 por segundo, y se queda tumbado hasta reaparecer.
+            Assert.LessOrEqual(death.Duration, 2.8f + 0.001f);
+            Assert.GreaterOrEqual(death.Duration, 2f);
             Assert.AreEqual(frames, Mathf.RoundToInt(death.Duration * death.FramesPerSecond));
             var last = death.GetOnceFrame(2, 99f);
             Assert.AreEqual(96f, last.rect.height, "El espíritu se eleva.");

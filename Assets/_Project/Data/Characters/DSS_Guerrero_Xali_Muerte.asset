@@ -58,4 +58,4 @@ MonoBehaviour:
     - {fileID: 21300000, guid: a6a20f176402c2742aa11c3df3fdaa63, type: 3}
     - {fileID: 21300000, guid: 450dac1b89ae42a4c855151dd952c4eb, type: 3}
     - {fileID: 21300000, guid: b57e8eabd6587524bb39e2b048f48a40, type: 3}
-  walkFramesPerSecond: 5
+  walkFramesPerSecond: 2.5

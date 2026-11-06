@@ -33,4 +33,4 @@ MonoBehaviour:
     walk:
     - {fileID: 21300000, guid: 47d38aacb5df0c943ba09ff943121697, type: 3}
     - {fileID: 21300000, guid: ad281bf791b058e41aac175fb979ca72, type: 3}
-  walkFramesPerSecond: 1.4285715
+  walkFramesPerSecond: 1

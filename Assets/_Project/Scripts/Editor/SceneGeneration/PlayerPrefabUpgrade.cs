@@ -92,6 +92,8 @@ namespace CronicasDeMexico.Editor.SceneGeneration
             var driver = root.GetComponent<CharacterAnimationDriver>() ?? root.AddComponent<CharacterAnimationDriver>();
             driver.Configure(animator, guardian.AttackSet, guardian.RunSet, null, null, guardian.HitSet, guardian.DeathSet);
             driver.ConfigureDefenseVictorySpecial(guardian.DefenseSet, guardian.VictorySet, guardian.SpecialSet);
+            // Que quepa la animación de muerte (GuerreroCharacterAssets.DeathSeconds). Igual que DefeatReturn.returnDelay.
+            PixelArtSceneBuilder.SetProperty(root.GetComponent<PlayerDamageResponse>(), "respawnDelay", property => property.floatValue = 3f);
             var special = root.GetComponent<PlayerSpecial>();
             if (special == null)
             {

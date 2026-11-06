@@ -265,7 +265,7 @@ namespace CronicasDeMexico.Tests
 
             Assert.IsTrue(health.TryDamage(100, player.transform.position + Vector3.right));
             Assert.IsTrue(health.IsDead);
-            yield return new WaitForSeconds(1.7f); // DefeatReturn espera 1,5 s antes de viajar
+            yield return new WaitForSeconds(3.2f); // DefeatReturn espera 3 s antes de viajar
             Assert.IsTrue(travel.IsTraveling, "La derrota no inició el regreso al santuario.");
             yield return WaitTravel(travel);
 
@@ -293,7 +293,7 @@ namespace CronicasDeMexico.Tests
             var player = Player();
             var health = player.GetComponent<Health>();
             Assert.IsTrue(health.TryDamage(100, player.transform.position + Vector3.right));
-            yield return new WaitForSeconds(1.8f);
+            yield return new WaitForSeconds(3.2f); // reaparece a los 3 s
             Assert.IsFalse(travel.IsTraveling);
             Assert.IsFalse(health.IsDead, "Sin santuario de Memoria debe reaparecer en el sitio.");
             Assert.AreEqual(Floor(2), player.gameObject.scene.name);

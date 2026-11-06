@@ -21,6 +21,13 @@ Plantilla:
 
 ---
 
+## 2026-11-06 — i7-10700: más tiempo antes de reaparecer
+
+- **Rama / último commit:** `feature/prototipo-olmeca`, sobre `f3cf3d3`. EditMode 107/107, PlayMode 80/80. Subido.
+- **Hecho:** a petición del autor, se reaparece a los 3 s en vez de 1,5 (`PlayerDamageResponse`, `DefeatReturn`), y la muerte dura 2,8 s. Pisos de la mazmorra regenerados: guardan `returnDelay`.
+
+---
+
 ## 2026-11-06 — i7-10700: muerte con espíritu y golpe visible
 
 - **Rama / último commit:** `feature/prototipo-olmeca`, sobre `4aa62ae`. EditMode 107/107, PlayMode 80/80. Subido.

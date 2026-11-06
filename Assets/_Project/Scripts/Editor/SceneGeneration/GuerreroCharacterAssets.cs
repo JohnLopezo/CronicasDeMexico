@@ -23,7 +23,7 @@ namespace CronicasDeMexico.Editor.SceneGeneration
         const float WalkFramesPerSecond = 8f;
         const float RunFramesPerSecond = 12f;
         const float HitFramesPerSecond = 2.5f; // 0,4 s: el destello de daño tapa los primeros 0,12
-        const float DeathSeconds = 1.4f; // menos que los 1,5 s antes de reaparecer, para que se vea entera
+        const float DeathSeconds = 2.8f; // menos que los 3 s antes de reaparecer, para que se vea entera
         const float SpecialFramesPerSecond = 1f / 0.7f; // un cuadro, 0,7 s: se queda quieto mientras dura
 
         // Balam conserva el id "jaguar": es el de las partidas guardadas y el de OBJ_marca_jaguar. La afinidad inicial es la de

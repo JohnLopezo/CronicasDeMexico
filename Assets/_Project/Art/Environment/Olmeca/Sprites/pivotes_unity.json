@@ -1,5 +1,5 @@
 {
- "ppu": 45.254833995939045,
+ "ppu": 48,
  "sprites": [
   {
    "nombre": "Altar_Trono_01",
@@ -59,34 +59,34 @@
   {
    "nombre": "Casa_Bajareque_01",
    "lienzo": [
-    160,
-    152
+    192,
+    192
    ],
    "pivote": [
-    80,
-    40
+    96,
+    64
    ]
   },
   {
    "nombre": "Casa_Bajareque_02",
    "lienzo": [
-    160,
-    152
+    192,
+    192
    ],
    "pivote": [
-    80,
-    40
+    96,
+    64
    ]
   },
   {
    "nombre": "Casa_Bajareque_03",
    "lienzo": [
-    160,
-    152
+    192,
+    192
    ],
    "pivote": [
-    80,
-    40
+    96,
+    64
    ]
   },
   {
@@ -136,34 +136,34 @@
   {
    "nombre": "Cerca_Basalto_Y_01",
    "lienzo": [
-    64,
-    96
+    96,
+    104
    ],
    "pivote": [
-    32,
-    14
+    48,
+    24
    ]
   },
   {
    "nombre": "Cerca_Basalto_Y_02",
    "lienzo": [
-    64,
-    96
+    96,
+    104
    ],
    "pivote": [
-    32,
-    14
+    48,
+    24
    ]
   },
   {
    "nombre": "Cerca_Basalto_Y_03",
    "lienzo": [
-    64,
-    96
+    96,
+    104
    ],
    "pivote": [
-    32,
-    14
+    48,
+    24
    ]
   },
   {
@@ -246,12 +246,12 @@
   {
    "nombre": "Entrada_Estructura_01",
    "lienzo": [
-    192,
-    176
+    256,
+    224
    ],
    "pivote": [
-    96,
-    64
+    128,
+    88
    ]
   },
   {
@@ -301,34 +301,34 @@
   {
    "nombre": "Estela_Grande_01",
    "lienzo": [
-    64,
-    88
+    80,
+    112
    ],
    "pivote": [
-    32,
-    22
+    40,
+    30
    ]
   },
   {
    "nombre": "Estela_Grande_02",
    "lienzo": [
-    64,
-    88
+    80,
+    112
    ],
    "pivote": [
-    32,
-    22
+    40,
+    30
    ]
   },
   {
    "nombre": "Estela_Grande_03",
    "lienzo": [
-    64,
-    88
+    80,
+    112
    ],
    "pivote": [
-    32,
-    22
+    40,
+    30
    ]
   },
   {
@@ -697,2058 +697,2058 @@
   {
    "nombre": "Helecho_01",
    "lienzo": [
-    48,
-    48
+    64,
+    64
    ],
    "pivote": [
-    24,
-    12
+    32,
+    20
    ]
   },
   {
    "nombre": "Helecho_02",
    "lienzo": [
-    48,
-    48
+    64,
+    64
    ],
    "pivote": [
-    24,
-    12
+    32,
+    20
    ]
   },
   {
    "nombre": "JaguarCorrupto_Acecho1_01",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "JaguarCorrupto_Acecho1_02",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "JaguarCorrupto_Acecho1_03",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "JaguarCorrupto_Acecho1_04",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "JaguarCorrupto_Acecho1_05",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "JaguarCorrupto_Acecho2_01",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "JaguarCorrupto_Acecho2_02",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "JaguarCorrupto_Acecho2_03",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "JaguarCorrupto_Acecho2_04",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "JaguarCorrupto_Acecho2_05",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "JaguarCorrupto_Caminar1_01",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "JaguarCorrupto_Caminar1_02",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "JaguarCorrupto_Caminar1_03",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "JaguarCorrupto_Caminar1_04",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "JaguarCorrupto_Caminar1_05",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "JaguarCorrupto_Caminar2_01",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "JaguarCorrupto_Caminar2_02",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "JaguarCorrupto_Caminar2_03",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "JaguarCorrupto_Caminar2_04",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "JaguarCorrupto_Caminar2_05",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "JaguarCorrupto_Caminar3_01",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "JaguarCorrupto_Caminar3_02",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "JaguarCorrupto_Caminar3_03",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "JaguarCorrupto_Caminar3_04",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "JaguarCorrupto_Caminar3_05",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "JaguarCorrupto_Caminar4_01",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "JaguarCorrupto_Caminar4_02",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "JaguarCorrupto_Caminar4_03",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "JaguarCorrupto_Caminar4_04",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "JaguarCorrupto_Caminar4_05",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "JaguarCorrupto_Caminar5_01",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "JaguarCorrupto_Caminar5_02",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "JaguarCorrupto_Caminar5_03",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "JaguarCorrupto_Caminar5_04",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "JaguarCorrupto_Caminar5_05",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "JaguarCorrupto_Caminar6_01",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "JaguarCorrupto_Caminar6_02",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "JaguarCorrupto_Caminar6_03",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "JaguarCorrupto_Caminar6_04",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "JaguarCorrupto_Caminar6_05",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "JaguarCorrupto_Golpeado1_01",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "JaguarCorrupto_Golpeado1_02",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "JaguarCorrupto_Golpeado1_03",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "JaguarCorrupto_Golpeado1_04",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "JaguarCorrupto_Golpeado1_05",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "JaguarCorrupto_Golpeado2_01",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "JaguarCorrupto_Golpeado2_02",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "JaguarCorrupto_Golpeado2_03",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "JaguarCorrupto_Golpeado2_04",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "JaguarCorrupto_Golpeado2_05",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "JaguarCorrupto_Muerte1_01",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "JaguarCorrupto_Muerte1_02",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "JaguarCorrupto_Muerte1_03",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "JaguarCorrupto_Muerte1_04",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "JaguarCorrupto_Muerte1_05",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "JaguarCorrupto_Muerte2_01",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "JaguarCorrupto_Muerte2_02",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "JaguarCorrupto_Muerte2_03",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "JaguarCorrupto_Muerte2_04",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "JaguarCorrupto_Muerte2_05",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "JaguarCorrupto_Muerte3_01",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "JaguarCorrupto_Muerte3_02",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "JaguarCorrupto_Muerte3_03",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "JaguarCorrupto_Muerte3_04",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "JaguarCorrupto_Muerte3_05",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "JaguarCorrupto_Reposo1_01",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "JaguarCorrupto_Reposo1_02",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "JaguarCorrupto_Reposo1_03",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "JaguarCorrupto_Reposo1_04",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "JaguarCorrupto_Reposo1_05",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "JaguarCorrupto_Reposo2_01",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "JaguarCorrupto_Reposo2_02",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "JaguarCorrupto_Reposo2_03",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "JaguarCorrupto_Reposo2_04",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "JaguarCorrupto_Reposo2_05",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "JaguarCorrupto_Reposo3_01",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "JaguarCorrupto_Reposo3_02",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "JaguarCorrupto_Reposo3_03",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "JaguarCorrupto_Reposo3_04",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "JaguarCorrupto_Reposo3_05",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "JaguarCorrupto_Reposo4_01",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "JaguarCorrupto_Reposo4_02",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "JaguarCorrupto_Reposo4_03",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "JaguarCorrupto_Reposo4_04",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "JaguarCorrupto_Reposo4_05",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "JaguarCorrupto_Salto1_01",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "JaguarCorrupto_Salto1_02",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "JaguarCorrupto_Salto1_03",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "JaguarCorrupto_Salto1_04",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "JaguarCorrupto_Salto1_05",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "JaguarCorrupto_Salto2_01",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "JaguarCorrupto_Salto2_02",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "JaguarCorrupto_Salto2_03",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "JaguarCorrupto_Salto2_04",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "JaguarCorrupto_Salto2_05",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "Jaguar_Caminar1_01",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "Jaguar_Caminar1_02",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "Jaguar_Caminar1_03",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "Jaguar_Caminar1_04",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "Jaguar_Caminar1_05",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "Jaguar_Caminar2_01",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "Jaguar_Caminar2_02",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "Jaguar_Caminar2_03",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "Jaguar_Caminar2_04",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "Jaguar_Caminar2_05",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "Jaguar_Caminar3_01",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "Jaguar_Caminar3_02",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "Jaguar_Caminar3_03",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "Jaguar_Caminar3_04",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "Jaguar_Caminar3_05",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "Jaguar_Caminar4_01",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "Jaguar_Caminar4_02",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "Jaguar_Caminar4_03",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "Jaguar_Caminar4_04",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "Jaguar_Caminar4_05",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "Jaguar_Caminar5_01",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "Jaguar_Caminar5_02",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "Jaguar_Caminar5_03",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "Jaguar_Caminar5_04",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "Jaguar_Caminar5_05",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "Jaguar_Caminar6_01",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "Jaguar_Caminar6_02",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "Jaguar_Caminar6_03",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "Jaguar_Caminar6_04",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "Jaguar_Caminar6_05",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "Jaguar_Correr1_01",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "Jaguar_Correr1_02",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "Jaguar_Correr1_03",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "Jaguar_Correr1_04",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "Jaguar_Correr1_05",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "Jaguar_Correr2_01",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "Jaguar_Correr2_02",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "Jaguar_Correr2_03",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "Jaguar_Correr2_04",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "Jaguar_Correr2_05",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "Jaguar_Correr3_01",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "Jaguar_Correr3_02",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "Jaguar_Correr3_03",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "Jaguar_Correr3_04",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "Jaguar_Correr3_05",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "Jaguar_Correr4_01",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "Jaguar_Correr4_02",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "Jaguar_Correr4_03",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "Jaguar_Correr4_04",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "Jaguar_Correr4_05",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "Jaguar_Correr5_01",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "Jaguar_Correr5_02",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "Jaguar_Correr5_03",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "Jaguar_Correr5_04",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "Jaguar_Correr5_05",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "Jaguar_Correr6_01",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "Jaguar_Correr6_02",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "Jaguar_Correr6_03",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "Jaguar_Correr6_04",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "Jaguar_Correr6_05",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "Jaguar_Golpeado1_01",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "Jaguar_Golpeado1_02",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "Jaguar_Golpeado1_03",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "Jaguar_Golpeado1_04",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "Jaguar_Golpeado1_05",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "Jaguar_Golpeado2_01",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "Jaguar_Golpeado2_02",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "Jaguar_Golpeado2_03",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "Jaguar_Golpeado2_04",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "Jaguar_Golpeado2_05",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "Jaguar_Muerte1_01",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "Jaguar_Muerte1_02",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "Jaguar_Muerte1_03",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "Jaguar_Muerte1_04",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "Jaguar_Muerte1_05",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "Jaguar_Muerte2_01",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "Jaguar_Muerte2_02",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "Jaguar_Muerte2_03",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "Jaguar_Muerte2_04",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "Jaguar_Muerte2_05",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "Jaguar_Muerte3_01",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "Jaguar_Muerte3_02",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "Jaguar_Muerte3_03",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "Jaguar_Muerte3_04",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "Jaguar_Muerte3_05",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "Jaguar_Muerte4_01",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "Jaguar_Muerte4_02",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "Jaguar_Muerte4_03",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "Jaguar_Muerte4_04",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "Jaguar_Muerte4_05",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
@@ -3040,441 +3040,441 @@
   {
    "nombre": "Jaguar_Reposo1_01",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "Jaguar_Reposo1_02",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "Jaguar_Reposo1_03",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "Jaguar_Reposo1_04",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "Jaguar_Reposo1_05",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "Jaguar_Reposo2_01",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "Jaguar_Reposo2_02",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "Jaguar_Reposo2_03",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "Jaguar_Reposo2_04",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "Jaguar_Reposo2_05",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "Jaguar_Reposo3_01",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "Jaguar_Reposo3_02",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "Jaguar_Reposo3_03",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "Jaguar_Reposo3_04",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "Jaguar_Reposo3_05",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "Jaguar_Reposo4_01",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "Jaguar_Reposo4_02",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "Jaguar_Reposo4_03",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "Jaguar_Reposo4_04",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "Jaguar_Reposo4_05",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "Jaguar_Zarpazo1_01",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "Jaguar_Zarpazo1_02",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "Jaguar_Zarpazo1_03",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "Jaguar_Zarpazo1_04",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "Jaguar_Zarpazo1_05",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "Jaguar_Zarpazo2_01",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "Jaguar_Zarpazo2_02",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "Jaguar_Zarpazo2_03",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "Jaguar_Zarpazo2_04",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "Jaguar_Zarpazo2_05",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "Jaguar_Zarpazo3_01",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "Jaguar_Zarpazo3_02",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "Jaguar_Zarpazo3_03",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "Jaguar_Zarpazo3_04",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "Jaguar_Zarpazo3_05",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "Jaguar_Zarpazo4_01",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "Jaguar_Zarpazo4_02",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "Jaguar_Zarpazo4_03",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "Jaguar_Zarpazo4_04",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
    "nombre": "Jaguar_Zarpazo4_05",
    "lienzo": [
-    128,
-    112
+    144,
+    128
    ],
    "pivote": [
-    64,
-    44
+    72,
+    52
    ]
   },
   {
@@ -3623,66 +3623,66 @@
   {
    "nombre": "Ofrenda_01",
    "lienzo": [
-    64,
-    64
+    80,
+    72
    ],
    "pivote": [
-    32,
+    40,
     20
    ]
   },
   {
    "nombre": "Ofrenda_02",
    "lienzo": [
-    64,
-    64
+    80,
+    72
    ],
    "pivote": [
-    32,
+    40,
     20
    ]
   },
   {
    "nombre": "Ofrenda_03",
    "lienzo": [
-    64,
-    64
+    80,
+    72
    ],
    "pivote": [
-    32,
+    40,
     20
    ]
   },
   {
    "nombre": "Ofrenda_04",
    "lienzo": [
-    64,
-    64
+    80,
+    72
    ],
    "pivote": [
-    32,
+    40,
     20
    ]
   },
   {
    "nombre": "Palma_Corozo_01",
    "lienzo": [
-    64,
-    128
+    96,
+    144
    ],
    "pivote": [
-    36,
+    52,
     12
    ]
   },
   {
    "nombre": "Palma_Corozo_02",
    "lienzo": [
-    64,
-    128
+    96,
+    144
    ],
    "pivote": [
-    36,
+    52,
     12
    ]
   },
@@ -3865,23 +3865,12 @@
   {
    "nombre": "Rampa_Arcilla_01",
    "lienzo": [
-    136,
-    112
+    168,
+    144
    ],
    "pivote": [
-    68,
-    30
-   ]
-  },
-  {
-   "nombre": "Rampa_Arcilla_02",
-   "lienzo": [
-    136,
-    112
-   ],
-   "pivote": [
-    68,
-    30
+    84,
+    46
    ]
   },
   {
@@ -4129,133 +4118,243 @@
   {
    "nombre": "Suelo_Ciudad_02",
    "lienzo": [
-    902,
+    1024,
     1024
    ],
    "pivote": [
-    451.0,
+    512.0,
     512.0
    ]
   },
   {
    "nombre": "Suelo_Ciudad_03",
    "lienzo": [
-    1024,
-    506
+    48,
+    1024
    ],
    "pivote": [
-    512.0,
-    253.0
+    24.0,
+    512.0
    ]
   },
   {
    "nombre": "Suelo_Ciudad_04",
    "lienzo": [
     1024,
-    506
+    1024
    ],
    "pivote": [
     512.0,
-    253.0
+    512.0
    ]
   },
   {
    "nombre": "Suelo_Ciudad_05",
    "lienzo": [
-    902,
-    506
+    1024,
+    1024
    ],
    "pivote": [
-    451.0,
-    253.0
+    512.0,
+    512.0
+   ]
+  },
+  {
+   "nombre": "Suelo_Ciudad_06",
+   "lienzo": [
+    1024,
+    1024
+   ],
+   "pivote": [
+    512.0,
+    512.0
+   ]
+  },
+  {
+   "nombre": "Suelo_Ciudad_07",
+   "lienzo": [
+    48,
+    1024
+   ],
+   "pivote": [
+    24.0,
+    512.0
+   ]
+  },
+  {
+   "nombre": "Suelo_Ciudad_08",
+   "lienzo": [
+    1024,
+    152
+   ],
+   "pivote": [
+    512.0,
+    76.0
+   ]
+  },
+  {
+   "nombre": "Suelo_Ciudad_09",
+   "lienzo": [
+    1024,
+    152
+   ],
+   "pivote": [
+    512.0,
+    76.0
+   ]
+  },
+  {
+   "nombre": "Suelo_Ciudad_10",
+   "lienzo": [
+    1024,
+    152
+   ],
+   "pivote": [
+    512.0,
+    76.0
+   ]
+  },
+  {
+   "nombre": "Suelo_Ciudad_11",
+   "lienzo": [
+    48,
+    152
+   ],
+   "pivote": [
+    24.0,
+    76.0
    ]
   },
   {
    "nombre": "Suelo_Selva_00",
    "lienzo": [
     1024,
-    938
+    1024
    ],
    "pivote": [
     512.0,
-    469.0
+    512.0
    ]
   },
   {
    "nombre": "Suelo_Selva_01",
    "lienzo": [
-    832,
-    938
+    1024,
+    1024
    ],
    "pivote": [
-    416.0,
-    469.0
+    512.0,
+    512.0
+   ]
+  },
+  {
+   "nombre": "Suelo_Selva_02",
+   "lienzo": [
+    352,
+    1024
+   ],
+   "pivote": [
+    176.0,
+    512.0
+   ]
+  },
+  {
+   "nombre": "Suelo_Selva_03",
+   "lienzo": [
+    1024,
+    576
+   ],
+   "pivote": [
+    512.0,
+    288.0
+   ]
+  },
+  {
+   "nombre": "Suelo_Selva_04",
+   "lienzo": [
+    1024,
+    576
+   ],
+   "pivote": [
+    512.0,
+    288.0
+   ]
+  },
+  {
+   "nombre": "Suelo_Selva_05",
+   "lienzo": [
+    352,
+    576
+   ],
+   "pivote": [
+    176.0,
+    288.0
    ]
   },
   {
    "nombre": "Suelo_Mazmorra_P1_00",
    "lienzo": [
     1024,
-    660
+    313
    ],
    "pivote": [
     512.0,
-    330.0
+    156.5
    ]
   },
   {
    "nombre": "Suelo_Mazmorra_P1_01",
    "lienzo": [
-    256,
-    660
+    567,
+    313
    ],
    "pivote": [
-    128.0,
-    330.0
+    283.5,
+    156.5
    ]
   },
   {
    "nombre": "Suelo_Mazmorra_P2_00",
    "lienzo": [
     1024,
-    644
+    538
    ],
    "pivote": [
     512.0,
-    322.0
+    269.0
    ]
   },
   {
    "nombre": "Suelo_Mazmorra_P2_01",
    "lienzo": [
-    224,
-    644
+    423,
+    538
    ],
    "pivote": [
-    112.0,
-    322.0
+    211.5,
+    269.0
    ]
   },
   {
    "nombre": "Suelo_Mazmorra_P3_00",
    "lienzo": [
     1024,
-    516
+    794
    ],
    "pivote": [
     512.0,
-    258.0
+    397.0
    ]
   },
   {
    "nombre": "Suelo_Mazmorra_P3_01",
    "lienzo": [
-    288,
-    516
+    39,
+    794
    ],
    "pivote": [
-    144.0,
-    258.0
+    19.5,
+    397.0
    ]
   }
  ]

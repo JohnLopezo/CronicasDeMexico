@@ -115,7 +115,7 @@ namespace CronicasDeMexico.Editor.SceneGeneration
             // Volver aquí termina la incursión: los santuarios de Vida se reencienden.
             AddSpawnPoint(parent, FromDungeonSpawnId, points.desde_mazmorra.Value);
             var dungeon = Group("Entrada_Mazmorra", parent);
-            var portal = AddPortal(dungeon, "Portal_Mazmorra", points.mazmorra.Value, new Vector3(0.4f, 1.4f, 2f),
+            var portal = AddPortal(dungeon, "Portal_Mazmorra", points.mazmorra.Value, new Vector3(1.4f, 0.4f, 2f),
                 OlmecaDungeonGenerator.SceneName(1), OlmecaDungeonGenerator.FromAboveSpawnId);
             portal.gameObject.SetActive(false); // hasta que ActiveWhenFlags vea la bandera
             ShowWhen(portal.gameObject, new[] { StoryEvents.QuestCompletedFlag(OlmecaNarrativeAssets.JungleQuestId) }, null,

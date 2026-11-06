@@ -48,7 +48,7 @@ namespace CronicasDeMexico.Editor.SceneGeneration
             ("Claro1", new Vector2(11f, 1.6f)),
             ("Claro2", new Vector2(2f, 0.5f)),
             ("Claro3", new Vector2(-6.5f, -3f)),
-            ("Entrada", new Vector2(-11f, -2f)),
+            ("Entrada", new Vector2(-10.6f, -1f)),
         };
 
         [MenuItem("Crónicas/Capturar ciudad olmeca")]

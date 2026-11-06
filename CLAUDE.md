@@ -86,7 +86,7 @@ Configuración de Git por PC (LFS + UnityYAMLMerge, guardada en `.git/config`): 
 
 - Tres niveles, **Bajo / Medio / Alto**, cada uno con su URP Asset en `Assets/_Project/Settings/Rendering/`. Valores y registro de FPS en `Docs/Rendimiento.md`.
 - Editor, Windows y Android arrancan en **Bajo**. En Bajo no hay HDR ni Depth Texture y `CameraQualityApplier` apaga el post-procesado de la cámara. Las funciones nuevas deben verse bien y rendir en Bajo en el i5-6500 y en Android de gama media (objetivo: 30 FPS estables en dispositivo real).
-- Estilo: Pixel Art detallado en 2.5D con cámara isométrica/semisométrica. Los perfiles cambian iluminación y post-procesado, nunca la resolución de los sprites (Point, 32 PPU). Presupuestos, Sprite Atlas, iluminación, escenas por región, efectos a evitar y ajustes de Android/iOS: `Docs/Rendimiento.md`.
+- Estilo: Pixel Art detallado en 2.5D con cámara isométrica/semisométrica. Los perfiles cambian iluminación y post-procesado, nunca la resolución de los sprites (Point; 48 PPU el arte de Blender, 32 PPU las fichas de NPC y los efectos). Presupuestos, Sprite Atlas, iluminación, escenas por región, efectos a evitar y ajustes de Android/iOS: `Docs/Rendimiento.md`.
 - Iluminación horneada (solo en el i7) o light probes con pocas luces en tiempo real, Sprite Atlas por grupo/región y materiales compatibles con el SRP Batcher. En `Update`, evitar asignaciones de memoria y llamadas a `GetComponent`/`Find`; usar búferes fijos (`OverlapSphereNonAlloc`) y pooling para proyectiles y VFX.
 
 ## Convenciones de Unity y Git

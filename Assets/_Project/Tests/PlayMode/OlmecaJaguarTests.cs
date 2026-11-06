@@ -76,7 +76,7 @@ namespace CronicasDeMexico.Tests
             yield return new WaitForSeconds(0.4f);
             Assert.IsNull(animator.CurrentAction, "El zarpazo termina solo.");
 
-            Assert.IsTrue(player.TryDodge(Vector3.right));
+            Assert.IsTrue(player.TryDodge(Vector3.left)); // hacia la cámara: la escalera de subida, con su portal, queda al fondo
             yield return null;
             Assert.AreEqual("DSS_Jaguar_Correr", ActionName(animator), "La esquiva usa el galope.");
             yield return new WaitForSeconds(0.6f);

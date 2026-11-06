@@ -16,11 +16,11 @@ namespace CronicasDeMexico.Tests
         [Test]
         public void CameraAxes_MatchPipelineScreenAxes()
         {
-            AssertVector(IsometricProjection.FromPipeline(0.70710678f, 0.70710678f, 0f),
+            AssertVector(IsometricProjection.FromPipeline(1f, 0f, 0f),
                 IsometricProjection.CameraRotation * Vector3.right);
-            AssertVector(IsometricProjection.FromPipeline(-0.35355339f, 0.35355339f, 0.8660254f),
+            AssertVector(IsometricProjection.FromPipeline(0f, 0.66666667f, 0.74535599f),
                 IsometricProjection.CameraRotation * Vector3.up);
-            AssertVector(IsometricProjection.FromPipeline(-0.61237244f, 0.61237244f, -0.5f),
+            AssertVector(IsometricProjection.FromPipeline(0f, 0.74535599f, -0.66666667f),
                 IsometricProjection.CameraRotation * Vector3.forward);
         }
 
@@ -38,10 +38,10 @@ namespace CronicasDeMexico.Tests
             AssertVector(snapped, IsometricProjection.SnapToPixelGrid(snapped, pixel));
         }
 
-        [TestCase(1080, 3, 3.9774f)]
-        [TestCase(720, 2, 3.9774f)]
-        [TestCase(768, 2, 4.2426f)]
-        [TestCase(200, 1, 2.2097f)]
+        [TestCase(1080, 3, 3.75f)]
+        [TestCase(720, 2, 3.75f)]
+        [TestCase(768, 2, 4f)]
+        [TestCase(200, 1, 2.0833f)]
         public void OrthographicSize_ShowsArtAtIntegerScale(int screenHeight, int scale, float size)
         {
             Assert.AreEqual(scale, IsometricProjection.IntegerScale(screenHeight));

@@ -15,7 +15,7 @@ namespace CronicasDeMexico.Tests
         const string MaterialsFolder = "Assets/_Project/Art/Environment/Olmeca/Materials/PixelArt";
         const string CityDataPath = "Assets/_Project/Data/World/Olmeca/Ciudad.json";
         const string AtlasPath = SpritesFolder + "/Atlas_Olmeca.spriteatlasv2";
-        const float PixelsPerUnit = 45.254834f;
+        const float PixelsPerUnit = 48f;
 
         [Test]
         public void Sprites_AreImportedAsPixelArt()
@@ -41,14 +41,14 @@ namespace CronicasDeMexico.Tests
         [Test]
         public void Pivots_MatchPipeline()
         {
-            // Palma: lienzo de 64×128 con la base del tronco en (36, 12) desde abajo a la izquierda.
+            // Palma: lienzo de 96×144 con la base del tronco en (52, 12) desde abajo a la izquierda.
             var importer = (TextureImporter)AssetImporter.GetAtPath(SpritesFolder + "/Objetos/Palma_Corozo_01.png");
             Assert.IsNotNull(importer);
             var settings = new TextureImporterSettings();
             importer.ReadTextureSettings(settings);
             Assert.AreEqual((int)SpriteAlignment.Custom, settings.spriteAlignment);
-            Assert.AreEqual(36f / 64f, settings.spritePivot.x, 1e-4f);
-            Assert.AreEqual(12f / 128f, settings.spritePivot.y, 1e-4f);
+            Assert.AreEqual(52f / 96f, settings.spritePivot.x, 1e-4f);
+            Assert.AreEqual(12f / 144f, settings.spritePivot.y, 1e-4f);
         }
 
         [Test]

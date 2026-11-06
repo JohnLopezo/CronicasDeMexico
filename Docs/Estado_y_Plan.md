@@ -158,26 +158,14 @@ EditMode 80/80 y PlayMode 72/72 (al 2026-11-04).
 
 ### Vista 3/4 frontal y mapa más rico (en curso desde 2026-11-04; contexto en `Docs/Bitacora.md`)
 
-**El autor aprobó la vista y la inclinación el 2026-11-05.** Hasta aplicarla en Unity (paso 2), el flujo solo se ejecuta con `--sin-unity`.
+**Aplicada en Unity el 2026-11-05 y subida el 2026-11-06** (detalle en `Docs/Bitacora.md`). EditMode 80/80, PlayMode 72/72. El flujo ya se ejecuta normal, sin `--sin-unity`.
 
-1. **Arte, con otra muestra para aprobar** (referencias en `Docs/Creacion de mapa/`):
-   - Suelo con variación continua: hoy se ven la cuadrícula en pasto y plaza y los brotes en filas.
-   - Caminos con bordes irregulares, plantas y piedras: hoy son muy rectos y con borde en sierra.
-   - Selva densa por grupos, con flores, enredaderas y musgo.
-   - Orillas con rocas, tule y nenúfares.
-   - Borde del mapa cerrado con selva: hoy se ven el vacío y palmas sueltas.
-   - Lienzos más grandes para lo que toca el borde: `Casa_Bajareque`, `Cerca_Basalto_Y`, `Entrada_Estructura`, `Estela_Grande`, `Helecho`, `JaguarCorrupto_Salto1`, `Jaguar_Zarpazo2`, `Ofrenda`, `Palma_Corozo` y `Rampa_Arcilla`.
-   - Rampa superior del montículo (`Rampa_Arcilla_02`, de lado) girada para verse de frente.
-   - Revisar en la muestra la selva y la mazmorra, y lo que tenga su frente hacia ±X: esta vista solo muestra el frente (-Y) y la parte superior.
-2. **Unity:**
-   - `IsometricProjection`: `PixelsPerUnit = 48` y `CameraRotation = Euler(41,81°, 90°, 0)`. `FromPipeline` no cambia: +X del flujo queda a la derecha y +Y al fondo.
-   - Exportar sprites y regenerar ciudad, selva y mazmorra.
-   - Comprobar la escala de los NPC (se deriva de `PixelsPerUnit`), el jugador, los techos y la profundidad de los sprites.
-   - Decidir qué hacer con `Olmeca_Prototipo`, que está congelada y sigue siendo isométrica.
-3. **Pruebas y documentos:**
-   - Ajustar las pruebas con la cámara o los 45,2548 px fijos (`SpriteBillboardTests`, `OlmecaCiudadSceneTests`, entre otras).
-   - Pasar EditMode y PlayMode, medir rendimiento y sacar capturas dentro del juego.
-   - Actualizar `Docs/Arte_Olmeca_Demo.md` (§3 a §6 y la ruta de las referencias) y `Docs/Personajes/Fichas/Jaguar.md`.
+**Falta:**
+1. Que el autor la juegue: controles, subir a la cima del montículo, entrar a la mazmorra y volver por la escalera.
+2. Medir el rendimiento: 170 celdas de agua más fuera de los límites y suelo de 3120×2200 en la ciudad. Luego, i5 y Android.
+3. Arte: cimas del montículo planas, patrón del agua y `Basalto_Agrietado` (mira a +X).
+4. Decidir qué hacer con `Olmeca_Prototipo`, que conserva su arte isométrico.
+5. Documentos: reescribir `Docs/Arte_Olmeca_Demo.md` §3 a §6 y revisar `Docs/Personajes/Fichas/Jaguar.md`.
 
 ### Inmediato
 - **Probar en el Editor** el arco completo, de `MP_OLM_01` a `MP_OLM_03` (Boot → ciudad → selva), y después la mazmorra:

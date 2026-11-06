@@ -13,10 +13,11 @@ from mathutils import Matrix, Vector
 import pixelart_comun as pa
 
 # Direcciones de pantalla de DirectionalSpriteSet (N, NE, E, SE, S) = variantes 1–5; el modelo mira a +X (SE).
-GIRO_DIRECCION = (90, 45, 0, -45, -90)
+# De frente o de espaldas un cuadrúpedo se vería como un tubo con esta cámara: N y S van girados 25° hacia un lado
+GIRO_DIRECCION = (65, 40, 0, -40, -65)
 # Lienzo de cada cuadro (px), píxel del centro del cuerpo en el suelo y color del contorno
-LIENZO = (128, 112)
-ANCLA = (64, 44)
+LIENZO = (144, 128)
+ANCLA = (72, 52)
 CONTORNO = "#140C08"
 
 # Jaguar (D: Panthera onca): cabeza y cuerpo de 1,1 a 1,85 m, cola de 0,45 a 0,75 m, cruz a 0,63–0,76 m; el más

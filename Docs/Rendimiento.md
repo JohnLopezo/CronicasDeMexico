@@ -42,6 +42,20 @@ Se mide en un **build de desarrollo** (no en el Editor), en cada hito. En PC el 
 | 2026-11-04 | Ciudad con 24 NPC patrullando | i7-10700 / UHD 630 | Bajo | 1920×1080 | Olmeca_Ciudad | 220–265 | 128–196 | 3,8–4,6 (p95 4,6–5,7) | Dos ejecuciones. Sin la incursión activa. Sin caída clara frente a A3 |
 | 2026-11-04 | Ciudad con 24 NPC patrullando | i7-10700 / UHD 630 | Medio | 1920×1080 | Olmeca_Ciudad | 288–306 | 149–224 | 3,3–3,5 (p95 3,9–4,5) | Ídem |
 | 2026-11-04 | Ciudad con 24 NPC patrullando | i7-10700 / UHD 630 | Alto | 1920×1080 | Olmeca_Ciudad | 232–274 | 56–208 | 3,7–4,3 (p95 4,3–6,4) | Ídem. Picos sueltos de hasta 50 ms, en puntos distintos en cada ejecución (1 % bajo de 56 a 208, frente a 185–192 en A3); causa sin aislar. Falta medir en el i5 / HD 530 y Android |
+| 2026-11-05 | Vista 3/4 frontal | i7-10700 / UHD 630 | Bajo | 1920×1080 | Olmeca_Ciudad | 227–302 | 28–221 | 3,3–4,4 (p95 4,0–6,4) | Una ejecución. Máximo 64 ms en la aldea: ver la nota de picos debajo |
+| 2026-11-05 | Vista 3/4 frontal | i7-10700 / UHD 630 | Medio | 1920×1080 | Olmeca_Ciudad | 335–351 | 171–280 | 2,9–3,0 (p95 3,3–3,6) | Ídem |
+| 2026-11-05 | Vista 3/4 frontal | i7-10700 / UHD 630 | Alto | 1920×1080 | Olmeca_Ciudad | 305–317 | 240–249 | 3,2–3,3 (p95 3,7–3,8) | Ídem |
+| 2026-11-05 | Vista 3/4 frontal | i7-10700 / UHD 630 | Bajo | 1920×1080 | Olmeca_Selva | 251–307 | 44–240 | 3,3–4,0 (p95 3,8–5,9) | Picos solo en Llegada, el primer punto medido |
+| 2026-11-05 | Vista 3/4 frontal | i7-10700 / UHD 630 | Medio | 1920×1080 | Olmeca_Selva | 355–363 | 237–281 | 2,8 (p95 3,3–3,4) | Ídem |
+| 2026-11-05 | Vista 3/4 frontal | i7-10700 / UHD 630 | Alto | 1920×1080 | Olmeca_Selva | 278–286 | 132–179 | 3,5–3,6 (p95 4,7–4,9) | Peor que en M1 (299–302; 1 % bajo 227–230), con picos de hasta 20 ms; causa sin aislar |
+| 2026-11-05 | Vista 3/4 frontal | i7-10700 / UHD 630 | Bajo | 1920×1080 | Olmeca_Mazmorra_P2 | 258–312 | 144–259 | 3,2–3,9 (p95 3,5–5,8) | Lo más lento, en Llegada, el primer punto medido |
+| 2026-11-05 | Vista 3/4 frontal | i7-10700 / UHD 630 | Medio | 1920×1080 | Olmeca_Mazmorra_P2 | 364–367 | 289–312 | 2,7 (p95 3,0–3,1) | Ídem |
+| 2026-11-05 | Vista 3/4 frontal | i7-10700 / UHD 630 | Alto | 1920×1080 | Olmeca_Mazmorra_P2 | 318–323 | 275–280 | 3,1–3,2 (p95 3,3–3,4) | Ídem |
+| 2026-11-05 | Vista 3/4 frontal | i7-10700 / UHD 630 | Bajo | 1920×1080 | Olmeca_Mazmorra_P3 | 310–316 | 243–267 | 3,2 (p95 3,5–3,6) | Guardián dormido y agua sin subir, como en M4 |
+| 2026-11-05 | Vista 3/4 frontal | i7-10700 / UHD 630 | Medio | 1920×1080 | Olmeca_Mazmorra_P3 | 363–367 | 309–310 | 2,7–2,8 (p95 3,0) | Ídem |
+| 2026-11-05 | Vista 3/4 frontal | i7-10700 / UHD 630 | Alto | 1920×1080 | Olmeca_Mazmorra_P3 | 308–325 | 203–290 | 3,1–3,2 (p95 3,3–3,9) | Ídem. Falta medir en el i5 / HD 530 y Android |
+
+**Picos en Bajo (2026-11-05):** en la ciudad hay 44 cuadros de más de 12 ms en la aldea (máximo 64 ms), 16 en la plaza y 5 en el recinto; en la selva, 31 en la llegada. Con los mismos puntos en Medio no hay ninguno, y en Alto solo 3, en la selva y de hasta 20 ms. Bajo siempre se mide primero, así que puede ser el coste de la primera visita a cada zona (por ejemplo, subir texturas) o algo propio de Bajo: **la medición actual no lo distingue**, porque no permite cambiar el orden. Es una hipótesis sin comprobar. El coste medio sigue lejos del presupuesto de 16,7 ms, pero estos picos pesarían más en el i5 y en Android.
 
 **Cámara de fondo (2026-10-29):** la cámara que limpia la pantalla bajo `PixelArtScreen` no dibuja nada, pero URP le aplicaba a 1920×1080 lo que pide el nivel: en Alto, HDR, texturas de profundidad y color, y el SSAO de `Renderer_Calidad`; en Medio, HDR y profundidad. Ahora usa el renderer 1 de cada URP Asset (`Renderer_Rendimiento`, sin efectos; `PixelArtScreen.ClearRendererIndex`) y desactiva HDR, MSAA, sombras y texturas. La cámara del escenario conserva el SSAO a la resolución del arte. Lo comprueba `ClearCamera_UsesRendererWithoutEffects_InEveryQualityLevel`.
 
@@ -108,7 +122,7 @@ Valores **orientativos** para escenas en **Bajo** en el i5-6500 y en Android de 
 
 El estilo es **Pixel Art detallado en 2.5D con cámara isométrica/semisométrica** (Diseno.md §5): personajes y elementos en sprites pixel art sobre escenarios 3D estilizados. La cámara actual es en **perspectiva con FOV 30** y ángulo elevado; el ángulo definitivo sigue abierto (Diseno.md §19). La calidad artística no se sacrifica entre perfiles: lo que cambia entre Bajo, Medio y Alto es la iluminación y el post-procesado, **nunca la resolución de los sprites**.
 
-- **Importación de sprites:** *Filter Mode* **Point**, **32 píxeles por unidad** (valor actual de los placeholders), sin mipmaps, *Compression* **None** en la textura fuente. La compresión se decide en el Sprite Atlas.
+- **Importación de sprites:** *Filter Mode* **Point**, **48 píxeles por unidad** el arte de Blender y **32** las fichas de NPC y los efectos, sin mipmaps, *Compression* **None** en la textura fuente. La compresión se decide en el Sprite Atlas.
 - **Tamaño base:** personajes de ~32–48 px de alto (Diseno.md §5), a validar en pruebas.
 - **Paleta y legibilidad:** paletas por región; los efectos no deben tapar la silueta del personaje en combate.
 - **Render Scale 0.75 en Bajo:** con el filtro de escalado *Auto* puede suavizar los píxeles de los sprites. Revisar a ojo en el i5; si se nota, probar *Point* como filtro de escalado en `URP_Bajo` (pendiente, no aplicado).

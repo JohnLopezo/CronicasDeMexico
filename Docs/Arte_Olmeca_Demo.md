@@ -1,10 +1,12 @@
 # Guía visual — Demo artística olmeca
 
+> **Desde el 2026-11-05 la cámara es 3/4 frontal:** rotación (41,81°, 90°, 0°), 48 px por metro y tile de 48×32 px. Ciudad y selva pintan su suelo por píxel (`pintar_terreno`). Lo que este documento diga de la vista isométrica, 45,25 px o rombos de 64×32 es anterior. `Docs/Bitacora.md` tiene el detalle.
+
 Define el estilo de la escena de demostración `Olmeca_VisualDemo` (aún no creada) y de los recursos del capítulo olmeca. Estado: **etapa 1 (borrador para aprobación)**. Lo que aquí cambia respecto a `Docs/Rendimiento.md` (cámara, escala, sombras) se aplica solo a la demo hasta que se apruebe.
 
 ## 1. Referencia
 
-- **Referencia principal:** `Docs/Referencia_Visual_Olmeca.png` (1536×1024). **Segunda hoja:** `Referencia_Visual_Olmeca2.png` (nueva desde el 2026-10-28: más vegetación, objetos de aldea, NPC y una escena integrada).
+- **Referencia principal:** `Docs/Creacion de mapa/Referencia_Visual_Olmeca.png` (1536×1024). **Segunda hoja:** `Referencia_Visual_Olmeca2.png` (nueva desde el 2026-10-28: más vegetación, objetos de aldea, NPC y una escena integrada).
 - Se toma como objetivo de **densidad de vegetación, detalle, profundidad, caminos y composición**. No se copian sus recursos ni sus personajes: todo se produce con el flujo de la sección 10.
 - La referencia es una hoja de concepto: sus medidas (tile 64×64, palma 64×128, jaguar 32–40 px) se adoptan; algunos de sus elementos **no** se adoptan por criterio histórico (sección 8).
 

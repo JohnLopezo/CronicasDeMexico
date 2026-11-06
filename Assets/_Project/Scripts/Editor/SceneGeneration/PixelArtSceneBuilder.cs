@@ -28,7 +28,6 @@ namespace CronicasDeMexico.Editor.SceneGeneration
     internal static class PixelArtSceneBuilder
     {
         internal const float PlatformHeight = 1f;          // H_PLATAFORMA del flujo
-        const float BoundsInset = 7f;                      // la cámara no se acerca tanto al borde en rombo del mapa
         internal const float PlaceholderPixelsPerUnit = 32f;
         const string PresentationPanelSettingsPath = "Assets/_Project/Settings/UI/PanelSettings_PixelArt.asset";
         const string HudThemePath = "Assets/_Project/Art/UI/Hud/HudTheme.tss";
@@ -52,7 +51,7 @@ namespace CronicasDeMexico.Editor.SceneGeneration
             ("Vasijas", new Vector3(0.5f, 0.5f, 0.4f)),
             ("Tronco_Caido_01", new Vector3(0.9f, 0.5f, 0.35f)),
             ("Tronco_Caido_02", new Vector3(0.45f, 0.45f, 0.35f)),
-            ("Entrada_Estructura", new Vector3(2.9f, 3.8f, 1.5f)), // el montículo con sus columnas
+            ("Entrada_Estructura", new Vector3(3.8f, 2.9f, 1.5f)), // el montículo con sus columnas
             // Aldea, etapa A3 (generar_olmeca.py, aldea_a3). El petate va horneado en el suelo y se pisa.
             ("Cestos", new Vector3(0.5f, 0.5f, 0.4f)),
             ("Lena", new Vector3(0.6f, 0.55f, 0.35f)),
@@ -64,7 +63,7 @@ namespace CronicasDeMexico.Editor.SceneGeneration
             // Mazmorra (los bordes de cada sala ya los cierra el vacío; el muro solo evita pisar sus columnas)
             ("Muro_Basalto_Y", new Vector3(0.3f, 1f, 1.7f)),
             ("Muro_Basalto", new Vector3(1f, 0.3f, 1.7f)),
-            ("Santuario_Memoria", new Vector3(0.9f, 1.3f, 1.4f)),
+            ("Santuario_Memoria", new Vector3(1.3f, 0.9f, 1.4f)),
             ("Santuario_Vida", new Vector3(0.8f, 0.8f, 0.4f)),
         };
 
@@ -82,7 +81,7 @@ namespace CronicasDeMexico.Editor.SceneGeneration
                 (new Vector2(0.45f, 0.38f), new Vector3(0.45f, 0.35f, 0.2f)),  // metate
             }),
             // La escalera de subida bloquea en el pórtico; los peldaños quedan libres para pisar el portal.
-            ("Escalera_Subida_01", new[] { (new Vector2(-0.65f, 0f), new Vector3(0.5f, 2f, 2f)) }),
+            ("Escalera_Subida_01", new[] { (new Vector2(0f, 0.65f), new Vector3(2f, 0.5f, 2f)) }),
         };
 
         // Capas que comparten lienzo y pivote con su objeto pero se ordenan por la profundidad de otro punto (x, y del
@@ -402,21 +401,19 @@ namespace CronicasDeMexico.Editor.SceneGeneration
         }
 
         // Rampa de 2 m que sube 1 m: una losa inclinada que entra un poco en el suelo y en el nivel de arriba.
-        // Variante 01 sube hacia +Y del flujo (+X de Unity); 02 sube hacia -X del flujo (+Z de Unity).
+        // Sube hacia +Y del flujo (+X de Unity).
         static void Ramp(Placement ramp, Transform parent)
         {
             const float thickness = 0.2f, length = 2.6f;
             var angle = Mathf.Atan2(PlatformHeight, 2f) * Mathf.Rad2Deg;
-            var risesAlongUnityX = ramp.sprite.EndsWith("01");
-            var rotation = risesAlongUnityX ? Quaternion.Euler(0f, 0f, angle) : Quaternion.Euler(-angle, 0f, 0f);
+            var rotation = Quaternion.Euler(0f, 0f, angle);
             var surfaceMiddle = ToWorld(ramp.x, ramp.y, ramp.z + PlatformHeight * 0.5f);
             var normal = rotation * Vector3.up;
-            var size = risesAlongUnityX ? new Vector3(length, thickness, 1f) : new Vector3(1f, thickness, length);
 
             var rampObject = new GameObject(ramp.sprite);
             rampObject.transform.SetParent(parent, false);
             rampObject.transform.SetPositionAndRotation(surfaceMiddle - normal * (thickness * 0.5f), rotation);
-            rampObject.AddComponent<BoxCollider>().size = size;
+            rampObject.AddComponent<BoxCollider>().size = new Vector3(length, thickness, 1f);
         }
 
         static void Box(string name, Transform parent, Vector3 center, Vector3 size)
@@ -608,7 +605,7 @@ namespace CronicasDeMexico.Editor.SceneGeneration
             var player = (GameObject)PrefabUtility.InstantiatePrefab(prefab, scene);
             player.transform.position = ToWorld(start);
             // El jaguar (etapa A) ya está a la resolución del escenario. El sprite provisional, a 32 px por unidad, se
-            // escalaba para que cada píxel coincidiera con los del escenario (45,25 px por unidad), en la raíz porque el
+            // escalaba para que cada píxel coincidiera con los del escenario (48 px por unidad), en la raíz porque el
             // animador voltea el sprite con su escala X.
             if (!JaguarCharacterAssets.SpritesExist())
                 player.transform.localScale = Vector3.one * (PlaceholderPixelsPerUnit / IsometricProjection.PixelsPerUnit);
@@ -671,9 +668,9 @@ namespace CronicasDeMexico.Editor.SceneGeneration
             var follow = cameraObject.AddComponent<IsometricCameraFollow>();
             follow.Target = player;
             SetProperty(follow, "boundsMin", property =>
-                property.vector2Value = new Vector2(limits[2] + BoundsInset, -limits[1] + BoundsInset));
+                property.vector2Value = new Vector2(limits[2], -limits[1]));
             SetProperty(follow, "boundsMax", property =>
-                property.vector2Value = new Vector2(limits[3] - BoundsInset, -limits[0] - BoundsInset));
+                property.vector2Value = new Vector2(limits[3], -limits[0]));
         }
 
         // Píxeles de pantalla sin escalar (la imagen ya llega al tamaño exacto) y por debajo del HUD.

@@ -8,7 +8,7 @@ namespace CronicasDeMexico.Editor.PixelArt
 {
     /// <summary>
     /// Importa como pixel art los sprites que exporta el flujo Blender (Tools/ArtPipeline/generar_olmeca.py) a
-    /// <see cref="SpritesFolder"/>: 45,2548 px por unidad (rombo de 64×32 por metro, Docs/Arte_Olmeca_Demo.md §3),
+    /// <see cref="SpritesFolder"/>: 48 px por unidad (tile de 48×32 por metro, Docs/Arte_Olmeca_Demo.md §3),
     /// filtro Point, sin mipmaps ni compresión, y el pivote de cada sprite leído de pivotes_unity.json.
     /// </summary>
     public sealed class PixelArtSpriteImporter : AssetPostprocessor
@@ -20,7 +20,7 @@ namespace CronicasDeMexico.Editor.PixelArt
         public const string NpcFolder = SpritesFolder + "/Npc";
         const float NpcPixelsPerUnit = 32f;
         static readonly Vector2 NpcPivot = new(0.5f, 2f / 64f); // lienzo 48×64, pies a 2 px del borde (recortar_npc.py)
-        public const float PixelsPerUnit = 45.254834f; // 32·√2
+        public const float PixelsPerUnit = 48f;
 
         [Serializable]
         sealed class PivotEntry
@@ -41,7 +41,7 @@ namespace CronicasDeMexico.Editor.PixelArt
         static DateTime pivotsStamp;
 
         // Subir el número reimporta los sprites cuando cambian estos ajustes.
-        public override uint GetVersion() => 1;
+        public override uint GetVersion() => 2;
 
         void OnPreprocessTexture()
         {

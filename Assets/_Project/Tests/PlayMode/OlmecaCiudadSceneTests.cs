@@ -148,6 +148,7 @@ namespace CronicasDeMexico.Tests
             Assert.That(GroundHeightAt(-3f, 14f), Is.EqualTo(2f).Within(0.01f), "Nivel 2");
             Assert.That(GroundHeightAt(0f, 16f), Is.EqualTo(3f).Within(0.01f), "Nivel 3 (cima)");
             Assert.That(GroundHeightAt(0f, 8.5f), Is.EqualTo(0.5f).Within(0.05f), "Mitad de la primera rampa");
+            Assert.That(GroundHeightAt(0f, 14.5f), Is.EqualTo(2.5f).Within(0.05f), "Mitad de la rampa a la cima");
             Assert.That(GroundHeightAt(0f, -11f), Is.EqualTo(1f).Within(0.01f), "Plataforma del recinto");
 
             var waterCell = Object.FindObjectsByType<BoxCollider>(FindObjectsSortMode.None)
@@ -322,14 +323,14 @@ namespace CronicasDeMexico.Tests
                 Assert.AreEqual(LayerMask.NameToLayer("Interactuable"), dialogue.gameObject.layer, id);
             }
 
-            // Arte final: apoyado en los pies y a un píxel de pantalla por píxel de sprite (45,25 px por unidad).
+            // Arte final: apoyado en los pies y a un píxel de pantalla por píxel de sprite.
             foreach (var id in new[] { "artesano_jade", "anciana", "guerrero_joven", "comerciante", "curandera", "sacerdote", "guardia", "nina_3" })
             {
                 var root = settlers[id].GetComponentInParent<CharacterController>().transform;
                 var sprite = root.GetComponentInChildren<SpriteRenderer>().sprite;
                 StringAssert.StartsWith("Npc_", sprite.name, id);
                 Assert.That(sprite.pivot.y, Is.EqualTo(2f).Within(0.01f), $"{id}: los pies no están en el pivote.");
-                var pixelsOnScreen = sprite.rect.height / sprite.pixelsPerUnit * root.lossyScale.y * 45.254834f;
+                var pixelsOnScreen = sprite.rect.height / sprite.pixelsPerUnit * root.lossyScale.y * IsometricProjection.PixelsPerUnit;
                 Assert.That(pixelsOnScreen, Is.EqualTo(sprite.rect.height).Within(0.01f), $"{id}: no es pixel perfect.");
                 // Girado respecto a la cámara, el sprite se vería comprimido a lo ancho.
                 Assert.That(Quaternion.Angle(root.GetComponentInChildren<SpriteRenderer>().transform.rotation, Camera.main.transform.rotation),

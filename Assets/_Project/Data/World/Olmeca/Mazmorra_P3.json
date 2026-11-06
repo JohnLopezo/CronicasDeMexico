@@ -4,13 +4,13 @@
  "suelo": [
   {
    "sprite": "Suelo_Mazmorra_P3_00",
-   "derecha": 2.12132,
-   "arriba": 0.7513
+   "derecha": 0.04167,
+   "arriba": 4.95833
   },
   {
    "sprite": "Suelo_Mazmorra_P3_01",
-   "derecha": 16.61701,
-   "arriba": 0.7513
+   "derecha": 11.11458,
+   "arriba": 4.95833
   }
  ],
  "objetos": [
@@ -23,30 +23,30 @@
   {
    "sprite": "Muro_Basalto_Y_01",
    "x": -10.5,
+   "y": -1,
+   "z": 0.0
+  },
+  {
+   "sprite": "Muro_Basalto_Y_01",
+   "x": -10.5,
+   "y": 0,
+   "z": 0.0
+  },
+  {
+   "sprite": "Muro_Basalto_Y_01",
+   "x": -10.5,
+   "y": 1,
+   "z": 0.0
+  },
+  {
+   "sprite": "Muro_Basalto_Y_01",
+   "x": -10.5,
    "y": 2,
    "z": 0.0
   },
   {
    "sprite": "Muro_Basalto_01",
    "x": -10,
-   "y": 2.5,
-   "z": 0.0
-  },
-  {
-   "sprite": "Muro_Basalto_01",
-   "x": -9,
-   "y": 2.5,
-   "z": 0.0
-  },
-  {
-   "sprite": "Muro_Basalto_01",
-   "x": -8,
-   "y": 2.5,
-   "z": 0.0
-  },
-  {
-   "sprite": "Muro_Basalto_01",
-   "x": -7,
    "y": 2.5,
    "z": 0.0
   },
@@ -340,14 +340,14 @@
   },
   {
    "sprite": "Escalera_Subida_01",
-   "x": -9.6,
-   "y": 0.0,
+   "x": -8.0,
+   "y": 1.6,
    "z": 0.0
   },
   {
    "sprite": "Santuario_Memoria_01",
-   "x": -0.95,
-   "y": 2.6,
+   "x": 1.5,
+   "y": 3.95,
    "z": 0.0
   },
   {
@@ -447,20 +447,20 @@
  ],
  "puntos": {
   "subida": {
-   "x": -9.6,
-   "y": 0.0
+   "x": -8.0,
+   "y": 1.6
   },
   "llegada_arriba": {
-   "x": -8.2,
-   "y": 0.0
+   "x": -8.0,
+   "y": 0.2
   },
   "memoria": {
-   "x": -0.95,
-   "y": 2.6
+   "x": 1.5,
+   "y": 3.95
   },
   "memoria_llegada": {
-   "x": 0.3,
-   "y": 2.6
+   "x": 1.5,
+   "y": 2.7
   },
   "sello": {
    "x": 5.0,

@@ -21,6 +21,26 @@ Plantilla:
 
 ---
 
+## 2026-11-05 — i7-10700: vista 3/4 frontal aplicada en Unity
+
+- **Rama / último commit:** `feature/prototipo-olmeca`, sobre `bc3dce7` (vista aprobada, referencias de mapa y ficha de Ameyali). Lo de abajo se subió el 2026-11-06 en el commit siguiente (unos 840 archivos, casi todos sprites, sus `.meta` y escenas). `UpgradeLog.htm` no debe subirse.
+- **Hecho en el flujo de arte:**
+  - Terreno de ciudad y selva pintado por píxel (`pintar_terreno`): sin cuadrícula, caminos irregulares, patios, orillas con talud. Los tiles quedan solo para las escenas de prueba.
+  - Muro de selva, plantas de borde de camino y orillas **horneados en el suelo** (`decorar_terreno`): sin GameObjects ni colisión. El río sigue fuera de los límites con celdas de agua extra.
+  - Selva por grupos (`enriquecer_selva`), enredaderas en la ceiba, lienzos ampliados (sin avisos de recorte) y `--reusar` para rehacer composiciones en 1-2 minutos.
+  - Montículo: rampas alineadas de frente (la cima del nivel 3 empieza en Y = 16), sin las cárcavas que parecían estacas.
+  - **Girados hacia la cámara:** `Entrada_Estructura` (movida al norte de la explanada), `Escalera_Subida` y `Santuario_Memoria` (al muro del fondo). Cambian los puntos de juego de selva y pisos.
+  - Cuadrúpedos (`personajes.GIRO_DIRECCION`): N y S girados 25°, porque de frente o de espaldas el jaguar se veía como un tubo. El Guardián sigue igual.
+- **Hecho en Unity (el autor aprobó la muestra):** `IsometricProjection` a 48 px/m y `Euler(41,81°, 90°, 0°)`; sprites reimportados; atlas, ciudad, selva y pisos regenerados; colisiones y portales de las piezas giradas; límites de cámara sin el margen de 7 m del rombo.
+- **Pruebas:** EditMode 80/80, PlayMode 72/72. Solo se ajustaron pruebas con valores de la vista anterior (45,25 px, pivote de la palma, entrada de la selva, esquiva que cruzaba el portal nuevo). Nueva: altura de la rampa a la cima.
+- **Capturas en Unity revisadas:** plaza, aldea, montículo, despertar, entrada y claros de la selva, llegada del piso 1 y arena del piso 3. La **primera captura de cada tanda** saca un personaje en blanco o negro; el mismo sale bien en la siguiente, así que es del render en batch, no del juego (sin comprobar a mano en Play).
+- **Rendimiento en el i7 (una ejecución, `Docs/Rendimiento.md`):** lo más lento en Bajo es la aldea, 4,41 ms (227 FPS). Ciudad, piso 2 y arena no empeoran frente a la última medición; la selva empeora en Alto (278–286 FPS, antes 299–302). Picos de hasta 64 ms en Bajo, en la primera pasada por la aldea; sin distinguir si son de la primera visita o de Bajo.
+- **Sin comprobar:** jugar a mano (controles, subir a la cima, entrada a la mazmorra, volver por la escalera); rendimiento en el i5 y en Android.
+- **Pendiente de arte:** las cimas del montículo se ven planas; el agua repite su patrón; `Basalto_Agrietado` sigue mirando a +X; decidir qué hacer con `Olmeca_Prototipo`, que conserva su arte isométrico bajo la cámara nueva (sus pruebas pasan).
+- **Siguiente:** que el autor lo juegue; aislar los picos de Bajo; medir en el i5 y en Android.
+
+---
+
 ## 2026-11-04 (cierre) — i7-10700: nueva vista 3/4 frontal, en muestra
 
 - **Rama / último commit:** `feature/prototipo-olmeca`, sobre `6d428a1`; subido el 2026-11-05 en el commit siguiente, junto con la ficha de Ameyali (`Docs/Guerreros/`, sin integrar).

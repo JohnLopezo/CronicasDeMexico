@@ -28,7 +28,7 @@ namespace CronicasDeMexico.Tests
     {
         const string JungleScene = "Olmeca_Selva";
         const string CityScene = "Olmeca_Ciudad";
-        static readonly Vector2 EntrancePoint = new(-14.5f, -2.3f); // Entrada_Estructura_01 en planificar_selva
+        static readonly Vector2 EntrancePoint = new(-10.6f, 2f); // Entrada_Estructura_01 en planificar_selva
 
         static IEnumerator LoadScene()
         {

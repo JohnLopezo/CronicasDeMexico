@@ -229,11 +229,11 @@ namespace CronicasDeMexico.Editor.SceneGeneration
         static void BuildTravel(Transform parent, int floor, RegionPoints points, Dictionary<string, Sprite> sprites)
         {
             // Subida: en los peldaños, al pie del pórtico. Del piso 1 se sale a la selva.
-            var up = points.subida.Value + new Vector2(0.1f, 0f);
+            var up = points.subida.Value + new Vector2(0f, -0.1f);
             var (upScene, upSpawn) = floor == 1
                 ? (OlmecaJungleGenerator.SceneName, OlmecaJungleGenerator.FromDungeonSpawnId)
                 : (SceneName(floor - 1), FromBelowSpawnId);
-            AddPortal(parent, "Portal_Subida", up, new Vector3(0.5f, 1f, 2f), upScene, upSpawn);
+            AddPortal(parent, "Portal_Subida", up, new Vector3(1f, 0.5f, 2f), upScene, upSpawn);
             AddSpawnPoint(parent, FromAboveSpawnId, points.llegada_arriba.Value);
             AddZone(parent, FloorZoneId(floor), points.llegada_arriba.Value, new Vector3(1.5f, 2f, 2f));
 

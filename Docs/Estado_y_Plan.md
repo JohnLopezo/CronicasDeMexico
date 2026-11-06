@@ -29,7 +29,7 @@ Reglas de trabajo: Claude propone un plan por etapas y espera autorización; no 
 | `Docs/Historia_Mundo.md` | **Biblia narrativa** (manda en historia, nombres, personajes y capítulos) |
 | `Docs/Diseno.md` | GDD: sistemas, combate, mazmorras, UI, rendimiento (alineado con la biblia) |
 | `Docs/Historia/` | `Capitulos.md`, `Misiones.md`, `Glosario.md` |
-| `Docs/Personajes/` | `Guerreros.md` (estado y cómo mejorarlos), `Protagonista.md`, `NPC_Olmecas.md` |
+| `Docs/Personajes/` | `Continuar_Guerreros.md` (**por dónde seguir**), `Guerreros.md` (estado y cómo mejorarlos), `Protagonista.md`, `NPC_Olmecas.md` |
 | `Docs/Culturas/Olmeca.md`, `Docs/Enemigos/Olmeca.md`, `Docs/Mazmorras/Olmeca.md` | Arco I |
 | `Docs/Arte_Olmeca_Demo.md` | Dirección de arte pixel art y flujo de Blender (§12: estado del arte) |
 | `Docs/Rendimiento.md` | Mediciones de FPS y presupuestos |

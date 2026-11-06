@@ -21,6 +21,14 @@ Plantilla:
 
 ---
 
+## 2026-11-06 — i7-10700: cierre de la sesión de guerreros
+
+- **Rama / último commit:** `feature/prototipo-olmeca` @ `8a838dc`. Subido junto con `Continuar_Guerreros.md`.
+- **Hecho:** prueba temporal en el juego real: las muertes de los siete se reproducen completas y a color en la selva. Encontró un salto de tamaño en la pose de Daño.
+- **Siguiente:** `Docs/Personajes/Continuar_Guerreros.md`.
+
+---
+
 ## 2026-11-06 — i7-10700: muertes con el espíritu completo
 
 - **Rama / último commit:** `feature/prototipo-olmeca`, sobre `4a11457`. EditMode 107/107, PlayMode 80/80. Subido.

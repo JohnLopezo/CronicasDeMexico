@@ -18,8 +18,9 @@ namespace CronicasDeMexico.Editor.PixelArt
         public const string GroundFolder = SpritesFolder + "/Suelo";
         // Carpeta aparte: el flujo de Blender borra de las suyas los PNG que no genera él.
         public const string NpcFolder = SpritesFolder + "/Npc";
+        public const string GuerrerosFolder = SpritesFolder + "/Guerreros";
         const float NpcPixelsPerUnit = 32f;
-        static readonly Vector2 NpcPivot = new(0.5f, 2f / 64f); // lienzo 48×64, pies a 2 px del borde (recortar_npc.py)
+        static readonly Vector2 NpcPivot = new(0.5f, 2f / 64f); // lienzos de 64 de alto, pies a 2 px del borde (recortar_npc.py, recortar_guerreros.py)
         public const float PixelsPerUnit = 48f;
 
         [Serializable]
@@ -74,9 +75,10 @@ namespace CronicasDeMexico.Editor.PixelArt
             settings.spriteGenerateFallbackPhysicsShape = false;
 
             var spriteName = Path.GetFileNameWithoutExtension(assetPath);
-            if (assetPath.StartsWith(NpcFolder + "/", StringComparison.Ordinal))
+            if (assetPath.StartsWith(NpcFolder + "/", StringComparison.Ordinal)
+                || assetPath.StartsWith(GuerrerosFolder + "/", StringComparison.Ordinal))
             {
-                // NPC de Tools/ArtPipeline/recortar_npc.py. A 32 PPU, como los provisionales: la escala de la raíz de
+                // NPC de Tools/ArtPipeline/recortar_npc.py y guerreros de recortar_guerreros.py. A 32 PPU, como los provisionales: la escala de la raíz de
                 // CreateCharacter los deja a un píxel de pantalla por píxel de sprite, sin cambiar colisiones ni radios.
                 importer.spritePixelsPerUnit = NpcPixelsPerUnit;
                 settings.spritePixelsPerUnit = NpcPixelsPerUnit;

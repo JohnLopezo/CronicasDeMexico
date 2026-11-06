@@ -144,7 +144,7 @@ EditMode 80/80 y PlayMode 72/72 (al 2026-11-04).
 2. **Afinidad inicial del Jaguar.** Propuesta: oscuridad; el GDD sugería oscuridad o tierra.
 3. **Si el epiclásico y lo tolteca entran en el arco III**, y qué afinidades corresponden a los arcos III a V.
 4. **Si la figura espiritual desaparece** después del juramento.
-5. **Fichas de `Docs/Guerreros/`** (Balam, Xali, Naira, Itzel, Yaret y Ocel; 2026-11-04). Sin integrar: el autor decidió dejar por ahora al jaguar jugable, sus enemigos y jefes. Quedan dos dudas para cuando se retomen: son humanos con atuendo animal, y la historia dice que el protagonista despierta con cuerpo de animal (`Docs/Personajes/Protagonista.md`, reflejo de `MP_OLM_01`); y el elemento de Itzel (luz) no está entre las afinidades adoptadas para el águila real (viento/fuego), ni el de Naira (viento) es la inicial del lobo (tierra).
+5. **Fichas de `Docs/Guerreros/`** (Balam, Xali, Naira, Ameyali, Itzel, Yaret y Ocel). El 2026-11-06 el autor decidió que serán seleccionables en lugar del jaguar; sus enemigos y jefes no cambian. Sprites recortados en `Sprites/Guerreros` y sin usar todavía (`Docs/Bitacora.md`). Quedan dos dudas: son humanos con atuendo animal, y la historia dice que el protagonista despierta con cuerpo de animal (`Docs/Personajes/Protagonista.md`, reflejo de `MP_OLM_01`); y el elemento de Itzel (luz) no está entre las afinidades adoptadas para el águila real (viento/fuego), ni el de Naira (viento) es la inicial del lobo (tierra).
 
 ## 5. Pendiente del autor (arte)
 
@@ -161,7 +161,7 @@ EditMode 80/80 y PlayMode 72/72 (al 2026-11-04).
 **Aplicada en Unity el 2026-11-05 y subida el 2026-11-06** (detalle en `Docs/Bitacora.md`). EditMode 80/80, PlayMode 72/72. El flujo ya se ejecuta normal, sin `--sin-unity`.
 
 **Falta:**
-1. Que el autor la juegue: controles, subir a la cima del montículo, entrar a la mazmorra y volver por la escalera.
+1. El autor la jugó el 2026-11-06 y "se siente bien". Falta confirmar: subir a la cima del montículo, entrar a la mazmorra, volver por la escalera y si se nota un tirón en la aldea.
 2. Medir el rendimiento: 170 celdas de agua más fuera de los límites y suelo de 3120×2200 en la ciudad. Luego, i5 y Android.
 3. Arte: cimas del montículo planas, patrón del agua y `Basalto_Agrietado` (mira a +X).
 4. Decidir qué hacer con `Olmeca_Prototipo`, que conserva su arte isométrico.

@@ -21,6 +21,28 @@ Plantilla:
 
 ---
 
+## 2026-11-06 — i7-10700: sprites de los 7 guerreros (etapa 1)
+
+- **Rama / último commit:** `feature/prototipo-olmeca`, sobre `6e9a5f4`. EditMode 80/80; PlayMode sin ejecutar. Sin push.
+- **Decisión del autor:** en vez del jaguar, se podrá elegir entre varios guerreros, y se empieza por el arte.
+- **Hecho:** `recortar_guerreros.py` genera 135 sprites en `Sprites/Guerreros` (carpeta aparte: el flujo de Blender borra de las suyas lo que no genera). Ameyali medida de nuevo (el autor rehízo su ficha). Muerte de Balam, Xali, Itzel y Yaret con sus hojas (cuadros Daño, Caída, Desplome). `PixelArtSpriteImporter` trata la carpeta como la de NPC (32 PPU).
+- **Provisional:** Naira, Ameyali y Ocel caen con `caido()` (su Daño tumbado, se ve rígido) hasta tener hoja de muerte. Naira y Ameyali, un solo cuadro de ataque. Quedan restos: chispa en Ataque 2 de Itzel, verde en el de Yaret, morado en el de Ocel, hojas en el Daño de Naira.
+- **Sin hacer:** aún nada usa estos sprites: el jugador sigue siendo el jaguar. Falta: etapa 2 (sets, `GUA_`, `PlayerPrefabUpgrade`, colisión), etapa 3 (pantalla de selección), etapa 4 (historia y afinidades; el autor no ha decidido si cambia la regla de la forma animal).
+- **Siguiente:** hojas de revisión aprobadas por el autor; sigue la etapa 2.
+
+---
+
+## 2026-11-06 — i7-10700: vista 3/4 frontal subida y jugada
+
+- **Rama / último commit:** `feature/prototipo-olmeca` @ `6e9a5f4` (subido). Esta entrada queda sin commit.
+- **Hecho:** commit y push de la vista 3/4 frontal; documentos corregidos: 48 PPU el arte de Blender y 32 los NPC y los efectos.
+- **Jugado por el autor:** "se siente bien". No detalló qué zonas recorrió.
+- **Sin comprobar:** cima del montículo, entrada a la mazmorra, vuelta por la escalera, tirón en la aldea; rendimiento en el i5 y en Android. Las pruebas no se repitieron: solo cambiaron documentos.
+- **Push desde Claude Code:** Git no puede preguntar la cuenta, hay dos guardadas; usar `git -c credential.username=JohnLopezo push`.
+- **Siguiente:** a decidir por el autor (`Docs/Estado_y_Plan.md` §6).
+
+---
+
 ## 2026-11-05 — i7-10700: vista 3/4 frontal aplicada en Unity
 
 - **Rama / último commit:** `feature/prototipo-olmeca`, sobre `bc3dce7` (vista aprobada, referencias de mapa y ficha de Ameyali). Lo de abajo se subió el 2026-11-06 en el commit siguiente (unos 840 archivos, casi todos sprites, sus `.meta` y escenas). `UpgradeLog.htm` no debe subirse.

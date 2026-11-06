@@ -108,8 +108,9 @@ namespace CronicasDeMexico.Editor.SceneGeneration
             AddSpawnPoint(parent, FromCitySpawnId, points.llegada.Value);
             AddPortal(parent, "Portal_Ciudad", points.salida.Value, new Vector3(0.6f, 3.2f, 2f),
                 OlmecaCityGenerator.SceneName, OlmecaCityGenerator.FromJungleSpawnId);
-            // Cuenta cada vez que se entra: así vale aunque la misión empiece después de pasar por aquí.
-            AddZone(parent, OlmecaNarrativeAssets.JungleZoneId, points.zona_selva.Value, new Vector3(1.5f, 4f, 2f));
+            // Cuenta cada vez que se entra: así vale aunque la misión empiece después de pasar por aquí. Cruza todo el mapa
+            // (límites de -10 a 10): si se pudiera rodear, los fragmentos no contarían y la misión se bloquearía.
+            AddZone(parent, OlmecaNarrativeAssets.JungleZoneId, points.zona_selva.Value, new Vector3(1.5f, 40f, 2f));
 
             // La abertura de la entrada lleva al piso 1 cuando el guerrero ya reconoció el lugar (MP_OLM_03 completada).
             // Volver aquí termina la incursión: los santuarios de Vida se reencienden.
@@ -143,7 +144,9 @@ namespace CronicasDeMexico.Editor.SceneGeneration
 
                 var fragment = CreateFragment(clearing, i, sprites, points.fragmentos[i - 1].Value, collected, messageChannel);
                 fragment.SetActive(false); // aparece al vencer a su espíritu
-                ShowWhen(fragment, new[] { defeated }, new[] { collected }, liveUpdate: true);
+                // Y solo con la misión activa: la selva está abierta antes, y recogerlo entonces no contaría y la bloquearía.
+                ShowWhen(fragment, new[] { defeated, StoryEvents.QuestActiveFlag(OlmecaNarrativeAssets.JungleQuestId) }, new[] { collected },
+                    liveUpdate: true);
             }
         }
 

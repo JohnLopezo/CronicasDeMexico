@@ -178,6 +178,61 @@ namespace CronicasDeMexico.Tests
             yield return UnloadScene();
         }
 
+        // Sin esto la partida se bloqueaba: la selva está abierta desde el principio y un fragmento recogido antes de la misión
+        // no contaba, así que MP_OLM_03 no se completaba y la entrada a la mazmorra nunca se abría.
+        [UnityTest]
+        public IEnumerator SpiritsDefeatedBeforeTheQuest_KeepTheirFragmentsUntilItStarts()
+        {
+            ServiceLocator.TryGet(out StoryState bootStory);
+            ServiceLocator.TryGet(out QuestService bootQuests);
+            var catalog = Resources.Load<QuestCatalog>(QuestCatalog.ResourcePath);
+            var story = new StoryState();
+            var quests = new QuestService(story, catalog);
+            ServiceLocator.Register(story);
+            ServiceLocator.Register(quests);
+            try
+            {
+                yield return LoadScene();
+                yield return null;
+                var player = Object.FindAnyObjectByType<PlayerMovement>();
+                var fragments = Object.FindObjectsByType<MemoryFragmentInteractable>(FindObjectsInactive.Include, FindObjectsSortMode.None);
+
+                foreach (var spirit in Object.FindObjectsByType<EnemyChaser>(FindObjectsSortMode.None))
+                    Assert.IsTrue(spirit.GetComponent<Health>().TryDamage(100, player.transform.position));
+                yield return null;
+                foreach (var fragment in fragments)
+                    Assert.IsFalse(fragment.gameObject.activeInHierarchy, "Sin la misión, el fragmento debe esperar: recogerlo no contaría.");
+
+                story.SetFlag("olm.guerrero_en_selva");
+                quests.Start(catalog.Find("MP_OLM_03"));
+                yield return null;
+                foreach (var fragment in fragments)
+                    Assert.IsTrue(fragment.gameObject.activeInHierarchy, "Al empezar la misión, el fragmento debe aparecer en su claro.");
+
+                // La franja que cumple el primer paso no se puede rodear: lejos del camino también cuenta.
+                var zone = Object.FindObjectsByType<ReportOnEnter>(FindObjectsSortMode.None).Single(z => z.ZoneId == "selva");
+                Teleport(player, IsometricProjection.FromPipeline(13f, -7f, 0f));
+                yield return WaitPhysics();
+                Assert.AreEqual(1, quests.GetStep("MP_OLM_03"), $"Rodear la franja {zone.name} no debe saltarse el primer paso.");
+
+                foreach (var fragment in fragments)
+                {
+                    fragment.Interact(player.transform);
+                    fragment.End();
+                }
+                Assert.AreEqual(2, quests.GetStep("MP_OLM_03"), "Los tres fragmentos deben contar.");
+            }
+            finally
+            {
+                if (bootStory != null)
+                    ServiceLocator.Register(bootStory);
+                if (bootQuests != null)
+                    ServiceLocator.Register(bootQuests);
+            }
+
+            yield return UnloadScene();
+        }
+
         // Ciudad → selva → ciudad por los portales del sendero del oeste: cada escena sustituye a la otra, el jugador
         // aparece en el punto de llegada y conserva la vida que tenía (Diseno.md §9).
         [UnityTest]

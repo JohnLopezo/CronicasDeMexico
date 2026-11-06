@@ -147,6 +147,55 @@ namespace CronicasDeMexico.Tests
         }
 
         [UnityTest]
+        public IEnumerator WithoutSave_StartsOnTheGuardianPanel_AndWithSaveOnTheMenu()
+        {
+            var (save, checkpoint) = SavedGame(false);
+            menu.Show(save, checkpoint, ServiceLocator.Get<SceneTravel>(), CityScene);
+            yield return null;
+            Assert.IsFalse(Panel("start-guardians").ClassListContains("hidden"), "Sin partida se empieza eligiendo Guardián.");
+            Assert.IsTrue(Panel("start-main").ClassListContains("hidden"));
+            Assert.IsFalse(save.HasSave);
+
+            var saved = SavedGame(true);
+            menu.Show(saved.save, saved.checkpoint, ServiceLocator.Get<SceneTravel>(), CityScene);
+            yield return null;
+            Assert.IsFalse(Panel("start-main").ClassListContains("hidden"), "Con partida guardada, primero el menú, para poder continuar.");
+        }
+
+        [UnityTest]
+        public IEnumerator PlayFromAGameScene_AsksForTheGuardian_AndStartsWithFullHealth()
+        {
+            var progression = ServiceLocator.Get<Progression>();
+            yield return SceneManager.LoadSceneAsync(CityScene, LoadSceneMode.Additive);
+            yield return null;
+            yield return null;
+            var player = Object.FindAnyObjectByType<PlayerStats>();
+            var scenes = SceneManager.sceneCount;
+            try
+            {
+                menu.ShowGuardianPicker();
+                Assert.IsTrue(menu.IsVisible);
+                Assert.AreEqual(0f, Time.timeScale, "Nadie ataca mientras se elige.");
+                Assert.IsTrue(Get("start-guardian-back").ClassListContains("hidden"), "Aquí no hay menú al que volver.");
+
+                menu.StartWithGuardian("ajolote");
+                Assert.IsFalse(menu.IsVisible);
+                Assert.AreEqual(1f, Time.timeScale);
+                Assert.AreEqual(scenes, SceneManager.sceneCount, "La escena ya estaba cargada.");
+                yield return null;
+
+                var health = player.GetComponent<Health>();
+                Assert.AreEqual(progression.Stats.maxHealth, health.Max);
+                Assert.AreEqual(health.Max, health.Current, "Al empezar, con la vida llena del guerrero elegido.");
+                StringAssert.StartsWith("Guerrero_Xali_", player.GetComponentInChildren<SpriteBillboard>().GetComponent<SpriteRenderer>().sprite.name);
+            }
+            finally
+            {
+                progression.SelectGuardian("jaguar");
+            }
+        }
+
+        [UnityTest]
         public IEnumerator GuardianTab_ChangesTheWarrior_WithoutHealingOrRestoringEnergy()
         {
             var progression = ServiceLocator.Get<Progression>();

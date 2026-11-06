@@ -70,9 +70,9 @@ namespace CronicasDeMexico.Gameplay.Player
         }
 
         // Cambiar de guerrero no cura (GDD §9): la vida se conserva y solo se recorta si no cabe en el nuevo máximo.
-        void OnGuardianChanged()
+        void OnGuardianChanged(bool starting)
         {
-            health.SetMaxHealth(progression.Stats.maxHealth, keepCurrent: true);
+            health.SetMaxHealth(progression.Stats.maxHealth, keepCurrent: !starting);
             ApplyGuardian();
             // Con el menú en pausa, la animación en curso (un golpe) seguiría mostrando al guerrero anterior.
             if (!health.IsDead && TryGetComponent(out DirectionalSpriteAnimator animator))

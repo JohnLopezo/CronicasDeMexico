@@ -27,9 +27,10 @@ namespace CronicasDeMexico.UI.Hud
         [SerializeField, Tooltip("EventSystem propio del menú (navegación con teclado o mando).")] GameObject eventSystem;
 
         VisualElement root, main, confirm, options, qualityButtons, guardians, guardianCards;
-        Button continueButton, newGameButton, confirmYes, guardianStart;
+        Button continueButton, newGameButton, confirmYes, guardianStart, guardianBack;
         Label message, guardianTitle, guardianDescription;
         GuardianData highlighted;
+        bool pickOnly;
         SaveService save;
         PlayerCheckpoint checkpoint;
         SceneTravel travel;
@@ -53,7 +54,12 @@ namespace CronicasDeMexico.UI.Hud
         void Start()
         {
             if (!GameBootstrapper.StartMenuRequested)
+            {
+                // Play desde una escena de juego: no hay menú, pero sí se elige con quién jugar. En las pruebas, Boot arranca sin jugador.
+                if (GameObject.FindWithTag("Player") != null)
+                    ShowGuardianPicker();
                 return;
+            }
             var bootstrapper = FindAnyObjectByType<GameBootstrapper>();
             Show(ServiceLocator.Get<SaveService>(), ServiceLocator.Get<PlayerCheckpoint>(), ServiceLocator.Get<SceneTravel>(),
                 bootstrapper != null ? bootstrapper.InitialScene : null);
@@ -69,10 +75,39 @@ namespace CronicasDeMexico.UI.Hud
             message.text = "";
             continueButton.SetEnabled(save != null && save.HasSave);
             SetVisible(true);
-            ShowPanel(main);   // después: el foco no entra en elementos ocultos
+            // Después: el foco no entra en elementos ocultos. Sin partida que continuar, se empieza eligiendo Guardián.
+            ShowPanel(save != null && !save.HasSave && guardianCards.childCount > 0 ? guardians : main);
         }
 
-        public void Hide() => SetVisible(false);
+        /// <summary>
+        /// Elegir Guardián sobre una escena ya cargada (Play en el Editor desde una escena de juego), con el juego en pausa.
+        /// shortcut: abrir el menú de juego (I) encima quita la pausa al cerrarlo; solo pasa en el Editor, sin arreglo por ahora.
+        /// </summary>
+        public void ShowGuardianPicker()
+        {
+            if (guardianCards.childCount == 0)
+                return;
+            pickOnly = true;
+            Time.timeScale = 0f;
+            IsVisible = true;
+            root.Q("start-menu").RemoveFromClassList(Hidden);
+            // La cámara de fondo no hace falta; el EventSystem, solo si la escena no trae el suyo.
+            if (eventSystem != null && FindAnyObjectByType<UnityEngine.EventSystems.EventSystem>() == null)
+                eventSystem.SetActive(true);
+            guardianBack.AddToClassList(Hidden);
+            ShowPanel(guardians);
+        }
+
+        public void Hide()
+        {
+            if (pickOnly)
+            {
+                pickOnly = false;
+                Time.timeScale = 1f;
+                guardianBack.RemoveFromClassList(Hidden);
+            }
+            SetVisible(false);
+        }
 
         /// <summary>Continúa la partida en su santuario de Memoria. Si no se puede leer, lo avisa y no viaja.</summary>
         public void Continue()
@@ -121,6 +156,11 @@ namespace CronicasDeMexico.UI.Hud
         {
             if (ServiceLocator.TryGet(out Progression progression))
                 progression.SelectGuardian(guardianId);
+            if (pickOnly)
+            {
+                Hide(); // la escena ya está cargada
+                return;
+            }
             if (GameBootstrapper.StartNewGame(save, initialScene))
             {
                 SetVisible(false);
@@ -149,7 +189,7 @@ namespace CronicasDeMexico.UI.Hud
             guardianDescription.AddToClassList("start-menu__text");
             guardians.Add(guardianDescription);
             guardianStart = AddButton(guardians, "start-guardian-start", "Empezar", () => StartWithGuardian(highlighted.Id));
-            AddButton(guardians, "start-guardian-back", "Volver", () => ShowPanel(main));
+            guardianBack = AddButton(guardians, "start-guardian-back", "Volver", () => ShowPanel(main));
 
             var catalog = Resources.Load<GuardianCatalog>(GuardianCatalog.ResourcePath);
             if (catalog == null)
@@ -221,7 +261,7 @@ namespace CronicasDeMexico.UI.Hud
             // Esc o el botón de atrás del mando: de un subpanel vuelve al principal.
             root.RegisterCallback<NavigationCancelEvent>(_ =>
             {
-                if (IsVisible && main.ClassListContains(Hidden))
+                if (IsVisible && !pickOnly && main.ClassListContains(Hidden))
                     ShowPanel(main);
             });
         }

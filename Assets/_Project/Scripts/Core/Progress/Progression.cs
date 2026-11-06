@@ -55,7 +55,8 @@ namespace CronicasDeMexico.Core.Progress
         public event Action StatsChanged;
         public event Action EnergyChanged;
         public event Action BlessingsChanged;
-        public event Action GuardianChanged;
+        /// <summary>Cambió el Guardián. true si es al empezar la partida; false si es a mitad, cuando no debe recuperar nada.</summary>
+        public event Action<bool> GuardianChanged;
 
         /// <summary>
         /// Elige el Guardián. Al empezar una partida, con la energía llena; a mitad de partida, con
@@ -72,7 +73,7 @@ namespace CronicasDeMexico.Core.Progress
                 Energy = Stats.maxEnergy;
                 EnergyChanged?.Invoke();
             }
-            GuardianChanged?.Invoke();
+            GuardianChanged?.Invoke(fillEnergy);
             RaiseStats();
             return true;
         }
@@ -257,7 +258,7 @@ namespace CronicasDeMexico.Core.Progress
                     defeats[entry.key] = entry.count;
             var max = Stats.maxEnergy;
             Energy = data.energy < 0 ? max : Mathf.Min(data.energy, max);
-            GuardianChanged?.Invoke();
+            GuardianChanged?.Invoke(false);
             LevelChanged?.Invoke(Level);
             BlessingsChanged?.Invoke();
             StatsChanged?.Invoke();

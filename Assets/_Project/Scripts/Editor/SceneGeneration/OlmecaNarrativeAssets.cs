@@ -178,8 +178,8 @@ namespace CronicasDeMexico.Editor.SceneGeneration
                     new QuestStep(StoryEvents.Talk(ElderId), "Habla con la anciana, junto a las enramadas"),
                     new QuestStep(StoryEvents.Talk(WarriorId), "Busca al joven guerrero junto al fogón, cerca de la plaza"),
                 }, EntranceFoundFlag));
-            // Cada fragmento solo aparece al vencer a su espíritu, así que recoger tres implica haber vencido a tres; y
-            // como los pasos cuentan en orden, ningún fragmento se puede recoger "antes de tiempo" y perderse.
+            // Cada fragmento solo aparece con esta misión activa y su espíritu vencido, así que recoger tres implica haber
+            // vencido a tres y ninguno se puede recoger "antes de tiempo" y perderse (OlmecaJungleGenerator).
             var jungle = LoadOrCreate($"{Folder}/MIS_{JungleQuestId}.asset", () => QuestData.Create(
                 JungleQuestId, "Rastros en la selva", new[]
                 {

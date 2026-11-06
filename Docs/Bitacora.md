@@ -21,6 +21,16 @@ Plantilla:
 
 ---
 
+## 2026-11-06 — i7-10700: bloqueo de la entrada y selección al principio
+
+- **Rama / último commit:** `feature/prototipo-olmeca`, sobre `f042af4`. EditMode 97/97, PlayMode 78/78. Subido.
+- **Bloqueo arreglado (MP_OLM_03):** la selva está abierta desde el principio y un fragmento recogido antes de la misión no contaba, así que la entrada a la mazmorra no se abría nunca. Ahora el fragmento espera a que la misión esté activa, y la franja del primer paso cruza todo el mapa. Prueba: `SpiritsDefeatedBeforeTheQuest_KeepTheirFragmentsUntilItStarts`, que falló antes del arreglo. Las partidas que ya perdieron fragmentos siguen bloqueadas. `Olmeca_Selva` regenerada.
+- **Selección al principio:** sin partida guardada se empieza eligiendo; también al pulsar Play en una escena de juego, en pausa. Elegir al empezar da la vida llena; cambiar a mitad de partida sigue sin curar.
+- **Sigue igual:** al pulsar Play en `Olmeca_Selva` no hay misión, así que la entrada no se abre: para llegar a la mazmorra, empezar en Boot.
+- **Pendiente:** el problema con un enemigo que reportó el autor; falta saber cuál.
+
+---
+
 ## 2026-11-06 — i7-10700: pestaña Guardián en el menú de juego
 
 - **Rama / último commit:** `feature/prototipo-olmeca`, sobre `fb83a44`. EditMode 97/97, PlayMode 75/75. Subido.

@@ -2,7 +2,7 @@
 
 **Decisión del autor (2026-11-06):** el protagonista es una persona, un guerrero o guerrera con nombre propio, ligado al espíritu de su animal. Sustituye a la forma animal original porque funciona mejor en el juego. El animal se expresa en el atuendo, los poderes y el espíritu que aparece en las hojas de muerte. Esta dirección seguirá mejorándose: las mejoras nuevas parten de aquí, no del jaguar cuadrúpedo.
 
-Historia y reglas: `Docs/Historia_Mundo.md` §2 y §16, y `Docs/Personajes/Protagonista.md`. Atributos: `Docs/Sistemas/Sistema_Progresion.md` §2.
+Auditoría de animaciones y propuesta técnica: `Docs/Personajes/Auditoria_Animaciones.md`. Historia y reglas: `Docs/Historia_Mundo.md` §2 y §16, y `Docs/Personajes/Protagonista.md`. Atributos: `Docs/Sistemas/Sistema_Progresion.md` §2.
 
 ## Estado de cada guerrero
 
@@ -24,7 +24,7 @@ Balam conserva el id `jaguar`: es el de las partidas guardadas y el de `OBJ_marc
 
 - **Arte:** `Tools/ArtPipeline/recortar_guerreros.py` recorta `Docs/Guerreros` a `Sprites/Guerreros`, a 48 PPU y con 54 px de alto en reposo. Se escriben Norte, Este y Sur; las diagonales reutilizan el Este. Correr, atacar, recibir daño y morir solo existen de lado.
 - **Datos:** `GuerreroCharacterAssets` crea un `GUA_<id>` y sus `DSS_Guerrero_*`, y el catálogo `Resources/Personajes/CatalogoGuardianes`. Los textos, afinidades y atributos se editan en su tabla: el asset se sobrescribe.
-- **Elección:** en Nueva partida (`StartMenuController`) y en la pestaña Guardián del menú de juego (`GameMenuController`).
+- **Elección:** al principio: sin partida guardada, es lo primero que se ve; con ella, tras Nueva partida. Al pulsar Play desde una escena de juego también se pide, con el juego en pausa (`StartMenuController`). Después, en la pestaña Guardián del menú de juego (`GameMenuController`).
 - **Juego:** `Progression.Profile` es el elegido y se guarda en `guardianId`. `PlayerStats` aplica sus sprites al aparecer el jugador en cada escena. Cambiar a mitad de partida no cura ni recupera energía.
 - **Marcas:** hay una por guerrero; `RewardService` retira del paquete las de otro Guardián.
 

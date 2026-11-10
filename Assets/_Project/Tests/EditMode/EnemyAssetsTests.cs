@@ -39,6 +39,45 @@ namespace CronicasDeMexico.Tests
             StringAssert.Contains("_Muerte", data.death.GetOnceFrame(0, data.death.Duration).name, "La caída termina tumbado.");
         }
 
+        // Cada animación con todos sus cuadros, de su enemigo y en el orden de la lámina, igual en las cinco direcciones:
+        // si falta un cuadro o se cuela otro enemigo, la animación se ve incompleta (revisado a petición del autor).
+        [TestCase("Serpiente", false)]
+        [TestCase("Cocodrilo", false)]
+        [TestCase("EspirituJaguar", false)]
+        [TestCase("Mono", false)]
+        [TestCase("Avispa", true)]
+        [TestCase("Guacamaya", true)]
+        [TestCase("Murcielago", true)]
+        public void EnemyAnimations_HaveEveryFrame_InEveryDirection(string name, bool flies)
+        {
+            var data = AssetDatabase.LoadAssetAtPath<EnemyData>($"Assets/_Project/Data/Enemies/ED_{name}.asset");
+            var expected = new (DirectionalSpriteSet set, string[] poses)[]
+            {
+                (data.walk, flies ? new[] { "Reposo", "Volar" } : new[] { "Reposo", "Caminar" }),
+                (data.run, flies ? new[] { "Ataque" } : new[] { "Caminar", "Correr" }),
+                (data.attack, new[] { "Ataque" }),
+                (data.guard, new[] { "Defensa" }),
+                (data.hit, new[] { "Dano" }),
+                (data.death, new[] { "Dano", "Muerte" }),
+            };
+            foreach (var (set, poses) in expected)
+            {
+                var first = set.GetOnceFrame(0, 0f);
+                for (var direction = 0; direction < DirectionalSpriteSet.DirectionCount; direction++)
+                {
+                    StringAssert.StartsWith($"Enemigo_{name}_Reposo", set.GetIdle(direction).name, $"{set.name}: reposo");
+                    for (var frame = 0; frame < poses.Length; frame++)
+                    {
+                        var sprite = set.GetOnceFrame(direction, (frame + 0.5f) / set.FramesPerSecond);
+                        Assert.IsNotNull(sprite, $"{set.name}, dirección {direction}, cuadro {frame + 1}: falta.");
+                        Assert.AreEqual($"Enemigo_{name}_{poses[frame]}1_03", sprite.name, $"{set.name}, dirección {direction}, cuadro {frame + 1}.");
+                    }
+                }
+                Assert.AreEqual(poses.Length / set.FramesPerSecond, set.Duration, 0.001f, $"{set.name}: ni cuadros de más ni de menos.");
+                Assert.IsNotNull(first);
+            }
+        }
+
         [Test]
         public void EnemySprites_AreImportedAtTheSceneScale_WithTheFeetOnThePivot()
         {

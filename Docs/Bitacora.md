@@ -21,6 +21,15 @@ Plantilla:
 
 ---
 
+## 2026-11-10 — i7-10700: revisión de las animaciones de los enemigos
+
+- **Pedido del autor:** que las animaciones de los enemigos se vean completas.
+- **Revisado:** el recorte no avisa de ningún corte y no quedan cortes rectos en los 46 sprites; nada toca el borde ni se sale del pivote. Nueva `EnemyAnimations_HaveEveryFrame_InEveryDirection` (`EnemyAssetsTests`): cada animación con sus cuadros, en orden, igual en las cinco direcciones y con su duración. En el juego real, los 46 llegan a la pantalla (a 5 les «faltan» 1–2 px casi negros que se confunden con el fondo de la captura); el Espíritu del Jaguar ×2, completo.
+- **Límite del arte:** una imagen por pose y solo de lado.
+- **Estado:** EditMode 15/15 en `EnemyAssetsTests`. Subido.
+
+---
+
 ## 2026-11-10 — i7-10700: pasadizo secreto y cámara del tesoro (D3)
 
 - **Rama / commit al empezar:** `feature/prototipo-olmeca` @ `e1b5f48`.

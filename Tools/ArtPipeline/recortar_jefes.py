@@ -37,6 +37,21 @@ JEFES = {
     "GuardianOfrenda": {"alto": 78, "tol": 20, "poses": panel(FILA_BAJA, (1033, 1152), (1143, 1272), (1268, 1392), (1393, 1512))},
 }
 
+# Cajas ampliadas donde la general cortaba la figura (las avisa recortar_enemigos.cortes): efectos que suben hasta el
+# marco o se salen hacia la pose vecina. La pose vecina no se cuela: la máscara se queda con la figura más grande.
+AJUSTES = {
+    ("SerpienteEmplumada", "Especial"): (400, 418, 507, 497),
+    ("SenorLluvia", "Especial"): (903, 418, 1014, 497),
+    ("MuroCraneos", "Ataque"): (1278, 431, 1410, 497),
+    ("MuroCraneos", "Especial"): (1403, 418, 1519, 497),
+    ("SenorMuertos", "Ataque"): (758, 879, 894, 963),
+}
+# Siguen tocando el borde, porque la figura llega hasta el marco del panel o la pose vecina, y ampliar mete el marco:
+# la cola del perro en reposo, las llamas de su ataque y las llamas moradas del Señor de los Muertos. Es poco y de
+# efecto; arreglarlo pide limpiar esas poses a mano en la lámina.
+for (jefe, pose), caja in AJUSTES.items():
+    JEFES[jefe]["poses"][pose] = caja
+
 
 def desplome(lienzo, alto, oscurecer):
     """Caída generada desde el reposo (la lámina no trae muerte): el cuerpo se aplasta contra el suelo y se oscurece.

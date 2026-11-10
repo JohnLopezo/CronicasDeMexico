@@ -5370,5 +5370,281 @@
       18
     ],
     "ppu": 45.254833995939045
+  },
+  "Brasero_Piedra_01": {
+    "lienzo": [
+      48,
+      80
+    ],
+    "pivote_px": [
+      24,
+      12
+    ],
+    "ppu": 48,
+    "sombra": {
+      "lienzo": [
+        80,
+        40
+      ],
+      "pivote_px": [
+        26,
+        20
+      ]
+    }
+  },
+  "Brasero_Piedra_02": {
+    "lienzo": [
+      48,
+      80
+    ],
+    "pivote_px": [
+      24,
+      12
+    ],
+    "ppu": 48,
+    "sombra": {
+      "lienzo": [
+        80,
+        40
+      ],
+      "pivote_px": [
+        26,
+        20
+      ]
+    }
+  },
+  "Brasero_Piedra_03": {
+    "lienzo": [
+      48,
+      80
+    ],
+    "pivote_px": [
+      24,
+      12
+    ],
+    "ppu": 48,
+    "sombra": {
+      "lienzo": [
+        80,
+        40
+      ],
+      "pivote_px": [
+        26,
+        20
+      ]
+    }
+  },
+  "Cristal_Memoria_01": {
+    "lienzo": [
+      48,
+      64
+    ],
+    "pivote_px": [
+      24,
+      12
+    ],
+    "ppu": 48,
+    "sombra": {
+      "lienzo": [
+        80,
+        40
+      ],
+      "pivote_px": [
+        26,
+        20
+      ]
+    }
+  },
+  "Cristal_Memoria_02": {
+    "lienzo": [
+      48,
+      64
+    ],
+    "pivote_px": [
+      24,
+      12
+    ],
+    "ppu": 48,
+    "sombra": {
+      "lienzo": [
+        80,
+        40
+      ],
+      "pivote_px": [
+        26,
+        20
+      ]
+    }
+  },
+  "Trampa_Pinchos_01": {
+    "lienzo": [
+      64,
+      64
+    ],
+    "pivote_px": [
+      32,
+      24
+    ],
+    "ppu": 48
+  },
+  "Trampa_Pinchos_02": {
+    "lienzo": [
+      64,
+      64
+    ],
+    "pivote_px": [
+      32,
+      24
+    ],
+    "ppu": 48
+  },
+  "Placa_Presion_01": {
+    "lienzo": [
+      64,
+      64
+    ],
+    "pivote_px": [
+      32,
+      24
+    ],
+    "ppu": 48
+  },
+  "Placa_Presion_02": {
+    "lienzo": [
+      64,
+      64
+    ],
+    "pivote_px": [
+      32,
+      24
+    ],
+    "ppu": 48
+  },
+  "Cerca_Estacas_01": {
+    "lienzo": [
+      96,
+      80
+    ],
+    "pivote_px": [
+      48,
+      22
+    ],
+    "ppu": 48,
+    "sombra": {
+      "lienzo": [
+        128,
+        64
+      ],
+      "pivote_px": [
+        40,
+        32
+      ]
+    }
+  },
+  "Vasija_Rompible_01": {
+    "lienzo": [
+      40,
+      48
+    ],
+    "pivote_px": [
+      20,
+      16
+    ],
+    "ppu": 48,
+    "sombra": {
+      "lienzo": [
+        80,
+        40
+      ],
+      "pivote_px": [
+        26,
+        20
+      ]
+    }
+  },
+  "Vasija_Rompible_02": {
+    "lienzo": [
+      40,
+      48
+    ],
+    "pivote_px": [
+      20,
+      16
+    ],
+    "ppu": 48,
+    "sombra": {
+      "lienzo": [
+        80,
+        40
+      ],
+      "pivote_px": [
+        26,
+        20
+      ]
+    }
+  },
+  "Cabeza_Piedra_01": {
+    "lienzo": [
+      48,
+      64
+    ],
+    "pivote_px": [
+      24,
+      12
+    ],
+    "ppu": 48,
+    "sombra": {
+      "lienzo": [
+        80,
+        40
+      ],
+      "pivote_px": [
+        26,
+        20
+      ]
+    }
+  },
+  "Estrado_Ofrenda_01": {
+    "lienzo": [
+      144,
+      112
+    ],
+    "pivote_px": [
+      72,
+      40
+    ],
+    "ppu": 48,
+    "sombra": {
+      "lienzo": [
+        192,
+        112
+      ],
+      "pivote_px": [
+        70,
+        48
+      ]
+    }
+  },
+  "Estera_Tejida_01": {
+    "lienzo": [
+      48,
+      96
+    ],
+    "pivote_px": [
+      24,
+      12
+    ],
+    "ppu": 48
+  },
+  "Estera_Tejida_02": {
+    "lienzo": [
+      48,
+      96
+    ],
+    "pivote_px": [
+      24,
+      12
+    ],
+    "ppu": 48
   }
 }

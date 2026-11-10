@@ -21,6 +21,18 @@ Plantilla:
 
 ---
 
+## 2026-11-10 — i7-10700: piezas de la mazmorra (D1) y personajes «mordidos»
+
+- **Plan aprobado por el autor** para la lámina «Mazmorras ancestrales» (`Docs/Diseño de mazmorra`): rehacer sus piezas en Blender en la vista 3/4 (la lámina es isométrica), con trampas, vasijas rompibles, ambiente y salas nuevas. Estandartes con el sol → esteras tejidas; cofres europeos → estrado con ofrenda; cristales azules → jade (ficción, la memoria).
+- **D1 hecho:** 9 piezas en `generar_olmeca.py` (16 sprites): brasero (3 cuadros de fuego), cristal de memoria (2), pinchos (bajados/levantados), placa de presión (arriba/hundida), cerca de estacas, vasija (entera/rota), cabeza de piedra, estrado de la ofrenda y esteras (jade/jaguar). Aprobadas por el autor ("se ven bien"). En `Sprites/Objetos` con sus pivotes; todavía no se colocan en ninguna escena.
+- **Ojo con el flujo:** el `pivotes.json` de `Salida` estaba incompleto y `--reusar` rehízo todo el arte, con píxeles distintos (el render no es idéntico). Se exportaron a mano solo las piezas nuevas y se restauró `Salida`. No usar el export completo sin revisar el diff.
+- **Personajes «mordidos» (reportado por el autor):** medido en el juego real, Unity dibuja todos los píxeles de cada sprite y la malla los cubre (`SpriteMeshCoverageTests`, nueva). La causa eran cajas de recorte justas en las láminas: la cola de la serpiente al atacar y varias poses de jefes. `recortar_enemigos.py` avisa ahora cuando una caja corta la figura y admite zonas a excluir (el adorno del marco junto a la serpiente). Corregidas siete; quedan cuatro poses de jefe que llegan hasta el marco del panel (cola del perro, sus llamas, las llamas moradas del Señor de los Muertos): hay que limpiarlas a mano en la lámina.
+- **Vasija rota:** se cortaba por abajo; lienzo de 40×48.
+- **Para D2:** pinchos y placa deben dibujarse como suelo, por debajo de los personajes, o le taparán los pies al jugador.
+- **Estado:** EditMode 132/132, PlayMode 113/113. Subido.
+
+---
+
 ## 2026-11-10 — i7-10700: revisión de animaciones y muertes
 
 - **Pedido del autor:** buscar fallos de animación, personajes que no se vean completos y muertes que falten.

@@ -2429,6 +2429,206 @@ def guardian_piedra(pose, variante, corrupto=True):
 
 # ---------------------------------------------------------------- producción
 
+# ---------------------------------------------------------------- mazmorra: lámina "Mazmorras ancestrales" (D1)
+# Rehechas en la vista 3/4 frontal desde la lámina isométrica del autor (Docs/Diseño de mazmorra). Lo documentado (D), lo
+# interpretado (I) y lo ficticio (F) va en cada pieza; se evita lo que la lámina trae de otras culturas (cofres
+# europeos, estandartes con el sol).
+
+def llamas(rng, centro, escala, cuadro, nombre="Llama"):
+    """Llamas de conos con luz propia; cada cuadro (1–3) cambia su forma para animarlas."""
+    r = random.Random(cuadro * 7919)
+    for (dx, dy, alto, radio, color, fuerza) in ((0, 0, 0.36, 0.09, "#D8642A", 1.0),
+                                               (0.04, -0.03, 0.26, 0.06, "#F2A541", 1.1),
+                                               (-0.04, 0.03, 0.22, 0.05, "#F2A541", 1.1),
+                                               (0.0, 0.0, 0.16, 0.04, "#FFE08A", 1.2)):
+        alto *= escala * r.uniform(0.75, 1.2)
+        bpy.ops.mesh.primitive_cone_add(vertices=7, radius1=radio * escala, radius2=0, depth=alto,
+                                        location=(centro[0] + dx * escala, centro[1] + dy * escala, centro[2] + alto / 2))
+        llama = bpy.context.active_object
+        llama.rotation_euler = Euler((r.uniform(-0.25, 0.25), r.uniform(-0.25, 0.25), 0))
+        pa.asignar(llama, mat_emision(nombre, color, fuerza))
+
+
+def brasero(rng, variante):
+    """Brasero de piedra: un cuenco de basalto sobre un fuste corto, con fuego. Los braseros de barro y piedra
+    son mesoamericanos (D); su uso para alumbrar la mazmorra es interpretación (I). Variantes 1–3: cuadros del fuego."""
+    mat = pa.mat_piedra_musgo("BasaltoBrasero", BASALTO_COLUMNA, ["#3E5F27", "#5A8732"], escala=8, estirar=(1, 1, 0.5),
+                              altura_musgo=0.1, umbral_musgo=0.55)
+    bpy.ops.mesh.primitive_cylinder_add(vertices=8, radius=0.16, depth=0.08, location=(0, 0, 0.04))
+    pa.asignar(bpy.context.active_object, mat)
+    bpy.ops.mesh.primitive_cylinder_add(vertices=8, radius=0.09, depth=0.5, location=(0, 0, 0.33))
+    pa.asignar(bpy.context.active_object, mat)
+    bpy.ops.mesh.primitive_cone_add(vertices=10, radius1=0.12, radius2=0.22, depth=0.16, location=(0, 0, 0.66))
+    pa.asignar(bpy.context.active_object, mat)
+    bpy.ops.mesh.primitive_cylinder_add(vertices=12, radius=0.19, depth=0.01, location=(0, 0, 0.745))
+    pa.asignar(bpy.context.active_object, mat_emision("BrasasBrasero", "#9A3A1C", 0.9))
+    llamas(rng, (0, 0, 0.74), 0.55, variante)   # pequeñas: que se vea el cuenco
+
+
+def cristal_memoria(rng, variante):
+    """Cristales de memoria: un racimo de prismas de jade que brotan de una base de basalto. Ficción del juego (F): la
+    lámina los trae azules; aquí son del verde de la piedra pulida, el color de la memoria. Variantes 1–2: brillo."""
+    mat = pa.mat_piedra_musgo("BasaltoCristal", BASALTO_COLUMNA, ["#3E5F27", "#5A8732"], escala=8, estirar=(1, 1, 0.5),
+                              altura_musgo=0.08, umbral_musgo=0.55)
+    bpy.ops.mesh.primitive_cylinder_add(vertices=7, radius=0.22, depth=0.14, location=(0, 0, 0.07))
+    pa.asignar(bpy.context.active_object, mat)
+    fuerza = 1.0 if variante == 1 else 1.35
+    for k, (dx, dy, alto, inclina) in enumerate(((0, 0, 0.62, 0), (0.1, 0.06, 0.4, 0.35), (-0.09, -0.05, 0.34, -0.4),
+                                                 (0.02, -0.1, 0.28, 0.25))):
+        v, f, c = [], [], []
+        prisma_color(v, f, c, Vector((0, 0, 0)), 0.06 if k == 0 else 0.045, alto, "#4FB39A", 6)
+        cristal = pa.malla(f"Cristal{k}", v, f, c)
+        cristal.location = (dx, dy, 0.12)
+        cristal.rotation_euler = Euler((inclina, inclina * 0.5, 0))
+        pa.asignar(cristal, mat_emision("JadeCristal", "#4FB39A" if k else "#9BE3C8", fuerza))
+
+
+def trampa_pinchos(rng, variante):
+    """Trampa de pinchos: una losa con agujeros de la que salen puntas de obsidiana. La obsidiana llegaba por
+    intercambio (D); la trampa es ficción del juego (F). Variantes: 1 bajados (solo los agujeros), 2 levantados.
+    Ocupa 1 m × 1 m del suelo."""
+    pa.asignar(caja("Losa", (0, 0, 0.02), (0.96, 0.96, 0.04), 0.01), pa.mat_ruido("LosaTrampa", BASALTO_LOSA, escala=10))
+    obsidiana = pa.mat_ruido("Obsidiana", ["#1E2420", "#2C302A", "#7D8CA0"], escala=18)
+    hueco = pa.mat_ruido("HuecoTrampa", ["#1E2420", "#2C302A"], escala=10)
+    for i in range(3):
+        for j in range(3):
+            x, y = (i - 1) * 0.3, (j - 1) * 0.3
+            bpy.ops.mesh.primitive_cylinder_add(vertices=8, radius=0.06, depth=0.01, location=(x, y, 0.045))
+            pa.asignar(bpy.context.active_object, hueco)
+            if variante == 2:
+                bpy.ops.mesh.primitive_cone_add(vertices=4, radius1=0.05, radius2=0, depth=0.34, location=(x, y, 0.21))
+                punta = bpy.context.active_object
+                punta.rotation_euler.z = rng.uniform(0, math.pi)
+                pa.asignar(punta, obsidiana)
+
+
+def placa_presion(rng, variante):
+    """Placa de presión: una losa con un glifo en cruz incisa, la «cruz de San Andrés» de la iconografía olmeca (D),
+    con el jade apagado o encendido. Que active trampas es ficción (F). Variantes: 1 arriba, 2 hundida y encendida."""
+    hundida = variante == 2
+    pa.asignar(caja("Marco", (0, 0, 0.02), (0.9, 0.9, 0.04), 0.01), pa.mat_ruido("MarcoPlaca", BASALTO_LOSA, escala=10))
+    pa.asignar(caja("Placa", (0, 0, 0.035 if hundida else 0.06), (0.66, 0.66, 0.04), 0.01),
+               pa.mat_ruido("PlacaPresion", ["#4A473B", "#615C48", "#7D745B"], escala=12))
+    glifo = mat_emision("GlifoPlaca", "#4FB39A", 1.1) if hundida else pa.mat_ruido("GlifoApagado", ["#1F5148", "#2E7D6B"], escala=12)
+    z = 0.057 if hundida else 0.082
+    for giro in (45, -45):
+        brazo = caja("Glifo", (0, 0, z), (0.5, 0.07, 0.01), 0)
+        brazo.rotation_euler.z = math.radians(giro)
+        pa.asignar(brazo, glifo)
+
+
+def cerca_estacas(rng, variante):
+    """Cerca de estacas: troncos aguzados clavados en fila e inclinados hacia fuera, atados con cordel. Las cercas de
+    varas son de la aldea (I); aguzadas y como obstáculo que daña, ficción (F). 1,6 m a lo largo de Y, mira a -X."""
+    madera = pa.mat_ruido("Estaca", ["#48331F", "#6D502E", "#9C7842"], escala=14)
+    punta = pa.mat_ruido("PuntaEstaca", ["#9C7842", "#A28A6D", "#C9C0AB"], escala=14)
+    for k in range(6):
+        y = -0.7 + k * 0.28
+        alto = 0.62 + rng.uniform(-0.08, 0.08)
+        bpy.ops.mesh.primitive_cylinder_add(vertices=6, radius=0.05, depth=alto, location=(0, y, alto / 2))
+        estaca = bpy.context.active_object
+        estaca.rotation_euler.y = math.radians(-14)
+        pa.asignar(estaca, madera)
+        bpy.ops.mesh.primitive_cone_add(vertices=6, radius1=0.05, radius2=0, depth=0.14,
+                                        location=(-math.sin(math.radians(14)) * (alto + 0.07), y, math.cos(math.radians(14)) * alto + 0.07))
+        cono = bpy.context.active_object
+        cono.rotation_euler.y = math.radians(-14)
+        pa.asignar(cono, punta)
+    pa.asignar(caja("Cordel", (-0.06, 0, 0.3), (0.03, 1.6, 0.03), 0), pa.mat_ruido("Cordel", ["#9B713F", "#B6814C"], escala=20))
+    girar_al_frente()   # a lo ancho de la pantalla, con las puntas hacia el jugador
+
+
+def vasija_rompible(rng, variante):
+    """Vasija de barro de la mazmorra: tecomate de boca cerrada, típico olmeca (D). Variantes: 1 entera, 2 rota en
+    tiestos (se rompe con el ataque, F)."""
+    colores = ["#B16143", "#9B713F", "#C6925A"]
+    if variante == 1:
+        vasija("Tecomate", Vector((0, 0, 0)), 0.17, 0.32, colores)
+        return
+    barro = pa.mat_ruido("Tiesto", colores, escala=10)
+    for k in range(6):
+        ang = 2 * math.pi * k / 6 + rng.uniform(-0.3, 0.3)
+        d = rng.uniform(0.08, 0.22)
+        t = caja("Tiesto", (math.cos(ang) * d, math.sin(ang) * d, 0.02), (rng.uniform(0.08, 0.14), rng.uniform(0.06, 0.1), 0.03), 0.005)
+        t.rotation_euler = Euler((rng.uniform(-0.4, 0.4), rng.uniform(-0.4, 0.4), ang))
+        pa.asignar(t, barro)
+    bpy.ops.mesh.primitive_uv_sphere_add(segments=16, ring_count=8, radius=0.15, location=(0, 0, 0.02))
+    fondo = bpy.context.active_object
+    fondo.scale = (1, 1, 0.35)
+    pa.asignar(fondo, barro)
+
+
+def cabeza_piedra(rng, variante):
+    """Cabeza de piedra pequeña, a la manera de las cabezas colosales olmecas (D: casco ajustado, nariz ancha, labios
+    gruesos), con musgo. Esta, de tamaño reducido y como adorno de la mazmorra, es interpretación (I). Mira a +X."""
+    # La cara, de basalto claro y sin musgo, para que se lean la nariz y los labios; el musgo, solo en el casco.
+    cara = pa.mat_ruido("CaraCabeza", ["#4A473B", "#615C48", "#7D745B", "#9C8B75"], escala=9)
+    rasgo = pa.mat_ruido("RasgoCabeza", ["#7D745B", "#9C8B75", "#C9C0AB"], escala=9)
+    mat = pa.mat_piedra_musgo("CascoCabeza", BASALTO_COLUMNA, ["#3E5F27", "#5A8732"], escala=7, estirar=(1, 1, 0.6),
+                              altura_musgo=0.55, umbral_musgo=0.5)
+    bpy.ops.mesh.primitive_uv_sphere_add(segments=18, ring_count=12, radius=0.3, location=(0, 0, 0.36))
+    cabeza = bpy.context.active_object
+    cabeza.scale = (0.85, 0.95, 1.15)
+    pa.asignar(cabeza, cara)
+    bpy.ops.mesh.primitive_uv_sphere_add(segments=18, ring_count=10, radius=0.31, location=(-0.04, 0, 0.55))
+    casco = bpy.context.active_object
+    casco.scale = (0.92, 1.02, 0.55)
+    pa.asignar(casco, mat)
+    pa.asignar(caja("Banda", (0.06, 0, 0.5), (0.5, 0.62, 0.07), 0.02), mat)
+    pa.asignar(caja("Nariz", (0.27, 0, 0.36), (0.12, 0.2, 0.13), 0.03), rasgo)
+    pa.asignar(caja("Labios", (0.25, 0, 0.21), (0.12, 0.26, 0.08), 0.03), rasgo)
+    oscuro = pa.mat_ruido("OjoCabeza", ["#1E2420", "#2C302A"], escala=10)
+    for y in (-0.12, 0.12):
+        pa.asignar(caja("Ojo", (0.265, y, 0.43), (0.03, 0.1, 0.045), 0), oscuro)
+    pa.asignar(caja("Boca", (0.31, 0, 0.21), (0.01, 0.18, 0.015), 0), oscuro)
+    pa.asignar(caja("Base", (0, 0, 0.04), (0.5, 0.55, 0.08), 0.02), pa.mat_ruido("BaseCabeza", BASALTO_LOSA, escala=10))
+    girar_al_frente()
+
+
+def estrado_ofrenda(rng, variante):
+    """Estrado de la sala del tesoro: plataforma de lajas de basalto con escalones al frente, para la ofrenda (en lugar
+    del cofre europeo de la lámina). Las plataformas y las ofrendas enterradas son de La Venta (D); el estrado para
+    guardarlas en la mazmorra, interpretación (I). 2,2 × 1,8 m; los escalones miran a +X."""
+    mat = pa.mat_piedra_musgo("LajaEstrado", BASALTO_LOSA, ["#3E5F27", "#5A8732"], escala=9, estirar=(1, 1, 0.6),
+                              altura_musgo=0.05, umbral_musgo=0.6)
+    pa.asignar(caja("Cuerpo", (-0.2, 0, 0.22), (1.6, 1.8, 0.44), 0.02), mat)
+    for k in range(3):
+        pa.asignar(caja(f"Escalon{k}", (0.75 + (2 - k) * 0.14, 0, 0.075 + k * 0.145), (0.3, 0.8, 0.15), 0.015), mat)
+    jade = mat_emision("JadeEstrado", "#4FB39A", 0.9)
+    for y in (-0.75, 0.75):
+        pa.asignar(caja("Incrustacion", (0.61, y, 0.3), (0.01, 0.16, 0.16), 0), jade)
+    girar_al_frente()
+
+
+def estera_tejida(rng, variante):
+    """Estera tejida colgada de dos varas, con bandas de jade y manchas de jaguar, en lugar de los estandartes con el
+    sol de la lámina (mexicas). Los petates tejidos son mesoamericanos (I para lo olmeca); el jaguar y el jade, de la
+    iconografía olmeca (D). Variantes: 1 bandas de jade, 2 manchas de jaguar. Plana, mira a +X."""
+    madera = pa.mat_ruido("VaraEstera", ["#48331F", "#6D502E"], escala=14)
+    for y in (-0.32, 0.32):
+        bpy.ops.mesh.primitive_cylinder_add(vertices=6, radius=0.025, depth=1.5, location=(0, y, 0.75))
+        pa.asignar(bpy.context.active_object, madera)
+    bpy.ops.mesh.primitive_cylinder_add(vertices=6, radius=0.02, depth=0.8, location=(0.03, 0, 1.38))
+    travesano = bpy.context.active_object
+    travesano.rotation_euler.x = math.radians(90)
+    pa.asignar(travesano, madera)
+    pa.asignar(caja("Estera", (0.04, 0, 0.98), (0.02, 0.6, 0.78), 0), pa.mat_ruido("Petate", ["#9B713F", "#B6814C", "#C6925A"], escala=22))
+    if variante == 1:
+        jade = pa.mat_ruido("BandaJade", ["#2E7D6B", "#4FB39A"], escala=16)
+        for z in (0.74, 0.98, 1.22):
+            pa.asignar(caja("Banda", (0.052, 0, z), (0.005, 0.6, 0.07), 0), jade)
+    else:
+        mancha = pa.mat_ruido("ManchaJaguar", ["#1E2420", "#3A2A1A"], escala=12)
+        r = random.Random(17)
+        for _ in range(9):
+            bpy.ops.mesh.primitive_cylinder_add(vertices=8, radius=r.uniform(0.04, 0.06), depth=0.005,
+                                                location=(0.052, r.uniform(-0.24, 0.24), r.uniform(0.66, 1.3)))
+            o = bpy.context.active_object
+            o.rotation_euler.y = math.radians(90)
+            pa.asignar(o, mancha)
+    girar_al_frente()
+
+
 SOMBRA_CHICA = ((80, 40), (26, 20))
 SOLAPE_TILE = 1.03
 TIERRA_VERDES = ("tierra", "verde_calido", "verde_frio")
@@ -2523,7 +2723,21 @@ TIPOS = {
                 SOMBRA_CHICA, 0.5),
     "Basalto_Agrietado": (basalto_agrietado, (128, 144), (64, 40), ("basalto", "musgo", "fuego", "tierra"), "#1E2420",
                           ((160, 96), (56, 44)), 0.5),
+    # Lámina "Mazmorras ancestrales" (D1)
+    "Brasero_Piedra": (brasero, (48, 80), (24, 12), ("basalto", "musgo", "fuego"), "#1E2420", SOMBRA_CHICA, 0.5),
+    "Cristal_Memoria": (cristal_memoria, (48, 64), (24, 12), ("basalto", "musgo", "jade"), "#1E2420", SOMBRA_CHICA, 0.5),
+    "Trampa_Pinchos": (trampa_pinchos, (64, 64), (32, 24), ("basalto", "tierra"), None, None, 0.5),
+    "Placa_Presion": (placa_presion, (64, 64), (32, 24), ("basalto", "jade"), None, None, 0.5),
+    "Cerca_Estacas": (cerca_estacas, (96, 80), (48, 22), ("madera", "tierra", "basalto"), "#3A2A1A", ((128, 64), (40, 32)), 0.5),
+    # Lienzo amplio: los tiestos de la vasija rota se esparcen hacia la cámara y en 32×40 se cortaban por abajo.
+    "Vasija_Rompible": (vasija_rompible, (40, 48), (20, 16), ("tierra", "acentos", "basalto"), "#3A2A1A", SOMBRA_CHICA, 0.5),
+    "Cabeza_Piedra": (cabeza_piedra, (48, 64), (24, 12), ("basalto", "musgo", "verde_calido"), "#1E2420", SOMBRA_CHICA, 0.5),
+    "Estrado_Ofrenda": (estrado_ofrenda, (144, 112), (72, 40), ("basalto", "musgo", "jade", "tierra"), "#1E2420",
+                        ((192, 112), (70, 48)), 0.5),
+    "Estera_Tejida": (estera_tejida, (48, 96), (24, 12), ("madera", "tierra", "jade", "basalto"), "#3A2A1A", None, 0.5),
 }
+VARIANTES_D1 = {"Brasero_Piedra": 3, "Cristal_Memoria": 2, "Trampa_Pinchos": 2, "Placa_Presion": 2, "Cerca_Estacas": 1,
+                "Vasija_Rompible": 2, "Cabeza_Piedra": 1, "Estrado_Ofrenda": 1, "Estera_Tejida": 2}
 VARIANTES = {"Tile_Camino_Tierra": 4, "Tile_Pasto_Selva": 5, "Tile_Agua_Anim": 4, "Cerca_Basalto": 3,
              "Palma_Corozo": 2, "Arbusto_Selva": 2, "Matorral_Selva": 3, "Pasto_Alto": 2, "Helecho": 2,
              "Roca_Basalto": 3, "Nenufar": 1, "Tule": 1, "Sombra_Dosel": 2, "Altar_Trono": 1,
@@ -2562,6 +2776,9 @@ for _corrupto, _prefijo, _tabla in ((False, "Jaguar", pj.ANIMACIONES_JAGUAR), (T
 SIN_AVISO_BORDE = {"Tile_Camino_Tierra", "Tile_Pasto_Selva", "Tile_Agua_Anim", "Tile_Camino_Trans", "Tile_Orilla",
                    "Plataforma_Arcilla", "Tile_Losa_Basalto"}
 ELEVACION = {"Plataforma_Arcilla": H_PLATAFORMA}   # altura de la cara superior de los módulos que se empalman
+
+
+VARIANTES.update(VARIANTES_D1)
 
 
 def es_modular(tipo):

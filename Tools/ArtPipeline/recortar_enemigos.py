@@ -19,7 +19,8 @@ MARGEN = (6, 4)  # px de lámina alrededor de cada caja: las poses están juntas
 
 # alto: px de juego del reposo (el resto de poses usa su misma escala). poses: nombre -> caja (x0, y0, x1, y1) en la lámina.
 # tol: distancia de color al fondo (tol_pose: la de una pose, donde la general borra plumas del color del fondo). espejo: poses que miran al oeste. brillo: figura sin contorno oscuro (espectral); se
-# separa por lo que destaca del fondo (brillo_sobre_fondo), con ese umbral.
+# separa por lo que destaca del fondo (brillo_sobre_fondo), con ese umbral. excluir: rectángulos de la lámina (x0, y0, x1,
+# y1) que se quitan de la figura en una pose, para lo que la toca sin ser suyo.
 FILA_ALTA, FILA_BAJA = (296, 350), (378, 440)
 FILA_ALTA_V, FILA_BAJA_V = (632, 690), (705, 758)
 
@@ -36,8 +37,8 @@ TERRESTRE = ("Reposo", "Caminar", "Correr", "Ataque", "Defensa", "Dano", "Muerte
 VOLADOR = ("Reposo", "Volar", "Ataque", "Defensa", "Dano", "Muerte")
 
 ENEMIGOS = {
-    "Serpiente": {"alto": 30, "tol": 30, "poses": poses(TERRESTRE, fila(FILA_ALTA, (35, 122), (133, 217), (235, 322))
-                                                       + fila(FILA_BAJA, (40, 102), (108, 194), (190, 267), (275, 342)))},
+    "Serpiente": {"alto": 30, "tol": 30, "excluir": {"Ataque": ((0, 421, 34, 450),)}, "poses": poses(TERRESTRE, fila(FILA_ALTA, (35, 122), (133, 217), (235, 322))
+                                                       + fila(FILA_BAJA, (28, 102), (108, 194), (190, 267), (275, 342)))},
     "Cocodrilo": {"alto": 30, "tol": 60, "poses": poses(TERRESTRE, fila(FILA_ALTA, (357, 452), (455, 547), (550, 642))
                                                        + fila(FILA_BAJA, (355, 452), (450, 514), (513, 577), (578, 647)))},
     "EspirituJaguar": {"alto": 34, "tol": 60, "brillo": 40, "espejo": ("Reposo", "Ataque"),
@@ -63,13 +64,27 @@ def mascara_figura(img, caja, g, pose=None):
         m = ~rg._crecer(~rg._crecer(m, 2), 2)  # cierre: une las líneas de luz sueltas en un solo cuerpo
     else:
         c, m = rg.figura(img, caja, g.get("tol_pose", {}).get(pose, g["tol"]), True, MARGEN)
+    # Zonas de la lámina que no son de la figura aunque la toquen (el adorno del marco bajo la cola de la serpiente).
+    x0, y0 = max(0, caja[0] - MARGEN[0]), max(0, caja[1] - MARGEN[1])
+    for ex0, ey0, ex1, ey1 in g.get("excluir", {}).get(pose, ()):
+        m[max(0, ey0 - y0):max(0, ey1 - y0), max(0, ex0 - x0):max(0, ex1 - x0)] = False
     comps = npc._componentes(rg.limpiar(m))
     if not comps:
         raise ValueError(f"{caja}: sin figura")
     ys, xs = np.array(max(comps, key=len)).T  # fuera la pose vecina y los restos del fondo
     m = np.zeros(m.shape, bool)
     m[ys, xs] = True
+    CORTES.extend(f"{pose}: {lado}" for lado in cortes(m))
     return c, m
+
+
+CORTES = []   # lo que cada recorte deja tocando el borde del recorte: la figura sigue fuera de la caja
+
+
+def cortes(m, filas=6):
+    """Lados del recorte que la figura toca en más de <filas> filas o columnas: ahí la caja la corta y en el juego se ve
+    «mordida» (reportado por el autor el 2026-11-10). Abajo no cuenta: los pies se apoyan en el borde."""
+    return [lado for lado, borde in (("izquierda", m[:, 0]), ("derecha", m[:, -1]), ("arriba", m[0])) if borde.sum() > filas]
 
 
 def recortar(img, nombre, g, alto_lienzo=ALTO_LIENZO):
@@ -78,7 +93,10 @@ def recortar(img, nombre, g, alto_lienzo=ALTO_LIENZO):
     factor = rg.altura(m_reposo) / g["alto"]
     sprites = {}
     for pose, caja in cajas.items():
+        CORTES.clear()
         c, m = mascara_figura(img, caja, g, pose)
+        for aviso in CORTES:
+            print(f"AVISO {nombre} {aviso}: la caja corta la figura")
         spr = rg.reducir(c, m, factor)
         if pose in g.get("espejo", ()):
             spr = spr[:, ::-1]

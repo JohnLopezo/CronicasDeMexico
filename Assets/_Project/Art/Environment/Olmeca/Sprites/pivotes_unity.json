@@ -4356,6 +4356,182 @@
     19.5,
     397.0
    ]
+  },
+  {
+   "nombre": "Brasero_Piedra_01",
+   "lienzo": [
+    48,
+    80
+   ],
+   "pivote": [
+    24,
+    12
+   ]
+  },
+  {
+   "nombre": "Brasero_Piedra_02",
+   "lienzo": [
+    48,
+    80
+   ],
+   "pivote": [
+    24,
+    12
+   ]
+  },
+  {
+   "nombre": "Brasero_Piedra_03",
+   "lienzo": [
+    48,
+    80
+   ],
+   "pivote": [
+    24,
+    12
+   ]
+  },
+  {
+   "nombre": "Cabeza_Piedra_01",
+   "lienzo": [
+    48,
+    64
+   ],
+   "pivote": [
+    24,
+    12
+   ]
+  },
+  {
+   "nombre": "Cerca_Estacas_01",
+   "lienzo": [
+    96,
+    80
+   ],
+   "pivote": [
+    48,
+    22
+   ]
+  },
+  {
+   "nombre": "Cristal_Memoria_01",
+   "lienzo": [
+    48,
+    64
+   ],
+   "pivote": [
+    24,
+    12
+   ]
+  },
+  {
+   "nombre": "Cristal_Memoria_02",
+   "lienzo": [
+    48,
+    64
+   ],
+   "pivote": [
+    24,
+    12
+   ]
+  },
+  {
+   "nombre": "Estera_Tejida_01",
+   "lienzo": [
+    48,
+    96
+   ],
+   "pivote": [
+    24,
+    12
+   ]
+  },
+  {
+   "nombre": "Estera_Tejida_02",
+   "lienzo": [
+    48,
+    96
+   ],
+   "pivote": [
+    24,
+    12
+   ]
+  },
+  {
+   "nombre": "Estrado_Ofrenda_01",
+   "lienzo": [
+    144,
+    112
+   ],
+   "pivote": [
+    72,
+    40
+   ]
+  },
+  {
+   "nombre": "Placa_Presion_01",
+   "lienzo": [
+    64,
+    64
+   ],
+   "pivote": [
+    32,
+    24
+   ]
+  },
+  {
+   "nombre": "Placa_Presion_02",
+   "lienzo": [
+    64,
+    64
+   ],
+   "pivote": [
+    32,
+    24
+   ]
+  },
+  {
+   "nombre": "Trampa_Pinchos_01",
+   "lienzo": [
+    64,
+    64
+   ],
+   "pivote": [
+    32,
+    24
+   ]
+  },
+  {
+   "nombre": "Trampa_Pinchos_02",
+   "lienzo": [
+    64,
+    64
+   ],
+   "pivote": [
+    32,
+    24
+   ]
+  },
+  {
+   "nombre": "Vasija_Rompible_01",
+   "lienzo": [
+    40,
+    48
+   ],
+   "pivote": [
+    20,
+    16
+   ]
+  },
+  {
+   "nombre": "Vasija_Rompible_02",
+   "lienzo": [
+    40,
+    48
+   ],
+   "pivote": [
+    20,
+    16
+   ]
   }
  ]
 }

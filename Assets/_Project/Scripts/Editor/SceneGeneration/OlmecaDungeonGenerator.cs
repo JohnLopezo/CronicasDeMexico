@@ -54,7 +54,7 @@ namespace CronicasDeMexico.Editor.SceneGeneration
 
         public static string SceneName(int floor) => $"Olmeca_Mazmorra_P{floor}";
         public static string ScenePath(int floor) => $"Assets/_Project/Scenes/Regions/Olmeca/{SceneName(floor)}.unity";
-        static string DataPath(int floor) => $"Assets/_Project/Data/World/Olmeca/Mazmorra_P{floor}.json";
+        internal static string DataPath(int floor) => $"Assets/_Project/Data/World/Olmeca/Mazmorra_P{floor}.json";
 
         /// <summary>Id del santuario de Memoria del piso, que también es el de su punto de aparición.</summary>
         public static string MemoryShrineId(int floor) => $"memoria_p{floor}";

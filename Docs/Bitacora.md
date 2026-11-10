@@ -21,6 +21,17 @@ Plantilla:
 
 ---
 
+## 2026-11-10 — i7-10700: arena de pruebas de los jefes (etapa 5)
+
+- **Rama / commit al empezar:** `feature/prototipo-olmeca` @ `4975a8e`.
+- **Hecho:** `recortar_jefes.py` (24 sprites, las cuatro poses pequeñas de cada panel), `BossData`, `TrialBoss` (9 formas de habilidad, fases, resurrección), `BossTrial` y `BossTrialPad`, `BossCharacterAssets` y `TrialArenaGenerator`. Escena `Arena_Pruebas_Jefes` sobre el escenario del piso 3, con seis placas en la antesala. Detalle en `Docs/Enemigos/Jefes_Prueba.md`.
+- **Cambio en `recortar_enemigos.py`:** el lienzo se calcula desde el centro del cuerpo (en figuras asimétricas se salía). Los sprites de los enemigos se regeneraron: cambia el ancho del lienzo, no la figura.
+- **Pruebas:** `TrialBossTests` (12, PlayMode) y `BossAssetsTests` (EditMode). Capturas reales con una prueba temporal (ya borrada): avisos y jefes visibles; los jefes salen algo pequeños.
+- **Estado:** EditMode 127/127, PlayMode 112/112. La arena se añade a Build Settings. Subido.
+- **Pendiente del autor:** nombres definitivos y arco de cada jefe; aprobar el arte (varias poses especiales son casi solo el efecto). **No se ha jugado en el Editor.**
+
+---
+
 ## 2026-11-10 — i7-10700: enemigos de la lámina, etapa 4
 
 - **Rama / commit al empezar:** `feature/prototipo-olmeca` @ `e5b34ec`.

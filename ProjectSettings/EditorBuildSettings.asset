@@ -29,6 +29,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/_Project/Scenes/Regions/Olmeca/Olmeca_Mazmorra_P3.unity
     guid: 867e6985ca4c6d142a35eba94eec4c8d
+  - enabled: 1
+    path: Assets/_Project/Scenes/Regions/Pruebas/Arena_Pruebas_Jefes.unity
+    guid: c388caa0d9ee77b40ace6a3e059673cc
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   m_UseUCBPForAssetBundles: 0

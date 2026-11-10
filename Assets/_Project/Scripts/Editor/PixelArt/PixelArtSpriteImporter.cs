@@ -20,6 +20,8 @@ namespace CronicasDeMexico.Editor.PixelArt
         public const string NpcFolder = SpritesFolder + "/Npc";
         public const string GuerrerosFolder = SpritesFolder + "/Guerreros";
         public const string EnemigosFolder = SpritesFolder + "/Enemigos";
+        public const string JefesFolder = SpritesFolder + "/Jefes";
+        static readonly Vector2 JefePivot = new(0.5f, 2f / 128f); // recortar_jefes.py: lienzos de 128 de alto, pies a 2 px
         const float NpcPixelsPerUnit = 32f;
         static readonly Vector2 NpcPivot = new(0.5f, 2f / 64f); // lienzos de 64 de alto, pies a 2 px del borde (recortar_npc.py, recortar_guerreros.py)
         static readonly Vector2 MuertePivot = new(0.5f, 2f / 96f); // recortar_guerreros.py, LIENZO_MUERTE: el espíritu se eleva
@@ -77,7 +79,12 @@ namespace CronicasDeMexico.Editor.PixelArt
             settings.spriteGenerateFallbackPhysicsShape = false;
 
             var spriteName = Path.GetFileNameWithoutExtension(assetPath);
-            if (assetPath.StartsWith(EnemigosFolder + "/", StringComparison.Ordinal))
+            if (assetPath.StartsWith(JefesFolder + "/", StringComparison.Ordinal))
+            {
+                settings.spriteAlignment = (int)SpriteAlignment.Custom;
+                settings.spritePivot = JefePivot;
+            }
+            else if (assetPath.StartsWith(EnemigosFolder + "/", StringComparison.Ordinal))
             {
                 // Enemigos de Tools/ArtPipeline/recortar_enemigos.py: lienzos de 64 de alto con los pies a 2 px, a los PPU del escenario.
                 settings.spriteAlignment = (int)SpriteAlignment.Custom;

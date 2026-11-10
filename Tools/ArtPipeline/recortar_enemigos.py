@@ -55,10 +55,11 @@ ENEMIGOS = {
 
 
 def mascara_figura(img, caja, g, pose=None):
-    if "brillo" in g:  # sin contorno: la inundación del fondo lo atraviesa
+    brillo = g.get("brillo_pose", {}).get(pose, g.get("brillo"))
+    if brillo is not None:  # sin contorno: la inundación del fondo lo atraviesa
         x0, y0, x1, y1 = caja
         c = img[max(0, y0 - MARGEN[1]):y1 + MARGEN[1], max(0, x0 - MARGEN[0]):x1 + MARGEN[0]]
-        m = rg.brillo_sobre_fondo(c, g["brillo"])
+        m = rg.brillo_sobre_fondo(c, brillo)
         m = ~rg._crecer(~rg._crecer(m, 2), 2)  # cierre: une las líneas de luz sueltas en un solo cuerpo
     else:
         c, m = rg.figura(img, caja, g.get("tol_pose", {}).get(pose, g["tol"]), True, MARGEN)
@@ -71,7 +72,7 @@ def mascara_figura(img, caja, g, pose=None):
     return c, m
 
 
-def recortar(img, nombre, g):
+def recortar(img, nombre, g, alto_lienzo=ALTO_LIENZO):
     cajas = g["poses"]
     _, m_reposo = mascara_figura(img, cajas["Reposo"], g)
     factor = rg.altura(m_reposo) / g["alto"]
@@ -82,9 +83,12 @@ def recortar(img, nombre, g):
         if pose in g.get("espejo", ()):
             spr = spr[:, ::-1]
         sprites[pose] = spr
-    ancho = max(s.shape[1] for s in sprites.values()) + 8
-    ancho += ancho % 2
-    return {pose: npc.colocar(s, f"{nombre}_{pose}", por_cuerpo=True, lienzo_px=(ancho, ALTO_LIENZO))
+    # colocar() centra por la mediana del cuerpo: en una figura asimétrica, el lado largo manda.
+    def medio_ancho(s):
+        centro = int(np.median(np.nonzero(s[..., 3] > 0)[1]))
+        return max(centro, s.shape[1] - centro)
+    ancho = 2 * max(medio_ancho(s) for s in sprites.values()) + 4
+    return {pose: npc.colocar(s, f"{nombre}_{pose}", por_cuerpo=True, lienzo_px=(ancho, alto_lienzo))
             for pose, s in sprites.items()}, factor
 
 

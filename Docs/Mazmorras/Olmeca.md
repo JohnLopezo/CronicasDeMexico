@@ -98,3 +98,27 @@ Regreso al último santuario de Memoria con una penalización moderada configura
   - **Barra del jefe** en el HUD.
 - **Misión `MP_OLM_04`:** detalle en `Docs/Historia/Misiones.md`.
 - **Continuar:** al arrancar desde Boot con una partida guardada, el juego aparece en su santuario de Memoria (`GameBootstrapper.ContinueSavedGame`). Hasta que exista el menú de inicio, la partida se borra con **Crónicas → Borrar partida guardada**.
+
+## Trampas, vasijas y ambiente (lámina «Mazmorras ancestrales», 2026-11-10)
+
+Fuente: `Docs/Diseño de mazmorra/Crónicas de México_ Mazmorras ancestrales.png` (isométrica), rehecha en Blender en la vista 3/4 (`generar_olmeca.py`, D1). Mecánicas en `Gameplay/Dungeon` (D2); colocación en `OlmecaDungeonGenerator.Props`, calculada con `Tools/ArtPipeline/colocar_piezas.py` (D4).
+
+| Pieza | Qué hace | Tipo |
+|---|---|---|
+| Pinchos de obsidiana | Avisan parpadeando 0,7 s, suben 1,1 s y dañan 8; cíclicos con desfase o activados por la placa | D: obsidiana por intercambio; F: la trampa |
+| Placa de presión | Al pisarla se hunde, enciende la cruz de San Andrés y activa los dos pinchos de sus lados | D: motivo olmeca; F: el mecanismo |
+| Cerca de estacas | Bloquea y daña 5 al tocarla | F |
+| Vasija (tecomate) | Se rompe de un golpe (ataque o golpe de tierra); suelta ecos, semillas o fibras (`BOT_vasija`, sin experiencia) | D: tecomate olmeca; F: el botín |
+| Brasero de piedra | Fuego animado (3 cuadros), sin luz en tiempo real | D: braseros mesoamericanos; I: en la mazmorra |
+| Cristal de memoria | Brillo de jade (2 cuadros) | F |
+| Esteras tejidas | Adorno: bandas de jade o manchas de jaguar (en lugar de los estandartes con el sol, mexicas) | I/D |
+| Cabeza de piedra | Adorno a la manera de las cabezas colosales | D/I |
+| Estrado de la ofrenda | Para la sala del tesoro (D3, pendiente), en lugar del cofre europeo | I |
+
+| Piso | Pinchos | Placa | Vasijas | Braseros | Cristales | Esteras | Cabeza |
+|---|---|---|---|---|---|---|---|
+| 1, El Umbral (tutorial) | 2 + 2 de la placa | 1 | 4 | 4 | 2 | 2 | — |
+| 2, El Pantano | 3 | — | 3 | 3 | 3 | 2 | 1 |
+| 3, antesala | 2 | — | 3 | 2 | 2 | — | — |
+
+Ninguna en la arena del Guardián. Las piezas de suelo (pinchos y placa) usan el material de los avisos: encima del suelo y debajo de los personajes, para no taparles los pies. **Pendiente (D3):** sala del tesoro con el estrado y pasadizo secreto; cambian el trazado y piden exportar desde Blender, cuyo render no sale idéntico entre ejecuciones (exportar solo los pisos).

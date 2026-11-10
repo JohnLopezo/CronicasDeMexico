@@ -190,6 +190,7 @@ namespace CronicasDeMexico.Editor.SceneGeneration
             AddLoot(spirits, rewards.CommonSpirit, zoneLevel);
             AddLoot(echoes, rewards.ErasedEcho, zoneLevel);
             BuildFauna(Group("--- Enemigos de la lámina ---", null), floor, points, rewards, zoneLevel);
+            BuildProps(Group("--- Trampas, vasijas y ambiente ---", null), floor, sprites, rewards, zoneLevel);
             if (RegionPoints.Has(points.jaguar))
             {
                 var jaguarGroup = Group("--- Espíritu del Jaguar ---", null);
@@ -348,6 +349,93 @@ namespace CronicasDeMexico.Editor.SceneGeneration
                     Place("EspirituJaguar", Vector2.Lerp(arrival, shrine, 0.7f), shrine + new Vector2(-1.5f, 0f), rewards.CommonSpirit);
                     break;
             }
+        }
+
+        // ---------- Piezas de la lámina «Mazmorras ancestrales» (D4) ----------
+
+        /// <summary>Dónde va cada pieza de un piso (x, y del flujo). Calculado con reglas por Tools/ArtPipeline/colocar_piezas.py:
+        /// en suelo, lejos del vacío, el agua, los portales, santuarios, ofrendas y enemigos;
+        /// pinchos en los pasos entre salas; braseros y adornos junto a los muros; cercas y cabezas fuera del pasillo; el
+        /// piso 1, el tutorial, con menos trampas. Si cambia el trazado del piso hay que recalcularlo.</summary>
+        sealed class FloorProps
+        {
+            public readonly Vector2[] Spikes, Plates, PlateSpikes, Braziers, Crystals, Pots, Mats, Heads, Fences;
+
+            public FloorProps(Vector2[] spikes, Vector2[] plates, Vector2[] plateSpikes, Vector2[] braziers, Vector2[] crystals,
+                Vector2[] pots, Vector2[] mats, Vector2[] heads, Vector2[] fences)
+            {
+                Spikes = spikes;
+                Plates = plates;
+                PlateSpikes = plateSpikes;
+                Braziers = braziers;
+                Crystals = crystals;
+                Pots = pots;
+                Mats = mats;
+                Heads = heads;
+                Fences = fences;
+            }
+        }
+
+        static readonly Dictionary<int, FloorProps> Props = new()
+        {
+            [1] = new FloorProps(
+                new Vector2[] { new(-6f, 0f), new(2f, 0f) },
+                new Vector2[] { new(13f, 0f) },
+                new Vector2[] { new(13f, 1f), new(13f, -1f) },
+                new Vector2[] { new(-13f, -2f), new(-2f, 2f), new(6f, -2f), new(-3f, -2f) },
+                new Vector2[] { new(-10f, -2f), new(6f, 1f) },
+                new Vector2[] { new(10f, -1f), new(17f, -2f), new(0f, 2f), new(10f, -3f) },
+                new Vector2[] { new(15f, -2f), new(15f, 2f) },
+                new Vector2[0],
+                new Vector2[0]),
+            [2] = new FloorProps(
+                new Vector2[] { new(-5f, 1f), new(6f, 1f), new(-8f, 1f) },
+                new Vector2[0],
+                new Vector2[0],
+                new Vector2[] { new(-13f, 1f), new(0f, 4f), new(10f, -1f) },
+                new Vector2[] { new(3f, 1f), new(14f, 1f), new(-10f, -1f) },
+                new Vector2[] { new(-1f, -3f), new(10f, 1f), new(-10f, 1f) },
+                new Vector2[] { new(8f, 1f), new(-13f, -1f) },
+                new Vector2[] { new(10f, -3f) },
+                new Vector2[0]),
+            [3] = new FloorProps(
+                new Vector2[] { new(-3f, 0f), new(-6f, 0f) },
+                new Vector2[0],
+                new Vector2[0],
+                new Vector2[] { new(7f, 3f), new(0f, -2f) },
+                new Vector2[] { new(4f, -2f), new(4f, 2f) },
+                new Vector2[] { new(2f, -1f), new(6f, 1f), new(7f, -1f) },
+                new Vector2[0],
+                new Vector2[0],
+                new Vector2[0]),
+        };
+
+        static void BuildProps(Transform parent, int floor, Dictionary<string, Sprite> sprites, OlmecaRewardAssets.Content rewards, int zoneLevel)
+        {
+            if (!Props.TryGetValue(floor, out var props))
+                return;
+            var traps = Group("Trampas", parent);
+            for (var i = 0; i < props.Spikes.Length; i++)
+                DungeonPropAssets.Spikes(traps, sprites, props.Spikes[i], periodic: true, offset: i * 1.2f);
+            var plateSpikes = props.PlateSpikes.Select(p => DungeonPropAssets.Spikes(traps, sprites, p, periodic: false, offset: 0f)).ToArray();
+            foreach (var plate in props.Plates)
+                DungeonPropAssets.Plate(traps, sprites, plate, plateSpikes);
+            foreach (var fence in props.Fences)
+                DungeonPropAssets.Fence(traps, sprites, fence);
+
+            var pots = Group("Vasijas", parent);
+            foreach (var pot in props.Pots)
+                DungeonPropAssets.Pot(pots, sprites, pot, rewards.Pot, zoneLevel);
+
+            var ambient = Group("Ambiente", parent);
+            foreach (var brazier in props.Braziers)
+                DungeonPropAssets.Brazier(ambient, sprites, brazier);
+            foreach (var crystal in props.Crystals)
+                DungeonPropAssets.Crystal(ambient, sprites, crystal);
+            for (var i = 0; i < props.Mats.Length; i++)
+                DungeonPropAssets.Decor(ambient, sprites, props.Mats[i], $"Estera_Tejida_0{i % 2 + 1}", Vector3.zero);
+            foreach (var head in props.Heads)
+                DungeonPropAssets.Decor(ambient, sprites, head, "Cabeza_Piedra_01", new Vector3(0.5f, 0.8f, 0.5f));
         }
 
         static void AddLoot(Transform group, LootTable table, int zoneLevel)

@@ -21,6 +21,17 @@ Plantilla:
 
 ---
 
+## 2026-11-10 — i7-10700: piezas colocadas en la mazmorra (D4)
+
+- **Rama / commit al empezar:** `feature/prototipo-olmeca` @ `3a8b248`.
+- **Hecho:** `OlmecaDungeonGenerator.BuildProps` coloca trampas, vasijas, braseros, cristales, esteras y una cabeza en los tres pisos, con las posiciones de `Tools/ArtPipeline/colocar_piezas.py` (reglas en `Docs/Mazmorras/Olmeca.md`). El piso 1 se queda sin cerca ni cabeza: no hay sitio fuera del pasillo. Pisos regenerados.
+- **Pruebas:** `OlmecaPiezasSceneTests` (3): las piezas de cada piso, sobre suelo, las de suelo por debajo de los personajes, la placa con sus dos pinchos y las vasijas con botín. Capturas reales revisadas (prueba temporal, borrada).
+- **Rendimiento (i7, piso 2):** Bajo 256–284, Medio 334–342, Alto 290–296 (`Docs/Rendimiento.md`).
+- **Estado:** EditMode 132/132, PlayMode 120/120. Subido.
+- **Pendiente:** D3 (sala del tesoro y pasadizo secreto). **No se ha jugado en el Editor.**
+
+---
+
 ## 2026-11-10 — i7-10700: mecánicas de la mazmorra (D2)
 
 - **Rama / commit al empezar:** `feature/prototipo-olmeca` @ `eca8d0e`.

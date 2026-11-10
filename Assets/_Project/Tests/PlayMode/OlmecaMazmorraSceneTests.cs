@@ -190,9 +190,9 @@ namespace CronicasDeMexico.Tests
                 Assert.AreEqual(n != 2, Object.FindAnyObjectByType<MemoryShrine>() != null, $"Piso {n}: santuario de Memoria.");
                 Assert.AreEqual(n == 2, Object.FindAnyObjectByType<LifeShrine>() != null, $"Piso {n}: santuario de Vida.");
 
-                // El vacío que rodea las salas no se atraviesa: hay una caja a la altura de un muro. (0, 8) del flujo
-                // queda detrás de la sala central en los tres pisos.
-                Assert.IsTrue(Physics.Raycast(IsometricProjection.FromPipeline(0f, 8f, 10f), Vector3.down, out var hit, 20f));
+                // El vacío que rodea las salas no se atraviesa: hay una caja a la altura de un muro. (-6, 8) del flujo
+                // es vacío en los tres pisos (el (0, 8) es ahora la cámara del tesoro del piso 1).
+                Assert.IsTrue(Physics.Raycast(IsometricProjection.FromPipeline(-6f, 8f, 10f), Vector3.down, out var hit, 20f));
                 Assert.Greater(hit.point.y, 1f, $"Piso {n}: el vacío debe bloquear el paso.");
 
                 yield return UnloadIfLoaded(Floor(n));

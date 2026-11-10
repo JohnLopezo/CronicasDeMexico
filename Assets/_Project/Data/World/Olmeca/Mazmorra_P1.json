@@ -4,18 +4,18 @@
  "suelo": [
   {
    "sprite": "Suelo_Mazmorra_P1_00",
-   "derecha": -3.95833,
-   "arriba": -0.05208
+   "derecha": -3.85417,
+   "arriba": 1.9375
   },
   {
    "sprite": "Suelo_Mazmorra_P1_01",
-   "derecha": 12.61458,
-   "arriba": -0.05208
+   "derecha": 12.66667,
+   "arriba": 1.9375
   }
  ],
  "objetos": [
   {
-   "sprite": "Muro_Basalto_Y_03",
+   "sprite": "Muro_Basalto_Y_02",
    "x": -14.5,
    "y": -3,
    "z": 0.0
@@ -27,13 +27,13 @@
    "z": 0.0
   },
   {
-   "sprite": "Muro_Basalto_Y_03",
+   "sprite": "Muro_Basalto_Y_02",
    "x": -14.5,
    "y": -1,
    "z": 0.0
   },
   {
-   "sprite": "Muro_Basalto_Y_02",
+   "sprite": "Muro_Basalto_Y_01",
    "x": -14.5,
    "y": 0,
    "z": 0.0
@@ -45,7 +45,7 @@
    "z": 0.0
   },
   {
-   "sprite": "Muro_Basalto_Y_02",
+   "sprite": "Muro_Basalto_Y_01",
    "x": -14.5,
    "y": 2,
    "z": 0.0
@@ -57,25 +57,25 @@
    "z": 0.0
   },
   {
-   "sprite": "Muro_Basalto_03",
+   "sprite": "Muro_Basalto_01",
    "x": -14,
    "y": 3.5,
    "z": 0.0
   },
   {
-   "sprite": "Muro_Basalto_01",
+   "sprite": "Muro_Basalto_02",
    "x": -13,
    "y": 3.5,
    "z": 0.0
   },
   {
-   "sprite": "Muro_Basalto_01",
+   "sprite": "Muro_Basalto_03",
    "x": -10,
    "y": 3.5,
    "z": 0.0
   },
   {
-   "sprite": "Muro_Basalto_03",
+   "sprite": "Muro_Basalto_01",
    "x": -9,
    "y": 3.5,
    "z": 0.0
@@ -87,25 +87,25 @@
    "z": 0.0
   },
   {
-   "sprite": "Muro_Basalto_02",
+   "sprite": "Muro_Basalto_03",
    "x": -7,
    "y": 1.5,
    "z": 0.0
   },
   {
-   "sprite": "Muro_Basalto_03",
+   "sprite": "Muro_Basalto_01",
    "x": -6,
    "y": 1.5,
    "z": 0.0
   },
   {
-   "sprite": "Muro_Basalto_01",
+   "sprite": "Muro_Basalto_02",
    "x": -5,
    "y": 1.5,
    "z": 0.0
   },
   {
-   "sprite": "Muro_Basalto_Y_02",
+   "sprite": "Muro_Basalto_Y_01",
    "x": -4.5,
    "y": -3,
    "z": 0.0
@@ -117,31 +117,31 @@
    "z": 0.0
   },
   {
-   "sprite": "Muro_Basalto_Y_02",
+   "sprite": "Muro_Basalto_Y_01",
    "x": -4.5,
    "y": 2,
    "z": 0.0
   },
   {
-   "sprite": "Muro_Basalto_Y_02",
+   "sprite": "Muro_Basalto_Y_01",
    "x": -4.5,
    "y": 3,
    "z": 0.0
   },
   {
-   "sprite": "Muro_Basalto_02",
+   "sprite": "Muro_Basalto_01",
    "x": -4,
    "y": 3.5,
    "z": 0.0
   },
   {
-   "sprite": "Muro_Basalto_01",
+   "sprite": "Muro_Basalto_03",
    "x": -3,
    "y": 3.5,
    "z": 0.0
   },
   {
-   "sprite": "Muro_Basalto_01",
+   "sprite": "Muro_Basalto_02",
    "x": -2,
    "y": 3.5,
    "z": 0.0
@@ -153,45 +153,99 @@
    "z": 0.0
   },
   {
-   "sprite": "Muro_Basalto_01",
+   "sprite": "Muro_Basalto_02",
    "x": 0,
    "y": 3.5,
    "z": 0.0
   },
   {
-   "sprite": "Muro_Basalto_01",
+   "sprite": "Muro_Basalto_Y_02",
+   "x": -0.5,
+   "y": 8,
+   "z": 0.0
+  },
+  {
+   "sprite": "Muro_Basalto_Y_01",
+   "x": -0.5,
+   "y": 9,
+   "z": 0.0
+  },
+  {
+   "sprite": "Muro_Basalto_Y_01",
+   "x": -0.5,
+   "y": 10,
+   "z": 0.0
+  },
+  {
+   "sprite": "Muro_Basalto_02",
+   "x": 0,
+   "y": 10.5,
+   "z": 0.0
+  },
+  {
+   "sprite": "Muro_Basalto_02",
    "x": 1,
    "y": 3.5,
    "z": 0.0
   },
   {
    "sprite": "Muro_Basalto_01",
+   "x": 1,
+   "y": 10.5,
+   "z": 0.0
+  },
+  {
+   "sprite": "Muro_Basalto_02",
    "x": 2,
    "y": 1.5,
    "z": 0.0
   },
   {
    "sprite": "Muro_Basalto_01",
-   "x": 3,
-   "y": 1.5,
-   "z": 0.0
-  },
-  {
-   "sprite": "Muro_Basalto_Y_03",
-   "x": 2.5,
-   "y": 3,
-   "z": 0.0
-  },
-  {
-   "sprite": "Muro_Basalto_Y_02",
-   "x": 2.5,
-   "y": 4,
+   "x": 2,
+   "y": 10.5,
    "z": 0.0
   },
   {
    "sprite": "Muro_Basalto_02",
    "x": 3,
-   "y": 4.5,
+   "y": 1.5,
+   "z": 0.0
+  },
+  {
+   "sprite": "Muro_Basalto_Y_01",
+   "x": 2.5,
+   "y": 3,
+   "z": 0.0
+  },
+  {
+   "sprite": "Muro_Basalto_Y_01",
+   "x": 2.5,
+   "y": 4,
+   "z": 0.0
+  },
+  {
+   "sprite": "Muro_Basalto_Y_01",
+   "x": 2.5,
+   "y": 5,
+   "z": 0.0
+  },
+  {
+   "sprite": "Muro_Basalto_Y_03",
+   "x": 2.5,
+   "y": 6,
+   "z": 0.0
+  },
+  {
+   "sprite": "Muro_Basalto_Y_03",
+   "x": 2.5,
+   "y": 7,
+   "z": 0.0
+  },
+  {
+   "sprite": "Muro_Basalto_02",
+   "x": 3,
+   "y": 10.5,
    "z": 0.0
   },
   {
@@ -203,7 +257,7 @@
   {
    "sprite": "Muro_Basalto_01",
    "x": 4,
-   "y": 4.5,
+   "y": 10.5,
    "z": 0.0
   },
   {
@@ -219,21 +273,27 @@
    "z": 0.0
   },
   {
-   "sprite": "Muro_Basalto_Y_01",
+   "sprite": "Muro_Basalto_Y_02",
    "x": 4.5,
    "y": -2,
    "z": 0.0
   },
   {
-   "sprite": "Muro_Basalto_Y_02",
+   "sprite": "Muro_Basalto_Y_03",
    "x": 4.5,
    "y": 2,
    "z": 0.0
   },
   {
-   "sprite": "Muro_Basalto_01",
+   "sprite": "Muro_Basalto_02",
    "x": 5,
    "y": 4.5,
+   "z": 0.0
+  },
+  {
+   "sprite": "Muro_Basalto_01",
+   "x": 5,
+   "y": 10.5,
    "z": 0.0
   },
   {
@@ -243,13 +303,25 @@
    "z": 0.0
   },
   {
-   "sprite": "Muro_Basalto_01",
+   "sprite": "Muro_Basalto_02",
+   "x": 6,
+   "y": 10.5,
+   "z": 0.0
+  },
+  {
+   "sprite": "Muro_Basalto_02",
    "x": 7,
    "y": 4.5,
    "z": 0.0
   },
   {
-   "sprite": "Muro_Basalto_02",
+   "sprite": "Muro_Basalto_01",
+   "x": 7,
+   "y": 10.5,
+   "z": 0.0
+  },
+  {
+   "sprite": "Muro_Basalto_03",
    "x": 8,
    "y": 4.5,
    "z": 0.0
@@ -261,37 +333,37 @@
    "z": 0.0
   },
   {
-   "sprite": "Muro_Basalto_01",
+   "sprite": "Muro_Basalto_02",
    "x": 10,
    "y": 4.5,
    "z": 0.0
   },
   {
-   "sprite": "Muro_Basalto_01",
+   "sprite": "Muro_Basalto_02",
    "x": 11,
    "y": 4.5,
    "z": 0.0
   },
   {
-   "sprite": "Muro_Basalto_02",
+   "sprite": "Muro_Basalto_01",
    "x": 12,
    "y": 1.5,
    "z": 0.0
   },
   {
-   "sprite": "Muro_Basalto_01",
+   "sprite": "Muro_Basalto_02",
    "x": 13,
    "y": 1.5,
    "z": 0.0
   },
   {
-   "sprite": "Muro_Basalto_Y_02",
+   "sprite": "Muro_Basalto_Y_01",
    "x": 13.5,
    "y": -3,
    "z": 0.0
   },
   {
-   "sprite": "Muro_Basalto_Y_03",
+   "sprite": "Muro_Basalto_Y_01",
    "x": 13.5,
    "y": -2,
    "z": 0.0
@@ -303,7 +375,7 @@
    "z": 0.0
   },
   {
-   "sprite": "Muro_Basalto_Y_02",
+   "sprite": "Muro_Basalto_Y_03",
    "x": 13.5,
    "y": 3,
    "z": 0.0
@@ -315,25 +387,25 @@
    "z": 0.0
   },
   {
-   "sprite": "Muro_Basalto_02",
+   "sprite": "Muro_Basalto_01",
    "x": 15,
    "y": 3.5,
    "z": 0.0
   },
   {
-   "sprite": "Muro_Basalto_01",
+   "sprite": "Muro_Basalto_02",
    "x": 16,
    "y": 3.5,
    "z": 0.0
   },
   {
-   "sprite": "Muro_Basalto_01",
+   "sprite": "Muro_Basalto_03",
    "x": 17,
    "y": 3.5,
    "z": 0.0
   },
   {
-   "sprite": "Muro_Basalto_01",
+   "sprite": "Muro_Basalto_02",
    "x": 18,
    "y": 3.5,
    "z": 0.0
@@ -378,6 +450,12 @@
    "sprite": "Escombros_Basalto_01",
    "x": 17.6,
    "y": 2.5,
+   "z": 0.0
+  },
+  {
+   "sprite": "Estrado_Ofrenda_01",
+   "x": 3.5,
+   "y": 9.3,
    "z": 0.0
   }
  ],
@@ -425,8 +503,8 @@
    "y": 3.3
   },
   "ofrenda_oculta": {
-   "x": 3.15,
-   "y": 3.5
+   "x": 3.5,
+   "y": 7.9
   },
   "agrietado": {
    "x": 4.0,
@@ -1510,18 +1588,6 @@
    "y": 7
   },
   {
-   "x": 0,
-   "y": 8
-  },
-  {
-   "x": 0,
-   "y": 9
-  },
-  {
-   "x": 0,
-   "y": 10
-  },
-  {
    "x": 1,
    "y": -10
   },
@@ -1564,18 +1630,6 @@
   {
    "x": 1,
    "y": 7
-  },
-  {
-   "x": 1,
-   "y": 8
-  },
-  {
-   "x": 1,
-   "y": 9
-  },
-  {
-   "x": 1,
-   "y": 10
   },
   {
    "x": 2,
@@ -1638,18 +1692,6 @@
    "y": 7
   },
   {
-   "x": 2,
-   "y": 8
-  },
-  {
-   "x": 2,
-   "y": 9
-  },
-  {
-   "x": 2,
-   "y": 10
-  },
-  {
    "x": 3,
    "y": -10
   },
@@ -1688,30 +1730,6 @@
   {
    "x": 3,
    "y": 2
-  },
-  {
-   "x": 3,
-   "y": 5
-  },
-  {
-   "x": 3,
-   "y": 6
-  },
-  {
-   "x": 3,
-   "y": 7
-  },
-  {
-   "x": 3,
-   "y": 8
-  },
-  {
-   "x": 3,
-   "y": 9
-  },
-  {
-   "x": 3,
-   "y": 10
   },
   {
    "x": 4,
@@ -1754,30 +1772,6 @@
    "y": 2
   },
   {
-   "x": 4,
-   "y": 5
-  },
-  {
-   "x": 4,
-   "y": 6
-  },
-  {
-   "x": 4,
-   "y": 7
-  },
-  {
-   "x": 4,
-   "y": 8
-  },
-  {
-   "x": 4,
-   "y": 9
-  },
-  {
-   "x": 4,
-   "y": 10
-  },
-  {
    "x": 5,
    "y": -10
   },
@@ -1812,18 +1806,6 @@
   {
    "x": 5,
    "y": 7
-  },
-  {
-   "x": 5,
-   "y": 8
-  },
-  {
-   "x": 5,
-   "y": 9
-  },
-  {
-   "x": 5,
-   "y": 10
   },
   {
    "x": 6,
@@ -1862,18 +1844,6 @@
    "y": 7
   },
   {
-   "x": 6,
-   "y": 8
-  },
-  {
-   "x": 6,
-   "y": 9
-  },
-  {
-   "x": 6,
-   "y": 10
-  },
-  {
    "x": 7,
    "y": -10
   },
@@ -1908,18 +1878,6 @@
   {
    "x": 7,
    "y": 7
-  },
-  {
-   "x": 7,
-   "y": 8
-  },
-  {
-   "x": 7,
-   "y": 9
-  },
-  {
-   "x": 7,
-   "y": 10
   },
   {
    "x": 8,

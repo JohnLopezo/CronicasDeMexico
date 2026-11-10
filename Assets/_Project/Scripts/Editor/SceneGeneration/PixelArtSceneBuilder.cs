@@ -64,6 +64,7 @@ namespace CronicasDeMexico.Editor.SceneGeneration
             ("Muro_Basalto_Y", new Vector3(0.3f, 1f, 1.7f)),
             ("Muro_Basalto", new Vector3(1f, 0.3f, 1.7f)),
             ("Santuario_Memoria", new Vector3(1.3f, 0.9f, 1.4f)),
+            ("Estrado_Ofrenda", new Vector3(1.8f, 1.6f, 0.45f)),   // D3: el estrado de la cámara del tesoro (piso 1)
             ("Santuario_Vida", new Vector3(0.8f, 0.8f, 0.4f)),
         };
 

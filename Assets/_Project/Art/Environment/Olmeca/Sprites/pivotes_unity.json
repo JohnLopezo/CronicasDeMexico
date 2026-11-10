@@ -4295,22 +4295,22 @@
    "nombre": "Suelo_Mazmorra_P1_00",
    "lienzo": [
     1024,
-    313
+    504
    ],
    "pivote": [
     512.0,
-    156.5
+    252.0
    ]
   },
   {
    "nombre": "Suelo_Mazmorra_P1_01",
    "lienzo": [
-    567,
-    313
+    562,
+    504
    ],
    "pivote": [
-    283.5,
-    156.5
+    281.0,
+    252.0
    ]
   },
   {

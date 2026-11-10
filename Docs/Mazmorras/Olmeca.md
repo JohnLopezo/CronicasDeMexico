@@ -121,4 +121,4 @@ Fuente: `Docs/Diseño de mazmorra/Crónicas de México_ Mazmorras ancestrales.pn
 | 2, El Pantano | 3 | — | 3 | 3 | 3 | 2 | 1 |
 | 3, antesala | 2 | — | 3 | 2 | 2 | — | — |
 
-Ninguna en la arena del Guardián. Las piezas de suelo (pinchos y placa) usan el material de los avisos: encima del suelo y debajo de los personajes, para no taparles los pies. **Pendiente (D3):** sala del tesoro con el estrado y pasadizo secreto; cambian el trazado y piden exportar desde Blender, cuyo render no sale idéntico entre ejecuciones (exportar solo los pisos).
+Ninguna en la arena del Guardián. Las piezas de suelo (pinchos y placa) usan el material de los avisos: encima del suelo y debajo de los personajes, para no taparles los pies. **Pasadizo secreto y cámara del tesoro (D3, piso 1):** de la alcoba tras el basalto agrietado sale un pasadizo al norte que acaba en una cámara con el estrado, la ofrenda oculta a su pie, dos braseros, dos cristales y dos esteras. Solo se llega con el golpe de tierra, que se gana al vencer al Guardián: es la recompensa por volver al tutorial. Se exportó con `--solo-piso 1` (ver `CLAUDE.md`).

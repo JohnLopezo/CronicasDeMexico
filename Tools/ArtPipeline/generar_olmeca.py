@@ -3582,16 +3582,20 @@ PISOS = {
     1: {"limites": (-16, 20, -10, 10),
         "celdas": rect(-14, -9, -3, 3) | rect(-8, -5, -1, 1) | rect(-4, 1, -3, 3) | rect(2, 4, -1, 1)
                   | rect(5, 11, -4, 4) | rect(12, 13, -1, 1) | rect(14, 18, -3, 3)
-                  | rect(3, 4, 3, 4),   # M5: alcoba tras el basalto agrietado (ofrenda oculta)
+                  | rect(3, 4, 3, 4)    # M5: alcoba tras el basalto agrietado
+                  # D3: de la alcoba sale un pasadizo secreto al norte que acaba en la cámara del tesoro (lámina
+                  # «Mazmorras ancestrales»): solo se llega con el golpe de tierra, tras vencer al Guardián.
+                  | rect(3, 4, 5, 7) | rect(0, 7, 8, 10),
         "subida": (-11.5, 2.6), "llegada_arriba": (-11.5, 1.2),
         "bajada": (16.5, 0.0), "llegada_abajo": (15.0, 0.0),
         "memoria": (-13.3, 2.95), "memoria_llegada": (-13.3, 1.7),
         "enemigos": [(-1.0, 0.5), (8.5, 2.0), (8.0, -2.5)],
         # Recompensas (M5): ofrendas por tipo y el basalto agrietado que tapa la alcoba (2 m de ancho en Y).
-        "ofrenda_comun": (-9.5, 2.3), "ofrenda_especial": (6.0, 3.3), "ofrenda_oculta": (3.15, 3.5),
+        "ofrenda_comun": (-9.5, 2.3), "ofrenda_especial": (6.0, 3.3), "ofrenda_oculta": (3.5, 7.9),   # al pie del estrado
         "agrietado": (4.0, 3.5),
         "adornos": [("Escombros_Basalto_01", -3.3, 2.6), ("Escombros_Basalto_03", 0.6, -2.5),
-                    ("Estela_Lisa_01", 5.4, -3.4), ("Escombros_Basalto_02", 10.6, 3.6), ("Escombros_Basalto_01", 17.6, 2.5)],
+                    ("Estela_Lisa_01", 5.4, -3.4), ("Escombros_Basalto_02", 10.6, 3.6), ("Escombros_Basalto_01", 17.6, 2.5),
+                    ("Estrado_Ofrenda_01", 3.5, 9.3)],   # D3: el estrado de la cámara del tesoro
         "losas": [1, 1, 1, 2, 2], "muros": [1, 2, 1, 2, 1, 2, 3]},
     # El Pantano (M3): sala inundada con dos ecos borrados y un espíritu, sala lateral del santuario de Vida y la
     # arena del Jaguar de Piedra, donde está la bajada (cerrada hasta vencerlo).
@@ -3980,7 +3984,7 @@ RECORTES_SELVA = {"Llegada": (14, 0), "Claro": (2, 0.5), "Entrada": (-11, -2)}
 
 # Los pisos de la mazmorra caben en el lienzo de la selva; fondo casi negro (el vacío bajo el piso)
 FONDO_MAZMORRA = "#0B0D0B"
-RECORTES_PISO = {1: {"Llegada": (-11.5, -1), "Sala": (-1.5, 0), "Grupo": (8, 0), "Bajada": (15.5, 0)},
+RECORTES_PISO = {1: {"Llegada": (-11.5, -1), "Sala": (-1.5, 0), "Grupo": (8, 0), "Bajada": (15.5, 0), "Tesoro": (3.5, 7)},
                  2: {"Llegada": (-11.5, 0), "Sala": (0, 0.5), "Vida": (0, -7), "Arena": (12, 1)},
                  3: {"Llegada": (-7, 0), "Antesala": (3.5, 0.5), "Arena": (5, 12)}}
 
@@ -4098,6 +4102,67 @@ def trozos_suelo(salida, metas, plan, region, tam, centro, tmp, destinos, pivote
     return trozos
 
 
+def datos_region(plan, colision, trozos):
+    """Contenido de <Región>.json: lo que leen los generadores de Unity."""
+    datos = {
+        "nota": "Coordenadas del flujo Blender (x, y en el suelo, z arriba; 1 unidad = 1 m). En Unity: (y, z, -x).",
+        "agua": [{"x": X, "y": Y} for n, X, Y in plan["suelo"] if n == "AGUA"],
+        "suelo": trozos,
+        "objetos": [{"sprite": n, "x": round(X, 3), "y": round(Y, 3), "z": z} for n, X, Y, z in plan["objetos"]],
+        "niveles": [{"celdas": [{"x": c[0], "y": c[1]} for c in nivel], "z": k}
+                    for k, nivel in enumerate(colision["niveles"])]
+                   + [{"celdas": [{"x": c[0], "y": c[1]} for c in nivel], "z": k}
+                      for k, nivel in enumerate(colision["niveles_recinto"])],
+        "rampas": colision["rampas"],
+        "agua_bloqueo": [{"x": c[0], "y": c[1]} for c in colision["agua_bloqueo"]],
+        "muelles": colision["muelles"],
+        "limites": colision["limites"],
+        "puntos": colision["puntos"],
+    }
+    if "vacio" in colision:   # pisos de la mazmorra
+        datos["vacio"] = [{"x": c[0], "y": c[1]} for c in colision["vacio"]]
+    if colision.get("agua_vadeable"):
+        datos["agua_vadeable"] = True
+    if colision.get("inundacion"):   # agua que aparece durante el combate (arena del Guardián)
+        datos["inundacion"] = [{"x": c[0], "y": c[1]} for c in colision["inundacion"]]
+    return datos
+
+
+def exportar_piso(salida, metas, region, plan, colision, tam, centro):
+    """Exporta solo un piso (--solo-piso): su JSON y sus trozos de suelo, sin tocar el resto de sprites de Assets. El
+    render no sale idéntico entre ejecuciones y Salida no coincide con lo exportado, así que la exportación completa
+    cambiaría cientos de sprites que no se han tocado. Tampoco las losas de Salida son las que hornearon los suelos
+    actuales: un piso reexportado sale coherente consigo mismo pero puede moverse un par de píxeles; usar solo en el
+    piso que cambia."""
+    tmp = os.path.join(salida, "_suelo")
+    os.makedirs(tmp, exist_ok=True)
+    destinos, pivotes = {"Suelo": []}, []
+    datos = datos_region(plan, colision, trozos_suelo(salida, metas, plan, region, tam, centro, tmp, destinos, pivotes))
+    dest = os.path.join(SPRITES_UNITY, "Suelo")
+    prefijo = f"Suelo_{region}_"
+    nuevos = {n + ".png" for n, _ in destinos["Suelo"]}
+    for viejo in os.listdir(dest):
+        base = viejo[:-5] if viejo.endswith(".meta") else viejo
+        if base.startswith(prefijo) and base.endswith(".png") and base not in nuevos:
+            os.remove(os.path.join(dest, viejo))
+    for n, origen in destinos["Suelo"]:
+        shutil.copyfile(origen, os.path.join(dest, n + ".png"))
+    shutil.rmtree(tmp)
+    ruta = os.path.join(SPRITES_UNITY, "pivotes_unity.json")
+    with open(ruta, encoding="utf-8") as fh:
+        todos = json.load(fh)
+    # En su sitio, sin reordenar la lista: el diff solo muestra los trozos de este piso.
+    lista = todos["sprites"]
+    sitio = next((k for k, e in enumerate(lista) if e["nombre"].startswith(prefijo)), len(lista))
+    lista = [e for e in lista if not e["nombre"].startswith(prefijo)]
+    todos["sprites"] = lista[:sitio] + pivotes + lista[sitio:]
+    with open(ruta, "w", encoding="utf-8") as fh:
+        json.dump(todos, fh, ensure_ascii=False, indent=1)
+    with open(os.path.join(DATOS_UNITY, region + ".json"), "w", encoding="utf-8") as fh:
+        json.dump(datos, fh, ensure_ascii=False, indent=1)
+    print("Unity:", region, len(destinos["Suelo"]), "trozos de suelo")
+
+
 def exportar_unity(salida, metas, regiones):
     """Copia a Assets los sprites del juego y los datos de cada región (<Región>.json). regiones = [(nombre, plan,
     colision, tam, centro)]: todas a la vez, porque cada carpeta se limpia de lo que ya no se genera. Conserva los
@@ -4117,27 +4182,7 @@ def exportar_unity(salida, metas, regiones):
     datos = {}
     for region, plan, colision, tam, centro in regiones:
         trozos = trozos_suelo(salida, metas, plan, region, tam, centro, tmp, destinos, pivotes)
-        datos[region] = {
-            "nota": "Coordenadas del flujo Blender (x, y en el suelo, z arriba; 1 unidad = 1 m). En Unity: (y, z, -x).",
-            "agua": [{"x": X, "y": Y} for n, X, Y in plan["suelo"] if n == "AGUA"],
-            "suelo": trozos,
-            "objetos": [{"sprite": n, "x": round(X, 3), "y": round(Y, 3), "z": z} for n, X, Y, z in plan["objetos"]],
-            "niveles": [{"celdas": [{"x": c[0], "y": c[1]} for c in nivel], "z": k}
-                        for k, nivel in enumerate(colision["niveles"])]
-                       + [{"celdas": [{"x": c[0], "y": c[1]} for c in nivel], "z": k}
-                          for k, nivel in enumerate(colision["niveles_recinto"])],
-            "rampas": colision["rampas"],
-            "agua_bloqueo": [{"x": c[0], "y": c[1]} for c in colision["agua_bloqueo"]],
-            "muelles": colision["muelles"],
-            "limites": colision["limites"],
-            "puntos": colision["puntos"],
-        }
-        if "vacio" in colision:   # pisos de la mazmorra
-            datos[region]["vacio"] = [{"x": c[0], "y": c[1]} for c in colision["vacio"]]
-        if colision.get("agua_vadeable"):
-            datos[region]["agua_vadeable"] = True
-        if colision.get("inundacion"):   # agua que aparece durante el combate (arena del Guardián)
-            datos[region]["inundacion"] = [{"x": c[0], "y": c[1]} for c in colision["inundacion"]]
+        datos[region] = datos_region(plan, colision, trozos)
 
     for carpeta, archivos in destinos.items():
         dest = os.path.join(SPRITES_UNITY, carpeta)
@@ -4162,6 +4207,18 @@ def exportar_unity(salida, metas, regiones):
 
 def main():
     salida = os.path.abspath(sys.argv[sys.argv.index("--") + 1])
+    if "--solo-piso" in sys.argv:
+        # Rehace un solo piso con los sprites ya renderizados (Salida/pivotes.json): su vista de revisión, su JSON y sus
+        # trozos de suelo. No renderiza ni copia nada más.
+        n = int(sys.argv[sys.argv.index("--solo-piso") + 1])
+        with open(os.path.join(salida, "pivotes.json"), encoding="utf-8") as fh:
+            metas = json.load(fh)
+        plan_piso, colision_piso = planificar_piso(n)
+        region = f"Mazmorra_P{n}"
+        componer_region(salida, metas, plan_piso, region, TAM_SELVA, CENTRO_SELVA, RECORTES_PISO[n], fondo=FONDO_MAZMORRA)
+        exportar_piso(salida, metas, region, plan_piso, colision_piso, TAM_SELVA, CENTRO_SELVA)
+        print("LISTO (solo el piso)", n)
+        return
     # --reusar: conserva los sprites ya renderizados con el mismo lienzo (para rehacer uno, borrar su PNG). Solo para
     # revisar composiciones: un cambio en un constructor no se detecta, así que el flujo final se ejecuta sin esta opción.
     previos = {}

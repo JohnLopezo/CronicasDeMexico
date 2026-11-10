@@ -378,14 +378,15 @@ namespace CronicasDeMexico.Editor.SceneGeneration
 
         static readonly Dictionary<int, FloorProps> Props = new()
         {
+            // Piso 1, más la cámara del tesoro (D3): braseros, cristales y esteras alrededor del estrado.
             [1] = new FloorProps(
                 new Vector2[] { new(-6f, 0f), new(2f, 0f) },
                 new Vector2[] { new(13f, 0f) },
                 new Vector2[] { new(13f, 1f), new(13f, -1f) },
-                new Vector2[] { new(-13f, -2f), new(-2f, 2f), new(6f, -2f), new(-3f, -2f) },
-                new Vector2[] { new(-10f, -2f), new(6f, 1f) },
+                new Vector2[] { new(-13f, -2f), new(-2f, 2f), new(6f, -2f), new(-3f, -2f), new(0.8f, 8.6f), new(6.2f, 8.6f) },
+                new Vector2[] { new(-10f, -2f), new(6f, 1f), new(1.6f, 8.1f), new(5.4f, 8.1f) },
                 new Vector2[] { new(10f, -1f), new(17f, -2f), new(0f, 2f), new(10f, -3f) },
-                new Vector2[] { new(15f, -2f), new(15f, 2f) },
+                new Vector2[] { new(15f, -2f), new(15f, 2f), new(1.4f, 9.8f), new(5.6f, 9.8f) },
                 new Vector2[0],
                 new Vector2[0]),
             [2] = new FloorProps(

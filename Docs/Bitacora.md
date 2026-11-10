@@ -21,6 +21,16 @@ Plantilla:
 
 ---
 
+## 2026-11-10 — i7-10700: pasadizo secreto y cámara del tesoro (D3)
+
+- **Rama / commit al empezar:** `feature/prototipo-olmeca` @ `e1b5f48`.
+- **Hecho:** en el piso 1, la alcoba tras el basalto agrietado se alarga en un pasadizo al norte hasta una cámara del tesoro con el estrado (colisión nueva en `PixelArtSceneBuilder`), la ofrenda oculta a su pie, braseros, cristales y esteras. Solo se entra con el golpe de tierra (tras el Guardián).
+- **Flujo de Blender:** opción nueva `--solo-piso N` (`exportar_piso`, `datos_region`) que exporta un solo piso sin tocar el resto. Hizo falta porque la exportación completa sobrescribiría casi todos los sprites, y porque las losas de `Salida` eran viejas: el primer intento dio al piso 1 un suelo de losas sueltas con huecos. Se renderizaron las losas actuales (`--reusar --solo-mazmorra`) y el suelo volvió a ser continuo; el piso 3, reexportado como prueba, salía 3 px distinto, así que solo cambia el piso 1.
+- **Pruebas:** `Threshold_HasTheSecretPassage_ToTheTreasureRoom` (suelo del pasadizo, estrado y ofrenda en la cámara) y una prueba temporal que camina de la alcoba al estrado (pasa; borrada). Capturas reales revisadas.
+- **Estado:** EditMode 132/132, PlayMode 121/121. `Floors_Load_..._VoidBlocked` usaba (0, 8) como vacío, que ahora es la cámara del tesoro: usa (-6, 8). Subido.
+
+---
+
 ## 2026-11-10 — i7-10700: piezas colocadas en la mazmorra (D4)
 
 - **Rama / commit al empezar:** `feature/prototipo-olmeca` @ `3a8b248`.

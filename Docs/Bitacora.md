@@ -21,6 +21,18 @@ Plantilla:
 
 ---
 
+## 2026-11-10 — i7-10700: controles táctiles
+
+- **Rama / commit al empezar:** `feature/prototipo-olmeca` @ `d99bf16`.
+- **Distribución aprobada por el autor:** joystick abajo a la izquierda; abajo a la derecha, Atacar grande con Esquivar, Defender y Especial alrededor y Tierra y Hablar encima; Menú arriba a la derecha.
+- **Hecho:** `UI/Touch/TouchControls` y `SafeArea`; `TouchControlsSetup` crea el prefab y lo pone en Boot. Son `OnScreenStick` y `OnScreenButton` del Input System: un mando virtual que el juego ya entiende (no usa `PlayerInput` ni esquemas fijos), así que no cambia nada del juego. Se ven solo con pantalla táctil y se ocultan con el menú (pausa); usan su propio EventSystem solo si no hay otro.
+- **Arreglo:** Atacar estaba ligado a tocar cualquier parte de la pantalla (`<Touchscreen>/primaryTouch/tap`): con los controles, cada toque del joystick habría atacado. Quitado.
+- **Pruebas:** `TouchControlsTests` (4): visibilidad, que Atacar pulsa el botón Oeste del mando, que el joystick mueve el stick y que cada control tiene una acción del jugador. Captura real revisada (prueba temporal, borrada).
+- **Estado:** EditMode 139/139, PlayMode 125/125. Subido.
+- **Falta:** probarlos en un Android real (build de desarrollo y ajuste de tamaños). **No se ha jugado en el Editor.**
+
+---
+
 ## 2026-11-10 — i7-10700: revisión de las animaciones de los enemigos
 
 - **Pedido del autor:** que las animaciones de los enemigos se vean completas.

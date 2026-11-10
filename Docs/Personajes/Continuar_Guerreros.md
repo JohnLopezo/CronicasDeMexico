@@ -31,7 +31,7 @@ Documentos relacionados: `Guerreros.md` (cómo están hechos y cómo regenerarlo
 4. **Jugar con Balam** para valorar la Defensa, la Habilidad especial y el equilibrio de atributos, que aún no se han probado jugando.
 5. **Con arte nuevo,** ver la lista siguiente.
 6. **Los otros seis guerreros:** Defensa, Victoria y Habilidad especial propias, uno a uno, una vez aprobado Balam.
-7. **Controles táctiles:** no existen; decidido para después del piloto. Sin ellos no se puede jugar en Android.
+7. ~~Controles táctiles.~~ **Hechos (2026-11-10):** joystick abajo a la izquierda y Atacar, Esquivar, Defender, Especial, Tierra, Hablar y Menú (`TouchControls`). Falta probarlos en un dispositivo Android.
 
 ## Arte que falta (lo aporta el autor)
 

@@ -298,6 +298,18 @@ namespace CronicasDeMexico.Tests
             controller.enabled = true;
             yield return new WaitForSeconds(0.2f);
             Assert.IsTrue(trial.Active.IsEngaged);
+
+            // Vencido, se ve caer (pose generada desde el reposo) antes de desvanecerse.
+            var bossHealth = trial.Active.GetComponent<Health>();
+            yield return new WaitForSeconds(1.1f); // fuera de la invulnerabilidad de un cambio de fase
+            while (!bossHealth.IsDead)
+            {
+                bossHealth.TryDamage(10000, trial.Active.transform.position + Vector3.right);
+                yield return new WaitForSeconds(1.1f); // el Muro de Cráneos se levanta una vez
+            }
+            yield return null;
+            var fallen = trial.Active.GetComponentInChildren<SpriteRenderer>().sprite.name;
+            Assert.That(fallen.Contains("_Caida") || fallen.Contains("_Desplome"), Is.True, $"Se ve caer ({fallen}).");
         }
     }
 }

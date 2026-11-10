@@ -74,5 +74,7 @@ namespace CronicasDeMexico.Data.Enemies
         public DirectionalSpriteSet walk;
         public DirectionalSpriteSet attack;
         public DirectionalSpriteSet special;
+        [Tooltip("Caída: se aplasta contra el suelo (generada desde el reposo por recortar_jefes.py).")]
+        public DirectionalSpriteSet death;
     }
 }

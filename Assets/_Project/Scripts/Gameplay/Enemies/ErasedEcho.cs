@@ -1,3 +1,4 @@
+using System.Collections;
 using CronicasDeMexico.Gameplay.Combat;
 using CronicasDeMexico.Gameplay.Movement;
 using UnityEngine;
@@ -194,11 +195,31 @@ namespace CronicasDeMexico.Gameplay.Enemies
                 FadeOut();
         }
 
+        const float DeathFade = 0.6f;
+
+        /// <summary>Al caer se borra poco a poco (su muerte): sin collider desde el primer momento.</summary>
+        public float DeathDuration => DeathFade;
+
         void OnDied()
         {
             SetGlow(0f);
+            controller.enabled = false;
+            enabled = false; // deja de disparar; la corrutina sigue
+            StartCoroutine(EraseOnDeath());
+        }
+
+        IEnumerator EraseOnDeath()
+        {
+            var color = spriteRenderer != null ? spriteRenderer.color : Color.white;
+            for (var t = 0f; t < DeathFade; t += Time.deltaTime)
+            {
+                if (spriteRenderer != null)
+                    spriteRenderer.color = new Color(color.r, color.g, color.b, color.a * (1f - t / DeathFade));
+                yield return null;
+            }
             SetPresent(false);
-            enabled = false;
+            if (spriteRenderer != null)
+                spriteRenderer.color = color;
         }
 
         // Ausente no se dibuja ni tiene collider: el golpe del jugador lo ignora.

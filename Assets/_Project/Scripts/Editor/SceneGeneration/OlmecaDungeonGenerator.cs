@@ -82,6 +82,9 @@ namespace CronicasDeMexico.Editor.SceneGeneration
         // El mini-jefe del Pantano es el espíritu del jaguar (decisión del autor del 2026-11-10: fuera el Jaguar de Piedra
         // de Blender). Los ids y banderas conservan "jaguar_piedra" para no romper las partidas guardadas.
         const string JaguarDisplayName = "Espíritu del Jaguar";
+        // Al doble que los espíritus comunes, para que se lea como jefe: ×2 mantiene los píxeles enteros (×1,5 los
+        // dejaría desiguales). 68 px frente a los 54 del jugador.
+        const float JaguarSpriteScale = 2f;
         const string JaguarDefeatText =
             "La luz del espíritu deja de temblar. Las grietas violetas se apagan y el jaguar se sienta, quieto, a tu lado. Por un " +
             "instante recuerdas a quienes lo llamaban para cuidar el agua y la casa: vino a vigilar, no a odiar. Al fondo, los " +
@@ -530,13 +533,14 @@ namespace CronicasDeMexico.Editor.SceneGeneration
             root.transform.position = ToWorld(home);
             var controller = root.AddComponent<CharacterController>();
             controller.height = 1.4f;
-            controller.radius = 0.45f; // del tamaño del espíritu (34 px), no de la escultura
+            controller.radius = 0.7f; // el cuerpo del espíritu agrandado
             controller.center = new Vector3(0f, 0.7f, 0f);
             controller.stepOffset = 0.3f;
             controller.minMoveDistance = 0f;
 
             var spriteObject = new GameObject("Sprite");
             spriteObject.transform.SetParent(root.transform, false);
+            spriteObject.transform.localScale = Vector3.one * JaguarSpriteScale;
             var spriteRenderer = spriteObject.AddComponent<SpriteRenderer>();
             spriteRenderer.sprite = stalk.GetIdle(DirectionalSpriteSet.DirectionCount - 1);
             spriteRenderer.sharedMaterial = CharacterMaterial();
@@ -580,6 +584,7 @@ namespace CronicasDeMexico.Editor.SceneGeneration
             var statue = SpriteObject("Espiritu_Jaguar_Liberado", freed, stalk.GetIdle(DirectionalSpriteSet.DirectionCount - 1),
                 AssetDatabase.LoadAssetAtPath<Material>(PixelArtAssets.ObjectMaterialPath),
                 IsometricProjection.SnapToPixelGrid(ToWorld(home), 1f / IsometricProjection.PixelsPerUnit));
+            statue.transform.localScale = Vector3.one * JaguarSpriteScale;
             statue.gameObject.SetActive(false);
             ShowWhen(statue.gameObject, new[] { OlmecaNarrativeAssets.StoneJaguarDefeatedFlag }, null, liveUpdate: true);
         }

@@ -2,11 +2,13 @@
 # Solo usa numpy; se ejecuta con el Python que trae Blender:
 #   "<Blender>/5.2/python/bin/python.exe" -I Tools/ArtPipeline/recortar_jefes.py Assets/_Project/Art/Environment/Olmeca/Sprites/Jefes <hoja_revision.png>
 # Escribe Jefe_<Clave>_<Pose>1_03.png con las cuatro poses pequeñas de cada panel (la ilustración grande lleva un fondo
-# pintado que no se separa bien): Reposo, Avance, Ataque y Especial. Solo de lado; lienzo de 128 de alto con los pies a
+# pintado que no se separa bien): Reposo, Avance, Ataque y Especial, más Caida y Desplome generados desde el reposo. Solo de lado; lienzo de 128 de alto con los pies a
 # 2 px (el pivote de PixelArtSpriteImporter para Sprites/Jefes). Las cajas terminan encima del pedestal de piedra.
 # Son ecos ficticios inspirados en figuras de otras culturas, para la arena de pruebas (Docs/Enemigos/Jefes_Prueba.md).
 import os
 import sys
+
+import numpy as np
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))  # con -I, Python no añade la carpeta del script
 import recortar_enemigos as ren  # noqa: E402
@@ -36,13 +38,36 @@ JEFES = {
 }
 
 
+def desplome(lienzo, alto, oscurecer):
+    """Caída generada desde el reposo (la lámina no trae muerte): el cuerpo se aplasta contra el suelo y se oscurece.
+    Sirve igual para un cuerpo humano, la serpiente o el perro. shortcut: rígida; sustituir si llegan poses de caída."""
+    ys, xs = np.nonzero(lienzo[..., 3])
+    s = lienzo[ys.min():ys.max() + 1, xs.min():xs.max() + 1]
+    filas = np.linspace(0, s.shape[0] - 1, max(4, round(s.shape[0] * alto))).astype(int)
+    caido = s[filas].copy()
+    caido[..., :3] = (caido[..., :3] * oscurecer).astype(np.uint8)
+    return caido
+
+
+def _comprobar():
+    figura = np.zeros((128, 40, 4), np.uint8)
+    figura[46:126, 10:30] = 255  # 80 de alto, pies a 2 px
+    assert desplome(figura, 0.4, 0.7).shape[0] == 32, "aplastada al 40 %"
+    assert desplome(figura, 0.4, 0.7)[..., 0].max() == 178, "y oscurecida"
+
+
 def main():
+    _comprobar()
     carpeta, revision = sys.argv[1], sys.argv[2]
     os.makedirs(carpeta, exist_ok=True)
     img = npc.leer_png(LAMINA)
     escritos, filas = set(), []
     for nombre, g in JEFES.items():
         sprites, factor = ren.recortar(img, nombre, g, ALTO_LIENZO)
+        ancho = sprites["Reposo"].shape[1]
+        for pose, alto, oscurecer in (("Caida", 0.7, 0.85), ("Desplome", 0.4, 0.7)):
+            sprites[pose] = npc.colocar(desplome(sprites["Reposo"], alto, oscurecer), f"{nombre}_{pose}",
+                                        por_cuerpo=True, lienzo_px=(ancho, ALTO_LIENZO))
         for pose, lienzo in sprites.items():
             archivo = f"Jefe_{nombre}_{pose}1_03.png"
             npc.escribir_png(os.path.join(carpeta, archivo), lienzo)

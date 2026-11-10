@@ -451,8 +451,9 @@ namespace CronicasDeMexico.Gameplay.Enemies
 
         IEnumerator Resurrect()
         {
-            SetAlpha(FallenAlpha);
+            Play(data.death);
             yield return new WaitForSeconds(ResurrectDelay);
+            Stop(data.death);
             health.ReviveFull();
             health.CarryOver(Mathf.CeilToInt(health.Max * data.resurrectFraction));
             health.GrantInvulnerability(PhaseInvulnerability);
@@ -462,6 +463,9 @@ namespace CronicasDeMexico.Gameplay.Enemies
 
         IEnumerator Vanish()
         {
+            // Se ve caer y, tumbado, se desvanece.
+            Play(data.death);
+            yield return new WaitForSeconds(data.death != null ? data.death.Duration : 0f);
             SetAlpha(FallenAlpha);
             yield return new WaitForSeconds(DefeatLinger);
             if (spriteRenderer != null)

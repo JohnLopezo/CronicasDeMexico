@@ -29,7 +29,8 @@ namespace CronicasDeMexico.Tests
                 else if (ability.kind != BossAbilityKind.Shield)
                     Assert.That(ability.windup, Is.GreaterThan(0f), $"{ability.name}: todo golpe se avisa.");
             }
-            foreach (var set in new[] { data.walk, data.attack, data.special })
+            StringAssert.Contains("_Desplome", data.death.GetOnceFrame(0, data.death.Duration).name, "Cae y queda tumbado.");
+            foreach (var set in new[] { data.walk, data.attack, data.special, data.death })
                 StringAssert.StartsWith($"Jefe_{key}_", set.GetOnceFrame(0, 0f).name);
         }
 
@@ -37,7 +38,7 @@ namespace CronicasDeMexico.Tests
         public void BossSprites_AreImportedWithTheFeetOnThePivot()
         {
             var guids = AssetDatabase.FindAssets("Jefe_ t:Sprite", new[] { "Assets/_Project/Art/Environment/Olmeca/Sprites/Jefes" });
-            Assert.That(guids.Length, Is.EqualTo(6 * 4));
+            Assert.That(guids.Length, Is.EqualTo(6 * 6), "Cuatro poses de la lámina y dos de caída por jefe.");
             foreach (var guid in guids)
             {
                 var sprite = AssetDatabase.LoadAssetAtPath<Sprite>(AssetDatabase.GUIDToAssetPath(guid));

@@ -349,6 +349,9 @@ def _comprobar():
     assert not pasos[0][61, 14:24, 3].any() and pasos[0][61, 24:34, 3].all(), "el primer cuadro levanta un pie"
     assert not pasos[2][61, 24:34, 3].any() and pasos[2][61, 14:24, 3].all(), "el tercero, el otro"
     assert not pasos[1][10, ..., 3].any() and pasos[1][11, 14:34, 3].all(), "al apoyar, el cuerpo baja"
+    cojo = reposo.copy()
+    cojo[61, 14:24, 3] = 0  # el pie izquierdo no llega al suelo: al levantar el derecho, el cuadro no debe flotar
+    assert all(p[61, ..., 3].any() for p in npc.pasos_frente(cojo)), "siempre hay un pie en el suelo"
 
 
 def main():

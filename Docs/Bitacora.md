@@ -21,6 +21,19 @@ Plantilla:
 
 ---
 
+## 2026-11-10 — i7-10700: revisión de animaciones y muertes
+
+- **Pedido del autor:** buscar fallos de animación, personajes que no se vean completos y muertes que falten.
+- **Análisis automático** de los sprites de guerreros, NPC, enemigos y jefes (figura que toca el borde del lienzo, pies fuera del pivote, restos sueltos). Encontró:
+  - 9 cuadros de caminata (Xali y 8 NPC) que **flotaban 1 px**: al subir un pie, el otro no llegaba al suelo. `pasos_frente()` baja el cuadro hasta apoyarlo (con autocomprobación).
+  - El **ataque del guardia** tocaba el borde superior (la lanza cortada) y se veía más grande que el reposo; el del guerrero, algo mayor. Factores 3,4 y 5,6 (antes 3,0 y 5,0).
+  - Tras corregirlo: 0 problemas.
+- **Muertes:** los jefes de la arena solo se desvanecían; ahora caen con dos cuadros generados desde el reposo (`Caida`, `Desplome`, en `recortar_jefes.py`) y `BossData.death`, también en la primera caída del Muro de Cráneos. El eco borrado desaparecía de golpe; ahora se borra en 0,6 s sin collider. Naira, Ameyali y Ocel siguen con su caída provisional (faltan sus hojas). El Espíritu del Jaguar y el Guardián no caen: se liberan.
+- **Pruebas:** EditMode 127/127, PlayMode 113/113 (nueva `ErasedEcho_FadesOut_WhenDefeated`; la arena comprueba la caída del jefe).
+- **Subido** junto con el Espíritu del Jaguar al doble de tamaño (entrada anterior).
+
+---
+
 ## 2026-11-10 — i7-10700: el Jaguar de Piedra pasa a ser el Espíritu del Jaguar
 
 - **Rama / commit al empezar:** `feature/prototipo-olmeca` @ `54b5d40`.
@@ -28,7 +41,7 @@ Plantilla:
 - **Hecho:** `BuildStoneJaguar` usa los sets del Espíritu Jaguar de la lámina con el mismo `StoneJaguar` (barra, salto, zarpazo, rugido, `MP_OLM_04`, escombros de la bajada). Nombre en el HUD "Espíritu del Jaguar"; textos de misión, Museo, objeto y victoria ajustados (también en sus assets, que el generador no rehace). Ids y banderas `jaguar_piedra` sin cambios. Pisos regenerados; ninguna escena usa ya los sprites `Jaguar_Piedra_`.
 - **Fallo real encontrado por las pruebas:** el golpe de tierra (`PlayerAbility`) buscaba el basalto agrietado en un búfer de 16 colliders de todos los layers; con los enemigos nuevos del piso 1 se llenaba y el basalto no se rompía. Ahora 64.
 - **Estado:** EditMode 127/127, PlayMode 112/112.
-- **Para el autor:** el mini-jefe tiene el mismo arte que los espíritus comunes (34 px), así que no se distingue a simple vista. **No se ha jugado en el Editor.**
+- **Después, pedido del autor:** agrandarlo para que se vea como jefe. Sprite ×2 (68 px) y cápsula de 0,7 m. `DirectionalSpriteAnimator` voltea conservando el tamaño (antes fijaba la escala X en ±1 y lo habría estirado). Captura real revisada. **No se ha jugado en el Editor.**
 
 ---
 

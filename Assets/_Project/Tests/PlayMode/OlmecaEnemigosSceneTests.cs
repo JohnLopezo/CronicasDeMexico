@@ -41,6 +41,24 @@ namespace CronicasDeMexico.Tests
         [UnityTest]
         public IEnumerator Antechamber_HasJaguarSpirits() => Check("Olmeca_Mazmorra_P3", "espiritu_jaguar:2", respawns: false);
 
+        [UnityTest]
+        public IEnumerator ErasedEcho_FadesOut_WhenDefeated()
+        {
+            yield return SceneManager.LoadSceneAsync("Olmeca_Mazmorra_P2", LoadSceneMode.Additive);
+            var scene = SceneManager.GetSceneByName("Olmeca_Mazmorra_P2");
+            SceneManager.SetActiveScene(scene);
+            yield return null;
+            var echo = scene.GetRootGameObjects().SelectMany(r => r.GetComponentsInChildren<ErasedEcho>(true)).First();
+            var sprite = (SpriteRenderer)typeof(ErasedEcho).GetField("spriteRenderer", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(echo);
+            Assert.IsTrue(echo.GetComponent<CronicasDeMexico.Gameplay.Combat.Health>().TryDamage(1000, echo.transform.position + Vector3.right));
+            yield return new WaitForSeconds(0.3f);
+            Assert.IsTrue(sprite.enabled, "Se ve borrarse, no desaparece de golpe.");
+            Assert.That(sprite.color.a, Is.LessThan(0.8f), "Va perdiendo opacidad.");
+            Assert.IsFalse(echo.GetComponent<CharacterController>().enabled, "Vencido no estorba.");
+            yield return new WaitForSeconds(echo.DeathDuration);
+            Assert.IsFalse(sprite.enabled, "Al final, borrado.");
+        }
+
         static IEnumerator Check(string sceneName, string expected, bool respawns)
         {
             yield return SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);

@@ -229,7 +229,9 @@ namespace CronicasDeMexico.Tests
             Assert.AreEqual(2, quests.GetStep("MP_OLM_04"), "Llegar al Pantano cumple el segundo paso.");
 
             var jaguar = Object.FindAnyObjectByType<StoneJaguar>();
-            Assert.IsNotNull(jaguar, "Falta el Jaguar de Piedra.");
+            Assert.IsNotNull(jaguar, "Falta el Espíritu del Jaguar.");
+            var jaguarSprite = jaguar.GetComponentInChildren<SpriteRenderer>().transform;
+            Assert.AreEqual(2f, jaguarSprite.localScale.y, 0.001f, "Al doble que los espíritus comunes: se lee como jefe.");
             Assert.IsFalse(Object.FindObjectsByType<ScenePortal>(FindObjectsSortMode.None).Any(p => p.TargetScene == Floor3),
                 "La bajada está tapada hasta vencer al Jaguar.");
             Assert.IsFalse(BossBarVisible());
@@ -263,6 +265,7 @@ namespace CronicasDeMexico.Tests
             yield return null;
             Assert.IsTrue(story.HasFlag(JaguarDefeatedFlag));
             Assert.IsFalse(jaguar.gameObject.activeInHierarchy, "Vencido, el Jaguar no vuelve.");
+            Assert.AreEqual(2f, Mathf.Abs(jaguarSprite.localScale.x), 0.001f, "Tras moverse y voltearse, conserva el tamaño (no se estira).");
             Assert.IsFalse(BossBarVisible(), "Vencido, la barra se oculta.");
             Assert.AreEqual(3, quests.GetStep("MP_OLM_04"), "Vencer al Jaguar cumple el tercer paso.");
             Assert.IsTrue(Object.FindObjectsByType<SpriteRenderer>(FindObjectsSortMode.None)

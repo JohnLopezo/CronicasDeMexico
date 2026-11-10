@@ -146,8 +146,9 @@ namespace CronicasDeMexico.Gameplay.Player
             if (direction is ScreenDirection.North or ScreenDirection.South)
                 return;
 
-            var scaleX = westward ? -1f : 1f;
+            // Solo el signo: un sprite agrandado (el Espíritu del Jaguar, ×2) conserva su tamaño al voltearse.
             var scale = spriteTransform.localScale;
+            var scaleX = (westward ? -1f : 1f) * Mathf.Abs(scale.x);
             if (!Mathf.Approximately(scale.x, scaleX))
                 spriteTransform.localScale = new Vector3(scaleX, scale.y, scale.z);
         }

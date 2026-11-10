@@ -80,3 +80,4 @@ MonoBehaviour:
   walk: {fileID: 11400000, guid: 96e36b6fc8e700145b8ff788f3913b2d, type: 2}
   attack: {fileID: 11400000, guid: 6e35395e0d044be4692cf6d9e1d7c23f, type: 2}
   special: {fileID: 11400000, guid: 6d68be7f00fb072489a524a65405d2a1, type: 2}
+  death: {fileID: 11400000, guid: 4d34d44043e0b8f4ea7ab11254481688, type: 2}

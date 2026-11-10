@@ -131,6 +131,7 @@ namespace CronicasDeMexico.Editor.SceneGeneration
             data.walk = Sprites("Avance", 3f, "Reposo", "Avance");
             data.attack = Sprites("Ataque", 1f, "Ataque");
             data.special = Sprites("Especial", 1f, "Especial");
+            data.death = Sprites("Muerte", 2.5f, "Caida", "Desplome"); // 0,8 s y se queda tumbado
             EditorUtility.SetDirty(data);
             return data;
         }

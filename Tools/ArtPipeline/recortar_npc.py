@@ -135,8 +135,10 @@ def escribir_png(ruta, rgba):
 # Pose de ataque de quienes pelean: ficha, factor y caja. La lanza extendida necesita un lienzo más ancho; el pivote
 # normalizado (centro, pies a 2 px) es el mismo.
 ATAQUE = {
-    "Guerrero": ("Guerrero.png", 5.0, (1150, 680, 1515, 980)),
-    "Guardia": ("Guerrero2.png", 3.0, (1080, 795, 1228, 985)),
+    # Factores medidos para que el cuerpo mida lo que en el reposo: esos paneles están dibujados más grandes (con 3,0 el
+    # guardia crecía al atacar y la lanza tocaba el borde del lienzo).
+    "Guerrero": ("Guerrero.png", 5.6, (1150, 680, 1515, 980)),
+    "Guardia": ("Guerrero2.png", 3.4, (1080, 795, 1228, 985)),
 }
 LIENZO_ATAQUE = (112, 64)
 
@@ -322,6 +324,10 @@ def pasos_frente(lienzo, levantar=None):
             cuerpo = mover(mover(cuerpo, adelante, -brazo), atras, 1)
         cuerpo = np.roll(cuerpo, 0 if margen else balanceo, axis=1)
         pegar(c[baja:corte + baja], cuerpo)
+        # Si el pie que apoya no llegaba tan abajo como el que sube, el cuadro entero flotaría: se baja hasta el suelo.
+        suelo = np.nonzero(c[..., 3].any(axis=1))[0].max() + 1
+        if suelo < y1:
+            c = np.roll(c, y1 - suelo, axis=0)
         cuadros.append(c)
     return cuadros
 

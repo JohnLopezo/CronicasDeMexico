@@ -257,11 +257,42 @@ def con_lanza(cuadro, reposo_sur):
     return cuadro
 
 
+def brazos(alfa, desde, ancho):
+    """Máscaras de los brazos en una vista de frente o de espalda: en cada fila del torso, los `ancho` px de cada costado.
+    Las filas demasiado estrechas (cuello, cintura sin brazos) no tienen brazo."""
+    izquierdo, derecho = np.zeros(alfa.shape, bool), np.zeros(alfa.shape, bool)
+    for y in range(desde, alfa.shape[0]):
+        xs = np.nonzero(alfa[y])[0]
+        if len(xs) and xs.max() - xs.min() + 1 >= 2 * ancho + 4:
+            izquierdo[y, xs.min():xs.min() + ancho] = alfa[y, xs.min():xs.min() + ancho]
+            derecho[y, xs.max() + 1 - ancho:xs.max() + 1] = alfa[y, xs.max() + 1 - ancho:xs.max() + 1]
+    return izquierdo, derecho
+
+
+def mover(sprite, mascara, dy):
+    """Desplaza en vertical lo que cubre la máscara. Al subir, deja hueco abajo (la mano adelantada se ve más corta); al bajar,
+    el hombro se estira: lo de debajo no se borra."""
+    out = sprite.copy()
+    if dy < 0:
+        out[mascara] = 0
+    trozo = np.zeros_like(sprite)
+    trozo[mascara] = sprite[mascara]
+    trozo = np.roll(trozo, dy, axis=0)
+    if dy > 0:
+        trozo[:dy] = 0
+    else:
+        trozo[dy:] = 0
+    out[trozo[..., 3] > 0] = trozo[trozo[..., 3] > 0]
+    return out
+
+
 def pasos_frente(lienzo, levantar=None):
     """Caminata de cuatro cuadros desde la pose de reposo, para las vistas que las fichas no animan: un pie arriba, apoyo,
     el otro pie arriba, apoyo. El pie sube en proporción a la estatura; al apoyar, el cuerpo baja y cae sobre las piernas,
-    y al levantar un pie se balancea hacia el que apoya. shortcut: es una aproximación, sin brazos ni capa que se muevan;
-    sustituir por cuadros reales cuando haya hojas de frente y de espalda."""
+    y al levantar un pie se balancea hacia el que apoya. Los brazos (las franjas de los costados del torso) van al revés que
+    las piernas: el del lado contrario al pie que sube se adelanta (sube) y el otro se atrasa (baja). shortcut: es una
+    aproximación, con la capa quieta y los brazos detectados por posición; sustituir por cuadros reales cuando haya hojas
+    de frente y de espalda."""
     alfa = lienzo[..., 3] > 0
     ys = np.nonzero(alfa.any(axis=1))[0]
     y1 = ys.max() + 1
@@ -271,6 +302,9 @@ def pasos_frente(lienzo, levantar=None):
     corte = y1 - max(6, alto // 4)
     medio = int(np.median(np.nonzero(alfa[corte:y1])[1])) + 1  # entre los pies, no el centro del lienzo
     margen = alfa[:, 0].any() or alfa[:, -1].any()  # sin sitio para balancearse: el rodar lo partiría por el borde
+    hombros = ys.min() + round(alto * 0.32)
+    brazo = max(1, round(alto / 27))
+    izquierdo, derecho = brazos(alfa[:corte], hombros, max(2, round(alto / 14)))
 
     def pegar(destino, trozo):
         destino[trozo[..., 3] > 0] = trozo[trozo[..., 3] > 0]
@@ -282,7 +316,11 @@ def pasos_frente(lienzo, levantar=None):
             xs = slice(0, medio) if mitad == 0 else slice(medio, None)
             sube = levantar if mitad == lado else 0
             pegar(c[corte - sube:y1 - sube, xs], lienzo[corte:y1, xs])
-        cuerpo = np.roll(lienzo[:corte], 0 if margen else balanceo, axis=1)
+        cuerpo = lienzo[:corte]
+        if lado is not None:  # se adelanta el brazo contrario al pie que sube
+            adelante, atras = (derecho, izquierdo) if lado == 0 else (izquierdo, derecho)
+            cuerpo = mover(mover(cuerpo, adelante, -brazo), atras, 1)
+        cuerpo = np.roll(cuerpo, 0 if margen else balanceo, axis=1)
         pegar(c[baja:corte + baja], cuerpo)
         cuadros.append(c)
     return cuadros

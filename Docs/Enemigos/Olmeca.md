@@ -22,6 +22,26 @@ Fuente: `Docs/Historia_Mundo.md` §4.3, §7, §10; GDD `Docs/Diseno.md` §10. **
 | **Basalto despierto** | Corrompido | Tanque | Mazmorra, pisos intermedios | Bloque de basalto columnar animado; lento, golpe de área anunciado | F (material: D) |
 | **Enredadera de olvido** | Corrompido | Control | Pantano y templo hundido | Raíces que ralentizan o enraízan | F |
 
+## Enemigos de la lámina del autor (2026-11-10)
+
+Fuente: `Docs/Enemigos y Gefes de mazmorra/Crónicas de México_ Enemigos y Mazmorra.png`. Siete enemigos comunes, todos fauna de la selva salvo el espíritu jaguar (F). **Etapas 1 y 2 hechas** (arte y sistema común); la colocación en las escenas es la etapa 4.
+
+- **Arte:** `Tools/ArtPipeline/recortar_enemigos.py` → `Sprites/Enemigos/Enemigo_<Nombre>_<Pose>1_03.png`. La lámina trae una imagen por pose y solo de lado; las cinco direcciones usan esa vista. Lienzos de 64 px de alto, pies a 2 px, 48 PPU.
+- **Datos:** `Data/Enemies/ED_<Nombre>.asset` (`EnemyData`). Los crea `EnemyCharacterAssets` solo si faltan: se editan en el Inspector. `-executeMethod CronicasDeMexico.Editor.SceneGeneration.EnemyCharacterAssets.BuildAll` rehace sprites y animaciones sin tocar los valores.
+- **Comportamiento:** `WildEnemy` (IA modular del GDD §10: reposo → persecución → aviso → golpe → recuperación). Todo ataque se avisa: círculo o franja en el suelo, o la pose de ataque antes del proyectil. Un golpe durante el aviso lo interrumpe.
+
+| Enemigo | Zona prevista | Vida | Movimiento | Ataque | Defensa |
+|---|---|---|---|---|---|
+| Serpiente | Selva | 25 | Zigzag | Mordida en círculo, 8 | Se enrosca tras un golpe: mitad de daño 1,2 s |
+| Cocodrilo | Pantano | 60 | Emboscada (detecta a la mitad, no persigue lejos) | Embestida en franja, 14 | Escamas: mitad de daño de frente |
+| Espíritu jaguar | Piso 3 | 35 | Persecución | Embestida en franja, 12 | Se desvanece 1 s tras un golpe y reaparece junto al jugador |
+| Mono | Selva | 22 | Guarda 4 m de distancia | Piedra (proyectil), 6 | Salta atrás si el jugador se le pega |
+| Avispa | Selva | 12 | Vuela, rumbo errático | Picada en franja, 6 | Esquiva de lado |
+| Guacamaya | Selva | 20 | Vuela | Picado en franja, 9 | Sube fuera de alcance 1,5 s |
+| Murciélago | El Umbral | 10 | Vuela, rumbo errático | Mordida en círculo, 5 | Esquiva de lado |
+
+Números provisionales, a la escala ×10 del M5. **Pendiente (etapa 3):** habilidades especiales (escupitajo que frena, coletazo en anillo, zarpazo doble, abanico de frutos, enjambre, graznido y chillido que frenan, mordida que cura) y grupos de avispas y murciélagos. La piedra del mono usa el fragmento del eco como sprite provisional.
+
 ## Mini-jefes
 
 | Mini-jefe | Piso (meta de 8) | Idea |

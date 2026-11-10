@@ -1,0 +1,46 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8f47a02d4143454f849352cfd14f60b, type: 3}
+  m_Name: ED_Mono
+  m_EditorClassIdentifier: 
+  id: mono
+  displayName: Mono agresivo
+  maxHealth: 22
+  moveSpeed: 3
+  detectionRadius: 5
+  loseRadius: 8
+  movement: 2
+  preferredDistance: 4
+  flies: 0
+  hoverHeight: 0
+  bodyRadius: 0.3
+  attackShape: 2
+  attackRange: 6
+  attackSize: 0.45
+  attackReach: 7
+  attackWindup: 0.5
+  attackRecover: 0.4
+  attackCooldown: 1.6
+  attackDamage: 6
+  defense: 4
+  defenseFactor: 1
+  defenseSeconds: 0
+  defenseCooldown: 2.5
+  loot: {fileID: 0}
+  zoneLevel: 1
+  respawnDelay: 20
+  walk: {fileID: 11400000, guid: 051aaf7821f05ee45aa8e399ac9dca00, type: 2}
+  run: {fileID: 11400000, guid: b86ddde9a354e014dbeef4e22b70d387, type: 2}
+  attack: {fileID: 11400000, guid: 176decc58e7037c42bf2b73ba01217f8, type: 2}
+  guard: {fileID: 11400000, guid: 251ac64bba92d5347a179959f80b19e2, type: 2}
+  hit: {fileID: 11400000, guid: 9b7bd928657bf074fb4772803e444027, type: 2}
+  death: {fileID: 11400000, guid: 518faceec06a87349812afe9a03ebb43, type: 2}

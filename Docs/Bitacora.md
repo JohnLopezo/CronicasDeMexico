@@ -21,6 +21,18 @@ Plantilla:
 
 ---
 
+## 2026-11-10 — i7-10700: enemigos de la lámina, etapas 1 y 2
+
+- **Plan aprobado por el autor:** 7 enemigos comunes en la selva y la mazmorra; los 6 jefes, como ecos ficticios en una arena de pruebas aparte (son de culturas mexica, tolteca y maya; GDD §3).
+- **Etapa 1 (arte):** `recortar_enemigos.py` recorta 46 sprites de la lámina a `Sprites/Enemigos` (importador: 48 PPU, pies a 2 px). El espíritu jaguar se separa por su brillo; la serpiente y la guacamaya necesitan tolerancias bajas, porque su verde y su turquesa se parecen al fondo. Página de revisión con los enemigos animados.
+- **Etapa 2 (sistema común):** `EnemyData` (datos de diseño), `WildEnemy` (movimiento, ataque avisado, defensa, vuelo, muerte y reaparición) y `EnemyCharacterAssets` (sets, datos y montaje del enemigo para las escenas). Detalle en `Docs/Enemigos/Olmeca.md`.
+- **Pruebas:** nuevas `EnemyAssetsTests` (EditMode) y `WildEnemyTests` (9, PlayMode). Fallaron 2 al principio: la defensa y el desvanecido se congelaban mientras el enemigo estaba aturdido; corregido.
+- **No está en ninguna escena todavía** (etapa 4). `EnemyCharacterAssets.Create` aún no lo ha usado ningún generador.
+- **Estado:** EditMode 120/120, PlayMode 89/89. Subido.
+- **Siguiente:** etapa 3, habilidades especiales y grupos.
+
+---
+
 ## 2026-11-10 — i7-10700: el jaguar corrupto ya no se ve de pie
 
 - **Etapa 2 de `Continuar_Guerreros.md`:** el enemigo reportado era el jaguar corrupto de la selva (`Docs/Bus/BugCara.png`). Con la cámara 3/4 frontal, sus renders Norte y Sur (girados 65° en `personajes.py`) dejaban el cuerpo casi vertical.

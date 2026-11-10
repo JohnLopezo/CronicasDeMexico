@@ -1,0 +1,46 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8f47a02d4143454f849352cfd14f60b, type: 3}
+  m_Name: ED_EspirituJaguar
+  m_EditorClassIdentifier: 
+  id: espiritu_jaguar
+  displayName: "Esp\xEDritu jaguar"
+  maxHealth: 35
+  moveSpeed: 3
+  detectionRadius: 5
+  loseRadius: 8
+  movement: 0
+  preferredDistance: 4
+  flies: 0
+  hoverHeight: 0
+  bodyRadius: 0.3
+  attackShape: 1
+  attackRange: 3
+  attackSize: 0.9
+  attackReach: 3.2
+  attackWindup: 0.6
+  attackRecover: 0.7
+  attackCooldown: 2
+  attackDamage: 12
+  defense: 3
+  defenseFactor: 1
+  defenseSeconds: 1
+  defenseCooldown: 4
+  loot: {fileID: 0}
+  zoneLevel: 1
+  respawnDelay: 20
+  walk: {fileID: 11400000, guid: 9f482e500f107ee43b22439c5605de5d, type: 2}
+  run: {fileID: 11400000, guid: 49260fe8097be0046b8f55fa1da67555, type: 2}
+  attack: {fileID: 11400000, guid: b44099ce3d07ffe4d8ce4899e4aee9b5, type: 2}
+  guard: {fileID: 11400000, guid: 899dbefef90b23f4892affaf35d913e1, type: 2}
+  hit: {fileID: 11400000, guid: 6c60548f0572c404ea99cf99027e976a, type: 2}
+  death: {fileID: 11400000, guid: 335d25972407e1e4081fc5cd93ed20e6, type: 2}

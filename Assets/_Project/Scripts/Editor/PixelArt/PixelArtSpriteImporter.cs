@@ -19,6 +19,7 @@ namespace CronicasDeMexico.Editor.PixelArt
         // Carpeta aparte: el flujo de Blender borra de las suyas los PNG que no genera él.
         public const string NpcFolder = SpritesFolder + "/Npc";
         public const string GuerrerosFolder = SpritesFolder + "/Guerreros";
+        public const string EnemigosFolder = SpritesFolder + "/Enemigos";
         const float NpcPixelsPerUnit = 32f;
         static readonly Vector2 NpcPivot = new(0.5f, 2f / 64f); // lienzos de 64 de alto, pies a 2 px del borde (recortar_npc.py, recortar_guerreros.py)
         static readonly Vector2 MuertePivot = new(0.5f, 2f / 96f); // recortar_guerreros.py, LIENZO_MUERTE: el espíritu se eleva
@@ -76,7 +77,13 @@ namespace CronicasDeMexico.Editor.PixelArt
             settings.spriteGenerateFallbackPhysicsShape = false;
 
             var spriteName = Path.GetFileNameWithoutExtension(assetPath);
-            if (assetPath.StartsWith(GuerrerosFolder + "/", StringComparison.Ordinal))
+            if (assetPath.StartsWith(EnemigosFolder + "/", StringComparison.Ordinal))
+            {
+                // Enemigos de Tools/ArtPipeline/recortar_enemigos.py: lienzos de 64 de alto con los pies a 2 px, a los PPU del escenario.
+                settings.spriteAlignment = (int)SpriteAlignment.Custom;
+                settings.spritePivot = NpcPivot;
+            }
+            else if (assetPath.StartsWith(GuerrerosFolder + "/", StringComparison.Ordinal))
             {
                 // Guerreros de Tools/ArtPipeline/recortar_guerreros.py. A los PPU del escenario: el jugador no escala su raíz.
                 settings.spriteAlignment = (int)SpriteAlignment.Custom;

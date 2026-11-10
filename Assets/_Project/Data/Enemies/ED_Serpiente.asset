@@ -1,0 +1,46 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8f47a02d4143454f849352cfd14f60b, type: 3}
+  m_Name: ED_Serpiente
+  m_EditorClassIdentifier: 
+  id: serpiente
+  displayName: Serpiente
+  maxHealth: 25
+  moveSpeed: 2.6
+  detectionRadius: 5
+  loseRadius: 8
+  movement: 1
+  preferredDistance: 4
+  flies: 0
+  hoverHeight: 0
+  bodyRadius: 0.3
+  attackShape: 0
+  attackRange: 1.1
+  attackSize: 0.8
+  attackReach: 0
+  attackWindup: 0.4
+  attackRecover: 0.5
+  attackCooldown: 1.3
+  attackDamage: 8
+  defense: 1
+  defenseFactor: 0.5
+  defenseSeconds: 1.2
+  defenseCooldown: 3
+  loot: {fileID: 0}
+  zoneLevel: 1
+  respawnDelay: 20
+  walk: {fileID: 11400000, guid: 7f0db533687f9fc46aca198dcfa42003, type: 2}
+  run: {fileID: 11400000, guid: 4193cb336cd917e40ab2791f493ecb29, type: 2}
+  attack: {fileID: 11400000, guid: e3bf7702c3b6bca4e97473c9d8241652, type: 2}
+  guard: {fileID: 11400000, guid: 64cd11ef185185042bceb715610c9d4e, type: 2}
+  hit: {fileID: 11400000, guid: 9821e45980eadf64187f77e558c4784c, type: 2}
+  death: {fileID: 11400000, guid: 7e38533a22b4b63489bff16e44a0f524, type: 2}

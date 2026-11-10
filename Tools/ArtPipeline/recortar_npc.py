@@ -57,7 +57,7 @@ DIRECCIONES = ("01", "03", "05")  # Norte, Este, Sur
 
 # Cuadros de caminata de las fichas: dirección -> ficha, factor, y0, y1 y tramos x de cada cuadro. Solo los cuadros
 # coherentes entre sí: en las fichas, algunos pierden la lanza, el bastón o el cesto y parpadearían al animarse.
-# Las direcciones que no están aquí se animan con pasos(), a partir de la pose de reposo.
+# Las direcciones que no están aquí se animan con pasos_frente(), a partir de la pose de reposo.
 CAMINATA = {
     "Comerciante": {"03": ("ComercianteHombre.png", 3.0, 620, 782, ((1105, 1195), (1245, 1330)))},
     "ComercianteMujer": {"03": ("ComercianteMujer.png", 3.0, 610, 775, ((1110, 1200), (1250, 1325)))},
@@ -257,20 +257,33 @@ def con_lanza(cuadro, reposo_sur):
     return cuadro
 
 
-def pasos(lienzo, levantar=2):
-    """Dos cuadros de caminata a partir del reposo, para las vistas que las fichas no animan: levanta un pie y luego
-    el otro. shortcut: es una aproximación, sin balanceo de brazos; sustituir por cuadros reales si llegan fichas."""
-    ys = np.nonzero(lienzo[..., 3].any(axis=1))[0]
-    y0, y1 = ys.min(), ys.max() + 1
-    pie = y1 - max(3, (y1 - y0) // 8)
-    medio = LIENZO[0] // 2
-    cuadros = []
-    for columnas in (slice(0, medio), slice(medio, None)):
-        c = lienzo.copy()
-        trozo = lienzo[pie:y1, columnas].copy()
-        c[pie:y1, columnas] = 0
-        destino = c[pie - levantar:y1 - levantar, columnas]
+def pasos_frente(lienzo, levantar=None):
+    """Caminata de cuatro cuadros desde la pose de reposo, para las vistas que las fichas no animan: un pie arriba, apoyo,
+    el otro pie arriba, apoyo. El pie sube en proporción a la estatura; al apoyar, el cuerpo baja y cae sobre las piernas,
+    y al levantar un pie se balancea hacia el que apoya. shortcut: es una aproximación, sin brazos ni capa que se muevan;
+    sustituir por cuadros reales cuando haya hojas de frente y de espalda."""
+    alfa = lienzo[..., 3] > 0
+    ys = np.nonzero(alfa.any(axis=1))[0]
+    y1 = ys.max() + 1
+    alto = y1 - ys.min()
+    levantar = levantar or max(2, round(alto / 18))
+    hundir = max(1, round(alto / 36))
+    corte = y1 - max(6, alto // 4)
+    medio = int(np.median(np.nonzero(alfa[corte:y1])[1])) + 1  # entre los pies, no el centro del lienzo
+    margen = alfa[:, 0].any() or alfa[:, -1].any()  # sin sitio para balancearse: el rodar lo partiría por el borde
+
+    def pegar(destino, trozo):
         destino[trozo[..., 3] > 0] = trozo[trozo[..., 3] > 0]
+
+    cuadros = []
+    for lado, balanceo, baja in ((0, 1, 0), (None, 0, hundir), (1, -1, 0), (None, 0, hundir)):
+        c = np.zeros_like(lienzo)
+        for mitad in (0, 1):
+            xs = slice(0, medio) if mitad == 0 else slice(medio, None)
+            sube = levantar if mitad == lado else 0
+            pegar(c[corte - sube:y1 - sube, xs], lienzo[corte:y1, xs])
+        cuerpo = np.roll(lienzo[:corte], 0 if margen else balanceo, axis=1)
+        pegar(c[baja:corte + baja], cuerpo)
         cuadros.append(c)
     return cuadros
 
@@ -324,7 +337,7 @@ def main():
                     sur = colocar(reducir(c, separar(c), factor), nombre)
                     cuadros = [con_lanza(cuadro, sur) for cuadro in cuadros]
             else:
-                cuadros = pasos(lienzo)
+                cuadros = pasos_frente(lienzo)
             for n, cuadro in enumerate(cuadros, 1):
                 guardar(f"Npc_{nombre}_Caminar{n}_{direccion}.png", cuadro)
             if direccion == "03":

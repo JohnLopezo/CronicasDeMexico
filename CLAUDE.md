@@ -66,6 +66,7 @@ Configuración de Git por PC (LFS + UnityYAMLMerge, guardada en `.git/config`): 
   - `SlowZone` frena a los `ISlowable` con `OnTriggerStay`, no con salidas: Unity no llama a `OnTriggerExit` si el personaje se teletransporta.
   - `TutorialHint` muestra una pista una sola vez (bandera `tutorial.<id>`).
   - En las pruebas, la invulnerabilidad del jugador tras un golpe dura 1 s.
+- **Cadencia de la caminata:** `DirectionalSpriteAnimator` avanza los cuadros según `velocidad / IPlanarMotion.CruiseSpeed` (`WalkPace`, entre ×0,5 y ×1,5); quien no da `CruiseSpeed` (jefes, ecos) camina a ritmo fijo.
 - **La recarga de dominio está desactivada** (Enter Play Mode Options = Disable Domain Reload, para iterar rápido en el i5). Todo estado estático debe limpiarse con `[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]`, como hace `ServiceLocator`.
 - **Personajes:** raíz con `CharacterController` + hijo `Sprite` (`SpriteRenderer` con `HD2D_SpriteLit`, `SpriteBillboard`). `DirectionalSpriteAnimator` lee cualquier `IPlanarMotion` (`PlayerMovement`, `NpcPatrol`, `EnemyChaser`) y voltea con la escala X, no con `flipX` (las sombras de URP no reciben `flipX`).
 - **NPC con arte final:** `Tools/ArtPipeline/recortar_npc.py` recorta las fichas de `Docs/NPC` a `Sprites/Npc` (carpeta aparte: el flujo de Blender borra de las suyas lo que no genera) y `NpcCharacterAssets` arma sus `DirectionalSpriteSet`. `NpcPatrol` va en línea recta y no esquiva: toda ruta nueva debe pasar `Settlers_WalkTheirRoutes_WithWalkingAnimation`.

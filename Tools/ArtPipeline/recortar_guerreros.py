@@ -16,6 +16,7 @@ import recortar_npc as npc  # noqa: E402
 
 FICHAS = os.path.join(npc.RAIZ, "Docs", "Guerreros")
 ALTO = 54                 # px de juego de la figura en reposo: como el Guerrero de los NPC
+ALTO_DANO = 46            # px de juego de la pose de daño: encogida por el golpe, con la cabeza del tamaño de la del reposo
 LIENZO_VISTA = (64, 64)  # sin recortar la capa, de frente no cabe en 48
 LIENZO_ACCION = (80, 64)  # la capa y las zancadas de lado no caben en 48
 LIENZO_ATAQUE = (112, 64)
@@ -32,8 +33,8 @@ DOMINANTES = 6            # colores del fondo que cuentan para los huecos encerr
 FINO = 3                  # px de ficha: lo más delgado que esto y alejado del cuerpo (línea de suelo, arco) se quita
 
 # vistas: y0, y1 y tramos x de Norte, Este y Sur. fila: y0, y1 de reposo, caminata, carrera y ataque.
-# dano: caja y su escala frente a la fila (ese panel está dibujado más grande). tol: distancia de color al fondo de la
-# ficha. huecos: quitar también el fondo encerrado (entre piernas); se apaga si borra plumas del color del fondo.
+# dano: caja (su escala sale de ALTO_DANO). tol: distancia de color al fondo de la
+# ficha. hojas: quitar las hojas de selva pegadas a la figura (sin_hojas). huecos: quitar también el fondo encerrado (entre piernas); se apaga si borra plumas del color del fondo.
 # tol_cuadro: tolerancia propia de una animación, donde la general borra ropa o deja efectos. muerte: hoja, px de hoja por
 # px de juego, cajas y su tolerancia; contorno, si el fondo es tan oscuro como el contorno normal; espiritu, cajas y valores
 # de los cuadros siguientes, con otros umbrales porque es un brillo sin contorno; con brillo_alto, lo que destaca de un fondo
@@ -47,7 +48,7 @@ GUERREROS = {
         "caminar": ((262, 358), (360, 455), (458, 568), (572, 685)),
         "correr": ((740, 865), (868, 990), (1005, 1145)),
         "ataque": ((1185, 1340), (1340, 1475)),
-        "dano": ((870, 800, 1060, 1005), 1.2), "tol": 70, "huecos": True,
+        "dano": (870, 800, 1060, 1005), "tol": 70, "huecos": True,
         "defensa": ((90, 800, 280, 1005), 1.2), "victoria": ((1215, 800, 1450, 1005), 1.2),
         "especial": ((375, 793, 790, 1010), 1.2),  # con el jaguar dorado: en la ficha está fundido con el cuerpo
         "muerte": {"ficha": "Hoja_Muerte_ Balam, Guardián Jaguar.png", "factor": 3.4, "tol": 26, "contorno": 20, "gamma": 0.72,
@@ -62,20 +63,20 @@ GUERREROS = {
         "caminar": ((240, 360), (372, 478), (490, 595), (600, 705)),
         "correr": ((735, 875), (880, 1020), (1030, 1170)),
         "ataque": ((1175, 1310), (1310, 1465)), "tol_cuadro": {"Correr": 34, "Ataque": 34},
-        "dano": ((880, 795, 1120, 1000), 1.2), "tol": 70, "huecos": True,
+        "dano": (880, 795, 1120, 1000), "tol": 70, "huecos": True,
         "muerte": {"ficha": "Hoja_muerte_Xali_ Guardiana del Agua.png", "factor": 4.4, "tol": 60, "contorno": 30, "gamma": 0.95,
                    "cajas": ((440, 415, 745, 615), (790, 500, 1135, 610)),
                    "espiritu": {"tol": 60, "contorno": 30, "brillo_alto": 110,
                                 "cajas": ((1168, 395, 1516, 620), (25, 692, 386, 930), (412, 692, 762, 930), (782, 692, 1126, 930))}},
     },
     "Naira": {
-        "ficha": "Hoja de personaje pixel art de Naira, guardiana lobo.png", "margen": MARGEN_SELVA,
+        "ficha": "Hoja de personaje pixel art de Naira, guardiana lobo.png", "margen": MARGEN_SELVA, "hojas": True,
         "vistas": (168, 488, (786, 978), (992, 1165), (425, 628)),
         "fila": (540, 720), "reposo": (70, 200),
         "caminar": ((240, 368), (378, 490), (495, 605), (605, 735)),
         "correr": ((730, 905), (895, 1035), (1040, 1180)),
         "ataque": ((1170, 1310),), "tol_cuadro": {"Ataque": 25}, "suelo": True,
-        "dano": ((895, 780, 1115, 1000), 1.45), "tol": 34, "huecos": True,
+        "dano": (895, 780, 1115, 1000), "tol": 34, "huecos": True,
     },
     "Ameyali": {
         "ficha": "Hoja de personaje_ Ameyali, Guardiana Mariposa.png", "margen": MARGEN_SELVA,
@@ -84,7 +85,7 @@ GUERREROS = {
         "caminar": ((240, 360), (375, 485), (490, 595), (600, 720)),
         "correr": ((740, 900), (910, 1070), (1100, 1265)),
         "ataque": ((1100, 1265),),  # la ficha solo trae cuatro cuadros, y el golpe va envuelto en llamas del color de sus alas
-        "dano": ((918, 775, 1112, 1005), 1.3), "tol": 70, "huecos": True,
+        "dano": (918, 775, 1112, 1005), "tol": 70, "huecos": True,
     },
     "Itzel": {
         "ficha": "Hoja de personaje_ Itzel, Guardiana Águila Real.png", "suelo": True,
@@ -93,7 +94,7 @@ GUERREROS = {
         "caminar": ((235, 350), (358, 470), (470, 580), (585, 695)),
         "correr": ((725, 860), (865, 995), (1005, 1150)),
         "ataque": ((1170, 1310), (1310, 1445)),
-        "dano": ((905, 785, 1075, 1005), 1.35), "tol": 70, "huecos": True,
+        "dano": (905, 785, 1075, 1005), "tol": 70, "huecos": True,
         "muerte": {"ficha": "Itzel_ muerte.png", "factor": 6.2, "tol": 70,
                    "cajas": ((420, 235, 700, 490), (790, 345, 1085, 490)),
                    "espiritu": {"tol": 70, "contorno": CONTORNO,
@@ -106,7 +107,7 @@ GUERREROS = {
         "caminar": ((215, 325), (335, 435), (435, 545), (545, 655)),
         "correr": ((680, 850), (850, 985), (995, 1145)), "suelo": True,
         "ataque": ((1145, 1290), (1320, 1460)),
-        "dano": ((915, 775, 1170, 1000), 1.4), "tol": 70, "huecos": False,
+        "dano": (915, 775, 1170, 1000), "tol": 70, "huecos": False,
         "muerte": {"ficha": "muerte de Yaret, Guardián Quetzal.png", "factor": 4.6, "tol": 70,
                    "cajas": ((428, 240, 690, 510), (785, 390, 1095, 510)),
                    "espiritu": {"tol": 70, "contorno": 25,
@@ -119,7 +120,7 @@ GUERREROS = {
         "caminar": ((220, 345), (355, 465), (470, 580), (580, 700)),
         "correr": ((695, 855), (865, 995), (1005, 1150)),
         "ataque": ((1160, 1300), (1300, 1460)),
-        "dano": ((895, 780, 1072, 1000), 1.4), "tol": 70, "huecos": True,
+        "dano": (895, 780, 1072, 1000), "tol": 70, "huecos": True,
     },
 }
 
@@ -167,6 +168,13 @@ def sin_suelo(c, m):
     verde = (matiz > 75) & (matiz < 195) & (sat > 0.15) & (c.max(axis=-1) >= CONTORNO)
     verde[:franja] = False
     return m & ~verde
+
+
+def sin_hojas(c, m):
+    """Hojas de la selva pegadas a la figura: verde amarillento saturado. Solo para fichas sin ropa de ese verde (el turquesa,
+    sobre 180°, se conserva)."""
+    matiz, sat, v = npc._matiz_y_sat(c)
+    return m & ~((matiz > 65) & (matiz < 155) & (sat > 0.3) & (v >= CONTORNO))
 
 
 def mascara(c, tol, huecos, umbral_contorno=CONTORNO, piezas_min=None, interior=None):
@@ -263,33 +271,6 @@ def validar(nombre, lienzo, alto_min=30):
     return lienzo
 
 
-def pasos_frente(lienzo, levantar=2):
-    """Caminata de cuatro cuadros desde la pose de reposo, para las vistas que las fichas no animan: un pie arriba, cuerpo
-    abajo, el otro pie arriba, cuerpo abajo; el cuerpo se balancea hacia el pie que apoya. shortcut: es una aproximación, sin
-    brazos ni capa que se muevan; sustituir por cuadros reales cuando haya hojas de frente y de espalda."""
-    alfa = lienzo[..., 3] > 0
-    ys = np.nonzero(alfa.any(axis=1))[0]
-    y1 = ys.max() + 1
-    corte = y1 - max(6, (y1 - ys.min()) // 4)
-    medio = lienzo.shape[1] // 2
-    margen = alfa[:, 0].any() or alfa[:, -1].any()  # sin sitio para balancearse: el rodar lo partiría por el borde
-
-    def pegar(destino, trozo):
-        destino[trozo[..., 3] > 0] = trozo[trozo[..., 3] > 0]
-
-    cuadros = []
-    for lado, balanceo, baja in ((0, 1, 0), (None, 0, 1), (1, -1, 0), (None, 0, 1)):
-        c = np.zeros_like(lienzo)
-        for mitad in (0, 1):
-            xs = slice(0, medio) if mitad == 0 else slice(medio, None)
-            sube = levantar if mitad == lado else 0
-            pegar(c[corte - sube:y1 - sube, xs], lienzo[corte:y1, xs])
-        cuerpo = np.roll(lienzo[:corte], 0 if margen else balanceo, axis=1)
-        pegar(c[baja:corte + baja], cuerpo)
-        cuadros.append(c)
-    return cuadros
-
-
 def aclarar(sprite, gamma):
     """Las hojas de muerte con fondo oscuro pintan el cuerpo apagado: casi negro sobre la selva. Sube las sombras sin quemar las luces."""
     sprite[..., :3] = (255 * (sprite[..., :3] / 255.0) ** gamma).astype(np.uint8)
@@ -353,6 +334,8 @@ def _comprobar():
     m[5:35, 5:25] = True  # cuerpo
     m[20, 25:60] = True   # línea de suelo de 1 px pegada al cuerpo
     limpio = limpiar(m)
+    hoja_y_turquesa = np.array([[[90, 170, 40], [30, 170, 190]]], np.uint8)
+    assert (sin_hojas(hoja_y_turquesa, np.ones((1, 2), bool)) == [[False, True]]).all(), "quita la hoja, no el turquesa"
     assert limpio[5:35, 5:25].all() and not limpio[20, 40:].any()
     dano = np.zeros((64, 80, 4), np.uint8)
     dano[10:62, 30:50, 3] = 255  # 20 × 52 de pie
@@ -361,10 +344,11 @@ def _comprobar():
     assert 11 < altura(inclinado[..., 3] > 0) < 52, "inclinado queda entre de pie y tumbado"
     reposo = np.zeros((64, 48, 4), np.uint8)
     reposo[10:62, 14:34, 3] = 255
-    pasos = pasos_frente(reposo)
+    pasos = npc.pasos_frente(reposo)
     assert len(pasos) == 4 and all(p[61, ..., 3].any() for p in pasos), "un pie siempre apoya"
     assert not pasos[0][61, 14:24, 3].any() and pasos[0][61, 24:34, 3].all(), "el primer cuadro levanta un pie"
     assert not pasos[2][61, 24:34, 3].any() and pasos[2][61, 14:24, 3].all(), "el tercero, el otro"
+    assert not pasos[1][10, ..., 3].any() and pasos[1][11, 14:34, 3].all(), "al apoyar, el cuerpo baja"
 
 
 def main():
@@ -385,9 +369,11 @@ def main():
 
         def recorte(caja, factor, etiqueta, lienzo, por_cuerpo=True, margen_caja=None):
             c, m = figura(img, caja, tol, huecos, margen_caja or margen)
-            if g.get("suelo"):
-                # Quitar el suelo deja restos sueltos: otra vez, solo la figura.
-                ys, xs = np.array(max(npc._componentes(limpiar(sin_suelo(c, m))), key=len)).T
+            if g.get("hojas"):
+                m = sin_hojas(c, m)
+            if g.get("suelo") or g.get("hojas"):
+                # Quitar el suelo o las hojas deja restos sueltos: otra vez, solo la figura.
+                ys, xs = np.array(max(npc._componentes(limpiar(sin_suelo(c, m) if g.get("suelo") else m)), key=len)).T
                 m = np.zeros(m.shape, bool)
                 m[ys, xs] = True
             spr = reducir(c, m, factor)
@@ -402,7 +388,7 @@ def main():
             guardar(f"Guerrero_{nombre}_Reposo1_{direccion}.png", lienzo)
             vistas.append(lienzo)
             if direccion != "03":
-                for n, cuadro in enumerate(pasos_frente(lienzo), 1):
+                for n, cuadro in enumerate(npc.pasos_frente(lienzo), 1):
                     guardar(f"Guerrero_{nombre}_Caminar{n}_{direccion}.png", cuadro)
 
         fy0, fy1 = g["fila"]
@@ -423,8 +409,10 @@ def main():
         caminar = fila("Caminar", g["caminar"], LIENZO_ACCION)
         correr = fila("Correr", g["correr"], LIENZO_ACCION)
         ataque = fila("Ataque", g["ataque"], LIENZO_ATAQUE)
-        caja_dano, escala = g["dano"]
-        dano = recorte(caja_dano, factor_fila * escala, f"{nombre}_Dano", LIENZO_ACCION, margen_caja=MARGEN_EFECTOS)
+        caja_dano = g["dano"]
+        # Medido, no a ojo: la ficha dibuja el daño en 3/4 y más grande, y la escala de la fila lo dejaba con la cabeza mayor.
+        factor_dano = altura(figura(img, caja_dano, tol, huecos, MARGEN_EFECTOS)[1]) / ALTO_DANO
+        dano = recorte(caja_dano, factor_dano, f"{nombre}_Dano", LIENZO_ACCION, margen_caja=MARGEN_EFECTOS)
         guardar(f"Guerrero_{nombre}_Dano1_03.png", dano)
 
         datos = g.get("muerte")

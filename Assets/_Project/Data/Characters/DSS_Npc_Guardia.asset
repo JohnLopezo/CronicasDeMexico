@@ -17,20 +17,30 @@ MonoBehaviour:
     walk:
     - {fileID: 21300000, guid: f519260a7d35e704aa93b4af7572dc7e, type: 3}
     - {fileID: 21300000, guid: 6c5cb083e92e85040b8fc75662ac8eee, type: 3}
+    - {fileID: 21300000, guid: 03a8e6fdc7c6a8d4c8bc7c24a9c1ba88, type: 3}
+    - {fileID: 21300000, guid: fa00be094082c214483e04f4d9fe94bf, type: 3}
   - idle: {fileID: 21300000, guid: 020465f03c2a68447ac9fd4f15dacf0a, type: 3}
     walk:
     - {fileID: 21300000, guid: 93952396530d2a947bbaaf7d2a5c3085, type: 3}
     - {fileID: 21300000, guid: 5a539f86c9f00b7409b7d1cb4b031e5d, type: 3}
+    - {fileID: 21300000, guid: f8d8b9eb1d1e44248b7bca3a7c7249cd, type: 3}
+    - {fileID: 21300000, guid: 4caa0e5795a8d98459ccd064dadd6294, type: 3}
   - idle: {fileID: 21300000, guid: 020465f03c2a68447ac9fd4f15dacf0a, type: 3}
     walk:
     - {fileID: 21300000, guid: 93952396530d2a947bbaaf7d2a5c3085, type: 3}
     - {fileID: 21300000, guid: 5a539f86c9f00b7409b7d1cb4b031e5d, type: 3}
+    - {fileID: 21300000, guid: f8d8b9eb1d1e44248b7bca3a7c7249cd, type: 3}
+    - {fileID: 21300000, guid: 4caa0e5795a8d98459ccd064dadd6294, type: 3}
   - idle: {fileID: 21300000, guid: 020465f03c2a68447ac9fd4f15dacf0a, type: 3}
     walk:
     - {fileID: 21300000, guid: 93952396530d2a947bbaaf7d2a5c3085, type: 3}
     - {fileID: 21300000, guid: 5a539f86c9f00b7409b7d1cb4b031e5d, type: 3}
+    - {fileID: 21300000, guid: f8d8b9eb1d1e44248b7bca3a7c7249cd, type: 3}
+    - {fileID: 21300000, guid: 4caa0e5795a8d98459ccd064dadd6294, type: 3}
   - idle: {fileID: 21300000, guid: 92cf681b97f64f14a877b3c4bf00794f, type: 3}
     walk:
     - {fileID: 21300000, guid: 4684e88864fd9b44baca4200bba3a6dd, type: 3}
     - {fileID: 21300000, guid: 5005743560b6c5445bcc81f8f9e8e2fb, type: 3}
+    - {fileID: 21300000, guid: a2f99b4714db2dd4685e9284057750c3, type: 3}
+    - {fileID: 21300000, guid: 76906b4c863953642af7e935d8a76648, type: 3}
   walkFramesPerSecond: 6

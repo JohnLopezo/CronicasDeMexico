@@ -15,6 +15,14 @@ namespace CronicasDeMexico.Gameplay.Player
         // Por debajo de esta velocidad (m/s) se muestra la pose quieta.
         const float WalkSpeedThreshold = 0.1f;
 
+        // Ritmo de la caminata frente a la marcha normal: más lento que la mitad o más rápido que 1,5 ya no parece andar.
+        const float MinWalkPace = 0.5f;
+        const float MaxWalkPace = 1.5f;
+
+        /// <summary>Los pasos siguen a la velocidad (agua que frena, mando a medias): así los pies no patinan.</summary>
+        public static float WalkPace(float speed, float cruiseSpeed) =>
+            cruiseSpeed > 0f ? Mathf.Clamp(speed / cruiseSpeed, MinWalkPace, MaxWalkPace) : 1f;
+
         [SerializeField, Tooltip("Componente que implementa IPlanarMotion (PlayerMovement, NpcPatrol, EnemyChaser...).")]
         MonoBehaviour motionSource;
 
@@ -121,7 +129,7 @@ namespace CronicasDeMexico.Gameplay.Player
             }
             else if (movement.PlanarVelocity.sqrMagnitude > WalkSpeedThreshold * WalkSpeedThreshold)
             {
-                walkTime += Time.deltaTime;
+                walkTime += Time.deltaTime * WalkPace(movement.PlanarVelocity.magnitude, movement.CruiseSpeed);
                 idleTime = 0f;
                 sprite = spriteSet.GetWalkFrame(clipIndex, walkTime);
             }

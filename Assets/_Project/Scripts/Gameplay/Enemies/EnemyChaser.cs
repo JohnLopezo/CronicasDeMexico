@@ -96,6 +96,7 @@ namespace CronicasDeMexico.Gameplay.Enemies
         SlowTracker slow;
 
         public Vector3 PlanarVelocity => planarVelocity;
+        public float CruiseSpeed => moveSpeed;
         public Vector3 FacingDirection { get; private set; } = Vector3.back;
         public bool IsChasing { get; private set; }
         public LungePhase Lunge { get; private set; }

@@ -58,6 +58,7 @@ namespace CronicasDeMexico.Gameplay.Player
 
         /// <summary>Velocidad horizontal actual en m/s.</summary>
         public Vector3 PlanarVelocity => planarVelocity;
+        public float CruiseSpeed => moveSpeed;
 
         /// <summary>Última dirección horizontal con entrada (normalizada). La usa el sprite para orientarse.</summary>
         public Vector3 FacingDirection { get; private set; } = Vector3.back;

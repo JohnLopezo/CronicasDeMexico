@@ -37,6 +37,19 @@ namespace CronicasDeMexico.Editor.SceneGeneration
             }
         }
 
+        /// <summary>Rehace los DSS_Npc_ existentes tras recortar_npc.py, sin regenerar escenas (las referencias se conservan).
+        /// -executeMethod CronicasDeMexico.Editor.SceneGeneration.NpcCharacterAssets.RebuildAll</summary>
+        public static void RebuildAll()
+        {
+            foreach (var guid in AssetDatabase.FindAssets("DSS_Npc_ t:DirectionalSpriteSet", new[] { DataFolder }))
+            {
+                var name = System.IO.Path.GetFileNameWithoutExtension(AssetDatabase.GUIDToAssetPath(guid));
+                if (!name.EndsWith("_Ataque"))
+                    Build(name.Substring("DSS_Npc_".Length));
+            }
+            AssetDatabase.SaveAssets();
+        }
+
         public static DirectionalSpriteSet Build(string npcName)
         {
             Sprite Load(string frame, string direction) =>

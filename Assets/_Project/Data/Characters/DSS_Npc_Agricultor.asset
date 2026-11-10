@@ -17,6 +17,8 @@ MonoBehaviour:
     walk:
     - {fileID: 21300000, guid: 43f84eb5e849a424497ceaa56ebfbee3, type: 3}
     - {fileID: 21300000, guid: 222b389d0688f154fa368d8719768402, type: 3}
+    - {fileID: 21300000, guid: b167f81e3307b6c4aa1ba54c5de036e6, type: 3}
+    - {fileID: 21300000, guid: c04db413beb38cf448f1c72664a6ac7e, type: 3}
   - idle: {fileID: 21300000, guid: 5a9ca181874babe44986f7756442b072, type: 3}
     walk:
     - {fileID: 21300000, guid: 462f0ebe680377d45b2a4fcb22c735b5, type: 3}
@@ -39,4 +41,6 @@ MonoBehaviour:
     walk:
     - {fileID: 21300000, guid: 2913ae44ffe1a014abc8670fb9892e79, type: 3}
     - {fileID: 21300000, guid: 60daaee26161e5947800b55c42f48d54, type: 3}
+    - {fileID: 21300000, guid: 5f2ee7bf8978a71439e14750a8ddd859, type: 3}
+    - {fileID: 21300000, guid: bc859d5a954b38942b88bada2e4fdd13, type: 3}
   walkFramesPerSecond: 6

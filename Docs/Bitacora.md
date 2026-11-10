@@ -21,6 +21,21 @@ Plantilla:
 
 ---
 
+## 2026-11-10 — i7-10700: tamaño de la pose de Daño
+
+- **Rama / último commit al empezar:** `feature/prototipo-olmeca` @ `1c7ce77`.
+- **Pedido del autor:** etapa 1 de `Continuar_Guerreros.md`, "con un mejor renderizado".
+- **Causa:** la ficha dibuja el Daño en 3/4 y más grande; las escalas a mano (1,2–1,45) dejaban la cabeza mayor que en el reposo, sobre todo en Ameyali, Yaret y Naira.
+- **Hecho:** `recortar_guerreros.py` escala el Daño a 46 px de alto en los siete (`ALTO_DANO`), en lugar de las escalas a mano. Naira quita las hojas de selva pegadas a la capa y la mano (`sin_hojas`, con autocomprobación): en sus demás poses solo se van motas de 1 px. Cambian el Daño y el primer cuadro de muerte de todos, las caídas provisionales de Naira, Ameyali y Ocel, y todas las poses de Naira.
+- **Estado al cerrar:** tras el daño, EditMode 107/107 y PlayMode 80/80; tras la caminata, EditMode 112/112 y PlayMode 80/80. Sin commit.
+- **Siguiente:** ver el golpe final en el juego; etapa 2 (el enemigo reportado).
+- **Después, pedido del autor:** "mejora la animación del caminado, que se vea más natural para todos".
+  - **Cadencia:** `DirectionalSpriteAnimator.WalkPace` hace que los pasos sigan a la velocidad frente a `IPlanarMotion.CruiseSpeed` (nuevo, con 0 por defecto; lo dan `PlayerMovement`, `NpcPatrol` y `EnemyChaser`). Prueba `WalkPaceTests`.
+  - **Frente y espalda:** `pasos_frente()` pasa a `recortar_npc.py` y lo usan los dos scripts: el pie sube según la estatura (3 px en los guerreros) y el cuerpo baja al apoyar. Los NPC pasan de 2 a 4 cuadros; `NpcCharacterAssets.RebuildAll` rehízo 18 `DSS_Npc_` sin tocar escenas.
+  - Página de revisión con los sprites animados (privada): https://claude.ai/artifact/NbQSLCHuT66rVRDP2qG2h5
+
+---
+
 ## 2026-11-06 — i7-10700: cierre de la sesión de guerreros
 
 - **Rama / último commit:** `feature/prototipo-olmeca` @ `8a838dc`. Subido junto con `Continuar_Guerreros.md`.

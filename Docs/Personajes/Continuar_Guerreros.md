@@ -25,7 +25,7 @@ Documentos relacionados: `Guerreros.md` (cómo están hechos y cómo regenerarlo
 
 ## Qué sigue, en orden
 
-1. **Corregir el salto de tamaño al recibir el golpe final.** La pose de Daño se ve más grande que el reposo, sobre todo en Naira y Ameyali. Se ajusta con la escala `dano` de cada guerrero en `recortar_guerreros.py`. Propuesto al autor; falta su respuesta.
+1. ~~Corregir el salto de tamaño al recibir el golpe final.~~ **Hecho (2026-11-10):** la Daño mide 46 px en los siete (`ALTO_DANO`) y Naira ya no arrastra hojas. Falta verlo en el juego.
 2. **Saber qué pasa con el enemigo que reportó el autor.** Sigue sin identificar: hace falta saber cuál es, en qué escena está y qué se ve.
 3. **Recorrer a pie la historia desde `Boot` hasta entrar en la mazmorra.** El arreglo del bloqueo solo se ha probado con teletransporte.
 4. **Jugar con Balam** para valorar la Defensa, la Habilidad especial y el equilibrio de atributos, que aún no se han probado jugando.

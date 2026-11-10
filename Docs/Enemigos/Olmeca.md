@@ -24,7 +24,7 @@ Fuente: `Docs/Historia_Mundo.md` §4.3, §7, §10; GDD `Docs/Diseno.md` §10. **
 
 ## Enemigos de la lámina del autor (2026-11-10)
 
-Fuente: `Docs/Enemigos y Gefes de mazmorra/Crónicas de México_ Enemigos y Mazmorra.png`. Siete enemigos comunes, todos fauna de la selva salvo el espíritu jaguar (F). **Etapas 1 a 3 hechas** (arte, sistema común y habilidades); la colocación en las escenas es la etapa 4.
+Fuente: `Docs/Enemigos y Gefes de mazmorra/Crónicas de México_ Enemigos y Mazmorra.png`. Siete enemigos comunes, todos fauna de la selva salvo el espíritu jaguar (F). **Etapas 1 a 4 hechas** (arte, sistema común, habilidades y colocación).
 
 - **Arte:** `Tools/ArtPipeline/recortar_enemigos.py` → `Sprites/Enemigos/Enemigo_<Nombre>_<Pose>1_03.png`. La lámina trae una imagen por pose y solo de lado; las cinco direcciones usan esa vista. Lienzos de 64 px de alto, pies a 2 px, 48 PPU.
 - **Datos:** `Data/Enemies/ED_<Nombre>.asset` (`EnemyData`). Los crea `EnemyCharacterAssets` solo si faltan: se editan en el Inspector. `-executeMethod CronicasDeMexico.Editor.SceneGeneration.EnemyCharacterAssets.BuildAll` rehace sprites y animaciones sin tocar los valores.
@@ -51,6 +51,15 @@ Fuente: `Docs/Enemigos y Gefes de mazmorra/Crónicas de México_ Enemigos y Mazm
 | Avispa | Enjambre | Cuando una ataca, las de su clase a 4 m atacan a la vez |
 | Guacamaya | Graznido | Anillo de 3 m: 3 de daño y frena al 50 % durante 2 s |
 | Murciélago | Mordida que cura y chillido | La mordida le devuelve la vida que quita; el chillido, anillo de 2,2 m: 2 y frena al 60 % durante 1,5 s |
+
+**Colocación** (etapa 4; `BuildFauna` en `OlmecaJungleGenerator` y `OlmecaDungeonGenerator`, con `EnemyCharacterAssets.Place`): se colocan en los tramos entre puntos del flujo, sin tocar los JSON de Blender, y solo donde un rayo encuentra suelo (si no, en un punto que se sabe transitable).
+
+| Escena | Enemigos | Reaparecen | Botín |
+|---|---|---|---|
+| `Olmeca_Selva` | Serpiente y guacamaya entre el primer y el segundo claro; mono entre el segundo y el tercero; 3 avispas antes de la entrada | Sí, a los 20 s | `BOT_fauna` (8 de experiencia, fibras, semillas, ecos), nivel 1 |
+| El Umbral (P1) | 2 murciélagos cerca de los espíritus de las salas del fondo | No | `BOT_fauna`, nivel 2 |
+| El Pantano (P2) | 2 cocodrilos: uno camino del santuario de Vida y otro junto al espíritu | No | `BOT_fauna`, nivel 3 |
+| Piso 3 | 2 espíritus jaguar en la antesala, camino del santuario de Memoria | No | `BOT_espiritu_corrompido`, nivel 4 |
 
 Números provisionales, a la escala ×10 del M5. La piedra y el escupitajo usan el fragmento del eco como sprite provisional.
 

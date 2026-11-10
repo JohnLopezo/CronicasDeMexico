@@ -183,6 +183,7 @@ namespace CronicasDeMexico.Editor.SceneGeneration
             var zoneLevel = OlmecaRewardAssets.FloorLevel(floor);
             AddLoot(spirits, rewards.CommonSpirit, zoneLevel);
             AddLoot(echoes, rewards.ErasedEcho, zoneLevel);
+            BuildFauna(Group("--- Enemigos de la lámina ---", null), floor, points, rewards, zoneLevel);
             if (RegionPoints.Has(points.jaguar))
             {
                 var jaguarGroup = Group("--- Jaguar de Piedra ---", null);
@@ -312,6 +313,36 @@ namespace CronicasDeMexico.Editor.SceneGeneration
         const string CrackText =
             "Columnas de basalto caídas, partidas por grietas que brillan como brasas. Detrás se adivina un hueco. " +
             "La piedra no cede a los golpes: haría falta que la tierra misma la empujara.";
+
+        /// <summary>
+        /// Enemigos de la lámina del autor (Docs/Enemigos/Olmeca.md): murciélagos en El Umbral, cocodrilos en El Pantano
+        /// y espíritus jaguar en la antesala del piso 3. No reaparecen: el piso se recarga al caer (DefeatReturn).
+        /// </summary>
+        static void BuildFauna(Transform parent, int floor, RegionPoints points, OlmecaRewardAssets.Content rewards, int zoneLevel)
+        {
+            if (!EnemyCharacterAssets.SpritesExist())
+                return;
+            void Place(string name, Vector2 point, Vector2 fallback, LootTable loot) =>
+                EnemyCharacterAssets.Place(name, parent, point, fallback, respawns: false, loot, zoneLevel);
+
+            var arrival = points.llegada_arriba.Value;
+            switch (floor)
+            {
+                case 1 when points.enemigos is { Length: >= 3 }:
+                    Place("Murcielago", points.enemigos[1].Value + new Vector2(-2f, -1f), points.enemigos[1].Value, rewards.Fauna);
+                    Place("Murcielago", points.enemigos[2].Value + new Vector2(-2f, 1f), points.enemigos[2].Value, rewards.Fauna);
+                    break;
+                case 2 when points.enemigos is { Length: >= 1 } && RegionPoints.Has(points.vida):
+                    Place("Cocodrilo", Vector2.Lerp(arrival, points.vida.Value, 0.6f), points.enemigos[0].Value, rewards.Fauna);
+                    Place("Cocodrilo", points.enemigos[0].Value + new Vector2(2f, -1.5f), points.enemigos[0].Value, rewards.Fauna);
+                    break;
+                case 3 when RegionPoints.Has(points.memoria_llegada):
+                    var shrine = points.memoria_llegada.Value;
+                    Place("EspirituJaguar", Vector2.Lerp(arrival, shrine, 0.35f), arrival + new Vector2(1.5f, 0f), rewards.CommonSpirit);
+                    Place("EspirituJaguar", Vector2.Lerp(arrival, shrine, 0.7f), shrine + new Vector2(-1.5f, 0f), rewards.CommonSpirit);
+                    break;
+            }
+        }
 
         static void AddLoot(Transform group, LootTable table, int zoneLevel)
         {

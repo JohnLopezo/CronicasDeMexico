@@ -24,6 +24,9 @@ Se mide en un **build de desarrollo** (no en el Editor), en cada hito. En PC el 
 | 2026-10-29 | Selva (M1) | i7-10700 / UHD 630 | Bajo | 1920×1080 | Olmeca_Selva | 263–289 | 129–203 | 3,5–3,8 (p95 4,4–5,9) | 4 puntos (llegada, claro, entrada, selva densa); la selva densa es la más cara |
 | 2026-10-29 | Selva (M1) | i7-10700 / UHD 630 | Medio | 1920×1080 | Olmeca_Selva | 342–350 | 220–263 | 2,9 (p95 3,4–3,7) | Ídem |
 | 2026-10-29 | Selva (M1) | i7-10700 / UHD 630 | Alto | 1920×1080 | Olmeca_Selva | 299–302 | 227–230 | 3,3 (p95 3,9–4,0) | Ídem |
+| 2026-11-10 | Selva con la fauna de la lámina | i7-10700 / UHD 630 | Bajo | 1920×1080 | Olmeca_Selva | 236–261 (llegada 215) | 121–170 (llegada 78) | 3,8–4,2 (p95 5,4–6,8) | 6 enemigos nuevos (`WildEnemy`): serpiente, guacamaya, mono y 3 avispas. La llegada es el primer punto y arrastra la carga inicial |
+| 2026-11-10 | Selva con la fauna de la lámina | i7-10700 / UHD 630 | Medio | 1920×1080 | Olmeca_Selva | 298–316 | 183–192 | 3,2–3,4 (p95 4,6–4,8) | Ídem. El 29-10 eran 342–350, pero entre medias llegaron la vista 3/4 y el terreno más rico (06-11), sin medir: la diferencia no es solo de los enemigos |
+| 2026-11-10 | Selva con la fauna de la lámina | i7-10700 / UHD 630 | Alto | 1920×1080 | Olmeca_Selva | 266–270 | 172–173 | 3,7–3,8 (p95 5,1–5,3) | Ídem (el 29-10, 299–302) |
 | 2026-10-30 | Mazmorra, piso 2 (M2) | i7-10700 / UHD 630 | Bajo | 1920×1080 | Olmeca_Mazmorra_P2 | 280–298 | 146–176 | 3,4–3,6 (p95 4,8–5,1) | 4 puntos (llegada, sala, santuario de Vida, bajada); el piso con más muros y espíritus |
 | 2026-10-30 | Mazmorra, piso 2 (M2) | i7-10700 / UHD 630 | Medio | 1920×1080 | Olmeca_Mazmorra_P2 | 304–373 | 198–247 | 2,7–3,3 (p95 3,4–4,4) | Ídem |
 | 2026-10-30 | Mazmorra, piso 2 (M2) | i7-10700 / UHD 630 | Alto | 1920×1080 | Olmeca_Mazmorra_P2 | 281–314 | 174–196 | 3,2–3,6 (p95 4,1–4,7) | Ídem |

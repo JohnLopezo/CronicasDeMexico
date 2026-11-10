@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using CronicasDeMexico.Data.Characters;
 using CronicasDeMexico.Data.Enemies;
+using CronicasDeMexico.Data.Rewards;
 using CronicasDeMexico.Editor.PixelArt;
 using CronicasDeMexico.Gameplay.Combat;
 using CronicasDeMexico.Gameplay.Enemies;
@@ -259,6 +260,24 @@ namespace CronicasDeMexico.Editor.SceneGeneration
             }
             root.AddComponent<ReportOnDefeat>().EnemyId = data.id;
             return root;
+        }
+
+        /// <summary>
+        /// Coloca un enemigo en <paramref name="candidate"/> (coordenadas del flujo) si hay suelo debajo; si no, en
+        /// <paramref name="fallback"/>, un punto del flujo que se sabe transitable. Los pisos de la mazmorra son losas
+        /// sobre el vacío: un enemigo sin suelo caería. Su botín, con la tabla y el nivel de la zona.
+        /// </summary>
+        public static GameObject Place(string name, Transform parent, Vector2 candidate, Vector2 fallback, bool respawns,
+            LootTable loot, int zoneLevel)
+        {
+            var position = ToWorld(candidate);
+            Physics.SyncTransforms();
+            if (!Physics.Raycast(position + Vector3.up * 3f, Vector3.down, 6f, Physics.DefaultRaycastLayers, QueryTriggerInteraction.Ignore))
+                position = ToWorld(fallback);
+            var enemy = Create(Build(name), parent, position, respawns);
+            if (loot != null)
+                OlmecaRewardAssets.AddLoot(enemy, loot, zoneLevel);
+            return enemy;
         }
 
         static TelegraphMarker Marker(Transform owner, Sprite sprite, TelegraphMarker.MarkerShape shape)

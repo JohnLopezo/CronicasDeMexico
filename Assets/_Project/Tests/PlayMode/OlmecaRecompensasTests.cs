@@ -168,7 +168,8 @@ namespace CronicasDeMexico.Tests
         {
             var own = OwnServices();
             yield return Load(Floor(1));
-            var spirit = Object.FindObjectsByType<EnemyReward>(FindObjectsSortMode.None).OrderBy(e => e.name).First();
+            var spirit = Object.FindObjectsByType<EnemyReward>(FindObjectsSortMode.None)
+                .Where(e => e.name.StartsWith("EspirituCorrompido")).OrderBy(e => e.name).First(); // no los de la lámina
             var health = spirit.GetComponent<Health>();
 
             var before = own.Progression.Experience;

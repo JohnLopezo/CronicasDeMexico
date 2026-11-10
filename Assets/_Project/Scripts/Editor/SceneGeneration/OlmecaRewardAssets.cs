@@ -35,7 +35,7 @@ namespace CronicasDeMexico.Editor.SceneGeneration
         public sealed class Content
         {
             public readonly Dictionary<string, ItemData> Items = new();
-            public LootTable CommonSpirit, ErasedEcho, StoneJaguar, CommonOffering, SpecialOffering;
+            public LootTable CommonSpirit, ErasedEcho, StoneJaguar, CommonOffering, SpecialOffering, Fauna;
             public RewardBundle Boss, Final;
             public RewardBundle[] Grades;
             public readonly Dictionary<string, RewardBundle> Offerings = new();
@@ -249,6 +249,11 @@ namespace CronicasDeMexico.Editor.SceneGeneration
             {
                 E(c, "basalto", 0.5f, 1, 2), E(c, "fibras", 0.35f, 1, 2), E(c, "semillas", 0.25f, 1),
                 E(c, "esencia_olvido", 0.12f, 1), E(c, Inventory.Currency, 0.6f, 2, 5),
+            });
+            // Fauna hostil de la lámina del autor (serpiente, mono, avispa...): poca experiencia y materiales de la selva.
+            c.Fauna = Table("BOT_fauna", 8, null, new[]
+            {
+                E(c, "fibras", 0.5f, 1, 2), E(c, "semillas", 0.4f, 1), E(c, Inventory.Currency, 0.5f, 1, 3),
             });
             c.ErasedEcho = Table("BOT_eco_borrado", 35, null, new[]
             {

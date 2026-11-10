@@ -21,6 +21,18 @@ Plantilla:
 
 ---
 
+## 2026-11-10 — i7-10700: enemigos de la lámina, etapa 4
+
+- **Rama / commit al empezar:** `feature/prototipo-olmeca` @ `e5b34ec`.
+- **Hecho:** los 7 enemigos colocados en `Olmeca_Selva` y en los pisos 1 a 3, regenerados. Comprueban el suelo con un rayo antes de colocarse. Nueva tabla `BOT_fauna`. Detalle en `Docs/Enemigos/Olmeca.md`.
+- **Pruebas:** `OlmecaEnemigosSceneTests` (4): los de cada escena, sobre suelo firme, con botín y sin reaparecer en la mazmorra. Capturas reales con una prueba temporal (ya borrada): escala correcta frente al jugador; avisos visibles.
+- **Rendimiento (i7, selva):** Bajo 236–261 FPS, Medio 298–316, Alto 266–270 (`Docs/Rendimiento.md`). Entre un 10 y un 18 % menos que el 29-10, pero desde entonces también llegaron la vista 3/4 y el terreno más rico, que no se midieron: no todo es de los enemigos. Falta medir en el i5 y en Android.
+- **Para el autor:** en El Umbral los murciélagos quedan cerca de los espíritus; en la captura se juntaron 4 enemigos contra el jugador, quizá mucho para el tutorial. **No se ha jugado en el Editor.**
+- **Estado:** EditMode 120/120, PlayMode 100/100. `EnemyLoot_GivesExperience_AndLessWhenRepeated` tomaba el primer enemigo con botín del piso 1, que ahora es un murciélago: busca al espíritu corrompido. Subido.
+- **Siguiente:** etapa 5, la arena de pruebas de los jefes.
+
+---
+
 ## 2026-11-10 — i7-10700: enemigos de la lámina, etapa 3
 
 - **Rama / commit al empezar:** `feature/prototipo-olmeca` @ `4e12eb3`.

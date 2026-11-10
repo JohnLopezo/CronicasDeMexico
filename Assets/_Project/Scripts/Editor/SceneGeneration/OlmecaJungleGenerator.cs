@@ -78,6 +78,7 @@ namespace CronicasDeMexico.Editor.SceneGeneration
             LinkRoofs(root, player.transform);
             BuildTravel(Group("--- Sendero a la ciudad ---", null), points);
             BuildSpirits(Group("--- Espíritus corrompidos ---", null), points, sprites, messageChannel, rewards);
+            BuildFauna(Group("--- Fauna hostil ---", null), points, rewards);
             BuildEntrance(Group("--- Entrada ---", null), points, narrative, messageChannel);
             CreateCamera(player.transform, data.limites);
             CreateHud(messageChannel);
@@ -152,6 +153,31 @@ namespace CronicasDeMexico.Editor.SceneGeneration
 
         // Como el espíritu jaguar del prototipo (EnemyChaser), con arte corrompido, a la escala de esta escena y sin
         // reaparecer: al caer activa su bandera, que lo retira.
+        /// <summary>
+        /// Enemigos de la lámina del autor (Docs/Enemigos/Olmeca.md) en los tramos del sendero entre los puntos del flujo:
+        /// serpiente y guacamaya entre el primer y el segundo claro, el mono entre el segundo y el tercero y las avispas
+        /// antes de la entrada. Reaparecen: es fauna de la selva.
+        /// </summary>
+        static void BuildFauna(Transform parent, RegionPoints points, OlmecaRewardAssets.Content rewards)
+        {
+            if (!EnemyCharacterAssets.SpritesExist() || points.claros is not { Length: >= 3 } || !RegionPoints.Has(points.entrada))
+                return;
+            Vector2 Between(Vector2 a, Vector2 b, float t) => Vector2.Lerp(a, b, t);
+            var c1 = points.claros[0].Value;
+            var c2 = points.claros[1].Value;
+            var c3 = points.claros[2].Value;
+            var entrance = points.entrada.Value;
+            void Place(string name, Vector2 point, Vector2 fallback) =>
+                EnemyCharacterAssets.Place(name, parent, point, fallback, respawns: true, rewards.Fauna, OlmecaRewardAssets.JungleLevel);
+
+            Place("Serpiente", Between(c1, c2, 0.5f), c2);
+            Place("Guacamaya", Between(c1, c2, 0.75f), c2);
+            Place("Mono", Between(c2, c3, 0.5f), c3);
+            var nest = Between(c3, entrance, 0.5f);
+            foreach (var offset in new[] { new Vector2(-0.5f, 0.4f), new Vector2(0.5f, -0.3f), new Vector2(0f, 0.6f) })
+                Place("Avispa", nest + offset, nest);
+        }
+
         static GameObject CreateSpirit(Transform parent, string name, DirectionalSpriteSet spriteSet, Vector2 home, string defeatedFlag) =>
             CreateCorruptedSpirit(parent, name, spriteSet, home, defeatedFlag);
 

@@ -21,6 +21,9 @@ namespace CronicasDeMexico.Gameplay.Combat
 
         public bool IsFlying => gameObject.activeSelf;
 
+        /// <summary>Alcanzó a su objetivo y el golpe contó (el escupitajo de la serpiente frena al alcanzar).</summary>
+        public event System.Action<Projectile> Struck;
+
         /// <summary>Sale desde <paramref name="origin"/> con la velocidad dada hacia el objetivo.</summary>
         public void Launch(Vector3 origin, Vector3 flyVelocity, int hitDamage, Health aim, float seconds)
         {
@@ -47,8 +50,8 @@ namespace CronicasDeMexico.Gameplay.Combat
             if (Physics.Raycast(transform.position, step.normalized, out var hit, step.magnitude, obstacleLayers,
                     QueryTriggerInteraction.Ignore))
             {
-                if (target != null && hit.collider.GetComponentInParent<Health>() == target)
-                    target.TryDamage(damage, transform.position);
+                if (target != null && hit.collider.GetComponentInParent<Health>() == target && target.TryDamage(damage, transform.position))
+                    Struck?.Invoke(this);
                 gameObject.SetActive(false);
                 return;
             }
@@ -63,7 +66,8 @@ namespace CronicasDeMexico.Gameplay.Combat
             if (offset.sqrMagnitude > HitRadius * HitRadius)
                 return;
 
-            target.TryDamage(damage, transform.position);
+            if (target.TryDamage(damage, transform.position))
+                Struck?.Invoke(this);
             gameObject.SetActive(false);
         }
     }

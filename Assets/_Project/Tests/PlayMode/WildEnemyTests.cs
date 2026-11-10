@@ -3,6 +3,7 @@ using System.Reflection;
 using CronicasDeMexico.Data.Enemies;
 using CronicasDeMexico.Gameplay.Combat;
 using CronicasDeMexico.Gameplay.Enemies;
+using CronicasDeMexico.Gameplay.Player;
 using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.TestTools;
@@ -84,12 +85,17 @@ namespace CronicasDeMexico.Tests
             var wild = enemy.AddComponent<WildEnemy>();
             wild.Data = data;
             typeof(WildEnemy).GetField("target", PrivateField).SetValue(wild, player.transform);
-            if (data.attackShape == EnemyAttackShape.Projectile)
+            if (data.attackShape == EnemyAttackShape.Projectile || data.special is EnemySpecial.SlowSpit or EnemySpecial.FanThrow)
             {
-                var shot = new GameObject("Proyectil");
-                shot.SetActive(false);
-                shot.transform.SetParent(enemy.transform);
-                typeof(WildEnemy).GetField("projectiles", PrivateField).SetValue(wild, new[] { shot.AddComponent<Projectile>() });
+                var shots = new Projectile[3];
+                for (var i = 0; i < shots.Length; i++)
+                {
+                    var shot = new GameObject($"Proyectil_{i}");
+                    shot.SetActive(false);
+                    shot.transform.SetParent(enemy.transform);
+                    shots[i] = shot.AddComponent<Projectile>();
+                }
+                typeof(WildEnemy).GetField("projectiles", PrivateField).SetValue(wild, shots);
             }
             if (data.flies)
             {
@@ -281,6 +287,160 @@ namespace CronicasDeMexico.Tests
             finally
             {
                 Object.Destroy(enemy.gameObject);
+            }
+        }
+        // ---------- Habilidades especiales (etapa 3) ----------
+
+        static EnemyData WithSpecial(EnemyData data, EnemySpecial special, float range, float radius, int damage = 6)
+        {
+            data.moveSpeed = 0f; // quieto: así solo cuenta la habilidad
+            data.special = special;
+            data.specialRange = range;
+            data.specialRadius = radius;
+            data.specialWindup = 0.3f;
+            data.specialCooldown = 10f;
+            data.specialDamage = damage;
+            data.slowFactor = 0.5f;
+            data.slowSeconds = 2f;
+            return data;
+        }
+
+        [UnityTest]
+        public IEnumerator SlowSpit_HitsFromAfar_AndSlowsTheTargetForAWhile()
+        {
+            var movement = player.AddComponent<PlayerMovement>();
+            var enemy = CreateEnemy(WithSpecial(Data(EnemyAttackShape.Circle), EnemySpecial.SlowSpit, 5f, 0.45f, damage: 4),
+                new Vector3(0f, 0f, 3.5f), out _);
+            try
+            {
+                yield return new WaitForSeconds(0.1f);
+                Assert.That(enemy.Current, Is.EqualTo(WildEnemy.State.Special), "Fuera del alcance de la mordida, escupe.");
+                yield return new WaitForSeconds(1.0f);
+                Assert.That(playerHealth.Current, Is.EqualTo(playerHealth.Max - 4));
+                Assert.That(movement.SpeedMultiplier, Is.EqualTo(0.5f).Within(0.001f), "El escupitajo frena.");
+                yield return new WaitForSeconds(2.2f);
+                Assert.That(movement.SpeedMultiplier, Is.EqualTo(1f), "El freno se pasa.");
+            }
+            finally
+            {
+                Object.Destroy(enemy.gameObject);
+            }
+        }
+
+        [UnityTest]
+        public IEnumerator TailSweep_HitsAllAround()
+        {
+            var enemy = CreateEnemy(WithSpecial(Data(EnemyAttackShape.Line), EnemySpecial.TailSweep, 1.6f, 1.8f),
+                new Vector3(0f, 0f, 1.2f), out _);
+            try
+            {
+                yield return new WaitForSeconds(0.1f);
+                Assert.That(enemy.Current, Is.EqualTo(WildEnemy.State.Special));
+                Assert.That(playerHealth.Current, Is.EqualTo(playerHealth.Max), "Avisa antes del coletazo.");
+                yield return new WaitForSeconds(0.4f);
+                Assert.That(playerHealth.Current, Is.EqualTo(playerHealth.Max - 6));
+            }
+            finally
+            {
+                Object.Destroy(enemy.gameObject);
+            }
+        }
+
+        [UnityTest]
+        public IEnumerator DoubleSwipe_HitsTwice()
+        {
+            var enemy = CreateEnemy(WithSpecial(Data(EnemyAttackShape.Line), EnemySpecial.DoubleSwipe, 1.3f, 0.9f),
+                new Vector3(0f, 0f, 0.9f), out _);
+            try
+            {
+                yield return new WaitForSeconds(0.45f);
+                Assert.That(playerHealth.Current, Is.EqualTo(playerHealth.Max - 6), "Primer zarpazo.");
+                Assert.That(enemy.Current, Is.EqualTo(WildEnemy.State.Special), "Sigue con el segundo.");
+                yield return new WaitForSeconds(0.35f);
+                Assert.That(playerHealth.Current, Is.EqualTo(playerHealth.Max - 12), "Segundo zarpazo.");
+            }
+            finally
+            {
+                Object.Destroy(enemy.gameObject);
+            }
+        }
+
+        [UnityTest]
+        public IEnumerator FanThrow_LaunchesThreeShots()
+        {
+            var enemy = CreateEnemy(WithSpecial(Data(EnemyAttackShape.Circle), EnemySpecial.FanThrow, 6f, 0.45f),
+                new Vector3(0f, 0f, 4f), out _);
+            try
+            {
+                yield return new WaitForSeconds(0.4f);
+                var flying = 0;
+                foreach (var shot in enemy.GetComponentsInChildren<Projectile>(true))
+                    if (shot.IsFlying)
+                        flying++;
+                Assert.That(flying, Is.EqualTo(3), "Tres frutos en abanico.");
+            }
+            finally
+            {
+                Object.Destroy(enemy.gameObject);
+            }
+        }
+
+        [UnityTest]
+        public IEnumerator SlowScreech_HurtsAndSlowsAround()
+        {
+            var movement = player.AddComponent<PlayerMovement>();
+            var enemy = CreateEnemy(WithSpecial(Data(EnemyAttackShape.Line), EnemySpecial.SlowScreech, 2.8f, 3f, damage: 3),
+                new Vector3(0f, 0f, 2f), out _);
+            try
+            {
+                yield return new WaitForSeconds(0.5f);
+                Assert.That(playerHealth.Current, Is.EqualTo(playerHealth.Max - 3));
+                Assert.That(movement.SpeedMultiplier, Is.EqualTo(0.5f).Within(0.001f));
+            }
+            finally
+            {
+                Object.Destroy(enemy.gameObject);
+            }
+        }
+
+        [UnityTest]
+        public IEnumerator DrainBite_HealsTheBiter()
+        {
+            var data = Data(EnemyAttackShape.Circle);
+            data.attackDrains = true;
+            var enemy = CreateEnemy(data, new Vector3(0f, 0f, 1f), out var health);
+            try
+            {
+                health.TryDamage(20, player.transform.position); // antes de su primer cuadro: no interrumpe nada
+                yield return new WaitForSeconds(1.5f); // el retroceso lo aparta: vuelve, avisa y muerde
+                Assert.That(playerHealth.Current, Is.EqualTo(playerHealth.Max - 7));
+                Assert.That(health.Current, Is.EqualTo(20 + 7), "Recupera lo que muerde.");
+            }
+            finally
+            {
+                Object.Destroy(enemy.gameObject);
+            }
+        }
+
+        [UnityTest]
+        public IEnumerator Swarm_AlliesAttackAtTheSameTime()
+        {
+            var data = Data(EnemyAttackShape.Circle);
+            data.moveSpeed = 0f;
+            data.swarm = true;
+            data.swarmRadius = 5f;
+            var first = CreateEnemy(data, new Vector3(0f, 0f, 1f), out _);
+            var second = CreateEnemy(data, new Vector3(3f, 0f, 1f), out _);
+            try
+            {
+                yield return new WaitForSeconds(0.1f);
+                Assert.That(first.Current, Is.EqualTo(WildEnemy.State.Windup));
+                Assert.That(second.Current, Is.EqualTo(WildEnemy.State.Windup), "El de al lado ataca a la vez, aunque no llegue.");
+            }
+            finally
+            {
+                Object.Destroy(first.gameObject);
+                Object.Destroy(second.gameObject);
             }
         }
     }

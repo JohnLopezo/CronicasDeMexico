@@ -24,7 +24,7 @@ Fuente: `Docs/Historia_Mundo.md` §4.3, §7, §10; GDD `Docs/Diseno.md` §10. **
 
 ## Enemigos de la lámina del autor (2026-11-10)
 
-Fuente: `Docs/Enemigos y Gefes de mazmorra/Crónicas de México_ Enemigos y Mazmorra.png`. Siete enemigos comunes, todos fauna de la selva salvo el espíritu jaguar (F). **Etapas 1 y 2 hechas** (arte y sistema común); la colocación en las escenas es la etapa 4.
+Fuente: `Docs/Enemigos y Gefes de mazmorra/Crónicas de México_ Enemigos y Mazmorra.png`. Siete enemigos comunes, todos fauna de la selva salvo el espíritu jaguar (F). **Etapas 1 a 3 hechas** (arte, sistema común y habilidades); la colocación en las escenas es la etapa 4.
 
 - **Arte:** `Tools/ArtPipeline/recortar_enemigos.py` → `Sprites/Enemigos/Enemigo_<Nombre>_<Pose>1_03.png`. La lámina trae una imagen por pose y solo de lado; las cinco direcciones usan esa vista. Lienzos de 64 px de alto, pies a 2 px, 48 PPU.
 - **Datos:** `Data/Enemies/ED_<Nombre>.asset` (`EnemyData`). Los crea `EnemyCharacterAssets` solo si faltan: se editan en el Inspector. `-executeMethod CronicasDeMexico.Editor.SceneGeneration.EnemyCharacterAssets.BuildAll` rehace sprites y animaciones sin tocar los valores.
@@ -40,7 +40,19 @@ Fuente: `Docs/Enemigos y Gefes de mazmorra/Crónicas de México_ Enemigos y Mazm
 | Guacamaya | Selva | 20 | Vuela | Picado en franja, 9 | Sube fuera de alcance 1,5 s |
 | Murciélago | El Umbral | 10 | Vuela, rumbo errático | Mordida en círculo, 5 | Esquiva de lado |
 
-Números provisionales, a la escala ×10 del M5. **Pendiente (etapa 3):** habilidades especiales (escupitajo que frena, coletazo en anillo, zarpazo doble, abanico de frutos, enjambre, graznido y chillido que frenan, mordida que cura) y grupos de avispas y murciélagos. La piedra del mono usa el fragmento del eco como sprite provisional.
+**Habilidades especiales** (etapa 3, `EnemySpecial`; cada una con su aviso y su propia espera, y un golpe durante el aviso la interrumpe):
+
+| Enemigo | Habilidad | Detalle |
+|---|---|---|
+| Serpiente | Escupitajo | Desde 1 a 4 m: proyectil de 4 que frena al 50 % durante 2 s |
+| Cocodrilo | Coletazo | Si lo tienen a 1,6 m: círculo de 1,8 m a su alrededor, 10 |
+| Espíritu jaguar | Zarpazo doble | A 1,3 m: dos círculos seguidos delante, 7 cada uno; el segundo apunta a donde esté el jugador |
+| Mono | Abanico | Tres frutos a −20°, 0° y 20°, 5 cada uno |
+| Avispa | Enjambre | Cuando una ataca, las de su clase a 4 m atacan a la vez |
+| Guacamaya | Graznido | Anillo de 3 m: 3 de daño y frena al 50 % durante 2 s |
+| Murciélago | Mordida que cura y chillido | La mordida le devuelve la vida que quita; el chillido, anillo de 2,2 m: 2 y frena al 60 % durante 1,5 s |
+
+Números provisionales, a la escala ×10 del M5. La piedra y el escupitajo usan el fragmento del eco como sprite provisional.
 
 ## Mini-jefes
 

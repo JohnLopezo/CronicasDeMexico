@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using CronicasDeMexico.Data.Characters;
 using CronicasDeMexico.Data.Enemies;
 using CronicasDeMexico.Gameplay.Combat;
@@ -17,7 +18,13 @@ namespace CronicasDeMexico.Gameplay.Enemies
     [RequireComponent(typeof(CharacterController), typeof(Health))]
     public sealed class WildEnemy : MonoBehaviour, IPlanarMotion, ISlowable
     {
-        public enum State { Idle, Chase, Windup, Strike, Recover, Guard, Phased, Dead }
+        public enum State { Idle, Chase, Windup, Strike, Recover, Guard, Phased, Special, Dead }
+
+        // Vivos y activos, para el enjambre. Se vacía al entrar en Play: la recarga de dominio está desactivada.
+        static readonly List<WildEnemy> Active = new();
+
+        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+        static void ResetActive() => Active.Clear();
 
         const float HomeArriveDistance = 0.2f;
         const float ReturnSpeedFactor = 0.6f;
@@ -40,6 +47,9 @@ namespace CronicasDeMexico.Gameplay.Enemies
         const float DeathLinger = 0.9f;
         const float BobAmplitude = 0.06f;
         const float BobFrequency = 6f;
+        const float SpecialShotSpeed = 7f;
+        const float FanAngle = 20f;
+        const float SecondSwipeWindup = 0.3f;
 
         [SerializeField] EnemyData data;
 
@@ -49,7 +59,10 @@ namespace CronicasDeMexico.Gameplay.Enemies
         [SerializeField, Tooltip("Aviso del ataque normal (círculo o franja, según EnemyData.attackShape).")]
         TelegraphMarker marker;
 
-        [SerializeField, Tooltip("Reserva de proyectiles (attackShape = Projectile).")]
+        [SerializeField, Tooltip("Aviso de la habilidad especial (círculo o anillo).")]
+        TelegraphMarker specialMarker;
+
+        [SerializeField, Tooltip("Reserva de proyectiles (piedras del mono, escupitajo de la serpiente).")]
         Projectile[] projectiles;
 
         [SerializeField, Tooltip("Voladores: hijo entre la raíz y el sprite que sube a la altura de vuelo.")]
@@ -66,6 +79,8 @@ namespace CronicasDeMexico.Gameplay.Enemies
         CharacterController controller;
         Health health;
         Health targetHealth;
+        ISlowable targetSlowable;
+        readonly HashSet<Projectile> slowingShots = new();
         Vector3 home;
         Vector3 planarVelocity;
         Vector3 attackDirection;
@@ -79,6 +94,10 @@ namespace CronicasDeMexico.Gameplay.Enemies
         float erraticAngle;
         float lingerTimer;
         float respawnTimer;
+        float specialCooldownTimer;
+        float slowTimer;
+        float activeSlowFactor = 1f;
+        int swipesLeft;
         bool strikeHit;
         SlowTracker slow;
 
@@ -110,12 +129,22 @@ namespace CronicasDeMexico.Gameplay.Enemies
         {
             health.Damaged += OnDamaged;
             health.Died += OnDied;
+            Active.Add(this);
+            if (projectiles != null)
+                foreach (var projectile in projectiles)
+                    if (projectile != null)
+                        projectile.Struck += OnProjectileStruck;
         }
 
         void OnDisable()
         {
             health.Damaged -= OnDamaged;
             health.Died -= OnDied;
+            Active.Remove(this);
+            if (projectiles != null)
+                foreach (var projectile in projectiles)
+                    if (projectile != null)
+                        projectile.Struck -= OnProjectileStruck;
         }
 
         void Start()
@@ -127,7 +156,10 @@ namespace CronicasDeMexico.Gameplay.Enemies
                     target = player.transform;
             }
             if (target != null)
+            {
                 targetHealth = target.GetComponentInParent<Health>();
+                targetSlowable = target.GetComponentInParent<ISlowable>();
+            }
         }
 
         void Update()
@@ -144,6 +176,8 @@ namespace CronicasDeMexico.Gameplay.Enemies
             attackCooldownTimer -= deltaTime;
             defenseCooldownTimer -= deltaTime;
             flyHighTimer -= deltaTime;
+            specialCooldownTimer -= deltaTime;
+            UpdateTargetSlow(deltaTime);
             UpdateFrontArmor();
             TryLeapBack();
 
@@ -196,6 +230,10 @@ namespace CronicasDeMexico.Gameplay.Enemies
                     if (stateTimer <= 0f)
                         Reappear();
                     return Vector3.zero;
+                case State.Special:
+                    if (stateTimer <= 0f)
+                        ExecuteSpecial();
+                    return Vector3.zero;
                 default:
                     return ChooseVelocity(deltaTime);
             }
@@ -216,6 +254,11 @@ namespace CronicasDeMexico.Gameplay.Enemies
                 {
                     var direction = toTarget / distance;
                     Current = State.Chase;
+                    if (specialCooldownTimer <= 0f && SpecialFits(distance))
+                    {
+                        BeginSpecial(direction);
+                        return Vector3.zero;
+                    }
                     if (attackCooldownTimer <= 0f && distance <= data.attackRange && !TooCloseToShoot(distance))
                     {
                         BeginWindup(direction);
@@ -266,8 +309,10 @@ namespace CronicasDeMexico.Gameplay.Enemies
 
         // ---------- Ataque normal ----------
 
-        void BeginWindup(Vector3 direction)
+        void BeginWindup(Vector3 direction, bool rally = true)
         {
+            if (rally && data.swarm)
+                RallySwarm();
             Current = State.Windup;
             attackDirection = direction;
             FacingDirection = direction;
@@ -286,7 +331,35 @@ namespace CronicasDeMexico.Gameplay.Enemies
             }
         }
 
-        Vector3 CircleCenter() => transform.position + attackDirection * (data.attackSize * 0.8f);
+        Vector3 CircleCenter(float size) => transform.position + attackDirection * (size * 0.8f);
+
+        Vector3 CircleCenter() => CircleCenter(data.attackSize);
+
+        // Los de su misma clase que estén cerca y libres atacan a la vez.
+        void RallySwarm()
+        {
+            foreach (var ally in Active)
+            {
+                if (ally == this || ally.data != data || ally.Current is not (State.Idle or State.Chase) ||
+                    ally.attackCooldownTimer > 0f || ally.target == null ||
+                    Planar(ally.transform.position - transform.position).magnitude > data.swarmRadius)
+                    continue;
+                var toTarget = Planar(ally.target.position - ally.transform.position);
+                if (toTarget.sqrMagnitude < 0.0001f)
+                    continue;
+                ally.IsChasing = true;
+                ally.BeginWindup(toTarget.normalized, rally: false);
+            }
+        }
+
+        bool HitTarget(int damage)
+        {
+            if (targetHealth == null || !targetHealth.TryDamage(damage, transform.position))
+                return false;
+            if (data.attackDrains)
+                health.Heal(damage, HealSource.Ability); // el murciélago se cura con lo que muerde
+            return true;
+        }
 
         void BeginStrike()
         {
@@ -298,7 +371,7 @@ namespace CronicasDeMexico.Gameplay.Enemies
             {
                 case EnemyAttackShape.Circle:
                     if (targetHealth != null && Planar(target.position - CircleCenter()).magnitude <= data.attackSize)
-                        targetHealth.TryDamage(data.attackDamage, transform.position);
+                        HitTarget(data.attackDamage);
                     EndStrike();
                     break;
                 case EnemyAttackShape.Line:
@@ -306,7 +379,8 @@ namespace CronicasDeMexico.Gameplay.Enemies
                     Play(data.run, loop: true);
                     break;
                 case EnemyAttackShape.Projectile:
-                    Launch();
+                    if (target != null)
+                        Launch(Planar(target.position - transform.position).normalized, data.attackDamage, data.attackReach, false);
                     EndStrike();
                     break;
             }
@@ -315,7 +389,7 @@ namespace CronicasDeMexico.Gameplay.Enemies
         void UpdateStrike()
         {
             if (!strikeHit && targetHealth != null && Planar(target.position - transform.position).magnitude <= data.attackSize)
-                strikeHit = targetHealth.TryDamage(data.attackDamage, transform.position);
+                strikeHit = HitTarget(data.attackDamage);
             if (stateTimer <= 0f)
                 EndStrike();
         }
@@ -330,28 +404,143 @@ namespace CronicasDeMexico.Gameplay.Enemies
             attackCooldownTimer = data.attackCooldown;
         }
 
-        void Launch()
+        void Launch(Vector3 direction, int damage, float speed, bool slows)
         {
-            if (projectiles == null || target == null)
+            if (projectiles == null || direction.sqrMagnitude < 0.0001f)
                 return;
             foreach (var projectile in projectiles)
             {
                 if (projectile == null || projectile.IsFlying)
                     continue;
-                var origin = transform.position + Vector3.up * (0.5f + Height);
-                var toTarget = Planar(target.position - origin);
-                var speed = Mathf.Max(0.1f, data.attackReach);
-                projectile.Launch(origin, toTarget.normalized * speed, data.attackDamage, targetHealth,
-                    (data.attackRange + 2f) / speed);
+                speed = Mathf.Max(0.1f, speed);
+                var range = Mathf.Max(data.attackRange, data.specialRange) + 2f;
+                projectile.Launch(transform.position + Vector3.up * (0.5f + Height), direction * speed, damage, targetHealth, range / speed);
+                if (slows)
+                    slowingShots.Add(projectile);
+                else
+                    slowingShots.Remove(projectile);
                 return;
             }
+        }
+
+        void OnProjectileStruck(Projectile shot)
+        {
+            if (slowingShots.Remove(shot))
+                SlowTarget();
+        }
+
+        // ---------- Habilidad especial ----------
+
+        bool SpecialFits(float distance)
+        {
+            if (data.special == EnemySpecial.None || distance > data.specialRange)
+                return false;
+            return data.special switch
+            {
+                // Los disparos, desde lejos: pegado al objetivo muerde o se aparta.
+                EnemySpecial.SlowSpit => distance > data.attackRange,
+                EnemySpecial.FanThrow => !TooCloseToShoot(distance),
+                _ => true,
+            };
+        }
+
+        void BeginSpecial(Vector3 direction)
+        {
+            Current = State.Special;
+            attackDirection = direction;
+            FacingDirection = direction;
+            stateTimer = data.specialWindup;
+            swipesLeft = data.special == EnemySpecial.DoubleSwipe ? 2 : 1;
+            Play(data.attack, hold: true);
+            ShowSpecialMarker(data.specialWindup);
+        }
+
+        void ShowSpecialMarker(float seconds)
+        {
+            if (specialMarker == null)
+                return;
+            switch (data.special)
+            {
+                case EnemySpecial.TailSweep:
+                case EnemySpecial.SlowScreech:
+                    specialMarker.Show(transform.position, data.specialRadius, seconds);
+                    break;
+                case EnemySpecial.DoubleSwipe:
+                    specialMarker.Show(CircleCenter(data.specialRadius), data.specialRadius, seconds);
+                    break;
+            }
+        }
+
+        void ExecuteSpecial()
+        {
+            if (specialMarker != null)
+                specialMarker.Hide();
+            var toTarget = target != null ? Planar(target.position - transform.position) : Vector3.zero;
+            switch (data.special)
+            {
+                case EnemySpecial.SlowSpit:
+                    Launch(toTarget.normalized, data.specialDamage, SpecialShotSpeed, true);
+                    break;
+                case EnemySpecial.FanThrow:
+                    foreach (var angle in new[] { -FanAngle, 0f, FanAngle })
+                        Launch(Quaternion.Euler(0f, angle, 0f) * toTarget.normalized, data.specialDamage,
+                            Mathf.Max(SpecialShotSpeed, data.attackReach), false);
+                    break;
+                case EnemySpecial.TailSweep:
+                    if (targetHealth != null && toTarget.magnitude <= data.specialRadius)
+                        targetHealth.TryDamage(data.specialDamage, transform.position);
+                    break;
+                case EnemySpecial.SlowScreech:
+                    if (targetHealth != null && toTarget.magnitude <= data.specialRadius &&
+                        targetHealth.TryDamage(data.specialDamage, transform.position))
+                        SlowTarget();
+                    break;
+                case EnemySpecial.DoubleSwipe:
+                    if (targetHealth != null && Planar(target.position - CircleCenter(data.specialRadius)).magnitude <= data.specialRadius)
+                        targetHealth.TryDamage(data.specialDamage, transform.position);
+                    if (--swipesLeft > 0)
+                    {
+                        // Segundo zarpazo hacia donde esté ahora, con un aviso más corto.
+                        if (toTarget.sqrMagnitude > 0.0001f)
+                            attackDirection = FacingDirection = toTarget.normalized;
+                        stateTimer = SecondSwipeWindup;
+                        ShowSpecialMarker(SecondSwipeWindup);
+                        return;
+                    }
+                    break;
+            }
+            Stop(data.attack);
+            Current = State.Recover;
+            stateTimer = data.attackRecover;
+            specialCooldownTimer = data.specialCooldown;
+        }
+
+        void SlowTarget()
+        {
+            slowTimer = data.slowSeconds;
+            activeSlowFactor = data.slowFactor;
+        }
+
+        // El freno dura slowSeconds: ISlowable se renueva cada cuadro, como en una zona lenta.
+        void UpdateTargetSlow(float deltaTime)
+        {
+            if (slowTimer <= 0f)
+                return;
+            slowTimer -= deltaTime;
+            targetSlowable?.ApplySlow(activeSlowFactor);
         }
 
         void CancelAttack()
         {
             if (marker != null && Current == State.Windup)
                 marker.Hide();
-            if (Current is State.Windup or State.Strike)
+            if (Current == State.Special)
+            {
+                if (specialMarker != null)
+                    specialMarker.Hide();
+                specialCooldownTimer = data.specialCooldown * 0.5f;
+            }
+            if (Current is State.Windup or State.Strike or State.Special)
             {
                 Stop(data.run);
                 Stop(data.attack);
@@ -464,6 +653,9 @@ namespace CronicasDeMexico.Gameplay.Enemies
             CancelAttack();
             if (marker != null)
                 marker.Hide();
+            if (specialMarker != null)
+                specialMarker.Hide();
+            slowTimer = 0f;
             health.DamageFactor = 1f;
             SetAlpha(1f);
             Current = State.Dead;
@@ -500,6 +692,7 @@ namespace CronicasDeMexico.Gameplay.Enemies
             Current = State.Idle;
             attackCooldownTimer = 0f;
             defenseCooldownTimer = 0f;
+            specialCooldownTimer = 0f;
         }
 
         // ---------- Utilidades ----------

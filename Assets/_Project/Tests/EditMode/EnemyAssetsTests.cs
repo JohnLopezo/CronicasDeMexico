@@ -9,20 +9,23 @@ namespace CronicasDeMexico.Tests
     /// <summary>Cada enemigo de la lámina tiene sus datos, sus sprites importados al escenario y todas sus animaciones.</summary>
     public class EnemyAssetsTests
     {
-        [TestCase("Serpiente", "serpiente", false, EnemyDefense.GuardAfterHit)]
-        [TestCase("Cocodrilo", "cocodrilo", false, EnemyDefense.FrontArmor)]
-        [TestCase("EspirituJaguar", "espiritu_jaguar", false, EnemyDefense.Phase)]
-        [TestCase("Mono", "mono", false, EnemyDefense.LeapBack)]
-        [TestCase("Avispa", "avispa", true, EnemyDefense.Dodge)]
-        [TestCase("Guacamaya", "guacamaya", true, EnemyDefense.FlyHigh)]
-        [TestCase("Murcielago", "murcielago", true, EnemyDefense.Dodge)]
-        public void Enemy_HasDataAndEveryAnimation(string name, string id, bool flies, EnemyDefense defense)
+        [TestCase("Serpiente", "serpiente", false, EnemyDefense.GuardAfterHit, EnemySpecial.SlowSpit)]
+        [TestCase("Cocodrilo", "cocodrilo", false, EnemyDefense.FrontArmor, EnemySpecial.TailSweep)]
+        [TestCase("EspirituJaguar", "espiritu_jaguar", false, EnemyDefense.Phase, EnemySpecial.DoubleSwipe)]
+        [TestCase("Mono", "mono", false, EnemyDefense.LeapBack, EnemySpecial.FanThrow)]
+        [TestCase("Avispa", "avispa", true, EnemyDefense.Dodge, EnemySpecial.None)]
+        [TestCase("Guacamaya", "guacamaya", true, EnemyDefense.FlyHigh, EnemySpecial.SlowScreech)]
+        [TestCase("Murcielago", "murcielago", true, EnemyDefense.Dodge, EnemySpecial.SlowScreech)]
+        public void Enemy_HasDataAndEveryAnimation(string name, string id, bool flies, EnemyDefense defense, EnemySpecial special)
         {
             var data = AssetDatabase.LoadAssetAtPath<EnemyData>($"Assets/_Project/Data/Enemies/ED_{name}.asset");
             Assert.IsNotNull(data, name);
             Assert.AreEqual(id, data.id);
             Assert.AreEqual(flies, data.flies, "Vuela quien tiene la pose Volar en la lámina.");
             Assert.AreEqual(defense, data.defense);
+            Assert.AreEqual(special, data.special);
+            Assert.AreEqual(name == "Avispa", data.swarm, "Solo las avispas atacan en enjambre.");
+            Assert.AreEqual(name == "Murcielago", data.attackDrains, "Solo el murciélago se cura al morder.");
             Assert.That(data.attackRange, Is.GreaterThan(0f));
             if (data.movement == EnemyMovement.KeepDistance)
                 Assert.That(data.attackRange, Is.GreaterThanOrEqualTo(data.preferredDistance), "Debe alcanzar desde su distancia.");

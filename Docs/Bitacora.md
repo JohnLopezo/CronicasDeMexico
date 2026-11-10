@@ -21,6 +21,17 @@ Plantilla:
 
 ---
 
+## 2026-11-10 — i7-10700: enemigos de la lámina, etapa 3
+
+- **Rama / commit al empezar:** `feature/prototipo-olmeca` @ `4e12eb3`.
+- **Hecho:** habilidades especiales en `EnemyData` (`EnemySpecial`, `attackDrains`, `swarm`) y `WildEnemy`: escupitajo que frena, coletazo, zarpazo doble, abanico, graznido y chillido que frenan, mordida que cura y enjambre. El freno es temporal: `WildEnemy` renueva `ISlowable.ApplySlow` cada cuadro mientras dura. `Projectile.Struck` avisa de qué proyectil acertó. `EnemyCharacterAssets` añade el aviso de la habilidad (círculo o anillo) y proyectiles a la serpiente. Tabla en `Docs/Enemigos/Olmeca.md`.
+- **Los `ED_` se recrearon** para tomar los valores nuevos (ninguna escena los usaba aún).
+- **Pruebas:** 7 nuevas en `WildEnemyTests` (16 en total) y comprobaciones de habilidad en `EnemyAssetsTests`.
+- **Estado:** EditMode 120/120, PlayMode 96/96. Subido.
+- **Siguiente:** etapa 4, colocar los enemigos en la selva, El Umbral, el Pantano y el piso 3.
+
+---
+
 ## 2026-11-10 — i7-10700: enemigos de la lámina, etapas 1 y 2
 
 - **Plan aprobado por el autor:** 7 enemigos comunes en la selva y la mazmorra; los 6 jefes, como ecos ficticios en una arena de pruebas aparte (son de culturas mexica, tolteca y maya; GDD §3).

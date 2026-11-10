@@ -48,6 +48,22 @@ namespace CronicasDeMexico.Data.Enemies
         Dodge,
     }
 
+    /// <summary>Habilidad especial, con su propio aviso y su propia espera.</summary>
+    public enum EnemySpecial
+    {
+        None,
+        /// <summary>Escupitajo: proyectil que, si alcanza, frena al objetivo (serpiente).</summary>
+        SlowSpit,
+        /// <summary>Coletazo: círculo alrededor de sí mismo cuando lo tienen cerca (cocodrilo).</summary>
+        TailSweep,
+        /// <summary>Dos zarpazos seguidos en círculo delante (espíritu jaguar).</summary>
+        DoubleSwipe,
+        /// <summary>Tres proyectiles en abanico (mono).</summary>
+        FanThrow,
+        /// <summary>Grito en anillo alrededor de sí mismo que frena y daña poco (guacamaya, murciélago).</summary>
+        SlowScreech,
+    }
+
     /// <summary>
     /// Datos de diseño de un enemigo común: vida, movimiento, ataque, defensa, botín y animaciones. Los lee WildEnemy.
     /// Los crea EnemyCharacterAssets solo si faltan; después se editan en el Inspector. Escala ×10 del M5: el jugador
@@ -80,6 +96,21 @@ namespace CronicasDeMexico.Data.Enemies
         [Min(0f), Tooltip("Segundos quieto tras golpear: el momento de atacarlo.")] public float attackRecover = 0.6f;
         [Min(0f)] public float attackCooldown = 1.4f;
         [Min(1)] public int attackDamage = 8;
+
+        [Tooltip("La mordida le devuelve la vida que quita (murciélago).")] public bool attackDrains;
+        [Tooltip("Enjambre: cuando uno ataca, los de su grupo cercanos atacan a la vez (avispa).")] public bool swarm;
+        [Min(0f)] public float swarmRadius = 4f;
+
+        [Header("Habilidad especial")]
+        public EnemySpecial special;
+        [Min(0f), Tooltip("Distancia a la que la usa.")] public float specialRange = 2f;
+        [Min(0f), Tooltip("Radio del círculo o del anillo, o de impacto del proyectil.")] public float specialRadius = 1.5f;
+        [Min(0f)] public float specialWindup = 0.6f;
+        [Min(0f)] public float specialCooldown = 5f;
+        [Min(1)] public int specialDamage = 5;
+        [Range(0.1f, 1f), Tooltip("SlowSpit, SlowScreech: velocidad del objetivo mientras dura el freno.")]
+        public float slowFactor = 0.5f;
+        [Min(0f)] public float slowSeconds = 2f;
 
         [Header("Defensa")]
         public EnemyDefense defense;

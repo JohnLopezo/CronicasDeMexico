@@ -31,6 +31,17 @@ MonoBehaviour:
   attackRecover: 0.7
   attackCooldown: 2
   attackDamage: 12
+  attackDrains: 0
+  swarm: 0
+  swarmRadius: 4
+  special: 3
+  specialRange: 1.3
+  specialRadius: 0.9
+  specialWindup: 0.35
+  specialCooldown: 4
+  specialDamage: 7
+  slowFactor: 1
+  slowSeconds: 0
   defense: 3
   defenseFactor: 1
   defenseSeconds: 1

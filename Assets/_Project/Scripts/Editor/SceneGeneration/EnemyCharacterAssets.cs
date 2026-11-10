@@ -34,30 +34,38 @@ namespace CronicasDeMexico.Editor.SceneGeneration
         {
             ["Serpiente"] = d => Set(d, "serpiente", "Serpiente", hp: 25, speed: 2.6f, EnemyMovement.Zigzag,
                 EnemyAttackShape.Circle, range: 1.1f, size: 0.8f, reach: 0f, windup: 0.4f, recover: 0.5f, cooldown: 1.3f, damage: 8,
-                EnemyDefense.GuardAfterHit, factor: 0.5f, seconds: 1.2f, defenseCooldown: 3f),
+                EnemyDefense.GuardAfterHit, factor: 0.5f, seconds: 1.2f, defenseCooldown: 3f)
+                .With(EnemySpecial.SlowSpit, range: 4f, radius: 0.45f, windup: 0.5f, cooldown: 5f, damage: 4, slow: 0.5f, slowSeconds: 2f),
             ["Cocodrilo"] = d => Set(d, "cocodrilo", "Cocodrilo", hp: 60, speed: 1.6f, EnemyMovement.Ambush,
                 EnemyAttackShape.Line, range: 2.8f, size: 1.0f, reach: 2.5f, windup: 0.7f, recover: 1.0f, cooldown: 2.2f, damage: 14,
-                EnemyDefense.FrontArmor, factor: 0.5f, seconds: 0f, defenseCooldown: 0f, body: 0.4f),
+                EnemyDefense.FrontArmor, factor: 0.5f, seconds: 0f, defenseCooldown: 0f, body: 0.4f)
+                .With(EnemySpecial.TailSweep, range: 1.6f, radius: 1.8f, windup: 0.5f, cooldown: 4f, damage: 10),
             ["EspirituJaguar"] = d => Set(d, "espiritu_jaguar", "Espíritu jaguar", hp: 35, speed: 3.0f, EnemyMovement.Chase,
                 EnemyAttackShape.Line, range: 3.0f, size: 0.9f, reach: 3.2f, windup: 0.6f, recover: 0.7f, cooldown: 2.0f, damage: 12,
-                EnemyDefense.Phase, factor: 1f, seconds: 1.0f, defenseCooldown: 4f),
+                EnemyDefense.Phase, factor: 1f, seconds: 1.0f, defenseCooldown: 4f)
+                .With(EnemySpecial.DoubleSwipe, range: 1.3f, radius: 0.9f, windup: 0.35f, cooldown: 4f, damage: 7),
             ["Mono"] = d => Set(d, "mono", "Mono agresivo", hp: 22, speed: 3.0f, EnemyMovement.KeepDistance,
                 EnemyAttackShape.Projectile, range: 6f, size: 0.45f, reach: 7f, windup: 0.5f, recover: 0.4f, cooldown: 1.6f, damage: 6,
-                EnemyDefense.LeapBack, factor: 1f, seconds: 0f, defenseCooldown: 2.5f),
+                EnemyDefense.LeapBack, factor: 1f, seconds: 0f, defenseCooldown: 2.5f)
+                .With(EnemySpecial.FanThrow, range: 6f, radius: 0.45f, windup: 0.6f, cooldown: 5f, damage: 5),
             ["Avispa"] = d => Set(d, "avispa", "Avispa gigante", hp: 12, speed: 3.2f, EnemyMovement.Erratic,
                 EnemyAttackShape.Line, range: 2.5f, size: 0.6f, reach: 2.2f, windup: 0.45f, recover: 0.6f, cooldown: 1.8f, damage: 6,
-                EnemyDefense.Dodge, factor: 1f, seconds: 0f, defenseCooldown: 2f, body: 0.22f, hover: 0.9f),
+                EnemyDefense.Dodge, factor: 1f, seconds: 0f, defenseCooldown: 2f, body: 0.22f, hover: 0.9f)
+                .Swarm(radius: 4f),
             ["Guacamaya"] = d => Set(d, "guacamaya", "Guacamaya hostil", hp: 20, speed: 3.4f, EnemyMovement.Chase,
                 EnemyAttackShape.Line, range: 3.2f, size: 0.8f, reach: 3f, windup: 0.7f, recover: 0.8f, cooldown: 2.4f, damage: 9,
-                EnemyDefense.FlyHigh, factor: 1f, seconds: 1.5f, defenseCooldown: 4f, hover: 1.2f),
+                EnemyDefense.FlyHigh, factor: 1f, seconds: 1.5f, defenseCooldown: 4f, hover: 1.2f)
+                .With(EnemySpecial.SlowScreech, range: 2.8f, radius: 3f, windup: 0.7f, cooldown: 6f, damage: 3, slow: 0.5f, slowSeconds: 2f),
             ["Murcielago"] = d => Set(d, "murcielago", "Murciélago vampiro", hp: 10, speed: 3.6f, EnemyMovement.Erratic,
                 EnemyAttackShape.Circle, range: 0.9f, size: 0.6f, reach: 0f, windup: 0.3f, recover: 0.5f, cooldown: 1.4f, damage: 5,
-                EnemyDefense.Dodge, factor: 1f, seconds: 0f, defenseCooldown: 1.5f, body: 0.22f, hover: 1.0f),
+                EnemyDefense.Dodge, factor: 1f, seconds: 0f, defenseCooldown: 1.5f, body: 0.22f, hover: 1.0f)
+                .Drains()
+                .With(EnemySpecial.SlowScreech, range: 2f, radius: 2.2f, windup: 0.5f, cooldown: 6f, damage: 2, slow: 0.6f, slowSeconds: 1.5f),
         };
 
         public static IEnumerable<string> Names => Defaults.Keys;
 
-        static void Set(EnemyData d, string id, string name, int hp, float speed, EnemyMovement movement, EnemyAttackShape shape,
+        static EnemyData Set(EnemyData d, string id, string name, int hp, float speed, EnemyMovement movement, EnemyAttackShape shape,
             float range, float size, float reach, float windup, float recover, float cooldown, int damage, EnemyDefense defense,
             float factor, float seconds, float defenseCooldown, float body = 0.3f, float hover = 0f)
         {
@@ -81,6 +89,34 @@ namespace CronicasDeMexico.Editor.SceneGeneration
             d.bodyRadius = body;
             d.flies = hover > 0f;
             d.hoverHeight = hover;
+            return d;
+        }
+
+        static EnemyData With(this EnemyData d, EnemySpecial special, float range, float radius, float windup, float cooldown, int damage,
+            float slow = 1f, float slowSeconds = 0f)
+        {
+            d.special = special;
+            d.specialRange = range;
+            d.specialRadius = radius;
+            d.specialWindup = windup;
+            d.specialCooldown = cooldown;
+            d.specialDamage = damage;
+            d.slowFactor = slow;
+            d.slowSeconds = slowSeconds;
+            return d;
+        }
+
+        static EnemyData Swarm(this EnemyData d, float radius)
+        {
+            d.swarm = true;
+            d.swarmRadius = radius;
+            return d;
+        }
+
+        static EnemyData Drains(this EnemyData d)
+        {
+            d.attackDrains = true;
+            return d;
         }
 
         static bool Flies(string name) => SpriteFor(name, "Volar") != null;
@@ -182,7 +218,7 @@ namespace CronicasDeMexico.Editor.SceneGeneration
             SetProperty(enemy, "spriteAnimator", property => property.objectReferenceValue = root.GetComponent<DirectionalSpriteAnimator>());
             SetProperty(enemy, "heightRoot", property => property.objectReferenceValue = heightRoot);
 
-            if (data.attackShape == EnemyAttackShape.Projectile)
+            if (data.attackShape == EnemyAttackShape.Projectile || data.special is EnemySpecial.SlowSpit or EnemySpecial.FanThrow)
             {
                 var stone = EffectSpriteFactory.SymbolShard(); // shortcut: el fragmento del eco como piedra; dibujar una propia
                 var material = AssetDatabase.LoadAssetAtPath<Material>(PixelArtAssets.ObjectMaterialPath);
@@ -199,12 +235,20 @@ namespace CronicasDeMexico.Editor.SceneGeneration
                         property.GetArrayElementAtIndex(i).objectReferenceValue = projectiles[i];
                 });
             }
-            else
+            if (data.attackShape != EnemyAttackShape.Projectile)
             {
                 var circle = data.attackShape == EnemyAttackShape.Circle;
                 SetProperty(enemy, "marker", property => property.objectReferenceValue = Marker(root.transform,
                     circle ? EffectSpriteFactory.TelegraphCircle() : EffectSpriteFactory.TelegraphLine(),
                     circle ? TelegraphMarker.MarkerShape.Circle : TelegraphMarker.MarkerShape.Line));
+            }
+
+            if (data.special is EnemySpecial.TailSweep or EnemySpecial.DoubleSwipe or EnemySpecial.SlowScreech)
+            {
+                var ring = data.special == EnemySpecial.SlowScreech;
+                SetProperty(enemy, "specialMarker", property => property.objectReferenceValue = Marker(root.transform,
+                    ring ? EffectSpriteFactory.TelegraphRing() : EffectSpriteFactory.TelegraphCircle(),
+                    ring ? TelegraphMarker.MarkerShape.Ring : TelegraphMarker.MarkerShape.Circle));
             }
 
             if (data.loot != null)

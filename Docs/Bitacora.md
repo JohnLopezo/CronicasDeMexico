@@ -21,6 +21,17 @@ Plantilla:
 
 ---
 
+## 2026-11-10 — i7-10700: el Jaguar de Piedra pasa a ser el Espíritu del Jaguar
+
+- **Rama / commit al empezar:** `feature/prototipo-olmeca` @ `54b5d40`.
+- **Pedido del autor:** "quita también el Jaguar de Piedra y reemplázalo por un espíritu del jaguar".
+- **Hecho:** `BuildStoneJaguar` usa los sets del Espíritu Jaguar de la lámina con el mismo `StoneJaguar` (barra, salto, zarpazo, rugido, `MP_OLM_04`, escombros de la bajada). Nombre en el HUD "Espíritu del Jaguar"; textos de misión, Museo, objeto y victoria ajustados (también en sus assets, que el generador no rehace). Ids y banderas `jaguar_piedra` sin cambios. Pisos regenerados; ninguna escena usa ya los sprites `Jaguar_Piedra_`.
+- **Fallo real encontrado por las pruebas:** el golpe de tierra (`PlayerAbility`) buscaba el basalto agrietado en un búfer de 16 colliders de todos los layers; con los enemigos nuevos del piso 1 se llenaba y el basalto no se rompía. Ahora 64.
+- **Estado:** EditMode 127/127, PlayMode 112/112.
+- **Para el autor:** el mini-jefe tiene el mismo arte que los espíritus comunes (34 px), así que no se distingue a simple vista. **No se ha jugado en el Editor.**
+
+---
+
 ## 2026-11-10 — i7-10700: fuera el jaguar de Blender; documentación (etapa 6)
 
 - **Rama / commit al empezar:** `feature/prototipo-olmeca` @ `74dfb9d`.

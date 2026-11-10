@@ -137,7 +137,7 @@ namespace CronicasDeMexico.Editor.SceneGeneration
             Item(c, "talisman_obsidiana", "Talismán de obsidiana", "Una lasca de obsidiana envuelta en fibra.", ItemCategory.Reliquia, Rarity.PocoComun, Origin.Ficticio,
                 "F.", "Ataque +3. Se fabrica con el artesano.", 1, 25, Shape.Talisman, Obsidian, ObsidianLight, bonus: new CharacterStats(0, 3, 0, 0));
             Item(c, "proteccion_basalto", "Protección de basalto", "Un collar de cuentas de basalto: pesa y protege.", ItemCategory.Reliquia, Rarity.Raro, Origin.Ficticio,
-                "F.", "Defensa +4. Ofrenda del Jaguar de Piedra o artesano.", 1, 35, Shape.Amuleto, Basalt, BasaltLight, bonus: new CharacterStats(0, 0, 4, 0));
+                "F.", "Defensa +4. Ofrenda del espíritu del jaguar o artesano.", 1, 35, Shape.Amuleto, Basalt, BasaltLight, bonus: new CharacterStats(0, 0, 4, 0));
             Item(c, "reliquia_espiritual", "Reliquia espiritual", "Jade y un fragmento de memoria, unidos.", ItemCategory.Reliquia, Rarity.Raro, Origin.Ficticio,
                 "F.", "Energía máxima +20: más golpes de tierra antes de descansar.", 1, 35, Shape.Amuleto, Jade, VioletLight, bonus: new CharacterStats(0, 0, 0, 20));
             Item(c, "marca_jaguar", "Marca del jaguar", "Unas manchas que brillan en la piel cuando acechas.", ItemCategory.Reliquia, Rarity.Raro, Origin.Ficticio,
@@ -396,8 +396,8 @@ namespace CronicasDeMexico.Editor.SceneGeneration
                     "F: la Sombra del Olvido, los Guardianes y el Fragmento de la Primera Memoria.",
                     new[]
                     {
-                        new CultureRecord.Guardian("Jaguar de Piedra", "olm.jaguar_piedra_vencido",
-                            "Lo tallaron para vigilar, no para odiar."),
+                        new CultureRecord.Guardian("Espíritu del Jaguar", "olm.jaguar_piedra_vencido",
+                            "Vino a vigilar, no a odiar."),
                         new CultureRecord.Guardian("Guardián de la Piedra Viva", OlmecaNarrativeAssets.GuardianFreedFlag,
                             "Guardaba la primera memoria de esta tierra; la Sombra le hizo ver en ti a quien venía a robarla."),
                     });

@@ -23,7 +23,7 @@ MonoBehaviour:
     description: Baja por la escalera del suelo hasta el Pantano
   - eventKey: vencer:jaguar_piedra
     requiredCount: 1
-    description: "Cruza el agua y enfr\xE9ntate al Jaguar de Piedra"
+    description: "Cruza el agua y enfr\xE9ntate al esp\xEDritu del jaguar"
   - eventKey: llegar:mazmorra_piso3
     requiredCount: 1
     description: "Baja a lo m\xE1s hondo de la estructura"

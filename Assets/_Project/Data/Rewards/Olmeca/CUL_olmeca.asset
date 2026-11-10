@@ -21,9 +21,9 @@ MonoBehaviour:
     la aldea, la selva y el r\xEDo tal como aparecen en el juego.\nF: la Sombra del
     Olvido, los Guardianes y el Fragmento de la Primera Memoria."
   guardians:
-  - name: Jaguar de Piedra
+  - name: "Espíritu del Jaguar"
     defeatedFlag: olm.jaguar_piedra_vencido
-    memory: Lo tallaron para vigilar, no para odiar.
+    memory: Vino a vigilar, no a odiar.
   - name: "Guardi\xE1n de la Piedra Viva"
     defeatedFlag: olm.guardian_liberado
     memory: "Guardaba la primera memoria de esta tierra; la Sombra le hizo ver en

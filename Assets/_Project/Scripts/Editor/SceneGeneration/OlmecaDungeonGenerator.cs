@@ -79,9 +79,12 @@ namespace CronicasDeMexico.Editor.SceneGeneration
             "primera memoria de esta tierra. La sombra me hizo ver en ti a quien venía a robarla.» Por un instante ves la " +
             "plaza llena de gente y el río cargando basalto. Luego, silencio.";
 
+        // El mini-jefe del Pantano es el espíritu del jaguar (decisión del autor del 2026-11-10: fuera el Jaguar de Piedra
+        // de Blender). Los ids y banderas conservan "jaguar_piedra" para no romper las partidas guardadas.
+        const string JaguarDisplayName = "Espíritu del Jaguar";
         const string JaguarDefeatText =
-            "La piedra deja de temblar. Las grietas violetas se apagan y el jaguar se sienta, quieto, como lo tallaron. Por un " +
-            "instante recuerdas manos que lo pulían con arena y agua: lo hicieron para vigilar, no para odiar. Al fondo, los " +
+            "La luz del espíritu deja de temblar. Las grietas violetas se apagan y el jaguar se sienta, quieto, a tu lado. Por un " +
+            "instante recuerdas a quienes lo llamaban para cuidar el agua y la casa: vino a vigilar, no a odiar. Al fondo, los " +
             "escombros que tapaban la escalera se desmoronan.";
 
         // Pistas del tutorial por piso: id, centro y huella (x, y del flujo) de la zona, y texto.
@@ -186,7 +189,7 @@ namespace CronicasDeMexico.Editor.SceneGeneration
             BuildFauna(Group("--- Enemigos de la lámina ---", null), floor, points, rewards, zoneLevel);
             if (RegionPoints.Has(points.jaguar))
             {
-                var jaguarGroup = Group("--- Jaguar de Piedra ---", null);
+                var jaguarGroup = Group("--- Espíritu del Jaguar ---", null);
                 BuildStoneJaguar(jaguarGroup, points.jaguar.Value, messageChannel, bossNameChannel, bossHealthChannel);
                 AddLoot(jaguarGroup, rewards.StoneJaguar, zoneLevel);
             }
@@ -508,28 +511,18 @@ namespace CronicasDeMexico.Editor.SceneGeneration
             }
         }
 
-        // ---------- Jaguar de Piedra ----------
-
-        static readonly string[] JaguarPoses = { "Acecho", "Zancada", "Agazapado", "Salto", "Zarpazo" };
+        // ---------- Espíritu del Jaguar (mini-jefe del Pantano; antes, el Jaguar de Piedra) ----------
 
         static void BuildStoneJaguar(Transform parent, Vector2 home, StringEventChannel messageChannel,
             StringEventChannel bossNameChannel, HealthEventChannel bossHealthChannel)
         {
-            var poses = LoadJaguarSprites();
-            DirectionalSpriteSet Pose(string pose, string walkPose = null)
-            {
-                var set = OlmecaPrototypeGenerator.LoadOrCreateAsset<DirectionalSpriteSet>($"{CharacterDataFolder}/DSS_JaguarPiedra_{pose}.asset");
-                set.SetClips(Enumerable.Range(0, DirectionalSpriteSet.DirectionCount)
-                    .Select(d => new DirectionalSpriteSet.DirectionClip(poses[pose][d],
-                        walkPose == null ? System.Array.Empty<Sprite>() : new[] { poses[walkPose][d], poses[pose][d] }))
-                    .ToArray());
-                EditorUtility.SetDirty(set);
-                return set;
-            }
-            var stalk = Pose("Acecho", "Zancada");
-            var crouch = Pose("Agazapado");
-            var leap = Pose("Salto");
-            var swipe = Pose("Zarpazo");
+            // Arte del Espíritu Jaguar de la lámina del autor (recortar_enemigos.py): acecha caminando, se agazapa con la
+            // defensa, salta con la carrera y da el zarpazo con el ataque.
+            var spirit = EnemyCharacterAssets.Build("EspirituJaguar");
+            var stalk = spirit.walk;
+            var crouch = spirit.guard;
+            var leap = spirit.run;
+            var swipe = spirit.attack;
 
             // Raíz sin escalar: los sprites del flujo ya están a la resolución del escenario.
             var root = new GameObject("JaguarDePiedra") { layer = OlmecaPrototypeGenerator.Layer(OlmecaPrototypeGenerator.EnemyLayerName) };
@@ -537,7 +530,7 @@ namespace CronicasDeMexico.Editor.SceneGeneration
             root.transform.position = ToWorld(home);
             var controller = root.AddComponent<CharacterController>();
             controller.height = 1.4f;
-            controller.radius = 0.7f;
+            controller.radius = 0.45f; // del tamaño del espíritu (34 px), no de la escultura
             controller.center = new Vector3(0f, 0.7f, 0f);
             controller.stepOffset = 0.3f;
             controller.minMoveDistance = 0f;
@@ -575,24 +568,21 @@ namespace CronicasDeMexico.Editor.SceneGeneration
             SetProperty(jaguar, "bossNameChannel", property => property.objectReferenceValue = bossNameChannel);
             SetProperty(jaguar, "messageChannel", property => property.objectReferenceValue = messageChannel);
             SetProperty(jaguar, "defeatText", property => property.stringValue = JaguarDefeatText);
+            SetProperty(jaguar, "displayName", property => property.stringValue = JaguarDisplayName);
 
             var report = root.AddComponent<ReportOnDefeat>();
             report.EnemyId = OlmecaNarrativeAssets.StoneJaguarId;
             report.FlagOnDefeat = OlmecaNarrativeAssets.StoneJaguarDefeatedFlag;
             ShowWhen(root, null, new[] { OlmecaNarrativeAssets.StoneJaguarDefeatedFlag }, liveUpdate: true);
 
-            // Liberado: la escultura queda sentada en el centro de la arena.
+            // Liberado: el espíritu queda en reposo en el centro de la arena.
             var freed = Group("Liberado", parent);
-            var statue = SpriteObject("Jaguar_Piedra_Liberado", freed, poses["Liberado"][0],
+            var statue = SpriteObject("Espiritu_Jaguar_Liberado", freed, stalk.GetIdle(DirectionalSpriteSet.DirectionCount - 1),
                 AssetDatabase.LoadAssetAtPath<Material>(PixelArtAssets.ObjectMaterialPath),
                 IsometricProjection.SnapToPixelGrid(ToWorld(home), 1f / IsometricProjection.PixelsPerUnit));
             statue.gameObject.SetActive(false);
             ShowWhen(statue.gameObject, new[] { OlmecaNarrativeAssets.StoneJaguarDefeatedFlag }, null, liveUpdate: true);
         }
-
-        // Jaguar_Piedra_<Pose>_<dirección 01–05> (N, NE, E, SE, S); Liberado solo tiene 01.
-        static Dictionary<string, Sprite[]> LoadJaguarSprites() =>
-            LoadPoseSprites("Jaguar_Piedra", JaguarPoses, new[] { "Liberado" });
 
         // <prefijo>_<Pose>_<dirección 01–05> (N, NE, E, SE, S); las poses solo de frente tienen únicamente 01.
         static Dictionary<string, Sprite[]> LoadPoseSprites(string prefix, IEnumerable<string> directionalPoses,

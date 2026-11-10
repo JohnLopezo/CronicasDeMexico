@@ -193,7 +193,7 @@ namespace CronicasDeMexico.Editor.SceneGeneration
                 {
                     new QuestStep(StoryEvents.Reach("mazmorra_piso1"), "Entra en la estructura por la abertura entre las columnas"),
                     new QuestStep(StoryEvents.Reach("mazmorra_piso2"), "Baja por la escalera del suelo hasta el Pantano"),
-                    new QuestStep(StoryEvents.Defeat(StoneJaguarId), "Cruza el agua y enfréntate al Jaguar de Piedra"),
+                    new QuestStep(StoryEvents.Defeat(StoneJaguarId), "Cruza el agua y enfréntate al espíritu del jaguar"),
                     new QuestStep(StoryEvents.Reach("mazmorra_piso3"), "Baja a lo más hondo de la estructura"),
                 }, AntechamberReachedFlag));
             // Empieza sola al cargar la antesala (StartQuestOnLoad en el piso 3). Sin recompensas aún: llegan en M5.

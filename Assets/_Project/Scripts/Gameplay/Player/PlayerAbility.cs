@@ -31,7 +31,8 @@ namespace CronicasDeMexico.Gameplay.Player
         [SerializeField, Tooltip("Círculo que se ve un instante al golpear.")] TelegraphMarker visual;
         [SerializeField, Tooltip("Para avisar si falta energía.")] StringEventChannel messageChannel;
 
-        readonly Collider[] hits = new Collider[16];
+        // Busca en todos los layers y también triggers (suelo, muros, inscripciones, enemigos): con 16 el basalto quedaba fuera.
+        readonly Collider[] hits = new Collider[64];
         PlayerAttack attack;
         Health ownHealth;
         PlayerDefense defense;

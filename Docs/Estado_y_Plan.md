@@ -138,7 +138,7 @@ Detalle en `Docs/Personajes/NPC_Olmecas.md` y `Docs/Historia/Misiones.md`.
 ### Guerreros, caminata y enemigos de la lámina del autor, 2026-11-10
 Detalle en `Docs/Bitacora.md`, `Docs/Enemigos/Olmeca.md` y `Docs/Enemigos/Jefes_Prueba.md`.
 - **Guerreros:** la pose de Daño mide lo mismo en los siete; caminata de frente y de espalda de 4 cuadros con balanceo de brazos, también en los NPC; los pasos siguen a la velocidad (`WalkPace`).
-- **El jaguar corrupto de Blender se retiró** (decisión del autor): los espíritus corrompidos de la selva, los pisos 1 y 2 y las incursiones llevan el arte del Espíritu Jaguar de la lámina, con el mismo comportamiento y la misma historia.
+- **Los jaguares de Blender se retiraron** (decisión del autor): los espíritus corrompidos de la selva, los pisos 1 y 2 y las incursiones, y el mini-jefe del Pantano (antes Jaguar de Piedra, ahora **Espíritu del Jaguar**), llevan el arte del Espíritu Jaguar de la lámina, con el mismo comportamiento y la misma historia.
 - **Siete enemigos de la lámina** (`WildEnemy`, `EnemyData`): serpiente, guacamaya, mono y 3 avispas en la selva; 2 murciélagos en El Umbral; 2 cocodrilos en El Pantano; 2 espíritus jaguar en el piso 3. Cada uno con su movimiento, ataque avisado, defensa y habilidad especial.
 - **Seis jefes en una arena de pruebas aparte** (`Arena_Pruebas_Jefes`, `TrialBoss`): ecos ficticios inspirados en figuras de otras culturas, para asignarlos a los arcos II–V.
 - **Página de revisión** con todo animado (privada): https://claude.ai/artifact/NbQSLCHuT66rVRDP2qG2h5

@@ -266,7 +266,8 @@ namespace CronicasDeMexico.Tests
             Assert.IsFalse(BossBarVisible(), "Vencido, la barra se oculta.");
             Assert.AreEqual(3, quests.GetStep("MP_OLM_04"), "Vencer al Jaguar cumple el tercer paso.");
             Assert.IsTrue(Object.FindObjectsByType<SpriteRenderer>(FindObjectsSortMode.None)
-                .Any(r => r.sprite != null && r.sprite.name == "Jaguar_Piedra_Liberado_01"), "Queda la escultura liberada.");
+                .Any(r => r.name == "Espiritu_Jaguar_Liberado" && r.sprite != null && r.sprite.name.StartsWith("Enemigo_EspirituJaguar_")),
+                "Queda el espíritu liberado, con el arte de la lámina del autor.");
             var portal = Object.FindObjectsByType<ScenePortal>(FindObjectsSortMode.None).SingleOrDefault(p => p.TargetScene == Floor3);
             Assert.IsNotNull(portal, "Vencido el Jaguar, la bajada se abre.");
         }

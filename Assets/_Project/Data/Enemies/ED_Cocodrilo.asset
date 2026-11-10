@@ -1,0 +1,57 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8f47a02d4143454f849352cfd14f60b, type: 3}
+  m_Name: ED_Cocodrilo
+  m_EditorClassIdentifier: 
+  id: cocodrilo
+  displayName: Cocodrilo
+  maxHealth: 60
+  moveSpeed: 1.6
+  detectionRadius: 5
+  loseRadius: 8
+  movement: 3
+  preferredDistance: 4
+  flies: 0
+  hoverHeight: 0
+  bodyRadius: 0.4
+  attackShape: 1
+  attackRange: 2.8
+  attackSize: 1
+  attackReach: 2.5
+  attackWindup: 0.7
+  attackRecover: 1
+  attackCooldown: 2.2
+  attackDamage: 14
+  attackDrains: 0
+  swarm: 0
+  swarmRadius: 4
+  special: 2
+  specialRange: 1.6
+  specialRadius: 1.8
+  specialWindup: 0.5
+  specialCooldown: 4
+  specialDamage: 10
+  slowFactor: 1
+  slowSeconds: 0
+  defense: 2
+  defenseFactor: 0.5
+  defenseSeconds: 0
+  defenseCooldown: 0
+  loot: {fileID: 0}
+  zoneLevel: 1
+  respawnDelay: 20
+  walk: {fileID: 11400000, guid: fd97851563024c143adf3ec8bfd6f363, type: 2}
+  run: {fileID: 11400000, guid: bd1d25a6eaf9e93458c1ee27f4117afa, type: 2}
+  attack: {fileID: 11400000, guid: 0443dc8d74ce35e4b95b82760c47218d, type: 2}
+  guard: {fileID: 11400000, guid: a080f64c5ad97e04ab4a06827db2e83f, type: 2}
+  hit: {fileID: 11400000, guid: 66b4ce8df34c68b469e776c71ce4e589, type: 2}
+  death: {fileID: 11400000, guid: 71421c2467de19d4f893b6142b548a43, type: 2}

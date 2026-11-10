@@ -1,0 +1,36 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0f3a2dbe737f384da36cc4134724892, type: 3}
+  m_Name: DSS_Enemigo_EspirituJaguar_Correr
+  m_EditorClassIdentifier: 
+  clips:
+  - idle: {fileID: 21300000, guid: ac6463d4cf500884a9f42c898d49a2bb, type: 3}
+    walk:
+    - {fileID: 21300000, guid: 0aa37ecf15a98064f88f00ee02ce4a30, type: 3}
+    - {fileID: 21300000, guid: 0bda2b02394b0524984b4a6a7365834c, type: 3}
+  - idle: {fileID: 21300000, guid: ac6463d4cf500884a9f42c898d49a2bb, type: 3}
+    walk:
+    - {fileID: 21300000, guid: 0aa37ecf15a98064f88f00ee02ce4a30, type: 3}
+    - {fileID: 21300000, guid: 0bda2b02394b0524984b4a6a7365834c, type: 3}
+  - idle: {fileID: 21300000, guid: ac6463d4cf500884a9f42c898d49a2bb, type: 3}
+    walk:
+    - {fileID: 21300000, guid: 0aa37ecf15a98064f88f00ee02ce4a30, type: 3}
+    - {fileID: 21300000, guid: 0bda2b02394b0524984b4a6a7365834c, type: 3}
+  - idle: {fileID: 21300000, guid: ac6463d4cf500884a9f42c898d49a2bb, type: 3}
+    walk:
+    - {fileID: 21300000, guid: 0aa37ecf15a98064f88f00ee02ce4a30, type: 3}
+    - {fileID: 21300000, guid: 0bda2b02394b0524984b4a6a7365834c, type: 3}
+  - idle: {fileID: 21300000, guid: ac6463d4cf500884a9f42c898d49a2bb, type: 3}
+    walk:
+    - {fileID: 21300000, guid: 0aa37ecf15a98064f88f00ee02ce4a30, type: 3}
+    - {fileID: 21300000, guid: 0bda2b02394b0524984b4a6a7365834c, type: 3}
+  walkFramesPerSecond: 8

@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 83891cba92ea03445a40e0bf7ecf7765, type: 3}
+  m_Name: REC_nota_B
+  m_EditorClassIdentifier: 
+  experience: 30
+  items:
+  - item: {fileID: 11400000, guid: fa93efaabb89864458b4e8630bf21a01, type: 2}
+    count: 40
+  - item: {fileID: 11400000, guid: fbd22a5ad0e228f4080088c6682d38c7, type: 2}
+    count: 1
+  flags: []
+  blessing: {fileID: 0}
+  extra: {fileID: 0}

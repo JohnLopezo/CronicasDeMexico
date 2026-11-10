@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cb296e4cd7603524db49c01b6f9ea99e, type: 3}
+  m_Name: GUA_xolo
+  m_EditorClassIdentifier: 
+  baseStats:
+    maxHealth: 55
+    attack: 8
+    defense: 2
+    maxEnergy: 90
+  growthPerLevel: {x: 6.5, y: 1, z: 1, w: 4}
+  id: xolo
+  displayName: Ocel
+  title: "Guardi\xE1n Xoloitzcuintle"
+  description: "Resistencia espiritual, rastreo y protecci\xF3n."
+  initialAffinity: 5
+  status: 1
+  spriteSet: {fileID: 11400000, guid: b660accd1965fad43a803bdb8961c8c8, type: 2}
+  attackSet: {fileID: 11400000, guid: 7226c38907c1a4f41ba77ceed57ebbfd, type: 2}
+  runSet: {fileID: 11400000, guid: e70aca00657660445812c75db266d0ce, type: 2}
+  hitSet: {fileID: 11400000, guid: 4d22df2e5c97a064b976d9754e943d6c, type: 2}
+  deathSet: {fileID: 11400000, guid: 264f4edf389ed104fabf19ff709743d1, type: 2}
+  defenseSet: {fileID: 0}
+  victorySet: {fileID: 0}
+  specialSet: {fileID: 0}

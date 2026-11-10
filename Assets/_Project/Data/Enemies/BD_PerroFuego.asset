@@ -1,0 +1,83 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c7e2ae10786094147a16949da6959851, type: 3}
+  m_Name: BD_PerroFuego
+  m_EditorClassIdentifier: 
+  id: PerroFuego
+  displayName: Eco del Perro de Fuego
+  inspiration: "Inspirado en X\xF3lotl (mexica; no olmeca)."
+  maxHealth: 260
+  moveSpeed: 3.2
+  engageRadius: 7
+  bodyRadius: 0.6
+  phaseThresholds:
+  - 0.6
+  - 0.3
+  resurrectFraction: 0
+  abilities:
+  - name: Furia Canina
+    kind: 0
+    minPhase: 1
+    range: 1.8
+    radius: 1.2
+    length: 5
+    count: 2
+    spread: 60
+    windup: 0.45
+    cooldown: 3
+    damage: 9
+    factor: 1
+    seconds: 2
+  - name: Salto Infernal
+    kind: 3
+    minPhase: 1
+    range: 7
+    radius: 1.5
+    length: 5
+    count: 1
+    spread: 60
+    windup: 0.8
+    cooldown: 5
+    damage: 12
+    factor: 1
+    seconds: 2
+  - name: Llamas Ancestrales
+    kind: 4
+    minPhase: 1
+    range: 8
+    radius: 1.1
+    length: 5
+    count: 5
+    spread: 60
+    windup: 0.9
+    cooldown: 6
+    damage: 8
+    factor: 1
+    seconds: 2
+  - name: Aullido Maldito
+    kind: 5
+    minPhase: 2
+    range: 3.5
+    radius: 3.5
+    length: 5
+    count: 1
+    spread: 60
+    windup: 0.8
+    cooldown: 8
+    damage: 5
+    factor: 0.6
+    seconds: 2
+  summon: {fileID: 0}
+  walk: {fileID: 11400000, guid: 8ae666764469d7a418210d82e48f3cc4, type: 2}
+  attack: {fileID: 11400000, guid: 3e446181535066c4e8cfdc477c6b6820, type: 2}
+  special: {fileID: 11400000, guid: 3320e3fab191947479b3b5e5d27d1bed, type: 2}
+  death: {fileID: 11400000, guid: 184a2c966bca0344bb2ff6bb4df3664e, type: 2}

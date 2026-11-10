@@ -1,0 +1,39 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 822e6260ef1f75648861e154a79904af, type: 3}
+  m_Name: OBJ_fibras
+  m_EditorClassIdentifier: 
+  id: fibras
+  displayName: Fibras vegetales
+  description: Fibras de palma y corteza, para cordeles.
+  category: 0
+  rarity: 0
+  origin: 1
+  originNote: "I: cordeler\xEDa de fibras vegetales; el detalle concreto no est\xE1
+    documentado aqu\xED."
+  icon: {fileID: 21300000, guid: 8303cef22fc864d468cd64d003163df3, type: 3}
+  maxStack: 60
+  value: 2
+  sellable: 1
+  bonus:
+    maxHealth: 0
+    attack: 0
+    defense: 0
+    maxEnergy: 0
+  guardianOnly: 
+  effect:
+    heal: 0
+    energy: 0
+    defenseBonus: 0
+    duration: 0
+  recordEntry: 
+  usage: Para amuletos y protecciones (cordeles).

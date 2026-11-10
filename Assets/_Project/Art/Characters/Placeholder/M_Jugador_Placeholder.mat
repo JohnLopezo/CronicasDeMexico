@@ -30,6 +30,7 @@ Material:
     m_Ints: []
     m_Floats:
     - _Cutoff: 0.5
+    - _FlashAmount: 0
     - _LightWrap: 0.5
     - _NormalUp: 0.6
     - _ShadowSampleOffset: 0.3

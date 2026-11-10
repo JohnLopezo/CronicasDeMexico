@@ -1,0 +1,57 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8f47a02d4143454f849352cfd14f60b, type: 3}
+  m_Name: ED_Murcielago
+  m_EditorClassIdentifier: 
+  id: murcielago
+  displayName: "Murci\xE9lago vampiro"
+  maxHealth: 10
+  moveSpeed: 3.6
+  detectionRadius: 5
+  loseRadius: 8
+  movement: 4
+  preferredDistance: 4
+  flies: 1
+  hoverHeight: 1
+  bodyRadius: 0.22
+  attackShape: 0
+  attackRange: 0.9
+  attackSize: 0.6
+  attackReach: 0
+  attackWindup: 0.3
+  attackRecover: 0.5
+  attackCooldown: 1.4
+  attackDamage: 5
+  attackDrains: 1
+  swarm: 0
+  swarmRadius: 4
+  special: 5
+  specialRange: 2
+  specialRadius: 2.2
+  specialWindup: 0.5
+  specialCooldown: 6
+  specialDamage: 2
+  slowFactor: 0.6
+  slowSeconds: 1.5
+  defense: 6
+  defenseFactor: 1
+  defenseSeconds: 0
+  defenseCooldown: 1.5
+  loot: {fileID: 0}
+  zoneLevel: 1
+  respawnDelay: 20
+  walk: {fileID: 11400000, guid: f2009bcd118cc8a41a00ec0222ee2507, type: 2}
+  run: {fileID: 11400000, guid: 11d97d4157dcd9d48b34ee22065060d9, type: 2}
+  attack: {fileID: 11400000, guid: e4dee0f1bd2b1204d9f998e206f80033, type: 2}
+  guard: {fileID: 11400000, guid: 62d142ad69bf59349a88b1b6fa794efa, type: 2}
+  hit: {fileID: 11400000, guid: 461dac5b2f144c24da1c1cbc8d08e227, type: 2}
+  death: {fileID: 11400000, guid: 29ab9120309f07b49a678a476790cd2f, type: 2}

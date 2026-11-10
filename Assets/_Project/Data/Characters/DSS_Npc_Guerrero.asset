@@ -1,0 +1,43 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0f3a2dbe737f384da36cc4134724892, type: 3}
+  m_Name: DSS_Npc_Guerrero
+  m_EditorClassIdentifier: 
+  clips:
+  - idle: {fileID: 21300000, guid: a55fa23a7aec6fb4589b26c59348b23f, type: 3}
+    walk:
+    - {fileID: 21300000, guid: 9588dea1ce92c33498ef74508de5c653, type: 3}
+    - {fileID: 21300000, guid: 72c89cf0c3ea20b4cae495e5b09ca9c8, type: 3}
+    - {fileID: 21300000, guid: 39ed1a052d3694347a3d18e1c957c877, type: 3}
+    - {fileID: 21300000, guid: d3428d8d44fe0a64c9f8b93451118c4c, type: 3}
+  - idle: {fileID: 21300000, guid: 4e66de46f6e503148977dfabd9bceef9, type: 3}
+    walk:
+    - {fileID: 21300000, guid: b8269685da6fbf147a6c373413148131, type: 3}
+    - {fileID: 21300000, guid: a8f9e8ba02a7ab944b58eeb1ea2fc803, type: 3}
+    - {fileID: 21300000, guid: 72a6c582f7e02e84b9cebf9c99c30061, type: 3}
+  - idle: {fileID: 21300000, guid: 4e66de46f6e503148977dfabd9bceef9, type: 3}
+    walk:
+    - {fileID: 21300000, guid: b8269685da6fbf147a6c373413148131, type: 3}
+    - {fileID: 21300000, guid: a8f9e8ba02a7ab944b58eeb1ea2fc803, type: 3}
+    - {fileID: 21300000, guid: 72a6c582f7e02e84b9cebf9c99c30061, type: 3}
+  - idle: {fileID: 21300000, guid: 4e66de46f6e503148977dfabd9bceef9, type: 3}
+    walk:
+    - {fileID: 21300000, guid: b8269685da6fbf147a6c373413148131, type: 3}
+    - {fileID: 21300000, guid: a8f9e8ba02a7ab944b58eeb1ea2fc803, type: 3}
+    - {fileID: 21300000, guid: 72a6c582f7e02e84b9cebf9c99c30061, type: 3}
+  - idle: {fileID: 21300000, guid: 299749cfe82973e4392a9f982bf2b986, type: 3}
+    walk:
+    - {fileID: 21300000, guid: df2d17e0e06511b4b9752f2b963c3bdd, type: 3}
+    - {fileID: 21300000, guid: 57f09fc85db6696459873f29f393b3f0, type: 3}
+    - {fileID: 21300000, guid: 007fec3f4c24fd34180b1ff503b9f146, type: 3}
+    - {fileID: 21300000, guid: 96f14c6f52d381641a5d17e0418dc517, type: 3}
+  walkFramesPerSecond: 6

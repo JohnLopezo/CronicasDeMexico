@@ -1,0 +1,39 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 822e6260ef1f75648861e154a79904af, type: 3}
+  m_Name: OBJ_fragmento_primera_memoria
+  m_EditorClassIdentifier: 
+  id: fragmento_primera_memoria
+  displayName: Fragmento de la Primera Memoria
+  description: "Lo que el Guardi\xE1n proteg\xEDa: el recuerdo de c\xF3mo empez\xF3
+    esta tierra."
+  category: 4
+  rarity: 4
+  origin: 2
+  originNote: 'F: objeto central del arco olmeca (Docs/Historia_Mundo.md).'
+  icon: {fileID: 21300000, guid: 71d5d1be1a73d574aa14f534cd0a8d17, type: 3}
+  maxStack: 1
+  value: 0
+  sellable: 0
+  bonus:
+    maxHealth: 0
+    attack: 0
+    defense: 0
+    maxEnergy: 0
+  guardianOnly: 
+  effect:
+    heal: 0
+    energy: 0
+    defenseBonus: 0
+    duration: 0
+  recordEntry: 
+  usage: "Ll\xE9valo al asentamiento (MP_OLM_06)."

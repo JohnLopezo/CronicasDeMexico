@@ -1,0 +1,56 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0f3a2dbe737f384da36cc4134724892, type: 3}
+  m_Name: DSS_Jaguar_Caminar
+  m_EditorClassIdentifier: 
+  clips:
+  - idle: {fileID: 21300000, guid: 5285fdf000dd0954eb4f72e5927fd947, type: 3}
+    walk:
+    - {fileID: 21300000, guid: 12e031fea824b034bbd1871f4cc4d894, type: 3}
+    - {fileID: 21300000, guid: e24097d671c9ae344854c16eae5adfd3, type: 3}
+    - {fileID: 21300000, guid: 3a37e6b94ffcf674faacde6d6672467a, type: 3}
+    - {fileID: 21300000, guid: c59f9a4bcbfe7224ab281937732f480e, type: 3}
+    - {fileID: 21300000, guid: f0986e2058ce8a741ac281de50d1bfc7, type: 3}
+    - {fileID: 21300000, guid: 8efeacb19a8c8ec47999d4f906eabebb, type: 3}
+  - idle: {fileID: 21300000, guid: 5285fdf000dd0954eb4f72e5927fd947, type: 3}
+    walk:
+    - {fileID: 21300000, guid: 12e031fea824b034bbd1871f4cc4d894, type: 3}
+    - {fileID: 21300000, guid: e24097d671c9ae344854c16eae5adfd3, type: 3}
+    - {fileID: 21300000, guid: 3a37e6b94ffcf674faacde6d6672467a, type: 3}
+    - {fileID: 21300000, guid: c59f9a4bcbfe7224ab281937732f480e, type: 3}
+    - {fileID: 21300000, guid: f0986e2058ce8a741ac281de50d1bfc7, type: 3}
+    - {fileID: 21300000, guid: 8efeacb19a8c8ec47999d4f906eabebb, type: 3}
+  - idle: {fileID: 21300000, guid: ec5c62d53f05fed41b75e407f6352ccf, type: 3}
+    walk:
+    - {fileID: 21300000, guid: c79435d15986ac04abf1fcf62e9c2bac, type: 3}
+    - {fileID: 21300000, guid: 7626957da51d13940b45231e8aea730b, type: 3}
+    - {fileID: 21300000, guid: 7958a39b43c42ea45bef6b8e13d8d295, type: 3}
+    - {fileID: 21300000, guid: e1a830b852ffa344e84abed6c454e4ac, type: 3}
+    - {fileID: 21300000, guid: d7cce76b3890b24428b14e9ffac7007b, type: 3}
+    - {fileID: 21300000, guid: e45c209b4ad077c45a9b43157d699595, type: 3}
+  - idle: {fileID: 21300000, guid: 826d62e7b38dfc84b8c8fbcba46871e2, type: 3}
+    walk:
+    - {fileID: 21300000, guid: 7e6bd051d4050d942866dacb4754b6ef, type: 3}
+    - {fileID: 21300000, guid: c6fb835a529302b418568b77d3c839e6, type: 3}
+    - {fileID: 21300000, guid: c82fcb44c5c5d584a9652189b11eb67d, type: 3}
+    - {fileID: 21300000, guid: 768302f26a02a70419323b9769f05bd2, type: 3}
+    - {fileID: 21300000, guid: 271da62d0bce21c42a82fb3d1e7ce1ef, type: 3}
+    - {fileID: 21300000, guid: a4bb8022ae060774aa0f718677cadf57, type: 3}
+  - idle: {fileID: 21300000, guid: 826d62e7b38dfc84b8c8fbcba46871e2, type: 3}
+    walk:
+    - {fileID: 21300000, guid: 7e6bd051d4050d942866dacb4754b6ef, type: 3}
+    - {fileID: 21300000, guid: c6fb835a529302b418568b77d3c839e6, type: 3}
+    - {fileID: 21300000, guid: c82fcb44c5c5d584a9652189b11eb67d, type: 3}
+    - {fileID: 21300000, guid: 768302f26a02a70419323b9769f05bd2, type: 3}
+    - {fileID: 21300000, guid: 271da62d0bce21c42a82fb3d1e7ce1ef, type: 3}
+    - {fileID: 21300000, guid: a4bb8022ae060774aa0f718677cadf57, type: 3}
+  walkFramesPerSecond: 10

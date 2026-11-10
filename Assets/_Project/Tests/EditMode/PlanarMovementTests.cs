@@ -51,5 +51,19 @@ namespace CronicasDeMexico.Tests
         {
             Assert.That(PlanarMovement.InputToWorldDirection(new Vector2(-0.3f, 0.8f), 37f).y, Is.EqualTo(0f));
         }
+
+        [Test]
+        public void ApplyGravity_ResetsFallSpeed_WhenGrounded()
+        {
+            var speed = PlanarMovement.ApplyGravity(-15f, grounded: true, gravity: -20f, deltaTime: 0.1f);
+            Assert.That(speed, Is.EqualTo(PlanarMovement.GroundedVerticalSpeed - 2f).Within(Tolerance));
+        }
+
+        [Test]
+        public void ApplyGravity_Accelerates_WhenAirborne()
+        {
+            var speed = PlanarMovement.ApplyGravity(-15f, grounded: false, gravity: -20f, deltaTime: 0.1f);
+            Assert.That(speed, Is.EqualTo(-17f).Within(Tolerance));
+        }
     }
 }

@@ -1,0 +1,38 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 822e6260ef1f75648861e154a79904af, type: 3}
+  m_Name: OBJ_corazon_despierto
+  m_EditorClassIdentifier: 
+  id: corazon_despierto
+  displayName: "Coraz\xF3n de la Piedra Viva, despierto"
+  description: "El artesano lo puli\xF3 con basalto del Guardi\xE1n: late."
+  category: 2
+  rarity: 4
+  origin: 2
+  originNote: "F: mejora del Coraz\xF3n."
+  icon: {fileID: 21300000, guid: dbeed550c43c25546b588899d16fb6c0, type: 3}
+  maxStack: 1
+  value: 0
+  sellable: 0
+  bonus:
+    maxHealth: 30
+    attack: 0
+    defense: 4
+    maxEnergy: 30
+  guardianOnly: 
+  effect:
+    heal: 0
+    energy: 0
+    defenseBonus: 0
+    duration: 0
+  recordEntry: 
+  usage: "Vida +30, defensa +4, energ\xEDa +30. \xDAnica."

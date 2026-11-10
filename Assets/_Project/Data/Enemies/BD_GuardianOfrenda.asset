@@ -1,0 +1,83 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c7e2ae10786094147a16949da6959851, type: 3}
+  m_Name: BD_GuardianOfrenda
+  m_EditorClassIdentifier: 
+  id: GuardianOfrenda
+  displayName: "Eco del Guardi\xE1n de la Ofrenda"
+  inspiration: Inspirado en el chac mool (escultura tolteca y maya; no es una deidad).
+  maxHealth: 360
+  moveSpeed: 1.4
+  engageRadius: 7
+  bodyRadius: 0.8
+  phaseThresholds:
+  - 0.6
+  - 0.3
+  resurrectFraction: 0
+  abilities:
+  - name: Golpe Terrenal
+    kind: 0
+    minPhase: 1
+    range: 2
+    radius: 1.5
+    length: 5
+    count: 1
+    spread: 60
+    windup: 0.7
+    cooldown: 3
+    damage: 12
+    factor: 1
+    seconds: 2
+  - name: Lanzamiento de Ofrendas
+    kind: 6
+    minPhase: 1
+    range: 7
+    radius: 0.45
+    length: 7
+    count: 3
+    spread: 30
+    windup: 0.6
+    cooldown: 5
+    damage: 8
+    factor: 1
+    seconds: 2
+  - name: Terremoto
+    kind: 5
+    minPhase: 2
+    range: 4
+    radius: 4
+    length: 5
+    count: 1
+    spread: 60
+    windup: 1.2
+    cooldown: 8
+    damage: 10
+    factor: 1
+    seconds: 2
+  - name: "Ritual de Protecci\xF3n"
+    kind: 8
+    minPhase: 2
+    range: 12
+    radius: 0
+    length: 5
+    count: 1
+    spread: 60
+    windup: 0
+    cooldown: 12
+    damage: 0
+    factor: 0.3
+    seconds: 4
+  summon: {fileID: 0}
+  walk: {fileID: 11400000, guid: 96e36b6fc8e700145b8ff788f3913b2d, type: 2}
+  attack: {fileID: 11400000, guid: 6e35395e0d044be4692cf6d9e1d7c23f, type: 2}
+  special: {fileID: 11400000, guid: 6d68be7f00fb072489a524a65405d2a1, type: 2}
+  death: {fileID: 11400000, guid: 4d34d44043e0b8f4ea7ab11254481688, type: 2}

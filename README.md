@@ -9,7 +9,7 @@ El proyecto busca ofrecer una experiencia de exploración y fantasía inspirada 
 - **Exploración:** escenarios inspirados en antiguas civilizaciones mexicanas.
 - **Combate:** enfrentamientos contra criaturas, enemigos y guardianes.
 - **Mazmorras:** templos y desafíos con distintos niveles de dificultad.
-- **Personajes:** protagonistas inspirados en animales representativos de México.
+- **Personajes:** guerreros y guerreras elegibles, ligados al espíritu de animales representativos de México.
 - **Habilidades elementales:** poderes de agua, fuego, tierra, viento, luz y oscuridad.
 - **Progresión:** desbloqueo de habilidades, mejoras y nuevas regiones.
 - **Estilo HD-2D:** personajes pixel art integrados en escenarios 3D con iluminación y efectos visuales modernos.
@@ -21,6 +21,13 @@ El proyecto busca ofrecer una experiencia de exploración y fantasía inspirada 
 - Universal Render Pipeline (URP)
 - Claude Code como herramienta de asistencia al desarrollo
 - Git y GitHub para control de versiones
+
+## Entorno de desarrollo
+
+- **Unity 6000.0.85f1** (exacta) con Android Build Support, Git y Git LFS.
+- Dos PC Windows con gráficos integrados: i5-6500 / Intel HD 530 / 12 GB (referencia de rendimiento) e i7-10700 / Intel UHD 630 / 16 GB.
+- Plataforma objetivo: Android en horizontal, con arquitectura preparada para iOS.
+- Puesta en marcha y rutina de trabajo entre ambas PC: [`Docs/DesarrolloMultiPC.md`](Docs/DesarrolloMultiPC.md). Perfiles de calidad y guía gráfica: [`Docs/Rendimiento.md`](Docs/Rendimiento.md).
 
 ## Estado del proyecto
 

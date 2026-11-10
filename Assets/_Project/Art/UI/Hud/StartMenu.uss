@@ -1,0 +1,104 @@
+/* Menú de inicio (StartMenuController). Tamaños en px sobre 1920×1080 (PanelSettings_Hud). Fondo liso: el de las
+   vistas previas del arte (#13241A); bordes y selección con los colores de las opciones del HUD. */
+
+.hidden {
+    display: none;
+}
+
+.start-menu {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    align-items: center;
+    justify-content: center;
+    background-color: rgb(19, 36, 26);
+}
+
+.start-menu__title {
+    margin-bottom: 64px;
+    color: rgb(240, 232, 214);
+    font-size: 72px;
+    -unity-font-style: bold;
+}
+
+.start-menu__panel {
+    align-items: center;
+}
+
+.start-menu__row {
+    flex-direction: row;
+    margin-bottom: 16px;
+}
+
+.start-menu__text {
+    max-width: 900px;
+    margin-bottom: 24px;
+    color: rgb(240, 232, 214);
+    font-size: 28px;
+    white-space: normal;
+    -unity-text-align: middle-center;
+}
+
+.start-menu__button {
+    min-width: 360px;
+    height: 64px;
+    margin: 8px;
+    font-size: 30px;
+    border-width: 2px;
+    border-color: rgb(190, 112, 44);
+    border-radius: 6px;
+}
+
+.start-menu__row .start-menu__button {
+    min-width: 200px;
+}
+
+.start-menu__button:focus {
+    border-width: 4px;
+    border-color: rgb(240, 200, 120);
+}
+
+.start-menu__button--selected {
+    border-width: 3px;
+    border-color: rgb(52, 138, 96);
+    -unity-font-style: bold;
+}
+
+.start-menu__guardian {
+    width: 200px;
+    min-width: 200px;
+    height: 248px;
+    margin: 6px;
+    padding: 4px;
+    align-items: center;
+    justify-content: flex-end;
+    background-color: rgb(42, 62, 50);
+}
+
+/* Múltiplo exacto del lienzo de 48×64, para que los píxeles no se deformen. */
+.start-menu__guardian-portrait {
+    width: 144px;
+    height: 192px;
+    -unity-background-scale-mode: scale-to-fit;
+}
+
+.start-menu__guardian-name {
+    color: rgb(240, 232, 214);
+    font-size: 26px;
+    -unity-text-align: middle-center;
+}
+
+.start-menu__guardian-title {
+    margin-bottom: 4px;
+    color: rgb(240, 200, 120);
+    font-size: 34px;
+    -unity-font-style: bold;
+}
+
+.start-menu__message {
+    margin-top: 24px;
+    color: rgb(230, 150, 120);
+    font-size: 24px;
+}

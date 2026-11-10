@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bb953c8f9e5c5ed4c866026ae0fb6bb1, type: 3}
+  m_Name: CatalogoMisiones
+  m_EditorClassIdentifier: 
+  quests:
+  - {fileID: 11400000, guid: 43c173dffbbffba4d8125d31f3c6ec90, type: 2}
+  - {fileID: 11400000, guid: 7e5730fdf9b9e9444ba74f5d4f0911fe, type: 2}
+  - {fileID: 11400000, guid: c4617763dfcdcd045905b1c871019ea2, type: 2}
+  - {fileID: 11400000, guid: e40b9712adbbea044845f99d0147ccff, type: 2}
+  - {fileID: 11400000, guid: 52ef298e7c9b4c346baca4562cb67202, type: 2}
+  - {fileID: 11400000, guid: e3cf56aecf1463048923ee529cd220a6, type: 2}

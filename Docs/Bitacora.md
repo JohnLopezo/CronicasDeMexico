@@ -21,6 +21,15 @@ Plantilla:
 
 ---
 
+## 2026-11-10 — i7-10700: el jaguar corrupto ya no se ve de pie
+
+- **Etapa 2 de `Continuar_Guerreros.md`:** el enemigo reportado era el jaguar corrupto de la selva (`Docs/Bus/BugCara.png`). Con la cámara 3/4 frontal, sus renders Norte y Sur (girados 65° en `personajes.py`) dejaban el cuerpo casi vertical.
+- **Hecho (opción 1, elegida por el autor):** `JaguarCharacterAssets.ArtDirection` hace que Norte y Sur usen los renders diagonales (NE y SE). Sin renderizar en Blender ni regenerar escenas: `-executeMethod ...JaguarCharacterAssets.RebuildAll` rehace los `DSS_JaguarCorrupto_*` y `DSS_Jaguar_*`.
+- **Estado:** EditMode 112/112, PlayMode 80/80. Subido.
+- **Siguiente:** enemigos y jefes de `Docs/Enemigos y Gefes de mazmorra` (plan aprobado: etapas 1 arte y 2 sistema común).
+
+---
+
 ## 2026-11-10 — i7-10700: tamaño de la pose de Daño
 
 - **Rama / último commit al empezar:** `feature/prototipo-olmeca` @ `1c7ce77`.

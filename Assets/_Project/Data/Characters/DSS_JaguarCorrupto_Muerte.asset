@@ -13,11 +13,11 @@ MonoBehaviour:
   m_Name: DSS_JaguarCorrupto_Muerte
   m_EditorClassIdentifier: 
   clips:
-  - idle: {fileID: 21300000, guid: c9db5d34bdfc58c4491d202b56565c12, type: 3}
+  - idle: {fileID: 21300000, guid: 92b181385a60e034083fb625b983b8ec, type: 3}
     walk:
-    - {fileID: 21300000, guid: 40a64b80019075f4190f7049bcf5fc81, type: 3}
-    - {fileID: 21300000, guid: ae20c03d25a86574489ea6358bfcf2da, type: 3}
-    - {fileID: 21300000, guid: 35fe0ea5d0548734785c998f4026410c, type: 3}
+    - {fileID: 21300000, guid: 855d77051d3674e4cbde30e951e08e3a, type: 3}
+    - {fileID: 21300000, guid: 24902ec6dd9de5b419b6c1b62ed35a5f, type: 3}
+    - {fileID: 21300000, guid: acd84295d4b2bba4cbb1a8a697da52e3, type: 3}
   - idle: {fileID: 21300000, guid: 92b181385a60e034083fb625b983b8ec, type: 3}
     walk:
     - {fileID: 21300000, guid: 855d77051d3674e4cbde30e951e08e3a, type: 3}
@@ -33,9 +33,9 @@ MonoBehaviour:
     - {fileID: 21300000, guid: d3a4e820d7a00d643ada1127de055665, type: 3}
     - {fileID: 21300000, guid: fabf6f9f6a2963e4fa78e16c8f6af5c4, type: 3}
     - {fileID: 21300000, guid: 59fec0ce55988414583c0a365867d0ff, type: 3}
-  - idle: {fileID: 21300000, guid: a2c471a6b3960874e949f062e3b5eaee, type: 3}
+  - idle: {fileID: 21300000, guid: e3ef889f8fc0e204fbaf36a3ab0323da, type: 3}
     walk:
-    - {fileID: 21300000, guid: 1a34904e8095aa34d9e147f5b9f059d1, type: 3}
-    - {fileID: 21300000, guid: 35d0c9e0350b78044a7b7b5b90f9d9ce, type: 3}
-    - {fileID: 21300000, guid: aa03a8db103cfc948b99cce3379765ae, type: 3}
+    - {fileID: 21300000, guid: d3a4e820d7a00d643ada1127de055665, type: 3}
+    - {fileID: 21300000, guid: fabf6f9f6a2963e4fa78e16c8f6af5c4, type: 3}
+    - {fileID: 21300000, guid: 59fec0ce55988414583c0a365867d0ff, type: 3}
   walkFramesPerSecond: 6

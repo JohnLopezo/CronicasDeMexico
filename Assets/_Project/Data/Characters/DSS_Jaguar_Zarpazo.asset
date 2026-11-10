@@ -13,12 +13,12 @@ MonoBehaviour:
   m_Name: DSS_Jaguar_Zarpazo
   m_EditorClassIdentifier: 
   clips:
-  - idle: {fileID: 21300000, guid: 7ceeed23824e6e44ca0dbc03f042d80d, type: 3}
+  - idle: {fileID: 21300000, guid: 5285fdf000dd0954eb4f72e5927fd947, type: 3}
     walk:
-    - {fileID: 21300000, guid: 31e6ef88c467c8d4f8ead7e85fe02248, type: 3}
-    - {fileID: 21300000, guid: 491239f6bb882724291aa2028e25af77, type: 3}
-    - {fileID: 21300000, guid: f2f0151e14a416942838c6cbb36db273, type: 3}
-    - {fileID: 21300000, guid: dfc8d2e7aa21bf34890cd71932ea8ea7, type: 3}
+    - {fileID: 21300000, guid: 5b9bbcd964e6ba549a6b0018a123d7fc, type: 3}
+    - {fileID: 21300000, guid: 840c58486f5703d458f2ab0fb2c0e938, type: 3}
+    - {fileID: 21300000, guid: 3a3fcf0327c313d41b0de27c546ae234, type: 3}
+    - {fileID: 21300000, guid: 26fac08ff82675144937e07c55c42b6b, type: 3}
   - idle: {fileID: 21300000, guid: 5285fdf000dd0954eb4f72e5927fd947, type: 3}
     walk:
     - {fileID: 21300000, guid: 5b9bbcd964e6ba549a6b0018a123d7fc, type: 3}
@@ -37,10 +37,10 @@ MonoBehaviour:
     - {fileID: 21300000, guid: 88cfc412c03bfd54e849e39b54994e82, type: 3}
     - {fileID: 21300000, guid: b1970c3d27c25e24f9d7aec18399e87a, type: 3}
     - {fileID: 21300000, guid: 3aa8ca756d40e2b41b52ef7d2dff0bc6, type: 3}
-  - idle: {fileID: 21300000, guid: 70130ea16410e294ebfac6d933c3de20, type: 3}
+  - idle: {fileID: 21300000, guid: 826d62e7b38dfc84b8c8fbcba46871e2, type: 3}
     walk:
-    - {fileID: 21300000, guid: 8a6f2f2650e393240aca69dd9ac5bba8, type: 3}
-    - {fileID: 21300000, guid: 0cec1a5c4347f204298c2e1171d4a6ef, type: 3}
-    - {fileID: 21300000, guid: 752cbbc10d0f7574282af79e242937c7, type: 3}
-    - {fileID: 21300000, guid: 397756362ad836c4bac555f0988ce8b5, type: 3}
+    - {fileID: 21300000, guid: f9956c5e619d3d84f9a6e2041b14edf1, type: 3}
+    - {fileID: 21300000, guid: 88cfc412c03bfd54e849e39b54994e82, type: 3}
+    - {fileID: 21300000, guid: b1970c3d27c25e24f9d7aec18399e87a, type: 3}
+    - {fileID: 21300000, guid: 3aa8ca756d40e2b41b52ef7d2dff0bc6, type: 3}
   walkFramesPerSecond: 14

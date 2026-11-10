@@ -13,10 +13,10 @@ MonoBehaviour:
   m_Name: DSS_JaguarCorrupto_Salto
   m_EditorClassIdentifier: 
   clips:
-  - idle: {fileID: 21300000, guid: c9db5d34bdfc58c4491d202b56565c12, type: 3}
+  - idle: {fileID: 21300000, guid: 92b181385a60e034083fb625b983b8ec, type: 3}
     walk:
-    - {fileID: 21300000, guid: 7768c332921120a4bbefa81169545d60, type: 3}
-    - {fileID: 21300000, guid: a11d472385b3c064e9eeb604799417f9, type: 3}
+    - {fileID: 21300000, guid: d9d1d31db7ac7ab42a750f2bee1764d4, type: 3}
+    - {fileID: 21300000, guid: 0b1df35f7d78f51499c467486ca1df3a, type: 3}
   - idle: {fileID: 21300000, guid: 92b181385a60e034083fb625b983b8ec, type: 3}
     walk:
     - {fileID: 21300000, guid: d9d1d31db7ac7ab42a750f2bee1764d4, type: 3}
@@ -29,8 +29,8 @@ MonoBehaviour:
     walk:
     - {fileID: 21300000, guid: 17834793f6a34374b8cdb1fcaf303e74, type: 3}
     - {fileID: 21300000, guid: 8a50b3961c2d75649b311d55246210d2, type: 3}
-  - idle: {fileID: 21300000, guid: a2c471a6b3960874e949f062e3b5eaee, type: 3}
+  - idle: {fileID: 21300000, guid: e3ef889f8fc0e204fbaf36a3ab0323da, type: 3}
     walk:
-    - {fileID: 21300000, guid: 5f909b8685919f747ab30747f3b83b50, type: 3}
-    - {fileID: 21300000, guid: 7acd423a76593dc42a94ec2baeefa9cc, type: 3}
+    - {fileID: 21300000, guid: 17834793f6a34374b8cdb1fcaf303e74, type: 3}
+    - {fileID: 21300000, guid: 8a50b3961c2d75649b311d55246210d2, type: 3}
   walkFramesPerSecond: 6

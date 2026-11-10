@@ -47,6 +47,21 @@ namespace CronicasDeMexico.Editor.SceneGeneration
 
         public static Sets Corrupted() => Build(CorruptedPrefix, CorruptedAnimations);
 
+        /// <summary>
+        /// Variante de arte (01–05) que usa cada dirección de pantalla. Con la cámara 3/4 frontal, los renders Norte y Sur
+        /// (girados 65°) dejan el cuerpo casi vertical y el jaguar parece de pie: al ir al norte o al sur usa la diagonal
+        /// (NE o SE, 40°), que se lee como cuadrúpedo. Reportado por el autor el 2026-11-10.
+        /// </summary>
+        public static int ArtDirection(int direction) => direction switch { 1 => 2, 5 => 4, _ => direction };
+
+        /// <summary>Rehace los DSS_ de los jaguares sin regenerar escenas (las referencias se conservan).
+        /// -executeMethod CronicasDeMexico.Editor.SceneGeneration.JaguarCharacterAssets.RebuildAll</summary>
+        public static void RebuildAll()
+        {
+            Player();
+            Corrupted();
+        }
+
         static Sets Build(string prefix, IEnumerable<(string anim, int frames, float fps)> animations)
         {
             var sprites = AssetDatabase.FindAssets("t:Sprite", new[] { SpritesFolder })
@@ -65,9 +80,10 @@ namespace CronicasDeMexico.Editor.SceneGeneration
                 set.SetClips(Enumerable.Range(1, DirectionalSpriteSet.DirectionCount)
                     .Select(d =>
                     {
-                        var clip = Enumerable.Range(1, frames).Select(f => Get($"{prefix}_{anim}{f}_{d:00}")).ToArray();
+                        var v = ArtDirection(d);
+                        var clip = Enumerable.Range(1, frames).Select(f => Get($"{prefix}_{anim}{f}_{v:00}")).ToArray();
                         // La pose quieta de cualquier juego es el primer cuadro del reposo
-                        return new DirectionalSpriteSet.DirectionClip(Get($"{prefix}_Reposo1_{d:00}"), clip);
+                        return new DirectionalSpriteSet.DirectionClip(Get($"{prefix}_Reposo1_{v:00}"), clip);
                     })
                     .ToArray());
                 set.FramesPerSecond = fps;

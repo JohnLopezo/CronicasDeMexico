@@ -13,12 +13,12 @@ MonoBehaviour:
   m_Name: DSS_Jaguar_Reposo
   m_EditorClassIdentifier: 
   clips:
-  - idle: {fileID: 21300000, guid: 7ceeed23824e6e44ca0dbc03f042d80d, type: 3}
+  - idle: {fileID: 21300000, guid: 5285fdf000dd0954eb4f72e5927fd947, type: 3}
     walk:
-    - {fileID: 21300000, guid: 7ceeed23824e6e44ca0dbc03f042d80d, type: 3}
-    - {fileID: 21300000, guid: 5c33f9ae9586345418a129818a6d88f7, type: 3}
-    - {fileID: 21300000, guid: 96bf35823d2f51c42a58834032ac5209, type: 3}
-    - {fileID: 21300000, guid: db7227935a5cdd744bef918729501a87, type: 3}
+    - {fileID: 21300000, guid: 5285fdf000dd0954eb4f72e5927fd947, type: 3}
+    - {fileID: 21300000, guid: c532460a5f428bb4a920c82241a7c097, type: 3}
+    - {fileID: 21300000, guid: 130d4a92aa7db1a48af940dd7ecc597f, type: 3}
+    - {fileID: 21300000, guid: 340c0e271dbf10446ac739f745314872, type: 3}
   - idle: {fileID: 21300000, guid: 5285fdf000dd0954eb4f72e5927fd947, type: 3}
     walk:
     - {fileID: 21300000, guid: 5285fdf000dd0954eb4f72e5927fd947, type: 3}
@@ -37,10 +37,10 @@ MonoBehaviour:
     - {fileID: 21300000, guid: 3c14723299b135f4298105d333f6f100, type: 3}
     - {fileID: 21300000, guid: 767d2266d5621b44e99e0c0df23bcf62, type: 3}
     - {fileID: 21300000, guid: 2df2ddd131e098a4abc5a517190a6c92, type: 3}
-  - idle: {fileID: 21300000, guid: 70130ea16410e294ebfac6d933c3de20, type: 3}
+  - idle: {fileID: 21300000, guid: 826d62e7b38dfc84b8c8fbcba46871e2, type: 3}
     walk:
-    - {fileID: 21300000, guid: 70130ea16410e294ebfac6d933c3de20, type: 3}
-    - {fileID: 21300000, guid: 00ddf5479f0109d42869f2514cfc2b25, type: 3}
-    - {fileID: 21300000, guid: 302345fe0824a884ab392b96bd59f814, type: 3}
-    - {fileID: 21300000, guid: 3dd83f0b386bf8541b92bf32c33b71e4, type: 3}
+    - {fileID: 21300000, guid: 826d62e7b38dfc84b8c8fbcba46871e2, type: 3}
+    - {fileID: 21300000, guid: 3c14723299b135f4298105d333f6f100, type: 3}
+    - {fileID: 21300000, guid: 767d2266d5621b44e99e0c0df23bcf62, type: 3}
+    - {fileID: 21300000, guid: 2df2ddd131e098a4abc5a517190a6c92, type: 3}
   walkFramesPerSecond: 3

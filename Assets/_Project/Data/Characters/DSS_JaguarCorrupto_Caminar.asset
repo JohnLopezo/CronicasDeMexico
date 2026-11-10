@@ -13,14 +13,14 @@ MonoBehaviour:
   m_Name: DSS_JaguarCorrupto_Caminar
   m_EditorClassIdentifier: 
   clips:
-  - idle: {fileID: 21300000, guid: c9db5d34bdfc58c4491d202b56565c12, type: 3}
+  - idle: {fileID: 21300000, guid: 92b181385a60e034083fb625b983b8ec, type: 3}
     walk:
-    - {fileID: 21300000, guid: bf11e1a923fa75c42a9f046b3f144aa9, type: 3}
-    - {fileID: 21300000, guid: b6c81c04bdaa7694b9304f83a806e59a, type: 3}
-    - {fileID: 21300000, guid: cd9c86c923fa10547ad21ba8b1949962, type: 3}
-    - {fileID: 21300000, guid: c75a3f8534447ca4f85302aa20ca8fdb, type: 3}
-    - {fileID: 21300000, guid: 40e5fb272387d32469622ab8be92cefe, type: 3}
-    - {fileID: 21300000, guid: 51fc9e4bcbec87c4db53ab2d922f0944, type: 3}
+    - {fileID: 21300000, guid: c793d2ce3b32c434287b54213d5af496, type: 3}
+    - {fileID: 21300000, guid: 978d2ed8a08039a4b9f4c92556d21690, type: 3}
+    - {fileID: 21300000, guid: 12f338bfa2c115142ad83ec7b915a3b8, type: 3}
+    - {fileID: 21300000, guid: a9687b1c45edaa44aa423c99ae5ea546, type: 3}
+    - {fileID: 21300000, guid: f5baee6838e166c49bce2459da20a207, type: 3}
+    - {fileID: 21300000, guid: 657f0aca99535b74ba1ee1f857156f3f, type: 3}
   - idle: {fileID: 21300000, guid: 92b181385a60e034083fb625b983b8ec, type: 3}
     walk:
     - {fileID: 21300000, guid: c793d2ce3b32c434287b54213d5af496, type: 3}
@@ -45,12 +45,12 @@ MonoBehaviour:
     - {fileID: 21300000, guid: 65f037cf2e86d9f4ab39a1edc2438822, type: 3}
     - {fileID: 21300000, guid: 1b0644f0c94ec4c46b5b9f9b8eab7418, type: 3}
     - {fileID: 21300000, guid: dad809a7ac1f5ac4697d09a2e795ab76, type: 3}
-  - idle: {fileID: 21300000, guid: a2c471a6b3960874e949f062e3b5eaee, type: 3}
+  - idle: {fileID: 21300000, guid: e3ef889f8fc0e204fbaf36a3ab0323da, type: 3}
     walk:
-    - {fileID: 21300000, guid: b08f839c7c737e843b8c59f8db03bc94, type: 3}
-    - {fileID: 21300000, guid: e37363ceabd39a249bdc8052ee1fd498, type: 3}
-    - {fileID: 21300000, guid: 798fddb6b77b3ae488852be32e154754, type: 3}
-    - {fileID: 21300000, guid: 3e63992246ff7b64c8c80d6b9683e39a, type: 3}
-    - {fileID: 21300000, guid: 270f37931d17d2b448df00c2714556cb, type: 3}
-    - {fileID: 21300000, guid: abd19f0f20c4fac448ffe002e33531c5, type: 3}
+    - {fileID: 21300000, guid: 0aa97042d0d63ec4a9f6dba26ea8ebaa, type: 3}
+    - {fileID: 21300000, guid: 9bf4a3df42a5eab42af050a90c9fa85d, type: 3}
+    - {fileID: 21300000, guid: 082eb260c410eab46bb383119d6f53ec, type: 3}
+    - {fileID: 21300000, guid: 65f037cf2e86d9f4ab39a1edc2438822, type: 3}
+    - {fileID: 21300000, guid: 1b0644f0c94ec4c46b5b9f9b8eab7418, type: 3}
+    - {fileID: 21300000, guid: dad809a7ac1f5ac4697d09a2e795ab76, type: 3}
   walkFramesPerSecond: 11

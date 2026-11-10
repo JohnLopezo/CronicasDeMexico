@@ -13,10 +13,10 @@ MonoBehaviour:
   m_Name: DSS_Jaguar_Golpeado
   m_EditorClassIdentifier: 
   clips:
-  - idle: {fileID: 21300000, guid: 7ceeed23824e6e44ca0dbc03f042d80d, type: 3}
+  - idle: {fileID: 21300000, guid: 5285fdf000dd0954eb4f72e5927fd947, type: 3}
     walk:
-    - {fileID: 21300000, guid: de2741cce9f1817438639b4dc3e0d2cc, type: 3}
-    - {fileID: 21300000, guid: f1d5eec97e595eb4b8d82e0ae2927e96, type: 3}
+    - {fileID: 21300000, guid: f3fa9c912d5af274da604f7422a61518, type: 3}
+    - {fileID: 21300000, guid: 7f7ad422d68cb394c943cce3dfb73fd9, type: 3}
   - idle: {fileID: 21300000, guid: 5285fdf000dd0954eb4f72e5927fd947, type: 3}
     walk:
     - {fileID: 21300000, guid: f3fa9c912d5af274da604f7422a61518, type: 3}
@@ -29,8 +29,8 @@ MonoBehaviour:
     walk:
     - {fileID: 21300000, guid: e14922f848ece494795a083791aed221, type: 3}
     - {fileID: 21300000, guid: 16c1c5691e445cd43b61e06cfe414fa8, type: 3}
-  - idle: {fileID: 21300000, guid: 70130ea16410e294ebfac6d933c3de20, type: 3}
+  - idle: {fileID: 21300000, guid: 826d62e7b38dfc84b8c8fbcba46871e2, type: 3}
     walk:
-    - {fileID: 21300000, guid: 7ef9a3aa26d3b4142bc83428091d2493, type: 3}
-    - {fileID: 21300000, guid: 7e125ad8b3981b24eb8c5923fb3788f1, type: 3}
+    - {fileID: 21300000, guid: e14922f848ece494795a083791aed221, type: 3}
+    - {fileID: 21300000, guid: 16c1c5691e445cd43b61e06cfe414fa8, type: 3}
   walkFramesPerSecond: 10

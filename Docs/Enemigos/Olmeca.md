@@ -14,7 +14,7 @@ Fuente: `Docs/Historia_Mundo.md` §4.3, §7, §10; GDD `Docs/Diseno.md` §10. **
 
 | Enemigo | Clase | Arquetipo (GDD §10) | Dónde | Comportamiento | Tipo |
 |---|---|---|---|---|---|
-| **Espíritu jaguar corrompido** | Corrompido | Melee rápido | Selva, pisos 1–3 | Acecha y embiste. **Ya existe** como `EspirituJaguar` (`EnemyChaser`) con arte provisional. En la selva (`Olmeca_Selva`, M1) hay tres con arte corrompido provisional (`PlaceholderSpriteFactory.CorruptedJaguarSpirit`: pelaje apagado y grietas violetas) que laten a ritmo irregular (`CorruptionPulse`), no reaparecen y dejan un fragmento de memoria | F (motivo felino: I) |
+| **Espíritu jaguar corrompido** | Corrompido | Melee rápido | Selva, pisos 1–3 | Acecha y embiste. **Ya existe** como `EspirituJaguar` (`EnemyChaser`). **Desde el 2026-11-10 lleva el arte del Espíritu Jaguar de la lámina del autor** (el jaguar corrupto de Blender se retiró por decisión del autor): agazapado con la pose de defensa, salta con la de correr. En la selva (`Olmeca_Selva`, M1) hay tres con arte corrompido provisional (`PlaceholderSpriteFactory.CorruptedJaguarSpirit`: pelaje apagado y grietas violetas) que laten a ritmo irregular (`CorruptionPulse`), no reaparecen y dejan un fragmento de memoria | F (motivo felino: I) |
 | Pecarí | Natural | Tanque ligero | Selva | Carga en línea recta si se le molesta; se puede evitar | D (fauna nativa) |
 | Cocodrilo de pantano | Natural | Emboscada | Orillas y pantano | Espera en el agua; ataque rápido con aviso; no persigue lejos | D (*Crocodylus moreletii*, nativo; verificar distribución) |
 | Murciélagos | Natural | Volador, enjambre | Cuevas y cámaras | Grupos pequeños; molestan más que dañan | D |

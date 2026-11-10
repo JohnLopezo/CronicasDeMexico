@@ -181,7 +181,8 @@ namespace CronicasDeMexico.Tests
             var animator = spirit.GetComponent<DirectionalSpriteAnimator>();
             Assert.IsTrue(spirit.Lunges, "El jaguar corrupto salta.");
             Assert.IsNotNull(spirit.LungeMarker);
-            StringAssert.StartsWith("JaguarCorrupto_", spirit.GetComponentInChildren<SpriteRenderer>().sprite.name);
+            StringAssert.StartsWith("Enemigo_EspirituJaguar_", spirit.GetComponentInChildren<SpriteRenderer>().sprite.name,
+                "Arte de la lámina del autor, no el jaguar de Blender.");
 
             // A 2,4 m, dentro del alcance del salto: se agazapa y avisa con la franja.
             Teleport(player, IsometricProjection.FromPipeline(1.4f, 0.5f, 0f));
@@ -196,7 +197,7 @@ namespace CronicasDeMexico.Tests
             Assert.IsTrue(spirit.LungeMarker.IsShowing, "La franja avisa la trayectoria.");
             Assert.AreEqual(TelegraphMarker.MarkerShape.Line, spirit.LungeMarker.Shape);
             Assert.IsTrue(spirit.LungeMarker.Contains(player.transform.position), "La franja apunta al jugador.");
-            Assert.AreEqual("DSS_JaguarCorrupto_Acecho", ActionName(animator));
+            Assert.AreEqual("DSS_Enemigo_EspirituJaguar_Defensa", ActionName(animator));
 
             var before = playerHealth.Current;
             guard = 0f;
@@ -236,7 +237,7 @@ namespace CronicasDeMexico.Tests
 
             Assert.IsTrue(spirit.GetComponent<Health>().TryDamage(1000, spirit.transform.position + Vector3.right));
             yield return null;
-            Assert.AreEqual("DSS_JaguarCorrupto_Muerte", ActionName(animator));
+            Assert.AreEqual("DSS_Enemigo_EspirituJaguar_Muerte", ActionName(animator));
             Assert.IsTrue(spriteRenderer.enabled, "Se ve caer.");
             Assert.IsFalse(spirit.GetComponent<CharacterController>().enabled, "Vencido no estorba.");
             yield return new WaitForSeconds(1.4f);

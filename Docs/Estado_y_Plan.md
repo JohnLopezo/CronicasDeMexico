@@ -133,10 +133,18 @@ Detalle en `Docs/Personajes/NPC_Olmecas.md` y `Docs/Historia/Misiones.md`.
 - **Arte:** el Guerrero, el Comerciante y 17 personajes nuevos usan las fichas de `Docs/NPC/`, con caminata.
 - **Pueblo vivo:** 3 guardias, curandera, anciano, sacerdote, agricultor, pescador, mensajero, comerciante mujer y 9 niños patrullan y hablan.
 - **Combate de NPC:** los guardias (no son Guardianes) defienden la aldea y el joven guerrero la entrada de la selva (`NpcDefender`). Los enemigos van a por quien tengan más cerca (`EnemyChaser`).
-- **Incursiones:** al completar `MP_OLM_03`, 2 jaguares corruptos entran por el sendero del oeste en cada visita a la ciudad.
+- **Incursiones:** al completar `MP_OLM_03`, 2 espíritus corrompidos entran por el sendero del oeste en cada visita a la ciudad.
+
+### Guerreros, caminata y enemigos de la lámina del autor, 2026-11-10
+Detalle en `Docs/Bitacora.md`, `Docs/Enemigos/Olmeca.md` y `Docs/Enemigos/Jefes_Prueba.md`.
+- **Guerreros:** la pose de Daño mide lo mismo en los siete; caminata de frente y de espalda de 4 cuadros con balanceo de brazos, también en los NPC; los pasos siguen a la velocidad (`WalkPace`).
+- **El jaguar corrupto de Blender se retiró** (decisión del autor): los espíritus corrompidos de la selva, los pisos 1 y 2 y las incursiones llevan el arte del Espíritu Jaguar de la lámina, con el mismo comportamiento y la misma historia.
+- **Siete enemigos de la lámina** (`WildEnemy`, `EnemyData`): serpiente, guacamaya, mono y 3 avispas en la selva; 2 murciélagos en El Umbral; 2 cocodrilos en El Pantano; 2 espíritus jaguar en el piso 3. Cada uno con su movimiento, ataque avisado, defensa y habilidad especial.
+- **Seis jefes en una arena de pruebas aparte** (`Arena_Pruebas_Jefes`, `TrialBoss`): ecos ficticios inspirados en figuras de otras culturas, para asignarlos a los arcos II–V.
+- **Página de revisión** con todo animado (privada): https://claude.ai/artifact/NbQSLCHuT66rVRDP2qG2h5
 
 ### Pruebas
-EditMode 80/80 y PlayMode 72/72 (al 2026-11-04).
+EditMode 127/127 y PlayMode 112/112 (al 2026-11-10).
 
 ## 4. Pendiente de decidir (por el autor)
 
@@ -151,7 +159,8 @@ EditMode 80/80 y PlayMode 72/72 (al 2026-11-04).
 - ~~Sprites del Jaguar jugable.~~ **Sustituido (2026-11-06)** por los guerreros; lo que falta de ellos está en `Docs/Personajes/Guerreros.md`.
 - Fichas propias del **artesano de jade** y la **anciana** (hoy usan el arte del Comerciante y de la Curandera, y se ven repetidos) y de la **figura espiritual** (provisional). Los demás NPC ya tienen arte (`Docs/NPC/`); les faltan caminata de frente y de espalda y una pose de ataque del guardia.
 - Contrastar con fuentes el penacho del sacerdote, los pergaminos del mensajero y los sombreros de ala ancha (`Docs/Personajes/NPC_Olmecas.md`).
-- Sprites del **espíritu jaguar corrompido** (hoy, la silueta humana provisional con grietas violetas) y del **eco borrado** (hoy, la misma silueta en violeta con franjas borradas).
+- ~~Sprites del espíritu jaguar corrompido.~~ **Hecho (2026-11-10):** usa el Espíritu Jaguar de la lámina del autor. Falta el del **eco borrado** (hoy, la silueta violeta provisional con franjas borradas).
+- **Enemigos y jefes de la lámina** (`Docs/Enemigos/Olmeca.md`, `Docs/Enemigos/Jefes_Prueba.md`): una imagen por pose y solo de lado; faltan vistas de frente y de espalda, más cuadros por animación, proyectiles propios (la piedra del mono, el escupitajo, las plumas) y, en los jefes, poses de daño y de caída. Nombres definitivos y arco de cada jefe.
 - Cabeza colosal y enemigos animados. El **Guardián de la Piedra Viva** ya tiene un modelo de Blender (M4), pendiente de tu aprobación.
 
 ## 6. Plan propuesto (cada etapa se presenta y espera autorización)

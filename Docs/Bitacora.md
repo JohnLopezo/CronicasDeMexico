@@ -21,6 +21,17 @@ Plantilla:
 
 ---
 
+## 2026-11-10 — i7-10700: fuera el jaguar de Blender; documentación (etapa 6)
+
+- **Rama / commit al empezar:** `feature/prototipo-olmeca` @ `74dfb9d`.
+- **Pedido del autor:** "quita los jaguares que no son de pixel art que te pasé".
+- **Hecho:** `CreateCorruptedSpirit` usa el arte del Espíritu Jaguar de la lámina (`EnemyCharacterAssets.Build("EspirituJaguar")`) en lugar de `JaguarCharacterAssets.Corrupted()`. Mismo `EnemyChaser`, salto avisado, banderas, fragmentos e incursiones: no se rompe `MP_OLM_03`. Ciudad, selva y pisos regenerados; ninguna escena referencia ya los sprites `JaguarCorrupto_`. `OlmecaJaguarTests` comprueba el arte nuevo.
+- **No se tocó:** el **Jaguar de Piedra** (mini-jefe del Pantano, modelo de Blender), pendiente de decisión del autor. Los sprites del jaguar de Blender siguen en `Sprites/Personajes` (los genera el flujo de Blender) aunque nada los usa.
+- **Etapa 6:** `Docs/Estado_y_Plan.md` (§3 y §5), `Docs/Enemigos/Olmeca.md`.
+- **Estado:** EditMode 127/127, PlayMode 112/112. Subido.
+
+---
+
 ## 2026-11-10 — i7-10700: arena de pruebas de los jefes (etapa 5)
 
 - **Rama / commit al empezar:** `feature/prototipo-olmeca` @ `4975a8e`.

@@ -188,14 +188,15 @@ namespace CronicasDeMexico.Editor.SceneGeneration
         internal static GameObject CreateCorruptedSpirit(Transform parent, string name, DirectionalSpriteSet spriteSet, Vector2 home,
             string defeatedFlag)
         {
-            // Etapa B del plan de personajes: el espíritu corrompido es el jaguar corrupto (cuadrúpedo, sprites del
-            // flujo a la resolución del escenario) con su salto avisado. Sin esos sprites, la silueta provisional.
-            var jaguar = JaguarCharacterAssets.SpritesExist() ? JaguarCharacterAssets.Corrupted() : null;
+            // El espíritu corrompido lleva el arte del Espíritu Jaguar de la lámina del autor (recortar_enemigos.py;
+            // decisión del autor del 2026-11-10: fuera los jaguares de Blender) con su salto avisado. Sin esos sprites,
+            // la silueta provisional.
+            var jaguar = EnemyCharacterAssets.SpritesExist() ? EnemyCharacterAssets.Build("EspirituJaguar") : null;
             GameObject root;
             SpriteRenderer spriteRenderer;
             if (jaguar != null)
             {
-                spriteSet = jaguar.Walk;
+                spriteSet = jaguar.walk;
                 root = OlmecaPrototypeGenerator.CreateCharacterRoot(name, spriteSet, CharacterMaterial(), out spriteRenderer);
                 spriteRenderer.shadowCastingMode = ShadowCastingMode.Off;
                 SetProperty(spriteRenderer.GetComponent<SpriteBillboard>(), "mode",
@@ -222,13 +223,13 @@ namespace CronicasDeMexico.Editor.SceneGeneration
             if (jaguar != null)
             {
                 SetProperty(chaser, "contactDistance", property => property.floatValue = 1.0f); // cuerpo más largo
-                SetProperty(chaser, "deathLinger", property => property.floatValue = jaguar["Muerte"].Duration + 0.6f);
+                SetProperty(chaser, "deathLinger", property => property.floatValue = jaguar.death.Duration + 0.4f);
                 chaser.Lunges = true;
                 chaser.LungeMarker = LungeMarker(root.transform);
+                // Agazapado al avisar el salto: la pose de defensa; en el salto, la de correr.
                 var animator = root.GetComponent<DirectionalSpriteAnimator>();
-                animator.IdleSet = jaguar.Idle;
-                root.AddComponent<CharacterAnimationDriver>().Configure(animator, null, null, jaguar["Acecho"], jaguar["Salto"],
-                    jaguar["Golpeado"], jaguar["Muerte"]);
+                root.AddComponent<CharacterAnimationDriver>().Configure(animator, null, null, jaguar.guard, jaguar.run,
+                    jaguar.hit, jaguar.death);
             }
 
             var report = root.AddComponent<ReportOnDefeat>();

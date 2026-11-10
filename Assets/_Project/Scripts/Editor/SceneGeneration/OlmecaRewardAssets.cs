@@ -35,7 +35,7 @@ namespace CronicasDeMexico.Editor.SceneGeneration
         public sealed class Content
         {
             public readonly Dictionary<string, ItemData> Items = new();
-            public LootTable CommonSpirit, ErasedEcho, StoneJaguar, CommonOffering, SpecialOffering, Fauna;
+            public LootTable CommonSpirit, ErasedEcho, StoneJaguar, CommonOffering, SpecialOffering, Fauna, Pot;
             public RewardBundle Boss, Final;
             public RewardBundle[] Grades;
             public readonly Dictionary<string, RewardBundle> Offerings = new();
@@ -254,6 +254,11 @@ namespace CronicasDeMexico.Editor.SceneGeneration
             c.Fauna = Table("BOT_fauna", 8, null, new[]
             {
                 E(c, "fibras", 0.5f, 1, 2), E(c, "semillas", 0.4f, 1), E(c, Inventory.Currency, 0.5f, 1, 3),
+            });
+            // Vasijas rompibles de la mazmorra (D2): sin experiencia, algo de ecos y semillas (I: lo que guardaría un tecomate).
+            c.Pot = Table("BOT_vasija", 0, null, new[]
+            {
+                E(c, Inventory.Currency, 0.6f, 1, 3), E(c, "semillas", 0.3f, 1), E(c, "fibras", 0.2f, 1),
             });
             c.ErasedEcho = Table("BOT_eco_borrado", 35, null, new[]
             {

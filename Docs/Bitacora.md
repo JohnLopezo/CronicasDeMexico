@@ -21,6 +21,15 @@ Plantilla:
 
 ---
 
+## 2026-11-10 — i7-10700: mecánicas de la mazmorra (D2)
+
+- **Rama / commit al empezar:** `feature/prototipo-olmeca` @ `eca8d0e`.
+- **Hecho (`Gameplay/Dungeon`):** `SpikeTrap` (avisa parpadeando 0,7 s, sube 1,1 s y daña a quien esté encima; periódica con desfase o activada por placa), `PressurePlate` (se hunde, enciende el glifo y activa sus trampas), `StakeFence` (daña al tocarla; el sólido va aparte) y `BreakablePot` (1 de vida en el layer Enemigo: la rompen el ataque y el golpe de tierra; botín con `EnemyReward` y la tabla nueva `BOT_vasija`, sin experiencia).
+- **`DungeonPropAssets`** (editor) monta cada pieza para los pisos: pinchos y placa con el material de los avisos (encima del suelo y debajo de los personajes, para no taparles los pies); braseros y cristales animados con `SpriteFrameCycler`, sin luces. Todavía no se usa en ninguna escena (D4).
+- **Pruebas:** `DungeonTrapsTests` (4). EditMode 132/132, PlayMode 117/117. Subido.
+
+---
+
 ## 2026-11-10 — i7-10700: piezas de la mazmorra (D1) y personajes «mordidos»
 
 - **Plan aprobado por el autor** para la lámina «Mazmorras ancestrales» (`Docs/Diseño de mazmorra`): rehacer sus piezas en Blender en la vista 3/4 (la lámina es isométrica), con trampas, vasijas rompibles, ambiente y salas nuevas. Estandartes con el sol → esteras tejidas; cofres europeos → estrado con ofrenda; cristales azules → jade (ficción, la memoria).

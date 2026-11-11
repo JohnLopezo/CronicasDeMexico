@@ -15,6 +15,14 @@ namespace CronicasDeMexico.Data.Characters
     }
 
     /// <summary>Cómo se presenta la especie en el juego (Historia_Mundo §2.3; Docs/Personajes/Protagonista.md).</summary>
+    /// <summary>Acción de senda con los habitantes (E7, Docs/Sistemas/Acciones_Senda.md), según el estilo de cada Guardián.</summary>
+    public enum PathAction
+    {
+        Indagar,
+        Persuadir,
+        Escuchar,
+    }
+
     public enum SpeciesStatus
     {
         Endemica,
@@ -52,6 +60,9 @@ namespace CronicasDeMexico.Data.Characters
 
         [SerializeField] SpeciesStatus status;
 
+        [SerializeField, Tooltip("Acción de senda: lo que hace al mantener pulsado Hablar con un habitante.")]
+        PathAction pathAction;
+
         [SerializeField, Tooltip("Sprites del personaje: reposo y caminata.")]
         DirectionalSpriteSet spriteSet;
 
@@ -77,6 +88,12 @@ namespace CronicasDeMexico.Data.Characters
         public string Description => description;
         public Affinity InitialAffinity => initialAffinity;
         public SpeciesStatus Status => status;
+
+        public PathAction PathAction
+        {
+            get => pathAction;
+            set => pathAction = value;
+        }
         public DirectionalSpriteSet SpriteSet => spriteSet;
         public string GuardianId => id;
 

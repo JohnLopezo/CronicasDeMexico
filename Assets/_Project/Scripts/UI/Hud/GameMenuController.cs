@@ -257,7 +257,7 @@ namespace CronicasDeMexico.UI.Hud
         {
             if (menu == null || string.IsNullOrEmpty(tab))
                 return;
-            if (tab is MenuTabs.Crafting or MenuTabs.Trading or MenuTabs.Museum)
+            if (tab is MenuTabs.Crafting or MenuTabs.Cooking or MenuTabs.Trading or MenuTabs.Museum)
                 contextTab = tab;
             else if (!IsOpen && tab is MenuTabs.Inventory or MenuTabs.Blessings)
                 contextTab = null;
@@ -311,7 +311,8 @@ namespace CronicasDeMexico.UI.Hud
             {
                 case MenuTabs.Blessings: RenderBlessings(); break;
                 case MenuTabs.Guardian: RenderGuardians(); break;
-                case MenuTabs.Crafting: RenderCrafting(); break;
+                case MenuTabs.Crafting: RenderRecipes(CraftStation.Artesano); break;
+                case MenuTabs.Cooking: RenderRecipes(CraftStation.Cocina); break;
                 case MenuTabs.Trading: RenderTrading(); break;
                 case MenuTabs.Museum: RenderMuseum(); break;
                 case MenuTabs.Codex: RenderCodex(); break;
@@ -332,6 +333,8 @@ namespace CronicasDeMexico.UI.Hud
             AddTab(MenuTabs.Codex, "Códice");
             if (contextTab == MenuTabs.Crafting)
                 AddTab(MenuTabs.Crafting, "Fabricar");
+            if (contextTab == MenuTabs.Cooking)
+                AddTab(MenuTabs.Cooking, "Cocinar");
             if (contextTab == MenuTabs.Trading)
                 AddTab(MenuTabs.Trading, "Comerciar");
             if (contextTab == MenuTabs.Museum)
@@ -479,16 +482,19 @@ namespace CronicasDeMexico.UI.Hud
             return string.Join(", ", parts);
         }
 
-        void RenderCrafting()
+        void RenderRecipes(CraftStation station)
         {
-            Note("El artesano trabaja con lo que traes. Las recetas se desbloquean con misiones y descubrimientos.");
+            var cooking = station == CraftStation.Cocina;
+            Note(cooking
+                ? "La curandera cocina con lo que traes del río y del mercado. Los platillos curan y dan fuerza por un rato."
+                : "El artesano trabaja con lo que traes. Las recetas se desbloquean con misiones y descubrimientos.");
             if (economy == null)
                 return;
             var locked = 0;
             Section("Recetas");
             foreach (var recipe in economy.Recipes)
             {
-                if (recipe == null)
+                if (recipe == null || recipe.Station != station)
                     continue;
                 if (!Economy.IsUnlocked(recipe.UnlockFlag, story))
                 {
@@ -502,10 +508,10 @@ namespace CronicasDeMexico.UI.Hud
                            (missing.Count > 0 ? $"\nFalta: {string.Join(", ", missing.Select(m => $"{items?.Get(m.id)?.DisplayName ?? m.id} ×{m.count}"))}" : string.Empty) +
                            (recipe.Result != null && !string.IsNullOrEmpty(recipe.Result.Usage) ? $"\n{recipe.Result.Usage}" : string.Empty);
                 var row = ItemRow(recipe.Result, text);
-                RowButton(row, "Fabricar", () =>
+                RowButton(row, cooking ? "Cocinar" : "Fabricar", () =>
                 {
                     if (Economy.Craft(recipe, inventory, story))
-                        summary.text = $"Fabricaste: {recipe.Result.DisplayName}.";
+                        summary.text = cooking ? $"Cocinaste: {recipe.Result.DisplayName}." : $"Fabricaste: {recipe.Result.DisplayName}.";
                 }, Economy.CanCraft(recipe, inventory, story));
             }
             if (locked > 0)

@@ -214,6 +214,8 @@ namespace CronicasDeMexico.Editor.SceneGeneration
         {
             ("Taller_Artesano", "Fabricar", MenuTabs.Crafting, new Vector2(14.0f, 1.7f)),
             ("Puesto_Comerciante", "Comerciar", MenuTabs.Trading, new Vector2(19.0f, -4.3f)),
+            // E7: fogón de la curandera, también 1,1 m hacia la cámara desde ella (patrulla entre y 8,0 y 9,4).
+            ("Fogon_Curandera", "Cocinar", MenuTabs.Cooking, new Vector2(14.0f, 6.9f)),
         };
 
         static void BuildServices(Transform parent)

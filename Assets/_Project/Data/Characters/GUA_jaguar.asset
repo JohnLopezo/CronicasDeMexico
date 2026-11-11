@@ -25,6 +25,7 @@ MonoBehaviour:
     jaguar."
   initialAffinity: 1
   status: 1
+  pathAction: 1
   spriteSet: {fileID: 11400000, guid: defc45a0a09cc5346be480cad68d5c3d, type: 2}
   attackSet: {fileID: 11400000, guid: 21017bb216ef5dd489eb88a56e4624ff, type: 2}
   runSet: {fileID: 11400000, guid: 752d08dc2a19a034bacbf36eda1c8202, type: 2}

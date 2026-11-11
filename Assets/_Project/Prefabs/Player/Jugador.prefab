@@ -195,6 +195,12 @@ MonoBehaviour:
   dodgeTime: 0.18
   dodgeInvulnerability: 0.3
   dodgeCooldown: 0.6
+  dodgeCharges: 2
+  dodgeBuffer: 0.15
+  perfectDodgeWindow: 0.2
+  perfectDodgeTimeScale: 0.35
+  perfectDodgeSlowMotion: 0.45
+  perfectDodgeCooldown: 1.5
 --- !u!114 &1161331672111561633
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -298,6 +304,16 @@ MonoBehaviour:
   radius: 0.7
   cooldown: 0.35
   height: 0.7
+  inputBuffer: 0.15
+  comboLength: 3
+  comboWindow: 0.5
+  finisherDamageFactor: 1.5
+  finisherRecovery: 0.45
+  lungeSpeed: 5
+  hitStop: 0.05
+  hitShake: 0.05
+  aimAssistRange: 3
+  aimAssistAngle: 60
 --- !u!114 &2784412969086955806
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -366,6 +382,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damageFactor: 0.5
+  perfectWindow: 0.2
+  perfectRearm: 0.6
+  staggerSeconds: 1.2
+  attackerSearchRadius: 0.8
 --- !u!114 &5466915968542381076
 MonoBehaviour:
   m_ObjectHideFlags: 0

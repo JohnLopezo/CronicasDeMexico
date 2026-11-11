@@ -130,6 +130,29 @@ namespace CronicasDeMexico.Editor.SceneGeneration
                 "F.", "Defensa +5 durante 30 s. Lleva hasta 3.", 3, 15, Shape.Frasco, Basalt, BasaltLight,
                 effect: new ConsumableEffect { defenseBonus = 5, duration = 30f });
 
+            // Cocina de la curandera (E7, Docs/Sistemas/Acciones_Senda.md). Ingredientes del río y del mercado; los platillos
+            // curan y dan fuerza un rato. No se usan nombres en náhuatl (como «atole»): son de otra cultura y época.
+            Item(c, "maiz", "Maíz", "Mazorcas de la milpa del asentamiento.", ItemCategory.Material, Rarity.Comun, Origin.Documentado,
+                "D: el maíz se cultivaba en la costa del Golfo en época olmeca; cuánto pesaba en la dieta frente a la pesca aún se discute.",
+                "Para la bebida de maíz y la de cacao (curandera).", 60, 2, Shape.Semilla, Gold, GoldLight);
+            Item(c, "pescado", "Pescado del río", "Un pez de los ríos que rodean La Venta.", ItemCategory.Material, Rarity.Comun, Origin.Documentado,
+                "D: en los sitios olmecas de la costa del Golfo, el pescado y la tortuga eran parte importante de la dieta.",
+                "Para el pescado envuelto en hoja (curandera).", 30, 3, Shape.Lasca, Obsidian, ObsidianLight);
+            Item(c, "cacao", "Cacao", "Semillas de cacao, amargas y apreciadas.", ItemCategory.Material, Rarity.PocoComun, Origin.Documentado,
+                "D: se han hallado restos de cacao en vasijas de época olmeca de la costa del Golfo. I: cómo se preparaba.",
+                "Para la bebida de cacao (curandera).", 30, 8, Shape.Semilla, Clay, ClayLight);
+            Item(c, "bebida_maiz", "Bebida de maíz", "Maíz molido y cocido en agua, espeso y tibio.", ItemCategory.Consumible, Rarity.PocoComun, Origin.Interpretado,
+                "I: preparación de maíz cocido; F: sus efectos en el juego.", "Recupera 10 de vida y 25 de energía. Lleva hasta 5.", 5, 6, Shape.Frasco, Gold, GoldLight,
+                effect: new ConsumableEffect { heal = 10, energy = 25 });
+            Item(c, "pescado_hoja", "Pescado envuelto en hoja", "Pescado cocido dentro de hojas, con hierbas.", ItemCategory.Consumible, Rarity.PocoComun, Origin.Interpretado,
+                "I: cocinar envuelto en hojas es una técnica mesoamericana extendida; su uso olmeca concreto no está documentado aquí. F: sus efectos.",
+                "Recupera 25 de vida y da defensa +3 durante 30 s. Lleva hasta 3.", 3, 9, Shape.Bolsa, Green, GreenLight,
+                effect: new ConsumableEffect { heal = 25, defenseBonus = 3, duration = 30f });
+            Item(c, "bebida_cacao", "Bebida de cacao", "Cacao molido con maíz: amarga, espumosa y fuerte.", ItemCategory.Consumible, Rarity.Raro, Origin.Interpretado,
+                "D: restos de cacao en vasijas de época olmeca. I: la receta. F: sus efectos.",
+                "Recupera 40 de energía y da defensa +5 durante 45 s. Lleva hasta 3.", 3, 16, Shape.Frasco, Clay, ClayLight,
+                effect: new ConsumableEffect { energy = 40, defenseBonus = 5, duration = 45f });
+
             // Reliquias (accesorios: amuletos, collares, marcas; nunca armaduras)
             Item(c, "amuleto_jade", "Amuleto de jade", "Una cuenta de jade atada al cuello con fibra.", ItemCategory.Reliquia, Rarity.PocoComun, Origin.Interpretado,
                 "I: cuentas de jade como adorno; F: su efecto.", "Defensa +2, vida +10. Se fabrica con el artesano.", 1, 25, Shape.Amuleto, Jade, JadeLight,
@@ -358,6 +381,10 @@ namespace CronicasDeMexico.Editor.SceneGeneration
                 // Mejora: el Corazón se despierta con basalto del Guardián (consume el Corazón).
                 Recipe(c, "corazon_despierto", "corazon_despierto", 1, "receta.corazon_despierto",
                     ("corazon_piedra_viva", 1), ("basalto_guardian", 1), ("jade", 3)),
+                // Fogón de la curandera (Cocinar). La de cacao la enseña ella al escucharla (acción de senda).
+                Cook(Recipe(c, "bebida_maiz", "bebida_maiz", 1, null, ("maiz", 2))),
+                Cook(Recipe(c, "pescado_hoja", "pescado_hoja", 1, null, ("pescado", 1), ("fibras", 1))),
+                Cook(Recipe(c, "bebida_cacao", "bebida_cacao", 1, "receta.bebida_cacao", ("cacao", 1), ("maiz", 1))),
             };
             var offers = new List<TradeOfferData>
             {
@@ -368,6 +395,10 @@ namespace CronicasDeMexico.Editor.SceneGeneration
                 Offer(c, "trueque_obsidiana", "obsidiana", 1, "basalto", 3),
                 Offer(c, "trueque_jade", "jade", 1, "obsidiana", 2),
                 Offer(c, "infusion_basalto", "infusion_basalto", 1, Inventory.Currency, 30, "oferta.infusion_basalto"),
+                Offer(c, "maiz", "maiz", 3, Inventory.Currency, 4),
+                Offer(c, "pescado", "pescado", 1, Inventory.Currency, 5),
+                // El comerciante solo lo ofrece cuando confía en ti (acción de senda Persuadir).
+                Offer(c, "cacao", "cacao", 1, Inventory.Currency, 12, "oferta.cacao"),
             };
             return (recipes, offers);
         }
@@ -379,6 +410,17 @@ namespace CronicasDeMexico.Editor.SceneGeneration
                 recipe.Configure(id, c.Item(result), count, ingredients.Select(i => S(c, i.id, i.count)).ToArray(), unlock);
                 return recipe;
             });
+
+        // Las recetas de cocina van al fogón de la curandera. Se fija siempre: así se corrige también un asset que ya existía.
+        static RecipeData Cook(RecipeData recipe)
+        {
+            if (recipe.Station != CraftStation.Cocina)
+            {
+                recipe.Station = CraftStation.Cocina;
+                EditorUtility.SetDirty(recipe);
+            }
+            return recipe;
+        }
 
         static TradeOfferData Offer(Content c, string id, string item, int count, string price, int priceCount, string unlock = null) =>
             LoadOrCreate($"{Folder}/OFE_{id}.asset", () =>

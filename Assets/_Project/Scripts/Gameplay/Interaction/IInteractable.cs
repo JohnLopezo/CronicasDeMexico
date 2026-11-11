@@ -26,4 +26,15 @@ namespace CronicasDeMexico.Gameplay.Interaction
         /// <summary>Se llama al cerrarse el mensaje, haya terminado o porque el jugador se alejó.</summary>
         void End();
     }
+
+    /// <summary>
+    /// Habitante que responde a la acción de senda del Guardián (E7): se lanza manteniendo pulsado Interactuar.
+    /// </summary>
+    public interface IPathActionTarget : IConversation
+    {
+        /// <summary>Verbo de la acción disponible ahora ("Indagar"), o null si no tiene nada para este Guardián.</summary>
+        string PathVerb { get; }
+
+        void PathInteract(Transform interactor);
+    }
 }

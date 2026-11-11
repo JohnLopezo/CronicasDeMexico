@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e671fcaf297d2b840954c4c98eefb75f, type: 3}
+  m_Name: RCT_bebida_maiz
+  m_EditorClassIdentifier: 
+  id: bebida_maiz
+  result: {fileID: 11400000, guid: af574f0722ad6a940aef7e139e5ecbd4, type: 2}
+  resultCount: 1
+  ingredients:
+  - item: {fileID: 11400000, guid: b337d0dbc8d058540a22cb053bfab966, type: 2}
+    count: 2
+  unlockFlag: 
+  station: 1

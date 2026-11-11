@@ -1,0 +1,129 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4bb0f4b1228ac524994fb30ddc486550, type: 3}
+  m_Name: AccionesSenda
+  m_EditorClassIdentifier: 
+  responses:
+  - npcId: artesano_jade
+    action: 0
+    lines:
+    - "Te fijas en sus manos: tiene polvo verde bajo las u\xF1as, pero no hay ninguna
+      pieza terminada a su alrededor."
+    - "\u2014Llevo d\xEDas sin acabar nada. Empiezo a tallar y se me olvida qu\xE9
+      figura buscaba."
+    - "\u2014Toma esto. Si t\xFA lo recuerdas mejor que yo, \xFAsalo bien."
+    items:
+    - id: jade
+      count: 1
+    experience: 10
+    flags: []
+  - npcId: artesano_jade
+    action: 1
+    lines:
+    - "\u2014\xBFQue te ense\xF1e a atar un amuleto? Los j\xF3venes siempre con prisa..."
+    - "\u2014Est\xE1 bien. Dos piedras verdes y fibra fuerte. Que no se te olvide
+      a ti tambi\xE9n."
+    items: []
+    experience: 0
+    flags:
+    - receta.amuleto_jade
+  - npcId: anciana
+    action: 2
+    lines:
+    - Te sientas a su lado sin decir nada. Al rato, ella habla.
+    - "\u2014Mi abuela dec\xEDa que el r\xEDo se acuerda de todo lo que cae en \xE9l.
+      Por eso no le tengo miedo al agua: le tengo miedo al silencio."
+    items: []
+    experience: 20
+    flags: []
+  - npcId: curandera
+    action: 2
+    lines:
+    - "\u2014Casi nadie se queda a escuchar a una vieja que muele semillas."
+    - "\u2014Te contar\xE9 algo: el cacao no cura el cuerpo, pero devuelve las ganas.
+      Mu\xE9lelo con ma\xEDz y b\xE9belo caliente."
+    - "\u2014Ya sabes prepararlo. Ven a mi fog\xF3n cuando tengas con qu\xE9."
+    items: []
+    experience: 0
+    flags:
+    - receta.bebida_cacao
+  - npcId: curandera
+    action: 0
+    lines:
+    - "Miras sus cestos: hay m\xE1s hojas secas de las que una sola persona necesitar\xEDa."
+    - "\u2014Me preparo. Desde que las estelas callaron, llega gente con heridas
+      que no recuerda c\xF3mo se hizo."
+    items:
+    - id: semillas
+      count: 3
+    experience: 0
+    flags: []
+  - npcId: pescador
+    action: 1
+    lines:
+    - "\u2014\xBFAyudarte? Si sacas t\xFA la red, te doy parte de lo que traiga."
+    - Tiras de la red con fuerza. Sale cargada.
+    - "\u2014\xA1Ja! Tienes brazos de guerrero. Ll\xE9vate estos."
+    items:
+    - id: pescado
+      count: 3
+    experience: 0
+    flags: []
+  - npcId: pescador
+    action: 2
+    lines:
+    - "\u2014El r\xEDo est\xE1 raro. Hay remansos donde los peces ya no entran, como
+      si el agua hubiera olvidado su camino."
+    items:
+    - id: pescado
+      count: 1
+    experience: 10
+    flags: []
+  - npcId: comerciante
+    action: 1
+    lines:
+    - "\u2014No le vendo cacao a cualquiera. Es caro de traer y la gente ya no recuerda
+      para qu\xE9 sirve."
+    - "\u2014Pero t\xFA parece que s\xED. Est\xE1 bien: desde hoy tengo cacao para
+      ti."
+    items: []
+    experience: 0
+    flags:
+    - oferta.cacao
+  - npcId: comerciante
+    action: 0
+    lines:
+    - Notas que esconde algo bajo la manta del puesto.
+    - "\u2014Buen ojo. Dicen que en la antigua estructura de la selva, detr\xE1s
+      de la piedra agrietada, hay ofrendas que nadie ha tocado."
+    items: []
+    experience: 15
+    flags: []
+  - npcId: guardia
+    action: 0
+    lines:
+    - 'Sigues su mirada: no aparta los ojos del sendero del oeste.'
+    - "\u2014Las criaturas siempre llegan por ah\xED. No buscan comida: buscan a
+      la gente, como si quisieran borrarla."
+    items: []
+    experience: 10
+    flags: []
+  - npcId: guerrero_joven
+    action: 1
+    lines:
+    - "\u2014\xBFEntrenar contigo? Bien. Te ense\xF1o lo que repet\xEDa mi maestro:
+      no golpees tres veces si no sabes c\xF3mo salir despu\xE9s."
+    items:
+    - id: semilla_preparada
+      count: 1
+    experience: 10
+    flags: []

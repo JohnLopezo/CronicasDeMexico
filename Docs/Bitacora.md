@@ -82,6 +82,22 @@ Plantilla:
   - Pestaña **Códice** en el menú (encontradas con texto; las que faltan, «??? — pista») y aviso emergente `RewardNoticeKind.CodexPage`.
   - **Aviso cultural:** el Códice es un objeto ficticio. No se conservan códices olmecas, y las páginas no dicen que los olmecas los escribieran. **Los textos culturales los debe contrastar el autor.**
 - **Pruebas (E6):** EditMode 145/145 y PlayMode 132/132. Nuevas: `CodexTests` (3), que incluyen la del catálogo real en Resources. No se ha visto la pestaña en pantalla.
+- E6 en el commit `762cd91`.
+- **Decisiones del autor (E7):** pulsación larga para la acción de senda; Claude escribe los borradores de las líneas; sí a la cocina.
+- **Hecho (E7, acciones de senda y cocina; detalle en `Docs/Sistemas/Acciones_Senda.md`):**
+  - **Acciones de senda:** `GuardianData.PathAction`: Indagar para águila y xolo, Persuadir para jaguar y lobo, Escuchar para ajolote, mariposa y quetzal. Escrito en los 7 `GUA_` y en `GuerreroCharacterAssets.PathActionFor`.
+  - `PathActionCatalog` (`Resources/Narrativa/AccionesSenda`, creado por `PathActionAssets`) tiene 11 respuestas **borrador** de 8 habitantes. Cada una da una sola vez líneas, objetos, experiencia o banderas.
+  - `DialogueInteractable` implementa `IPathActionTarget`. `PlayerInteractor` lanza la acción al mantener Interactuar 0,5 s y solo espera a soltar si hay una acción disponible. El aviso añade «· mantén: Indagar».
+  - **Cocina:** `RecipeData.Station` (Artesano o Cocina) y pestaña Cocinar (`MenuTabs.Cooking`, `RenderRecipes`).
+  - Ingredientes nuevos: maíz, pescado y cacao. Platillos: bebida de maíz, pescado envuelto en hoja y bebida de cacao (esta la enseña la curandera al escucharla). Ofertas del comerciante; el cacao, al persuadirlo.
+  - **Escena regenerada:** `Olmeca_Ciudad` lleva el fogón `Fogon_Curandera` (14,0, 6,9). La regeneración también volvió a guardar `Jugador.prefab` con los campos de E1 y E3 y `ED_EspirituJaguar` en otro formato, sin cambiar valores.
+- **Pruebas (E7):** PlayMode 137/137 y EditMode 145/145.
+  - `HoldingInteract_LaunchesThePathAction_AndATapStillTalks`, con teclado simulado.
+  - `PathActionAndCookingTests` (4) en la ciudad real: la curandera enseña la receta una sola vez, el fogón cocina con sus recetas y cada respuesta apunta a un habitante y a objetos que existen.
+  - **No se ha jugado.** Falta probar la pulsación larga en el S24+.
+- **Siguiente:**
+  - El autor revisa los borradores de las líneas, la tabla de debilidades (E4) y los textos culturales del Códice y la cocina.
+  - Jugar todo en el Editor y en el teléfono, y ajustar en el Inspector.
 - **Siguiente:**
   - Que el autor juegue y ajuste en el Inspector del jugador (Combo, Sensación del impacto, Apuntado asistido, Bloqueo perfecto y Esquiva perfecta).
   - Falta arte o VFX propio para el bloqueo y la esquiva perfectos (hoy es el destello blanco del daño).

@@ -24,6 +24,7 @@ MonoBehaviour:
   description: "Percepci\xF3n, precisi\xF3n y ataques a distancia."
   initialAffinity: 4
   status: 2
+  pathAction: 0
   spriteSet: {fileID: 11400000, guid: 7d38d375418343945b7ad1ce75c97951, type: 2}
   attackSet: {fileID: 11400000, guid: 1d1c0ba0295f91f4a9c196fdf5ed1a35, type: 2}
   runSet: {fileID: 11400000, guid: ec240f00b0a19eb4da7ce96a940ff7cd, type: 2}

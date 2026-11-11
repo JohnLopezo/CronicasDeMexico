@@ -47,6 +47,15 @@ namespace CronicasDeMexico.Editor.SceneGeneration
                 new CharacterStats(55, 8, 2, 90), new Vector4(6.5f, 1f, 1f, 4f)),
         };
 
+        // Acción de senda según el estilo de la ficha (Docs/Sistemas/Acciones_Senda.md): percepción y rastreo indagan,
+        // fuerza y presencia persuaden, cuidado y calma escuchan.
+        public static PathAction PathActionFor(string id) => id switch
+        {
+            "aguila" or "xolo" => PathAction.Indagar,
+            "jaguar" or "lobo" => PathAction.Persuadir,
+            _ => PathAction.Escuchar,
+        };
+
         public static bool SpritesExist() => LoadSprite(DefaultGuerrero, "Caminar1", "03") != null;
 
         /// <summary>Crea o actualiza los GuardianData de todos los guerreros, por nombre.</summary>
@@ -73,6 +82,7 @@ namespace CronicasDeMexico.Editor.SceneGeneration
                 }
                 guardian.Configure(name, title, description, affinity, status, stats, growth, walk, attack, run, hit, death);
                 guardian.ConfigureDefenseVictorySpecial(OptionalSet(name, "Defensa", 1f), OptionalSet(name, "Victoria", 1f), OptionalSet(name, "Especial", SpecialFramesPerSecond));
+                guardian.PathAction = PathActionFor(id);
                 EditorUtility.SetDirty(guardian);
                 guardians[name] = guardian;
                 ordered.Add(guardian);

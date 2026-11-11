@@ -24,6 +24,7 @@ MonoBehaviour:
   description: "Agilidad, distancia y movilidad a\xE9rea."
   initialAffinity: 3
   status: 1
+  pathAction: 2
   spriteSet: {fileID: 11400000, guid: b31c60a518482284cb96041af2e1d69e, type: 2}
   attackSet: {fileID: 11400000, guid: 971b67c9c296d8d4fbcaa228e0fd8362, type: 2}
   runSet: {fileID: 11400000, guid: b5fe3fe48db612544a3ab9c3ae9b88f1, type: 2}

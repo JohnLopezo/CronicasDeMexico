@@ -1,7 +1,9 @@
 using CronicasDeMexico.Core.Events;
 using CronicasDeMexico.Core.Feedback;
 using CronicasDeMexico.Core.Narrative;
+using CronicasDeMexico.Core.Progress;
 using CronicasDeMexico.Core.Services;
+using CronicasDeMexico.Data.Characters;
 using CronicasDeMexico.Data.Narrative;
 using CronicasDeMexico.Gameplay.Npc;
 using UnityEngine;
@@ -13,7 +15,7 @@ namespace CronicasDeMexico.Gameplay.Interaction
     /// historia y, al terminarla, activa sus banderas, empieza su misión y avisa "hablar:id". Sin él, usa las
     /// líneas fijas. Si tiene NpcPatrol, el personaje se detiene y mira al jugador mientras dura.
     /// </summary>
-    public sealed class DialogueInteractable : MonoBehaviour, IConversation
+    public sealed class DialogueInteractable : MonoBehaviour, IPathActionTarget
     {
         [SerializeField] string prompt = "Hablar";
 
@@ -35,16 +37,50 @@ namespace CronicasDeMexico.Gameplay.Interaction
         NpcPatrol patrol;
 
         DialogueBranch branch;
+        PathActionCatalog.Response pathResponse; // conversación de la acción de senda en curso
         int lineIndex;
         int lineCount;
         SpriteRenderer portraitRenderer;
 
         public string Prompt => prompt;
 
+        public NpcData Npc => npc;
+
+        /// <summary>Verbo de la acción de senda del Guardián elegido si este habitante tiene algo para ella y aún no la hizo.</summary>
+        public string PathVerb => AvailablePathResponse() is { } response ? response.action.ToString() : null;
+
+        PathActionCatalog.Response AvailablePathResponse()
+        {
+            if (npc == null || !ServiceLocator.TryGet(out Progression progression) || progression.Profile is not GuardianData guardian)
+                return null;
+            var response = PathActionCatalog.Load()?.Find(npc.Id, guardian.PathAction);
+            if (response == null || response.lines.Length == 0)
+                return null;
+            return ServiceLocator.TryGet(out StoryState story) && story.HasFlag(response.DoneKey) ? null : response;
+        }
+
+        /// <summary>Acción de senda (mantener pulsado Hablar): sus líneas y, al terminarlas, su recompensa, una sola vez.</summary>
+        public void PathInteract(Transform interactor)
+        {
+            pathResponse = AvailablePathResponse();
+            if (pathResponse == null)
+            {
+                Interact(interactor);
+                return;
+            }
+            branch = null;
+            lineCount = pathResponse.lines.Length;
+            lineIndex = 0;
+            if (patrol != null)
+                patrol.Hold(interactor.position);
+            ShowLine();
+        }
+
         public void Interact(Transform interactor)
         {
             // Los servicios se buscan aquí y no en Awake: al pulsar Play desde una escena, Boot se carga después.
             ServiceLocator.TryGet(out StoryState story);
+            pathResponse = null;
             branch = dialogue != null ? dialogue.Select(flag => story != null && story.HasFlag(flag)) : null;
             lineCount = branch != null ? branch.Lines.Length : lines?.Length ?? 0;
             if (lineCount == 0)
@@ -74,6 +110,7 @@ namespace CronicasDeMexico.Gameplay.Interaction
             if (patrol != null)
                 patrol.Release();
             branch = null;
+            pathResponse = null;
             lineCount = 0;
         }
 
@@ -82,6 +119,12 @@ namespace CronicasDeMexico.Gameplay.Interaction
         {
             if (lineCount == 0 || !ServiceLocator.TryGet(out StoryState story))
                 return;
+
+            if (pathResponse != null)
+            {
+                FinishPathAction(story);
+                return;
+            }
 
             if (branch != null)
             {
@@ -95,13 +138,40 @@ namespace CronicasDeMexico.Gameplay.Interaction
                 story.Report(StoryEvents.Talk(npc.Id));
         }
 
+        // La recompensa se da al terminar las líneas, como un diálogo: alejarse a medias no cuenta.
+        void FinishPathAction(StoryState story)
+        {
+            var response = pathResponse;
+            story.SetFlag(response.DoneKey);
+            if (!ServiceLocator.TryGet(out RewardService rewards))
+            {
+                foreach (var flag in response.flags)
+                    story.SetFlag(flag);
+                return;
+            }
+            var package = new RewardPackage { Experience = response.experience };
+            foreach (var item in response.items)
+                if (item != null)
+                    package.Add(item.id, item.count);
+            foreach (var flag in response.flags)
+                if (!string.IsNullOrEmpty(flag))
+                    package.Flags.Add(flag);
+            if (!package.IsEmpty)
+                rewards.Grant(package, onceKey: response.DoneKey);
+        }
+
         void ShowLine()
         {
             if (messageChannel == null)
                 return;
 
             string text, speaker;
-            if (branch != null)
+            if (pathResponse != null)
+            {
+                text = pathResponse.lines[lineIndex];
+                speaker = SpeakerName;
+            }
+            else if (branch != null)
             {
                 var line = branch.Lines[lineIndex];
                 text = line.Text;

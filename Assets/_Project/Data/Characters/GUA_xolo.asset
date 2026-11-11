@@ -24,6 +24,7 @@ MonoBehaviour:
   description: "Resistencia espiritual, rastreo y protecci\xF3n."
   initialAffinity: 5
   status: 1
+  pathAction: 0
   spriteSet: {fileID: 11400000, guid: b660accd1965fad43a803bdb8961c8c8, type: 2}
   attackSet: {fileID: 11400000, guid: 7226c38907c1a4f41ba77ceed57ebbfd, type: 2}
   runSet: {fileID: 11400000, guid: e70aca00657660445812c75db266d0ce, type: 2}

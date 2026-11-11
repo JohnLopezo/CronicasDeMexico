@@ -50,9 +50,7 @@ MonoBehaviour:
   zoneLevel: 1
   respawnDelay: 20
   shieldPoints: 3
-  weaknesses:
-  - 4
-  - 0
+  weaknesses: 0400000000000000
   breakSeconds: 2.5
   walk: {fileID: 11400000, guid: 9f482e500f107ee43b22439c5605de5d, type: 2}
   run: {fileID: 11400000, guid: 49260fe8097be0046b8f55fa1da67555, type: 2}

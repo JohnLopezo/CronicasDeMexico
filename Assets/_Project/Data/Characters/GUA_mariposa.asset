@@ -24,6 +24,7 @@ MonoBehaviour:
   description: "Velocidad, evasi\xF3n y poderes de luz."
   initialAffinity: 4
   status: 1
+  pathAction: 2
   spriteSet: {fileID: 11400000, guid: 98fcf0fd77389cc41914947b77782ff5, type: 2}
   attackSet: {fileID: 11400000, guid: 4a5ead79eb9701b479ce197e0525bea4, type: 2}
   runSet: {fileID: 11400000, guid: 5b676c55e8497a54e9edad63a56efcfc, type: 2}

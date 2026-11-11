@@ -103,6 +103,51 @@ namespace CronicasDeMexico.Tests
             yield return new WaitForSeconds(0.25f); // más de una búsqueda (cada 0.1 s)
         }
 
+        sealed class FakePathTarget : MonoBehaviour, IPathActionTarget
+        {
+            public int Interacts, PathInteracts;
+            public string Prompt => "Hablar";
+            public string PathVerb => "Indagar";
+            public void Interact(Transform interactor) => Interacts++;
+            public void PathInteract(Transform interactor) => PathInteracts++;
+            public bool Advance() => false;
+            public void End() { }
+        }
+
+        // E7: con una acción de senda disponible, tocar Hablar habla y mantenerlo lanza la acción.
+        [UnityTest]
+        public IEnumerator HoldingInteract_LaunchesThePathAction_AndATapStillTalks()
+        {
+            var npc = new GameObject("HabitantePrueba") { layer = inscription.layer };
+            npc.transform.position = new Vector3(1f, 0.7f, 0f);
+            var trigger = npc.AddComponent<SphereCollider>();
+            trigger.isTrigger = true;
+            trigger.radius = 1f;
+            var target = npc.AddComponent<FakePathTarget>();
+            try
+            {
+                Physics.SyncTransforms();
+                yield return new WaitForSeconds(0.25f);
+                StringAssert.Contains("mantén", prompts[^1], "El aviso dice que se puede mantener.");
+                StringAssert.Contains("Indagar", prompts[^1]);
+
+                yield return PressInteract();
+                Assert.AreEqual(1, target.Interacts, "Un toque corto habla.");
+                Assert.AreEqual(0, target.PathInteracts);
+
+                InputSystem.QueueStateEvent(keyboard, new KeyboardState(Key.E));
+                yield return new WaitForSecondsRealtime(PlayerInteractor.HoldSeconds + 0.15f);
+                InputSystem.QueueStateEvent(keyboard, new KeyboardState());
+                yield return null;
+                Assert.AreEqual(1, target.PathInteracts, "Mantener pulsado lanza la acción de senda.");
+                Assert.AreEqual(1, target.Interacts, "Y no habla además.");
+            }
+            finally
+            {
+                Object.Destroy(npc);
+            }
+        }
+
         [UnityTest]
         public IEnumerator Interact_DoesNothing_WithoutInteractableInRange()
         {

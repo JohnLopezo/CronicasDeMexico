@@ -24,6 +24,7 @@ MonoBehaviour:
   description: "Persecuci\xF3n, velocidad y combate sostenido."
   initialAffinity: 3
   status: 1
+  pathAction: 1
   spriteSet: {fileID: 11400000, guid: 9e15a481ddb879448b5a9a327f6b74b2, type: 2}
   attackSet: {fileID: 11400000, guid: 38a9ff9b76b59784b881436a00b6e5e3, type: 2}
   runSet: {fileID: 11400000, guid: 6032ec82f4d4443459bac03d873fff6d, type: 2}

@@ -7,6 +7,13 @@ using UnityEngine;
 namespace CronicasDeMexico.Data.Rewards
 {
     /// <summary>Receta de fabricación con el artesano (Docs/Sistemas/Sistema_Fabricacion.md).</summary>
+    /// <summary>Dónde se prepara una receta: el taller del artesano (Fabricar) o el fogón de la curandera (Cocinar).</summary>
+    public enum CraftStation
+    {
+        Artesano,
+        Cocina,
+    }
+
     [CreateAssetMenu(menuName = "Crónicas/Recompensas/Receta", fileName = "RCT_")]
     public sealed class RecipeData : ScriptableObject, ICraftRecipe
     {
@@ -15,6 +22,7 @@ namespace CronicasDeMexico.Data.Rewards
         [SerializeField, Min(1)] int resultCount = 1;
         [SerializeField] RewardBundle.Stack[] ingredients = Array.Empty<RewardBundle.Stack>();
         [SerializeField, Tooltip("Bandera que la desbloquea; vacía = disponible desde el principio.")] string unlockFlag;
+        [SerializeField, Tooltip("Dónde se prepara.")] CraftStation station;
 
         ItemStack[] stacks;
 
@@ -23,6 +31,12 @@ namespace CronicasDeMexico.Data.Rewards
         public string ResultId => result != null ? result.Id : null;
         public int ResultCount => resultCount;
         public string UnlockFlag => unlockFlag;
+
+        public CraftStation Station
+        {
+            get => station;
+            set => station = value;
+        }
 
         public IReadOnlyList<ItemStack> Ingredients =>
             stacks ??= ingredients.Where(i => i.item != null).Select(i => new ItemStack(i.item.Id, i.count)).ToArray();

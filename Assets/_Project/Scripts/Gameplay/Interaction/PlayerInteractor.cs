@@ -41,6 +41,12 @@ namespace CronicasDeMexico.Gameplay.Interaction
         string shownPrompt;
         bool messageOpen;
         float scanTimer = ScanInterval;
+        bool holding;
+        IPathActionTarget holdTarget;
+        float holdStart;
+
+        /// <summary>Segundos que hay que mantener Interactuar para la acción de senda.</summary>
+        public const float HoldSeconds = 0.5f;
 
         /// <summary>Objeto interactuable más cercano en la última búsqueda, o null.</summary>
         public IInteractable Current => current;
@@ -80,8 +86,43 @@ namespace CronicasDeMexico.Gameplay.Interaction
                 Scan();
             }
 
-            if (interactAction == null || !interactAction.action.WasPressedThisFrame())
+            if (interactAction == null)
                 return;
+            var action = interactAction.action;
+
+            // Pulsación larga (acción de senda): solo se espera a soltar si el habitante tiene una disponible, así el
+            // resto de interacciones siguen respondiendo al pulsar.
+            if (holding)
+            {
+                if (holdTarget != current || messageOpen)
+                {
+                    holding = false;
+                }
+                else if (Time.unscaledTime - holdStart >= HoldSeconds)
+                {
+                    holding = false;
+                    active = holdTarget;
+                    holdTarget.PathInteract(transform);
+                }
+                else if (!action.IsPressed())
+                {
+                    holding = false;
+                    active = holdTarget;
+                    holdTarget.Interact(transform);
+                }
+                return;
+            }
+
+            if (!action.WasPressedThisFrame())
+                return;
+
+            if (!messageOpen && current is IPathActionTarget target && target.PathVerb != null)
+            {
+                holding = true;
+                holdTarget = target;
+                holdStart = Time.unscaledTime;
+                return;
+            }
 
             if (messageOpen)
             {
@@ -150,9 +191,21 @@ namespace CronicasDeMexico.Gameplay.Interaction
             RefreshPrompt();
         }
 
-        // Con pantalla táctil no hay tecla que mostrar: el botón en pantalla ya dice qué hace.
-        void RefreshPrompt() => PublishPrompt(current == null || messageOpen ? null
-            : Touchscreen.current != null ? current.Prompt : $"[{keyLabel}] {current.Prompt}");
+        // Con pantalla táctil no hay tecla que mostrar: el botón en pantalla ya dice qué hace. Con acción de senda se
+        // añade "· mantén: Indagar".
+        void RefreshPrompt()
+        {
+            if (current == null || messageOpen)
+            {
+                PublishPrompt(null);
+                return;
+            }
+            var touch = Touchscreen.current != null;
+            var prompt = touch ? current.Prompt : $"[{keyLabel}] {current.Prompt}";
+            if (current is IPathActionTarget target && target.PathVerb is { } verb)
+                prompt += touch ? $"  ·  mantén: {verb}" : $"  ·  mantén [{keyLabel}]: {verb}";
+            PublishPrompt(prompt);
+        }
 
         void PublishPrompt(string prompt)
         {

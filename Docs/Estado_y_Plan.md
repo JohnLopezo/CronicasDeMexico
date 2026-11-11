@@ -26,6 +26,7 @@ Reglas de trabajo: Claude propone un plan por etapas y espera autorización; no 
 
 | Documento | Para qué |
 |---|---|
+| `Docs/Estado_General.md` | **Resumen general del juego y lista de mejoras que quiere el autor** (sección «Lo que quiero»); copia del documento de Claude Docs |
 | `Docs/Historia_Mundo.md` | **Biblia narrativa** (manda en historia, nombres, personajes y capítulos) |
 | `Docs/Diseno.md` | GDD: sistemas, combate, mazmorras, UI, rendimiento (alineado con la biblia) |
 | `Docs/Historia/` | `Capitulos.md`, `Misiones.md`, `Glosario.md` |

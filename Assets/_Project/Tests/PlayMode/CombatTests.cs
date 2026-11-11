@@ -229,6 +229,39 @@ namespace CronicasDeMexico.Tests
             }
         }
 
+        // Fijar objetivo: prefiere al de delante, los golpes van a él aunque esté fuera del cono, y se suelta al caer.
+        [UnityTest]
+        public IEnumerator LockOn_PrefersTheEnemyInFront_AimsAtItAnywhere_AndReleasesWhenItFalls()
+        {
+            var front = CreateDummy(new Vector3(0f, 0f, -4f), out _);
+            var behind = CreateDummy(new Vector3(0f, 0f, 3f), out var behindHealth);
+            try
+            {
+                yield return new WaitForFixedUpdate();
+                Assert.IsTrue(attack.ToggleLockOn());
+                Assert.AreSame(front.transform, LockOnMarker.Target, "Entre uno delante a 4 m y otro detrás a 3 m, el de delante.");
+                Assert.IsFalse(attack.ToggleLockOn(), "Pulsar otra vez lo suelta.");
+                Assert.IsNull(LockOnMarker.Target);
+
+                player.GetComponent<PlayerMovement>().Face(Vector3.forward);
+                Assert.IsTrue(attack.ToggleLockOn());
+                Assert.AreSame(behind.transform, LockOnMarker.Target, "Mirando hacia él, el de detrás.");
+                player.GetComponent<PlayerMovement>().Face(Vector3.back);
+                Assert.IsTrue(attack.AimAssist(), "Fijado, apunta a él aunque quede a la espalda.");
+                Assert.That(Vector3.Angle(player.GetComponent<PlayerMovement>().FacingDirection, Vector3.forward), Is.LessThan(1f));
+
+                behindHealth.TryDamage(1000, player.transform.position);
+                yield return null;
+                Assert.IsNull(attack.LockedTarget, "Al caer se suelta solo.");
+                Assert.IsNull(LockOnMarker.Target);
+            }
+            finally
+            {
+                Object.Destroy(front);
+                Object.Destroy(behind);
+            }
+        }
+
         sealed class StaggerProbe : MonoBehaviour, IStaggerable
         {
             public float Seconds;

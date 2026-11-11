@@ -490,6 +490,28 @@
     font-size: 18px;
 }
 
+/* Anillo de la pulsación larga (acción de senda), sobre el aviso. */
+.hud-hold {
+    width: 56px;
+    height: 56px;
+    margin-bottom: 8px;
+}
+
+.hud-hold__ring {
+    flex-grow: 1;
+}
+
+/* Mira del objetivo fijado: un rombo que se coloca sobre el enemigo cada cuadro. */
+.hud-lock {
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    border-width: 3px;
+    border-color: rgb(255, 214, 96);
+    rotate: 45deg;
+    translate: -50% -50%;
+}
+
 /* Números de daño: cada uno se coloca en la pantalla sobre su personaje y sube mientras se desvanece. */
 .hud-damage-layer {
     position: absolute;

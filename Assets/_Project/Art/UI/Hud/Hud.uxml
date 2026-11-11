@@ -56,6 +56,7 @@
                 </ui:VisualElement>
                 <ui:Label name="message-next" text="▼" class="hud-message__next hidden" picking-mode="Ignore" />
             </ui:VisualElement>
+            <ui:VisualElement name="hold-ring" class="hud-hold hidden" picking-mode="Ignore" />
             <ui:Label name="prompt" class="hud-prompt hidden" picking-mode="Ignore" />
         </ui:VisualElement>
         <ui:VisualElement name="options" class="hud-options hidden">

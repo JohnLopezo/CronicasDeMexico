@@ -95,8 +95,18 @@ Plantilla:
   - `HoldingInteract_LaunchesThePathAction_AndATapStillTalks`, con teclado simulado.
   - `PathActionAndCookingTests` (4) en la ciudad real: la curandera enseña la receta una sola vez, el fogón cocina con sus recetas y cada respuesta apunta a un habitante y a objetos que existen.
   - **No se ha jugado.** Falta probar la pulsación larga en el S24+.
+- E7 en el commit `174df28` y `Docs/Controles_Tactiles.md` en `2efd2a9`. Push hecho.
+- **Hecho (anillo de carga y fijar objetivo):**
+  - **Anillo:** mientras se mantiene Interactuar con una acción de senda, un anillo sobre el aviso se llena (`UI/Hud/HoldRing`, dibujado con Painter2D). Lo alimenta `Core/Feedback/HoldProgress`, que fija `PlayerInteractor`. Aparece pasados 0,1 s, para que un toque corto no lo enseñe.
+  - **Fijar objetivo:** acción nueva `Player/LockOn` (Tab, pulsar el stick derecho y el botón táctil **Fijar** en (−430, 510)). `PlayerAttack.ToggleLockOn` elige al enemigo a 8 m que esté más cerca y más delante, sin vasijas.
+    - Fijado, el golpe y la habilidad especial apuntan a él aunque quede fuera del cono, y su escudo de ruptura no se oculta.
+    - Se suelta al pulsar otra vez, al caer el enemigo o a más de 12 m.
+    - La mira es un rombo dorado sobre el enemigo (`Core/Feedback/LockOnMarker`, en `HudController`). `DamageNumberLayer.TryProject` sirve ahora para los dos.
+  - Regenerados el prefab `Controles_Tactiles` y Boot (`TouchControlsSetup`). La tabla de `Docs/Controles_Tactiles.md` ya incluye Fijar.
+- **Pruebas:** nuevas `LockOn_PrefersTheEnemyInFront_AimsAtItAnywhere_AndReleasesWhenItFalls` y `Hud_ShowsTheHoldRing_AndTheLockOnReticle`. PlayMode 139/139 y EditMode 145/145. No se ha jugado ni probado en el teléfono.
 - **Siguiente:**
   - El autor revisa los borradores de las líneas, la tabla de debilidades (E4) y los textos culturales del Códice y la cocina.
+  - Probar en el S24+ el botón Fijar y la pulsación larga.
   - Jugar todo en el Editor y en el teléfono, y ajustar en el Inspector.
 - **Siguiente:**
   - Que el autor juegue y ajuste en el Inspector del jugador (Combo, Sensación del impacto, Apuntado asistido, Bloqueo perfecto y Esquiva perfecta).

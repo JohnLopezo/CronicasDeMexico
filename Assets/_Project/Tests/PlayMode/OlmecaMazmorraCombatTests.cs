@@ -217,6 +217,41 @@ namespace CronicasDeMexico.Tests
             }
         }
 
+        // El HUD dibuja el anillo de la pulsación larga y la mira del objetivo fijado.
+        [UnityTest]
+        public IEnumerator Hud_ShowsTheHoldRing_AndTheLockOnReticle()
+        {
+            yield return Load(Floor1);
+            var hud = Object.FindAnyObjectByType<HudController>();
+            try
+            {
+                Assert.IsFalse(hud.HoldRingShown);
+                HoldProgress.Value = 0.5f;
+                yield return null;
+                Assert.IsTrue(hud.HoldRingShown, "Mientras se mantiene pulsado, se ve el anillo.");
+                HoldProgress.Value = -1f;
+                yield return null;
+                Assert.IsFalse(hud.HoldRingShown);
+
+                var player = Player();
+                var enemy = Object.FindObjectsByType<WildEnemy>(FindObjectsSortMode.None).First();
+                Teleport(player, enemy.transform.position + Vector3.right * 2f);
+                yield return WaitPhysics();
+                var attack = player.GetComponent<PlayerAttack>();
+                Assert.IsTrue(attack.ToggleLockOn(), "Junto a un enemigo, se puede fijar.");
+                yield return null;
+                Assert.IsTrue(hud.LockReticleShown, "Fijado, se ve la mira.");
+                attack.ToggleLockOn();
+                yield return null;
+                Assert.IsFalse(hud.LockReticleShown);
+            }
+            finally
+            {
+                HoldProgress.Value = -1f;
+                LockOnMarker.Target = null;
+            }
+        }
+
         // La pista se muestra al entrar en su zona una sola vez en la partida y se quita al salir.
         [UnityTest]
         public IEnumerator TutorialHint_ShowsOnce_AndHidesWhenLeaving()

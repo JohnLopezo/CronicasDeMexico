@@ -86,6 +86,9 @@ namespace CronicasDeMexico.Gameplay.Combat
             return chipped;
         }
 
+        /// <summary>Muestra su escudo en el HUD sin golpearlo (al fijarlo como objetivo).</summary>
+        public void ShowReadout() => Publish();
+
         /// <summary>Quita puntos del escudo (golpe débil, bloqueo perfecto). Devuelve si quitó alguno.</summary>
         public bool Chip(int points)
         {
@@ -125,7 +128,8 @@ namespace CronicasDeMexico.Gameplay.Combat
                     Publish();
             }
 
-            if (BreakReadout.IsShowing(this) && (health.IsDead || Time.time >= readoutUntil))
+            // Fijado como objetivo, el panel no caduca.
+            if (BreakReadout.IsShowing(this) && (health.IsDead || (Time.time >= readoutUntil && LockOnMarker.Target != transform)))
                 BreakReadout.Hide(this);
         }
 

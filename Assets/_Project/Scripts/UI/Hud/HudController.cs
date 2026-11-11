@@ -38,6 +38,9 @@ namespace CronicasDeMexico.UI.Hud
         MessageBox messageBox;
         DamageNumberLayer damageNumbers;
         VisualElement bossTrail;
+        VisualElement holdContainer;
+        HoldRing holdRing;
+        VisualElement lockReticle;
         float bossPercent = 100f;
         float bossTrailPercent = 100f;
         float bossTrailHoldUntil;
@@ -73,6 +76,17 @@ namespace CronicasDeMexico.UI.Hud
             messageBox = new MessageBox(root);
             damageNumbers = new DamageNumberLayer(root);
             bossTrail = root.Q("boss-trail");
+            holdContainer = root.Q("hold-ring");
+            if (holdContainer != null)
+            {
+                holdRing = new HoldRing();
+                holdContainer.Clear();
+                holdContainer.Add(holdRing);
+            }
+            lockReticle = new VisualElement { pickingMode = PickingMode.Ignore };
+            lockReticle.AddToClassList("hud-lock");
+            lockReticle.style.display = DisplayStyle.None;
+            root.Q("damage-numbers")?.Add(lockReticle);
             fps = root.Q<Label>("fps");
             health = root.Q("health");
             healthFill = root.Q("health-fill");
@@ -139,6 +153,7 @@ namespace CronicasDeMexico.UI.Hud
             messageBox.Tick(unscaled);
             damageNumbers.Tick(unscaled);
             UpdateBossTrail(unscaled);
+            UpdateTargeting();
 
             if (!showFps)
                 return;
@@ -207,6 +222,33 @@ namespace CronicasDeMexico.UI.Hud
                 bossTrailHoldUntil = Time.unscaledTime + BossTrailHold;
             ApplyBossTrail();
         }
+
+        // Anillo de la pulsación larga y mira del objetivo fijado (Core/Feedback/TargetingFeedback).
+        void UpdateTargeting()
+        {
+            var hold = HoldProgress.Value;
+            if (holdContainer != null)
+            {
+                holdContainer.EnableInClassList(HiddenClass, hold < 0f);
+                if (hold >= 0f)
+                    holdRing.Progress = hold;
+            }
+
+            var target = LockOnMarker.Target;
+            var position = Vector2.zero;
+            var visible = target != null && DamageNumberLayer.TryProject(lockReticle, Camera.main, target.position + Vector3.up * 0.8f, out position);
+            lockReticle.style.display = visible ? DisplayStyle.Flex : DisplayStyle.None;
+            if (!visible)
+                return;
+            lockReticle.style.left = position.x;
+            lockReticle.style.top = position.y;
+        }
+
+        /// <summary>La mira del objetivo fijado está a la vista (para las pruebas).</summary>
+        public bool LockReticleShown => lockReticle != null && lockReticle.style.display.value == DisplayStyle.Flex;
+
+        /// <summary>El anillo de la pulsación larga está a la vista (para las pruebas).</summary>
+        public bool HoldRingShown => holdContainer != null && !holdContainer.ClassListContains(HiddenClass);
 
         void UpdateBossTrail(float unscaledDeltaTime)
         {

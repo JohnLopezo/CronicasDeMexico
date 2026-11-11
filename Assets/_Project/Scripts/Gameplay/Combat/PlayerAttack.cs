@@ -71,8 +71,16 @@ namespace CronicasDeMexico.Gameplay.Combat
         [SerializeField, Range(0f, 180f), Tooltip("Grados a cada lado de la mirada en los que busca enemigo.")]
         float aimAssistAngle = 60f;
 
+        [Header("Fijar objetivo")]
+        [SerializeField, Min(0f), Tooltip("Distancia a la que se puede fijar un enemigo (acción LockOn).")]
+        float lockOnRange = 8f;
+
+        [SerializeField, Min(0f), Tooltip("Más lejos que esto, el objetivo se suelta solo.")]
+        float lockOnBreakRange = 12f;
+
         // Casi nula y no 0: con 0 el juego se daría por pausado (controles táctiles, menús).
         const float HitStopScale = 0.05f;
+        const string LockOnActionName = "LockOn";
 
         readonly Collider[] hits = new Collider[8];
         readonly Health[] struck = new Health[8];
@@ -85,6 +93,11 @@ namespace CronicasDeMexico.Gameplay.Combat
         float nextAttackTime;
         float bufferedUntil;
         float lastAttackTime = float.NegativeInfinity;
+        InputAction lockAction;
+        Health lockedTarget;
+
+        /// <summary>Enemigo fijado: los golpes y la habilidad especial apuntan a él sin importar el cono. Null = ninguno.</summary>
+        public Health LockedTarget => lockedTarget;
 
         /// <summary>Golpe del combo lanzado el último: 0, 1… (el remate es ComboLength − 1).</summary>
         public int ComboStep { get; private set; }
@@ -104,22 +117,31 @@ namespace CronicasDeMexico.Gameplay.Combat
             movement = GetComponent<PlayerMovement>();
             ownHealth = GetComponent<Health>();
             defense = GetComponent<PlayerDefense>();
+            lockAction = movement.FindSiblingAction(LockOnActionName);
         }
 
         void OnEnable()
         {
             if (attackAction != null)
                 attackAction.action.Enable();
+            lockAction?.Enable();
         }
 
         void OnDisable()
         {
             if (attackAction != null)
                 attackAction.action.Disable();
+            lockAction?.Disable();
+            ReleaseLock();
         }
 
         void Update()
         {
+            if (lockedTarget != null && !CanStayLocked(lockedTarget))
+                ReleaseLock();
+            if (lockAction != null && Time.timeScale > 0f && lockAction.WasPressedThisFrame())
+                ToggleLockOn();
+
             // La esquiva corta el combo: el siguiente golpe vuelve a ser el primero.
             if (movement.IsDodging)
                 lastAttackTime = float.NegativeInfinity;
@@ -163,6 +185,12 @@ namespace CronicasDeMexico.Gameplay.Combat
         /// <summary>Gira la mirada hacia el enemigo vivo más cercano dentro del cono de apuntado. Devuelve si encontró uno.</summary>
         public bool AimAssist()
         {
+            // Con un objetivo fijado se apunta siempre a él.
+            if (lockedTarget != null && CanStayLocked(lockedTarget))
+            {
+                movement.Face(lockedTarget.transform.position - transform.position);
+                return true;
+            }
             if (aimAssistRange <= 0f)
                 return false;
 
@@ -193,6 +221,58 @@ namespace CronicasDeMexico.Gameplay.Combat
 
         /// <summary>Se lanzó un golpe (para la animación del zarpazo).</summary>
         public event System.Action Struck;
+
+        /// <summary>
+        /// Fija el enemigo vivo más prometedor a menos de lockOnRange (cerca y delante pesa más), o suelta el que había.
+        /// Devuelve si quedó uno fijado.
+        /// </summary>
+        public bool ToggleLockOn()
+        {
+            if (lockedTarget != null)
+            {
+                ReleaseLock();
+                return false;
+            }
+
+            var origin = transform.position;
+            var facing = movement.FacingDirection;
+            var count = Physics.OverlapSphereNonAlloc(origin + Vector3.up * height, lockOnRange, aimHits, targetLayers, QueryTriggerInteraction.Ignore);
+            Health best = null;
+            var bestScore = float.PositiveInfinity;
+            for (var i = 0; i < count; i++)
+            {
+                var target = aimHits[i].GetComponentInParent<Health>();
+                // Vida 1: vasijas y objetos de un golpe, que no merecen fijarse.
+                if (target == null || target == ownHealth || target.IsDead || target.Max <= 1)
+                    continue;
+                var toTarget = Vector3.ProjectOnPlane(target.transform.position - origin, Vector3.up);
+                var distance = toTarget.magnitude;
+                var score = distance * (2f - (distance > 0.01f ? Vector3.Dot(toTarget / distance, facing) : 1f));
+                if (score >= bestScore)
+                    continue;
+                bestScore = score;
+                best = target;
+            }
+
+            if (best == null)
+                return false;
+            lockedTarget = best;
+            LockOnMarker.Target = best.transform;
+            if (best.TryGetComponent(out BreakGauge gauge))
+                gauge.ShowReadout();
+            return true;
+        }
+
+        bool CanStayLocked(Health target) =>
+            target != null && !target.IsDead && target.isActiveAndEnabled &&
+            Vector3.ProjectOnPlane(target.transform.position - transform.position, Vector3.up).sqrMagnitude <= lockOnBreakRange * lockOnBreakRange;
+
+        void ReleaseLock()
+        {
+            if (lockedTarget != null && LockOnMarker.Target == lockedTarget.transform)
+                LockOnMarker.Target = null;
+            lockedTarget = null;
+        }
 
         /// <summary>Afinidad de los golpes: la del Guardián elegido; null si no hay partida (pruebas, prototipo).</summary>
         public Affinity? Element =>

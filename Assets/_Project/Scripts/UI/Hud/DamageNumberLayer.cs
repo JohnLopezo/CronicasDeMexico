@@ -92,6 +92,23 @@ namespace CronicasDeMexico.UI.Hud
             }
         }
 
+        /// <summary>
+        /// Punto del mundo en coordenadas del panel de <paramref name="element"/>. Pasa por la vista (0–1) y no por
+        /// WorldToScreenPoint: con PixelArtScreen la cámara dibuja en una textura pequeña. False si queda detrás.
+        /// shortcut: se ignora el píxel de margen de esa textura (error de ~1 píxel del arte); usar su tamaño si se nota.
+        /// </summary>
+        public static bool TryProject(VisualElement element, Camera camera, Vector3 world, out Vector2 position)
+        {
+            position = default;
+            if (camera == null || element?.panel == null)
+                return false;
+            var viewport = camera.WorldToViewportPoint(world);
+            if (viewport.z < 0f)
+                return false;
+            position = RuntimePanelUtils.ScreenToPanel(element.panel, new Vector2(viewport.x * Screen.width, (1f - viewport.y) * Screen.height));
+            return true;
+        }
+
         void Place(int index, Camera camera)
         {
             var label = labels[index];
@@ -101,16 +118,11 @@ namespace CronicasDeMexico.UI.Hud
                 return;
             }
             var t = ages[index] / Lifetime;
-            // Por la vista (0–1) y no por WorldToScreenPoint: con PixelArtScreen la cámara dibuja en una textura pequeña.
-            // shortcut: se ignora el píxel de margen de esa textura (error de ~1 píxel del arte); usar su tamaño si se nota.
-            var viewport = camera.WorldToViewportPoint(origins[index] + Vector3.up * (RiseMetres * t));
-            if (viewport.z < 0f)
+            if (!TryProject(layer, camera, origins[index] + Vector3.up * (RiseMetres * t), out var position))
             {
                 label.style.display = DisplayStyle.None;
                 return;
             }
-            var position = RuntimePanelUtils.ScreenToPanel(layer.panel,
-                new Vector2(viewport.x * Screen.width, (1f - viewport.y) * Screen.height));
             label.style.left = position.x;
             label.style.top = position.y;
             label.style.opacity = 1f - t * t;

@@ -48,6 +48,14 @@ namespace CronicasDeMexico.Gameplay.Interaction
         /// <summary>Segundos que hay que mantener Interactuar para la acción de senda.</summary>
         public const float HoldSeconds = 0.5f;
 
+        const float HoldRingDelay = 0.1f;
+
+        void StopHolding()
+        {
+            holding = false;
+            HoldProgress.Value = -1f;
+        }
+
         /// <summary>Objeto interactuable más cercano en la última búsqueda, o null.</summary>
         public IInteractable Current => current;
 
@@ -74,6 +82,7 @@ namespace CronicasDeMexico.Gameplay.Interaction
                 messageChannel.Unsubscribe(OnMessage);
 
             current = null;
+            StopHolding();
             PublishPrompt(null);
         }
 
@@ -94,21 +103,27 @@ namespace CronicasDeMexico.Gameplay.Interaction
             // resto de interacciones siguen respondiendo al pulsar.
             if (holding)
             {
+                var held = Time.unscaledTime - holdStart;
                 if (holdTarget != current || messageOpen)
                 {
-                    holding = false;
+                    StopHolding();
                 }
-                else if (Time.unscaledTime - holdStart >= HoldSeconds)
+                else if (held >= HoldSeconds)
                 {
-                    holding = false;
+                    StopHolding();
                     active = holdTarget;
                     holdTarget.PathInteract(transform);
                 }
                 else if (!action.IsPressed())
                 {
-                    holding = false;
+                    StopHolding();
                     active = holdTarget;
                     holdTarget.Interact(transform);
+                }
+                else
+                {
+                    // El anillo empieza a verse pasado un instante: un toque corto no lo enseña.
+                    HoldProgress.Value = held < HoldRingDelay ? -1f : (held - HoldRingDelay) / (HoldSeconds - HoldRingDelay);
                 }
                 return;
             }

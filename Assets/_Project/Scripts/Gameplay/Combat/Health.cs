@@ -1,5 +1,6 @@
 using System;
 using CronicasDeMexico.Core.Events;
+using CronicasDeMexico.Core.Feedback;
 using UnityEngine;
 
 namespace CronicasDeMexico.Gameplay.Combat
@@ -70,8 +71,13 @@ namespace CronicasDeMexico.Gameplay.Combat
             if (Intercept != null && Intercept(amount, sourcePosition))
                 return false;
 
+            var before = current;
             current = Mathf.Max(0, current - Mathf.CeilToInt(Mathf.Max(1, amount - Defense) * DamageFactor * Vulnerability));
             invulnerableUntil = Time.time + invulnerabilityTime;
+            // shortcut: vida 1 = objeto de un golpe (vasijas), sin número; usar una marca propia si hay objetos de más vida.
+            if (maxHealth > 1)
+                DamageNumbers.Report(transform.position + Vector3.up * 1.4f, before - current,
+                CompareTag("Player") ? DamageKind.Taken : Vulnerability > 1f ? DamageKind.Broken : DamageKind.Dealt);
             Publish();
             Damaged?.Invoke(sourcePosition);
             if (IsDead)

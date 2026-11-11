@@ -59,6 +59,20 @@ Plantilla:
   - `BreakGauge_WeakHitsBreakTheShield_WhichStunsAndRaisesDamage_ThenRecovers`.
   - `Bat_BreaksWithLight_AndTheHudShowsItsShieldAndWeaknesses`, en el HUD real del piso 1.
   - El bloqueo perfecto quita un punto.
+- E4 en el commit `55852a3`.
+- **Hecho (E5, comodidad y UI):**
+  - **Cuadro de diálogo** (`UI/Hud/MessageBox`): placa con el nombre, retrato y texto letra a letra.
+    - El retrato es el sprite del NPC que habla, por `Core/Feedback/SpeakerPortrait`, que fija `DialogueInteractable`.
+    - Las letras que faltan van con `<alpha=#00>`, así el texto no se recoloca al escribirse.
+    - La primera pulsación de Hablar completa el texto (`MessageReveal`, en `PlayerInteractor`) y aparece ▼.
+  - **Números de daño** (`UI/Hud/DamageNumberLayer`, 12 etiquetas reutilizadas): los informa `Health` por `Core/Feedback/DamageNumbers`. Blancos al enemigo, dorados si está roto y rojos al jugador. Los objetos de vida 1 (vasijas) no muestran número.
+  - **Barra del jefe:** el daño recibido deja una estela clara que baja despacio.
+  - **Opciones de comodidad** (`Core/Feedback/ComfortSettings`, en PlayerPrefs como la calidad): sacudida de cámara, números de daño y velocidad del texto (lento, normal, rápido, al instante). Aparecen en el panel de opciones del juego y en el del menú de inicio (`UI/Hud/ComfortOptionsView`). `ScreenShake.Enabled` se sustituyó por `ComfortSettings.ScreenShake`.
+  - No se regeneró ninguna escena (`Hud.uxml` y `Hud.uss` editados a mano).
+- **Pruebas (E5):** PlayMode 132/132 y EditMode 142/142.
+  - `Hud_TypesDialogueWithASpeakerPlate_AndShowsDamageNumbers`, en el HUD real del piso 1.
+  - `ComfortSettingsTests` (3).
+  - **Falta:** ver el cuadro y los números en pantalla (Editor y S24+), y probar que el retrato se ve nítido. La vibración se descartó: en Android `Handheld.Vibrate` es un zumbido largo y fijo.
 - **Siguiente:**
   - Que el autor juegue y ajuste en el Inspector del jugador (Combo, Sensación del impacto, Apuntado asistido, Bloqueo perfecto y Esquiva perfecta).
   - Falta arte o VFX propio para el bloqueo y la esquiva perfectos (hoy es el destello blanco del daño).

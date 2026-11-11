@@ -1,3 +1,4 @@
+using CronicasDeMexico.Core.Feedback;
 using CronicasDeMexico.Core.Events;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -84,6 +85,9 @@ namespace CronicasDeMexico.Gameplay.Interaction
 
             if (messageOpen)
             {
+                // Primera pulsación: termina de escribir el texto; la siguiente avanza.
+                if (MessageReveal.TryComplete())
+                    return;
                 if (active is IConversation conversation && conversation.Advance())
                     return;
                 CloseMessage();

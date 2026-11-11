@@ -255,6 +255,9 @@ namespace CronicasDeMexico.UI.Hud
                 var level = i;
                 AddButton(qualityButtons, $"start-quality-{i}", names[i], () => QualityOptionsPanel.SelectLevel(level));
             }
+            var comfort = new VisualElement();
+            options.Add(comfort);
+            ComfortOptionsView.Build(comfort, "start-menu__text", "start-menu__row", "start-menu__button", SelectedClass);
             AddButton(options, "start-options-back", "Volver", () => ShowPanel(main));
             OnQualityChanged(0, QualitySettings.GetQualityLevel());
 

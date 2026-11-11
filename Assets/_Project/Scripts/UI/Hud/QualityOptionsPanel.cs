@@ -42,6 +42,9 @@ namespace CronicasDeMexico.UI.Hud
                 levelButtons[i] = button;
             }
 
+            if (root.Q("comfort-options") is { } comfort)
+                ComfortOptionsView.Build(comfort, "hud-options__subtitle", "hud-options__buttons", ButtonClass, SelectedButtonClass);
+
             // Cerrado al empezar, sin tocar Time.timeScale.
             IsOpen = false;
             panel.AddToClassList(HiddenClass);

@@ -81,6 +81,9 @@ Configuración de Git por PC (LFS + UnityYAMLMerge, guardada en `.git/config`): 
 - **Vida (regla del GDD §9):** la vida no se regenera. Estando vivo solo sube con `Health.Heal(cantidad, HealSource)`; `ReviveFull()` es solo para reaparecer tras morir. Hay una prueba que lo vigila.
 - **Layers:** 6 `Interactuable` (triggers que encuentra `PlayerInteractor`), 7 `Enemigo` (lo que golpea `PlayerAttack`). El jugador lleva la etiqueta `Player`.
 - **UI:** UI Toolkit (`Art/UI/Hud`: `Hud.uxml`, `Hud.uss`, `HudTheme.tss`; `Settings/UI/PanelSettings_Hud`). TextMesh Pro no tiene importados sus recursos.
+  - Lo que Gameplay le cuenta al HUD sin canal de eventos pasa por estáticos de `Core/Feedback`: `BreakReadout`, `DamageNumbers`, `SpeakerPortrait` y `MessageReveal`. Así no hay que regenerar escenas para conectar un canal nuevo.
+  - `HudController` delega en `MessageBox` (diálogo letra a letra) y `DamageNumberLayer`.
+  - Las opciones de comodidad (`ComfortSettings`, PlayerPrefs) se muestran con `ComfortOptionsView` en los dos paneles de opciones.
 
 ## Escenas de pixel art generadas
 

@@ -1,4 +1,5 @@
 using CronicasDeMexico.Core.Events;
+using CronicasDeMexico.Core.Feedback;
 using CronicasDeMexico.Core.Narrative;
 using CronicasDeMexico.Core.Services;
 using CronicasDeMexico.Data.Narrative;
@@ -36,6 +37,7 @@ namespace CronicasDeMexico.Gameplay.Interaction
         DialogueBranch branch;
         int lineIndex;
         int lineCount;
+        SpriteRenderer portraitRenderer;
 
         public string Prompt => prompt;
 
@@ -111,7 +113,23 @@ namespace CronicasDeMexico.Gameplay.Interaction
                 speaker = SpeakerName;
             }
 
+            // Retrato: el sprite de este personaje, solo si habla él (una línea puede ser de otro).
+            var portrait = !string.IsNullOrEmpty(speaker) && speaker == SpeakerName ? PortraitRenderer() : null;
+            if (portrait != null && portrait.sprite != null)
+                SpeakerPortrait.Set(speaker, portrait.sprite);
+            else
+                SpeakerPortrait.Clear();
             messageChannel.Raise(string.IsNullOrEmpty(speaker) ? text : $"<b>{speaker}</b>\n{text}");
+        }
+
+        // El trigger puede ser el personaje o un hijo suyo; el sprite está en un hijo del personaje.
+        SpriteRenderer PortraitRenderer()
+        {
+            if (portraitRenderer == null)
+                portraitRenderer = GetComponentInChildren<SpriteRenderer>();
+            if (portraitRenderer == null && transform.parent != null)
+                portraitRenderer = transform.parent.GetComponentInChildren<SpriteRenderer>();
+            return portraitRenderer;
         }
 
         string SpeakerName => npc != null && !string.IsNullOrEmpty(npc.DisplayName) ? npc.DisplayName : speakerName;

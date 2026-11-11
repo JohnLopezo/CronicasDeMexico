@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Linq;
 using CronicasDeMexico.Core.Events;
+using CronicasDeMexico.Core.Feedback;
 using CronicasDeMexico.Core.Narrative;
 using CronicasDeMexico.Core.Services;
 using CronicasDeMexico.Data.Characters;
@@ -10,6 +11,7 @@ using CronicasDeMexico.Gameplay.Enemies;
 using CronicasDeMexico.Gameplay.Narrative;
 using CronicasDeMexico.Gameplay.Player;
 using CronicasDeMexico.Gameplay.Travel;
+using CronicasDeMexico.UI.Hud;
 using CronicasDeMexico.World.Rendering;
 using NUnit.Framework;
 using UnityEngine;
@@ -171,6 +173,48 @@ namespace CronicasDeMexico.Tests
             Assert.IsTrue(gauge.IsBroken, "Con un punto de escudo, un golpe de luz lo rompe.");
             Assert.IsFalse(hud.Q("target-broken").ClassListContains("hidden"), "El HUD avisa la ruptura.");
             yield return new WaitForSecondsRealtime(0.2f);
+        }
+
+        // E5: el diálogo separa el nombre, se escribe letra a letra y la primera pulsación lo completa; los golpes
+        // muestran números de daño. Con el HUD real del piso 1.
+        [UnityTest]
+        public IEnumerator Hud_TypesDialogueWithASpeakerPlate_AndShowsDamageNumbers()
+        {
+            var speed = ComfortSettings.TextSpeed;
+            var numbers = ComfortSettings.DamageNumbers;
+            try
+            {
+                ComfortSettings.TextSpeed = TextSpeed.Normal;
+                ComfortSettings.DamageNumbers = true;
+                yield return Load(Floor1);
+                var hud = Object.FindAnyObjectByType<HudController>();
+                Assert.IsNotNull(hud);
+
+                const string line = "Las piedras recuerdan lo que la gente olvidó.";
+                hud.Messages.Show($"<b>Anciana</b>\n{line}");
+                Assert.AreEqual("Anciana", hud.Messages.Speaker, "El nombre va en su placa.");
+                Assert.IsTrue(MessageReveal.IsRevealing);
+                yield return new WaitForSecondsRealtime(0.2f);
+                Assert.Greater(hud.Messages.VisibleText.Length, 0, "Ya escribió algunas letras.");
+                Assert.Less(hud.Messages.VisibleText.Length, line.Length, "Pero no todas.");
+
+                Assert.IsTrue(MessageReveal.TryComplete(), "La primera pulsación completa el texto.");
+                Assert.AreEqual(line, hud.Messages.VisibleText);
+                Assert.IsFalse(MessageReveal.TryComplete(), "La segunda ya no: avanza el diálogo.");
+                hud.Messages.Show(null);
+                Assert.IsFalse(hud.Messages.IsVisible);
+
+                var bat = Object.FindObjectsByType<WildEnemy>(FindObjectsSortMode.None).First();
+                Assert.IsTrue(bat.GetComponent<Health>().TryDamage(3, Player().transform.position));
+                Assert.That(hud.DamageNumbersShown, Is.EqualTo(1), "El golpe muestra su número.");
+                yield return new WaitForSeconds(1f);
+                Assert.That(hud.DamageNumbersShown, Is.EqualTo(0), "Y se desvanece solo.");
+            }
+            finally
+            {
+                ComfortSettings.TextSpeed = speed;
+                ComfortSettings.DamageNumbers = numbers;
+            }
         }
 
         // La pista se muestra al entrar en su zona una sola vez en la partida y se quita al salir.

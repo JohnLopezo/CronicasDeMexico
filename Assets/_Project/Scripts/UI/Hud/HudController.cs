@@ -18,6 +18,8 @@ namespace CronicasDeMexico.UI.Hud
         const string HiddenClass = "hidden";
         // El texto de FPS se actualiza dos veces por segundo para no generar una cadena cada frame.
         const float FpsRefreshInterval = 0.5f;
+        const float BossTrailHold = 0.4f;
+        const float BossTrailSpeed = 60f;
 
         [SerializeField] StringEventChannel promptChannel;
         [SerializeField] StringEventChannel messageChannel;
@@ -33,7 +35,12 @@ namespace CronicasDeMexico.UI.Hud
         bool showFps = true;
 
         Label prompt;
-        Label message;
+        MessageBox messageBox;
+        DamageNumberLayer damageNumbers;
+        VisualElement bossTrail;
+        float bossPercent = 100f;
+        float bossTrailPercent = 100f;
+        float bossTrailHoldUntil;
         Label fps;
         VisualElement health;
         VisualElement healthFill;
@@ -53,11 +60,19 @@ namespace CronicasDeMexico.UI.Hud
         int frameCount;
         float fpsTimer;
 
+        /// <summary>Cuadro de mensajes y diálogos (para las pruebas).</summary>
+        public MessageBox Messages => messageBox;
+
+        /// <summary>Números de daño a la vista (para las pruebas).</summary>
+        public int DamageNumbersShown => damageNumbers?.ActiveCount ?? 0;
+
         void OnEnable()
         {
             var root = GetComponent<UIDocument>().rootVisualElement;
             prompt = root.Q<Label>("prompt");
-            message = root.Q<Label>("message");
+            messageBox = new MessageBox(root);
+            damageNumbers = new DamageNumberLayer(root);
+            bossTrail = root.Q("boss-trail");
             fps = root.Q<Label>("fps");
             health = root.Q("health");
             healthFill = root.Q("health-fill");
@@ -97,6 +112,8 @@ namespace CronicasDeMexico.UI.Hud
         void OnDisable()
         {
             BreakReadout.Changed -= ShowBreak;
+            messageBox?.Dispose();
+            damageNumbers?.Dispose();
             if (promptChannel != null)
                 promptChannel.Unsubscribe(ShowPrompt);
             if (messageChannel != null)
@@ -117,6 +134,11 @@ namespace CronicasDeMexico.UI.Hud
             // Al pulsar Play desde una escena de juego, Boot (que registra QuestService) se carga después.
             if (quests == null)
                 ConnectQuests();
+
+            var unscaled = Time.unscaledDeltaTime;
+            messageBox.Tick(unscaled);
+            damageNumbers.Tick(unscaled);
+            UpdateBossTrail(unscaled);
 
             if (!showFps)
                 return;
@@ -156,7 +178,7 @@ namespace CronicasDeMexico.UI.Hud
 
         void ShowPrompt(string text) => SetText(prompt, text);
 
-        void ShowMessage(string text) => SetText(message, text);
+        void ShowMessage(string text) => messageBox.Show(text);
 
         // La barra se muestra con el primer dato: escenas sin jugador con vida no la enseñan.
         void ShowHealth(HealthChange change)
@@ -174,8 +196,31 @@ namespace CronicasDeMexico.UI.Hud
             boss.EnableInClassList(HiddenClass, !visible);
         }
 
-        void ShowBossHealth(HealthChange change) =>
-            bossFill.style.width = Length.Percent(change.Max > 0 ? 100f * change.Current / change.Max : 0f);
+        void ShowBossHealth(HealthChange change)
+        {
+            bossPercent = change.Max > 0 ? 100f * change.Current / change.Max : 0f;
+            bossFill.style.width = Length.Percent(bossPercent);
+            // Curación o jefe nuevo: la estela salta; daño: espera un momento y baja despacio.
+            if (bossPercent >= bossTrailPercent)
+                bossTrailPercent = bossPercent;
+            else
+                bossTrailHoldUntil = Time.unscaledTime + BossTrailHold;
+            ApplyBossTrail();
+        }
+
+        void UpdateBossTrail(float unscaledDeltaTime)
+        {
+            if (bossTrailPercent <= bossPercent || Time.unscaledTime < bossTrailHoldUntil)
+                return;
+            bossTrailPercent = Mathf.MoveTowards(bossTrailPercent, bossPercent, BossTrailSpeed * unscaledDeltaTime);
+            ApplyBossTrail();
+        }
+
+        void ApplyBossTrail()
+        {
+            if (bossTrail != null)
+                bossTrail.style.width = Length.Percent(bossTrailPercent);
+        }
 
         // Solo cambia al golpear o al romperse el escudo: crear los elementos aquí no pesa.
         void ShowBreak(BreakInfo? info)

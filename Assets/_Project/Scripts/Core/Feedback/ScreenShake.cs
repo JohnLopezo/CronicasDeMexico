@@ -13,20 +13,13 @@ namespace CronicasDeMexico.Core.Feedback
         static float duration;
         static float endTime;
 
-        /// <summary>Apagada desde opciones (accesibilidad).</summary>
-        public static bool Enabled { get; set; } = true;
-
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
-        static void ResetStatics()
-        {
-            amplitude = duration = endTime = 0f;
-            Enabled = true;
-        }
+        static void ResetStatics() => amplitude = duration = endTime = 0f;
 
         /// <summary>Pide una sacudida de <paramref name="metres"/> que se apaga en <paramref name="seconds"/>.</summary>
         public static void Request(float metres, float seconds)
         {
-            if (!Enabled || metres <= 0f || seconds <= 0f || metres < CurrentAmplitude)
+            if (!ComfortSettings.ScreenShake || metres <= 0f || seconds <= 0f || metres < CurrentAmplitude)
                 return;
             amplitude = metres;
             duration = seconds;

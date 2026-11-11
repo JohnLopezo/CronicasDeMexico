@@ -31,6 +31,7 @@
         <ui:VisualElement name="boss" class="hud-boss hidden" picking-mode="Ignore">
             <ui:Label name="boss-name" class="hud-boss__name" picking-mode="Ignore" />
             <ui:VisualElement class="hud-boss__bar" picking-mode="Ignore">
+                <ui:VisualElement name="boss-trail" class="hud-boss__trail" picking-mode="Ignore" />
                 <ui:VisualElement name="boss-fill" class="hud-boss__fill" picking-mode="Ignore" />
             </ui:VisualElement>
         </ui:VisualElement>
@@ -45,14 +46,23 @@
             </ui:VisualElement>
             <ui:Label name="target-broken" text="¡RUPTURA!" class="hud-target__broken hidden" picking-mode="Ignore" />
         </ui:VisualElement>
+        <ui:VisualElement name="damage-numbers" class="hud-damage-layer" picking-mode="Ignore" />
         <ui:VisualElement class="hud-bottom" picking-mode="Ignore">
-            <ui:Label name="message" class="hud-message hidden" picking-mode="Ignore" />
+            <ui:VisualElement name="message-box" class="hud-message hidden" picking-mode="Ignore">
+                <ui:VisualElement name="message-portrait" class="hud-message__portrait hidden" picking-mode="Ignore" />
+                <ui:VisualElement class="hud-message__body" picking-mode="Ignore">
+                    <ui:Label name="message-speaker" class="hud-message__speaker hidden" picking-mode="Ignore" />
+                    <ui:Label name="message" class="hud-message__text" picking-mode="Ignore" />
+                </ui:VisualElement>
+                <ui:Label name="message-next" text="▼" class="hud-message__next hidden" picking-mode="Ignore" />
+            </ui:VisualElement>
             <ui:Label name="prompt" class="hud-prompt hidden" picking-mode="Ignore" />
         </ui:VisualElement>
         <ui:VisualElement name="options" class="hud-options hidden">
             <ui:VisualElement class="hud-options__panel">
                 <ui:Label text="Calidad gráfica" class="hud-options__title" />
                 <ui:VisualElement name="quality-buttons" class="hud-options__buttons" />
+                <ui:VisualElement name="comfort-options" class="hud-options__comfort" />
                 <ui:Label text="Esc / Start para volver" class="hud-options__hint" />
             </ui:VisualElement>
         </ui:VisualElement>

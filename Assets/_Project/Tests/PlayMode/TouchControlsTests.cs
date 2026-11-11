@@ -6,8 +6,11 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.LowLevel;
 using UnityEngine.InputSystem.OnScreen;
+using UnityEngine.SceneManagement;
 using UnityEngine.TestTools;
+using TouchPhase = UnityEngine.InputSystem.TouchPhase;
 
 namespace CronicasDeMexico.Tests
 {
@@ -94,6 +97,66 @@ namespace CronicasDeMexico.Tests
             {
                 move.Dispose();
             }
+        }
+
+        /// <summary>
+        /// Un toque de verdad, por el EventSystem de la escena, y no llamando al control: así falló en el S24+, donde el
+        /// EventSystem propio del prefab había perdido sus acciones de UI y ningún toque llegaba al joystick.
+        /// </summary>
+        [UnityTest]
+        public IEnumerator RealTouch_InAGameScene_MovesTheStick_AndPressesAttack()
+        {
+            // En modo batch el Editor no tiene el foco y el Input System tiraría los toques simulados.
+            var background = InputSystem.settings.backgroundBehavior;
+            var editorInput = InputSystem.settings.editorInputBehaviorInPlayMode;
+            InputSystem.settings.backgroundBehavior = InputSettings.BackgroundBehavior.IgnoreFocus;
+            InputSystem.settings.editorInputBehaviorInPlayMode = InputSettings.EditorInputBehaviorInPlayMode.AllDeviceInputAlwaysGoesToGameView;
+            var screen = InputSystem.AddDevice<Touchscreen>();
+            yield return SceneManager.LoadSceneAsync("Olmeca_Ciudad", LoadSceneMode.Additive);
+            var move = new InputAction(binding: "<Gamepad>/leftStick");
+            var attack = new InputAction(binding: "<Gamepad>/buttonWest");
+            move.Enable();
+            attack.Enable();
+            try
+            {
+                for (var i = 0; i < 5; i++)
+                    yield return null;
+                Assert.IsTrue(touch.IsVisible, "Con pantalla táctil se muestran solos.");
+                Assert.IsNotNull(EventSystem.current, "La escena de juego trae el EventSystem que reparte los toques.");
+
+                var start = ScreenPoint(instance.GetComponentInChildren<OnScreenStick>().transform);
+                yield return Touch(screen, TouchPhase.Began, start);
+                for (var i = 1; i <= 4; i++)
+                    yield return Touch(screen, TouchPhase.Moved, start + new Vector2(40f * i, 0f));
+                Assert.That(move.ReadValue<Vector2>().x, Is.GreaterThan(0.5f), "Arrastrar el joystick a la derecha mueve el stick.");
+                yield return Touch(screen, TouchPhase.Ended, start + new Vector2(160f, 0f));
+                yield return null;
+                Assert.That(move.ReadValue<Vector2>().magnitude, Is.LessThan(0.01f));
+
+                var button = ScreenPoint(instance.GetComponentsInChildren<OnScreenButton>().Single(b => b.name == "Atacar").transform);
+                yield return Touch(screen, TouchPhase.Began, button, 2);
+                yield return null;
+                Assert.IsTrue(attack.IsPressed(), "Tocar Atacar pulsa el botón Oeste.");
+                yield return Touch(screen, TouchPhase.Ended, button, 2);
+            }
+            finally
+            {
+                move.Dispose();
+                attack.Dispose();
+                InputSystem.RemoveDevice(screen);
+                InputSystem.settings.backgroundBehavior = background;
+                InputSystem.settings.editorInputBehaviorInPlayMode = editorInput;
+            }
+            yield return SceneManager.UnloadSceneAsync("Olmeca_Ciudad");
+        }
+
+        static Vector2 ScreenPoint(Transform control) => RectTransformUtility.WorldToScreenPoint(null, control.position);
+
+        static IEnumerator Touch(Touchscreen screen, TouchPhase phase, Vector2 position, int id = 1)
+        {
+            InputSystem.QueueStateEvent(screen, new TouchState { touchId = id, phase = phase, position = position });
+            yield return null;
+            yield return null;
         }
 
         [Test]

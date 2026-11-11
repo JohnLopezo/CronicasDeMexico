@@ -2,7 +2,6 @@ using CronicasDeMexico.UI.Touch;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.InputSystem.OnScreen;
 using UnityEngine.UI;
 using static CronicasDeMexico.Editor.SceneGeneration.PixelArtSceneBuilder;
@@ -12,7 +11,7 @@ namespace CronicasDeMexico.Editor.SceneGeneration
     /// <summary>
     /// Controles táctiles (TouchControls) como prefab y en la escena Boot, que dura toda la partida. Distribución aprobada
     /// por el autor: joystick abajo a la izquierda; abajo a la derecha, Atacar grande con Esquivar, Defender y Especial
-    /// alrededor y Golpe de tierra e Interactuar encima; Menú arriba a la derecha. Cada botón es un OnScreenButton con el
+    /// alrededor, Golpe de tierra e Interactuar encima y Usar (consumible) más arriba; Menú arriba a la derecha. Cada botón es un OnScreenButton con el
     /// control del mando que el juego ya entiende. Menú Crónicas → Crear controles táctiles en Boot.
     /// </summary>
     public static class TouchControlsSetup
@@ -32,6 +31,7 @@ namespace CronicasDeMexico.Editor.SceneGeneration
             ("Especial", "Especial", "<Gamepad>/rightShoulder", new(-410f, 340f), 120f),
             ("Golpe_Tierra", "Tierra", "<Gamepad>/buttonEast", new(-250f, 450f), 110f),
             ("Interactuar", "Hablar", "<Gamepad>/buttonNorth", new(-90f, 330f), 110f),
+            ("Usar", "Usar", "<Gamepad>/dpad/left", new(-90f, 510f), 100f), // el consumible más útil (acción UseItem)
         };
 
         [MenuItem("Crónicas/Crear controles táctiles en Boot")]
@@ -64,10 +64,6 @@ namespace CronicasDeMexico.Editor.SceneGeneration
             scaler.matchWidthOrHeight = 0.5f;
             root.AddComponent<GraphicRaycaster>();
 
-            var eventSystem = OlmecaPrototypeGenerator.CreateEventSystem();
-            eventSystem.transform.SetParent(root.transform, false);
-            eventSystem.SetActive(false); // TouchControls lo enciende si hace falta
-
             var controls = Rect("Controles", root.transform, Vector2.zero, Vector2.one, Vector2.zero, Vector2.zero);
             var safe = Rect("Zona_Segura", controls.transform, Vector2.zero, Vector2.one, Vector2.zero, Vector2.zero);
             safe.AddComponent<SafeArea>();
@@ -86,7 +82,6 @@ namespace CronicasDeMexico.Editor.SceneGeneration
 
             var touch = root.AddComponent<TouchControls>();
             SetProperty(touch, "controls", property => property.objectReferenceValue = controls);
-            SetProperty(touch, "ownEventSystem", property => property.objectReferenceValue = eventSystem.GetComponent<EventSystem>());
             return root;
         }
 

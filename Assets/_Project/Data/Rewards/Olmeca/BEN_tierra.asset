@@ -24,8 +24,8 @@ MonoBehaviour:
     maxEnergy: 0
   energyCost: 30
   cooldown: 4
-  combatEffect: "Golpe de tierra (tecla C o bot\xF3n Este): da\xF1o en \xE1rea de
-    2,5 m (2 \xD7 ataque)."
+  combatEffect: "Golpe de tierra (tecla C, bot\xF3n Este o Tierra en pantalla): da\xF1o
+    en \xE1rea de 2,5 m (2 \xD7 ataque)."
   explorationEffect: 'Rompe el basalto agrietado: abre pasos y ofrendas ocultas.'
   unlockCondition: "Liberar al Guardi\xE1n de la Piedra Viva (obligatoria, no se
     pierde)."

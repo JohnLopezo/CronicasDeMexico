@@ -21,6 +21,28 @@ Plantilla:
 
 ---
 
+## 2026-11-10 — i7-10700: controles táctiles en el Galaxy S24+
+
+- **Rama / commit al empezar:** `feature/prototipo-olmeca` @ `bb6ab68`.
+- **Primera prueba en un teléfono real (S24+, SM-S926B):** el juego instala, arranca y va a 30 FPS en la ciudad, pero **el joystick y los botones no respondían**, y se veían textos de PC.
+- **Causa:** el EventSystem propio del prefab `Controles_Tactiles` se guardó sin sus acciones de UI. `CreateEventSystem` crea referencias que se conservan en una escena pero no en un prefab. Ese EventSystem era el activo en la partida y no recibía toques. Se encontró con un build de diagnóstico de toques (temporal, borrado). Detalle en `Docs/Controles_Tactiles.md` §3.
+- **Hecho:**
+  - Los controles ya no llevan EventSystem propio; usan el de cada escena.
+  - Botón nuevo **Usar** (cruceta izquierda, el consumible más útil).
+  - Con pantalla táctil, sin textos de teclado:
+    - el aviso dice «Hablar» y no «[E] Hablar»;
+    - se oculta «Bolsa (I)», porque el menú se abre con Menú;
+    - el título de Consumibles cambia a «el botón Usar gasta el más útil»;
+    - las pistas «moverse» y «atacar» del tutorial tienen texto táctil (`TutorialHint.TouchText`);
+    - el texto de la Bendición de la Tierra nombra el botón Tierra.
+  - El FPS va bajo el botón Menú.
+  - Regenerados el prefab, Boot y los tres pisos de la mazmorra (en estos, solo se renumeran los fileID y se añade el texto táctil).
+- **Pruebas:** nueva `RealTouch_InAGameScene_MovesTheStick_AndPressesAttack`: un toque simulado de verdad, por el EventSystem de la ciudad. Las anteriores llamaban al botón directamente y por eso no lo vieron. En modo batch hace falta `IgnoreFocus` para que el Input System no descarte los toques simulados.
+- **Estado:** EditMode 139/139 (antes del botón Usar) y PlayMode 126/126. APK de desarrollo instalado en el S24+. **Sin commit ni push.** El target del proyecto quedó en Android: volver con `-buildTarget Win64`.
+- **Siguiente:** que el autor confirme en el teléfono que todo responde y diga si los tamaños le acomodan; después, commit con su aprobación.
+
+---
+
 ## 2026-11-10 — i7-10700: controles táctiles
 
 - **Rama / commit al empezar:** `feature/prototipo-olmeca` @ `d99bf16`.

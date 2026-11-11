@@ -214,7 +214,7 @@ namespace CronicasDeMexico.Editor.SceneGeneration
         {
             c.Earth = Blessing("tierra", "Bendición de la Tierra",
                 "El Guardián de la Piedra Viva te presta su peso: la tierra responde cuando la golpeas.", BlessingSlot.Principal, default, 30, 4f,
-                "Golpe de tierra (tecla C o botón Este): daño en área de 2,5 m (2 × ataque).",
+                "Golpe de tierra (tecla C, botón Este o Tierra en pantalla): daño en área de 2,5 m (2 × ataque).",
                 "Rompe el basalto agrietado: abre pasos y ofrendas ocultas.",
                 "Liberar al Guardián de la Piedra Viva (obligatoria, no se pierde).");
             all = new List<BlessingData>

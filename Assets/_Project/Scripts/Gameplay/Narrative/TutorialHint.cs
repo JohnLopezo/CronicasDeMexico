@@ -2,6 +2,7 @@ using CronicasDeMexico.Core.Events;
 using CronicasDeMexico.Core.Narrative;
 using CronicasDeMexico.Core.Services;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace CronicasDeMexico.Gameplay.Narrative
 {
@@ -20,6 +21,9 @@ namespace CronicasDeMexico.Gameplay.Narrative
 
         [SerializeField, TextArea(2, 6)] string text;
 
+        [SerializeField, TextArea(2, 6), Tooltip("Texto con pantalla táctil, si la pista nombra teclas (vacío = el mismo).")]
+        string touchText;
+
         [SerializeField, Tooltip("Canal por el que el HUD recibe el mensaje.")]
         StringEventChannel messageChannel;
 
@@ -35,6 +39,12 @@ namespace CronicasDeMexico.Gameplay.Narrative
         {
             get => text;
             set => text = value;
+        }
+
+        public string TouchText
+        {
+            get => touchText;
+            set => touchText = value;
         }
 
         public StringEventChannel MessageChannel
@@ -62,7 +72,7 @@ namespace CronicasDeMexico.Gameplay.Narrative
 
             showing = true;
             if (messageChannel != null)
-                messageChannel.Raise(text);
+                messageChannel.Raise(Touchscreen.current != null && !string.IsNullOrEmpty(touchText) ? touchText : text);
         }
 
         void OnTriggerExit(Collider other)

@@ -324,10 +324,11 @@
     white-space: normal;
 }
 
+/* Bajo el botón Menú de los controles táctiles, que ocupa la esquina; arriba al centro va la barra del jefe. */
 .hud-fps {
     position: absolute;
     right: 16px;
-    top: 12px;
+    top: 150px;
     font-size: 20px;
     color: rgb(240, 232, 214);
     -unity-text-outline-width: 1px;

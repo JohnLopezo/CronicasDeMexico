@@ -538,6 +538,14 @@ namespace CronicasDeMexico.Editor.SceneGeneration
 
         // ---------- Tutorial ----------
 
+        // Las pistas que nombran teclas, dichas con los botones de la pantalla (TutorialHint.TouchText).
+        static readonly Dictionary<string, string> TouchHints = new()
+        {
+            ["moverse"] = "Muévete con el joystick. Con Hablar examinas, hablas y cierras los mensajes.",
+            ["atacar"] = "Un espíritu corrompido. Ataca con Atacar. Mantén Defender para defenderte. Esquiva con Esquivar: " +
+                         "mientras esquivas, nada te daña.",
+        };
+
         static void BuildHints(Transform parent, int floor, StringEventChannel messageChannel)
         {
             foreach (var (hintFloor, id, point, size, text) in Hints)
@@ -547,6 +555,7 @@ namespace CronicasDeMexico.Editor.SceneGeneration
                 var hint = TriggerBox($"Pista_{id}", parent, point, new Vector3(size.x, size.y, 2f)).AddComponent<TutorialHint>();
                 hint.HintId = id;
                 hint.Text = text;
+                hint.TouchText = TouchHints.GetValueOrDefault(id);
                 hint.MessageChannel = messageChannel;
             }
         }

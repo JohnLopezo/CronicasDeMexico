@@ -74,7 +74,10 @@ namespace CronicasDeMexico.UI.Hud
             tabs = root.Q("menu-tabs");
             summary = root.Q<Label>("menu-summary");
             content = root.Q<ScrollView>("menu-content");
-            root.Q<Button>("menu-button")?.RegisterCallback<ClickEvent>(_ => Toggle());
+            var bagButton = root.Q<Button>("menu-button");
+            bagButton?.RegisterCallback<ClickEvent>(_ => Toggle());
+            // Con pantalla táctil el menú se abre con el botón Menú de los controles en pantalla; este estorbaría a Esquivar.
+            bagButton?.EnableInClassList(Hidden, Touchscreen.current != null);
             root.Q<Button>("menu-close")?.RegisterCallback<ClickEvent>(_ => Close());
 
             items = Resources.Load<ItemCatalog>(ItemCatalog.ResourcePath);
@@ -344,7 +347,8 @@ namespace CronicasDeMexico.UI.Hud
         void RenderInventory()
         {
             var order = new[] { ItemCategory.Consumible, ItemCategory.Reliquia, ItemCategory.Material, ItemCategory.Coleccionable, ItemCategory.Narrativo };
-            var titles = new[] { "Consumibles (tecla 1 usa el más útil)", "Reliquias (2 equipadas como máximo)", "Materiales", "Coleccionables", "Objetos de la historia" };
+            var consumables = Touchscreen.current != null ? "Consumibles (el botón Usar gasta el más útil)" : "Consumibles (tecla 1 usa el más útil)";
+            var titles = new[] { consumables, "Reliquias (2 equipadas como máximo)", "Materiales", "Coleccionables", "Objetos de la historia" };
             var any = false;
             for (var c = 0; c < order.Length; c++)
             {

@@ -146,7 +146,9 @@ namespace CronicasDeMexico.Gameplay.Interaction
             RefreshPrompt();
         }
 
-        void RefreshPrompt() => PublishPrompt(current == null || messageOpen ? null : $"[{keyLabel}] {current.Prompt}");
+        // Con pantalla táctil no hay tecla que mostrar: el botón en pantalla ya dice qué hace.
+        void RefreshPrompt() => PublishPrompt(current == null || messageOpen ? null
+            : Touchscreen.current != null ? current.Prompt : $"[{keyLabel}] {current.Prompt}");
 
         void PublishPrompt(string prompt)
         {

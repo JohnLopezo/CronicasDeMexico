@@ -25,10 +25,25 @@ namespace CronicasDeMexico.World.Rendering
         [SerializeField, Tooltip("Límites del punto que mira en el plano XZ del mundo (máximo).")]
         Vector2 boundsMax = new(1000f, 1000f);
 
+        [Header("Objetivo fijado")]
+        [SerializeField, Range(0f, 0.5f), Tooltip("Con un enemigo fijado, cuánto se desplaza el encuadre hacia él (0 = nada, 0,5 = punto medio).")]
+        float lockOnLean = 0.35f;
+
+        [SerializeField, Min(0f), Tooltip("Máximo desplazamiento hacia el objetivo, en metros: el jugador nunca sale de la pantalla.")]
+        float lockOnMaxLean = 2.5f;
+
+        [SerializeField, Min(0f), Tooltip("Suavizado del desplazamiento al fijar y al soltar, en segundos.")]
+        float lockOnLeanSmoothTime = 0.35f;
+
         Camera cachedCamera;
         PixelArtScreen pixelScreen;
         Vector3 focus;
         Vector3 velocity;
+        Vector3 lean;
+        Vector3 leanVelocity;
+
+        /// <summary>Punto que mira la cámara (para las pruebas).</summary>
+        public Vector3 Focus => focus;
         int screenHeight;
 
         public Transform Target
@@ -55,7 +70,16 @@ namespace CronicasDeMexico.World.Rendering
         void LateUpdate()
         {
             if (target != null)
-                focus = Vector3.SmoothDamp(focus, Clamp(target.position), ref velocity, smoothTime);
+            {
+                // La cámara no puede girar (el arte está prerenderizado a un ángulo): "inclinarse" hacia el objetivo
+                // fijado es desplazar el encuadre en el plano, con tope, suavizado aparte para que fijar no dé un tirón.
+                var desiredLean = Vector3.zero;
+                if (LockOnMarker.Target != null)
+                    desiredLean = Vector3.ClampMagnitude(
+                        Vector3.ProjectOnPlane(LockOnMarker.Target.position - target.position, Vector3.up) * lockOnLean, lockOnMaxLean);
+                lean = Vector3.SmoothDamp(lean, desiredLean, ref leanVelocity, lockOnLeanSmoothTime);
+                focus = Vector3.SmoothDamp(focus, Clamp(target.position + lean), ref velocity, smoothTime);
+            }
             Apply();
         }
 

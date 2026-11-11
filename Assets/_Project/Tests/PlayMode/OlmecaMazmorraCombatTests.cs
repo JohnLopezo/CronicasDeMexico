@@ -235,8 +235,14 @@ namespace CronicasDeMexico.Tests
 
                 var player = Player();
                 var enemy = Object.FindObjectsByType<WildEnemy>(FindObjectsSortMode.None).First();
+                player.GetComponent<Health>().GrantInvulnerability(10f); // que el enemigo no lo empuje mientras se mide
                 Teleport(player, enemy.transform.position + Vector3.right * 2f);
                 yield return WaitPhysics();
+                var camera = Camera.main.GetComponent<IsometricCameraFollow>();
+                yield return new WaitForSeconds(0.8f); // la cámara alcanza al jugador tras el salto
+                Vector3 Lean() => Vector3.ProjectOnPlane(camera.Focus - player.transform.position, Vector3.up);
+                Assert.Less(Lean().magnitude, 0.3f, "Sin objetivo, la cámara mira al jugador.");
+
                 var attack = player.GetComponent<PlayerAttack>();
                 Assert.IsTrue(attack.ToggleLockOn(), "Junto a un enemigo, se puede fijar.");
                 yield return null;
@@ -244,6 +250,30 @@ namespace CronicasDeMexico.Tests
                 attack.ToggleLockOn();
                 yield return null;
                 Assert.IsFalse(hud.LockReticleShown);
+
+                // La cámara: con un punto fijo como objetivo (el murciélago se mueve), el encuadre se desplaza el 35 %
+                // de la distancia hacia él, con tope de 2,5 m, y vuelve al soltarlo.
+                var mark = new GameObject("ObjetivoPrueba").transform;
+                try
+                {
+                    mark.position = player.transform.position + Vector3.right * 4f;
+                    LockOnMarker.Target = mark;
+                    yield return new WaitForSeconds(1.5f);
+                    Assert.AreEqual(1.4f, Lean().magnitude, 0.25f, "A 4 m, el encuadre se desplaza 1,4 m.");
+                    Assert.Greater(Vector3.Dot(Lean(), Vector3.right), 0f, "Hacia el objetivo.");
+
+                    mark.position = player.transform.position + Vector3.right * 20f;
+                    yield return new WaitForSeconds(1.5f);
+                    Assert.LessOrEqual(Lean().magnitude, 2.6f, "Con tope: el jugador no sale de la pantalla.");
+
+                    LockOnMarker.Target = null;
+                    yield return new WaitForSeconds(1.5f);
+                    Assert.Less(Lean().magnitude, 0.3f, "Al soltar, vuelve al jugador.");
+                }
+                finally
+                {
+                    Object.Destroy(mark.gameObject);
+                }
             }
             finally
             {

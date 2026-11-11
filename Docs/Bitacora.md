@@ -107,6 +107,12 @@ Plantilla:
 - **Siguiente:**
   - El autor revisa los borradores de las líneas, la tabla de debilidades (E4) y los textos culturales del Códice y la cocina.
   - Probar en el S24+ el botón Fijar y la pulsación larga.
+- Anillo y fijar objetivo en el commit `4a32ae2`. Push hecho.
+- **Hecho (la cámara se inclina hacia el objetivo, a pedido del autor):**
+  - La cámara no puede girar, porque el arte está prerenderizado a un ángulo. Con un objetivo fijado, `IsometricCameraFollow` desplaza el encuadre hacia él: un 35 % de la distancia, con un tope de 2,5 m para que el jugador nunca salga de la pantalla.
+  - El desplazamiento se suaviza aparte (0,35 s) para que fijar y soltar no den un tirón.
+  - Se ajusta en la cámara (sección «Objetivo fijado») y `Focus` queda expuesto para las pruebas.
+  - Lo comprueba `Hud_ShowsTheHoldRing_AndTheLockOnReticle` con un punto fijo como objetivo (el murciélago se mueve y daba una medida inestable): a 4 m se desplaza 1,4 m, a 20 m respeta el tope y vuelve al soltarlo. PlayMode 139/139 y EditMode 145/145. No se ha visto en pantalla.
   - Jugar todo en el Editor y en el teléfono, y ajustar en el Inspector.
 - **Siguiente:**
   - Que el autor juegue y ajuste en el Inspector del jugador (Combo, Sensación del impacto, Apuntado asistido, Bloqueo perfecto y Esquiva perfecta).

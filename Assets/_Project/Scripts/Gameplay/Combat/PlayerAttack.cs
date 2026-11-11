@@ -1,3 +1,4 @@
+using CronicasDeMexico.Core.Feedback;
 using CronicasDeMexico.Gameplay.Player;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -7,6 +8,8 @@ namespace CronicasDeMexico.Gameplay.Combat
     /// <summary>
     /// Golpe cuerpo a cuerpo hacia donde mira el jugador. Una esfera delante del personaje daña a cada Health
     /// de los layers objetivo una sola vez por golpe. Búfer fijo: no genera basura.
+    /// Combo de tres golpes con avance (el tercero remata), pulsación guardada si llega un poco antes de tiempo,
+    /// pausa breve al acertar (hitstop), sacudida de cámara y giro asistido hacia el enemigo más cercano.
     /// </summary>
     [RequireComponent(typeof(PlayerMovement))]
     public sealed class PlayerAttack : MonoBehaviour
@@ -32,6 +35,41 @@ namespace CronicasDeMexico.Gameplay.Combat
         [SerializeField, Tooltip("Altura del golpe sobre los pies.")]
         float height = 0.7f;
 
+        [Header("Combo")]
+        [SerializeField, Min(0f), Tooltip("Segundos que se guarda una pulsación hecha antes de poder golpear.")]
+        float inputBuffer = 0.15f;
+
+        [SerializeField, Min(1), Tooltip("Golpes del combo; el último es el remate.")]
+        int comboLength = 3;
+
+        [SerializeField, Min(0f), Tooltip("Segundos tras un golpe en los que el siguiente continúa el combo.")]
+        float comboWindow = 0.5f;
+
+        [SerializeField, Min(1f), Tooltip("Daño del remate = daño × este factor.")]
+        float finisherDamageFactor = 1.5f;
+
+        [SerializeField, Min(0f), Tooltip("Espera tras el remate antes de volver a golpear.")]
+        float finisherRecovery = 0.45f;
+
+        [SerializeField, Min(0f), Tooltip("Impulso hacia delante de cada golpe en m/s (el remate, ×1,5).")]
+        float lungeSpeed = 5f;
+
+        [Header("Sensación del impacto")]
+        [SerializeField, Min(0f), Tooltip("Segundos reales de pausa al acertar (el remate, ×1,6).")]
+        float hitStop = 0.05f;
+
+        [SerializeField, Min(0f), Tooltip("Amplitud en metros de la sacudida al acertar (el remate, ×2).")]
+        float hitShake = 0.05f;
+
+        [Header("Apuntado asistido")]
+        [SerializeField, Min(0f), Tooltip("Distancia a la que el golpe gira hacia un enemigo. 0 lo desactiva.")]
+        float aimAssistRange = 3f;
+
+        [SerializeField, Range(0f, 180f), Tooltip("Grados a cada lado de la mirada en los que busca enemigo.")]
+        float aimAssistAngle = 60f;
+
+        const float HitStopScale = 0.05f;
+
         readonly Collider[] hits = new Collider[8];
         readonly Health[] struck = new Health[8];
         readonly Collider[] areaHits = new Collider[16];
@@ -39,7 +77,16 @@ namespace CronicasDeMexico.Gameplay.Combat
         PlayerMovement movement;
         Health ownHealth;
         PlayerDefense defense;
+        readonly Collider[] aimHits = new Collider[16];
         float nextAttackTime;
+        float bufferedUntil;
+        float lastAttackTime = float.NegativeInfinity;
+        float hitStopUntil;
+
+        /// <summary>Golpe del combo lanzado el último: 0, 1… (el remate es ComboLength − 1).</summary>
+        public int ComboStep { get; private set; }
+
+        public int ComboLength => comboLength;
 
         public int Damage
         {
@@ -66,19 +113,100 @@ namespace CronicasDeMexico.Gameplay.Combat
         {
             if (attackAction != null)
                 attackAction.action.Disable();
+            EndHitStop();
         }
 
         void Update()
         {
+            if (hitStopUntil > 0f && Time.unscaledTime >= hitStopUntil)
+                EndHitStop();
+
+            // La esquiva corta el combo: el siguiente golpe vuelve a ser el primero.
+            if (movement.IsDodging)
+                lastAttackTime = float.NegativeInfinity;
+
             // En pausa (panel de opciones) o muerto no se ataca.
-            if (attackAction == null || Time.timeScale == 0f || (ownHealth != null && ownHealth.IsDead) || (defense != null && defense.IsDefending))
+            if (attackAction == null || Time.timeScale == 0f || (ownHealth != null && ownHealth.IsDead))
                 return;
 
-            if (!attackAction.action.WasPressedThisFrame() || Time.time < nextAttackTime)
+            if (attackAction.action.WasPressedThisFrame())
+                bufferedUntil = Time.time + inputBuffer;
+
+            if (Time.time > bufferedUntil || Time.time < nextAttackTime || movement.IsDodging || (defense != null && defense.IsDefending))
                 return;
 
-            nextAttackTime = Time.time + cooldown;
-            Strike();
+            bufferedUntil = 0f;
+            Attack();
+        }
+
+        /// <summary>
+        /// Siguiente golpe del combo, como al pulsar Atacar: gira hacia el enemigo cercano, avanza y golpea, y fija
+        /// la espera hasta el siguiente. Devuelve cuántos objetivos recibieron daño.
+        /// </summary>
+        public int Attack()
+        {
+            ComboStep = Time.time - lastAttackTime <= comboWindow && ComboStep < comboLength - 1 ? ComboStep + 1 : 0;
+            var finisher = comboLength > 1 && ComboStep == comboLength - 1;
+            lastAttackTime = Time.time;
+            nextAttackTime = Time.time + (finisher ? finisherRecovery : cooldown);
+
+            AimAssist();
+            movement.AddImpulse(movement.FacingDirection * (lungeSpeed * (finisher ? 1.5f : 1f)));
+            var damaged = Strike(finisher ? Mathf.RoundToInt(damage * finisherDamageFactor) : damage);
+            if (damaged > 0)
+            {
+                StartHitStop(hitStop * (finisher ? 1.6f : 1f));
+                ScreenShake.Request(hitShake * (finisher ? 2f : 1f), 0.12f);
+            }
+            return damaged;
+        }
+
+        /// <summary>Gira la mirada hacia el enemigo vivo más cercano dentro del cono de apuntado. Devuelve si encontró uno.</summary>
+        public bool AimAssist()
+        {
+            if (aimAssistRange <= 0f)
+                return false;
+
+            var origin = transform.position;
+            var facing = movement.FacingDirection;
+            var minDot = Mathf.Cos(aimAssistAngle * Mathf.Deg2Rad);
+            var count = Physics.OverlapSphereNonAlloc(origin + Vector3.up * height, aimAssistRange, aimHits, targetLayers, QueryTriggerInteraction.Ignore);
+            var bestDistance = float.PositiveInfinity;
+            var best = Vector3.zero;
+            for (var i = 0; i < count; i++)
+            {
+                var target = aimHits[i].GetComponentInParent<Health>();
+                if (target == null || target == ownHealth || target.IsDead)
+                    continue;
+                var toTarget = Vector3.ProjectOnPlane(target.transform.position - origin, Vector3.up);
+                var distance = toTarget.magnitude;
+                if (distance < 0.01f || distance >= bestDistance || Vector3.Dot(toTarget / distance, facing) < minDot)
+                    continue;
+                bestDistance = distance;
+                best = toTarget / distance;
+            }
+
+            if (best == Vector3.zero)
+                return false;
+            movement.Face(best);
+            return true;
+        }
+
+        // Escala casi nula y no 0: con 0 el juego se daría por pausado (controles táctiles, menús).
+        void StartHitStop(float seconds)
+        {
+            if (seconds <= 0f || Time.timeScale != 1f)
+                return;
+            Time.timeScale = HitStopScale;
+            hitStopUntil = Time.unscaledTime + seconds;
+        }
+
+        void EndHitStop()
+        {
+            // Si entretanto un menú pausó, la escala ya no es la del hitstop y no se toca.
+            if (hitStopUntil > 0f && Mathf.Approximately(Time.timeScale, HitStopScale))
+                Time.timeScale = 1f;
+            hitStopUntil = 0f;
         }
 
         /// <summary>Se lanzó un golpe (para la animación del zarpazo).</summary>
@@ -101,7 +229,9 @@ namespace CronicasDeMexico.Gameplay.Combat
         }
 
         /// <summary>Lanza un golpe ahora, sin entrada ni enfriamiento. Devuelve cuántos objetivos recibieron daño.</summary>
-        public int Strike()
+        public int Strike() => Strike(damage);
+
+        int Strike(int strikeDamage)
         {
             Struck?.Invoke();
             var center = transform.position + Vector3.up * height + movement.FacingDirection * reach;
@@ -116,7 +246,7 @@ namespace CronicasDeMexico.Gameplay.Combat
                     continue;
 
                 struck[struckCount++] = target;
-                if (target.TryDamage(damage, transform.position))
+                if (target.TryDamage(strikeDamage, transform.position))
                     damaged++;
             }
 

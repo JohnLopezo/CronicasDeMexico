@@ -87,6 +87,7 @@ namespace CronicasDeMexico.Gameplay.Player
             }
 
             nextUse = Time.time + cooldown;
+            attack.AimAssist();
             rootedUntil = Time.time + set.Duration;
             movement.Rooted = true;
             Used?.Invoke();

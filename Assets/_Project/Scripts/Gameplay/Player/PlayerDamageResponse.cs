@@ -1,3 +1,4 @@
+using CronicasDeMexico.Core.Feedback;
 using CronicasDeMexico.Gameplay.Combat;
 using UnityEngine;
 
@@ -66,6 +67,7 @@ namespace CronicasDeMexico.Gameplay.Player
 
         void OnDamaged(Vector3 sourcePosition)
         {
+            ScreenShake.Request(health.IsDead ? 0.2f : 0.12f, 0.2f);
             if (health.IsDead)
                 return;
 

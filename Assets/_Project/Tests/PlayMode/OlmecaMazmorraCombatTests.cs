@@ -130,6 +130,9 @@ namespace CronicasDeMexico.Tests
             yield return new WaitForSeconds(0.3f);
             Assert.IsFalse(player.IsDodging);
             Assert.Greater(Vector3.Distance(start, player.transform.position), 1.4f, "La esquiva debe recorrer más que el paso.");
+            Assert.IsTrue(player.TryDodge(Vector3.zero), "Al acabar la primera se encadena una segunda.");
+            yield return new WaitForSeconds(0.25f);
+            Assert.IsFalse(player.TryDodge(Vector3.zero), "Gastadas las dos cargas hay que esperar.");
             yield return new WaitForSeconds(0.5f);
             Assert.IsTrue(player.TryDodge(Vector3.zero), "Pasada la espera se puede volver a esquivar.");
         }

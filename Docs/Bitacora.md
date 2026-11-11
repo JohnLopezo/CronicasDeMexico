@@ -21,6 +21,25 @@ Plantilla:
 
 ---
 
+## 2026-11-11 — sensación del combate (E1) y apuntado asistido (E2)
+
+- **Rama / commit al empezar:** `feature/prototipo-olmeca` @ `bb6ab68`, con los cambios de los controles táctiles aún sin commit.
+- **Pedido del autor:** un juego más profesional y cómodo, inspirado en Tunic, Eastward, Octopath Traveler II y Hyper Light Drifter. Plan de 7 etapas (E1–E7); el autor autorizó E1 y E2.
+- **Hecho:**
+  - `PlayerAttack`:
+    - Combo de 3 golpes con avance. El tercero remata: daño ×1,5, más empuje y 0,45 s de espera.
+    - Las pulsaciones se guardan 0,15 s.
+    - Pausa breve al acertar (hitstop, con escala 0,05 y no 0 para que no cuente como pausa) y sacudida de cámara.
+    - El apuntado asistido (`AimAssist`) gira hacia el enemigo vivo más cercano a menos de 3 m y dentro de ±60°. Lo usan el golpe y la habilidad especial.
+    - `Attack()` es el golpe con entrada; `Strike()` sigue igual para las pruebas.
+  - `PlayerMovement`: dos esquivas encadenadas y después la espera; la pulsación de esquiva se guarda 0,15 s; `Face(dir)`. La esquiva reinicia el combo.
+  - `Core/Feedback/ScreenShake`: la piden `PlayerAttack` y `PlayerDamageResponse` (al recibir daño) y la aplica `IsometricCameraFollow`. Tiene `Enabled` para la futura opción de accesibilidad (E5).
+  - Sin cambios en prefabs ni escenas: los campos nuevos toman sus valores por defecto.
+- **Pruebas:** EditMode 139/139 y PlayMode 128/128. Nuevas: `Attack_ChainsAThreeHitCombo_WhoseFinisherHitsHarder` y `Attack_TurnsTowardANearbyEnemyInsideTheCone_ButNotBehind`. La de la esquiva ahora comprueba la segunda carga. **No se ha jugado en el Editor ni en el teléfono.**
+- **Siguiente:** que el autor juegue y ajuste en el Inspector del jugador (secciones Combo, Sensación del impacto y Apuntado asistido); fijar objetivo (pendiente de E2, necesita un botón táctil nuevo); E3–E7.
+
+---
+
 ## 2026-11-10 — i7-10700: controles táctiles en el Galaxy S24+
 
 - **Rama / commit al empezar:** `feature/prototipo-olmeca` @ `bb6ab68`.

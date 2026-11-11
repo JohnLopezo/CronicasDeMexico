@@ -46,6 +46,12 @@ namespace CronicasDeMexico.Gameplay.Player
         [SerializeField, Min(0f), Tooltip("Segundos entre esquivas.")]
         float dodgeCooldown = 0.6f;
 
+        [SerializeField, Min(1), Tooltip("Esquivas seguidas antes de la espera (cada una en cuanto acaba la anterior).")]
+        int dodgeCharges = 2;
+
+        [SerializeField, Min(0f), Tooltip("Segundos que se guarda una pulsación de esquiva hecha antes de poder esquivar.")]
+        float dodgeBuffer = 0.15f;
+
         CharacterController controller;
         Health health;
         InputAction dodge;
@@ -54,6 +60,8 @@ namespace CronicasDeMexico.Gameplay.Player
         float verticalSpeed;
         float dodgeTimer;
         float nextDodgeTime;
+        int dodgesUsed;
+        float dodgeBufferedUntil;
         SlowTracker slow;
 
         /// <summary>Velocidad horizontal actual en m/s.</summary>
@@ -116,8 +124,14 @@ namespace CronicasDeMexico.Gameplay.Player
         /// </summary>
         public bool TryDodge(Vector3 direction)
         {
-            if (!enabled || Rooted || Time.time < nextDodgeTime || (health != null && health.IsDead))
+            if (!enabled || Rooted || IsDodging || (health != null && health.IsDead))
                 return false;
+            // Pasada la espera desde la última esquiva se recuperan todas las cargas.
+            if (Time.time >= nextDodgeTime)
+                dodgesUsed = 0;
+            if (dodgesUsed >= dodgeCharges)
+                return false;
+            dodgesUsed++;
 
             direction = Vector3.ProjectOnPlane(direction, Vector3.up);
             dodgeDirection = direction.sqrMagnitude > 0.0001f ? direction.normalized : FacingDirection;
@@ -127,6 +141,14 @@ namespace CronicasDeMexico.Gameplay.Player
             if (health != null)
                 health.GrantInvulnerability(dodgeInvulnerability);
             return true;
+        }
+
+        /// <summary>Gira la mirada sin moverse (apuntado asistido). Ignora direcciones nulas o verticales.</summary>
+        public void Face(Vector3 direction)
+        {
+            direction = Vector3.ProjectOnPlane(direction, Vector3.up);
+            if (direction.sqrMagnitude > 0.0001f)
+                FacingDirection = direction.normalized;
         }
 
         public void ApplySlow(float speedFactor) => slow.Apply(speedFactor);
@@ -142,7 +164,9 @@ namespace CronicasDeMexico.Gameplay.Player
             var inputDirection = PlanarMovement.InputToWorldDirection(input, cameraYaw);
 
             if (dodge != null && Time.timeScale > 0f && dodge.WasPressedThisFrame())
-                TryDodge(inputDirection);
+                dodgeBufferedUntil = Time.time + dodgeBuffer;
+            if (Time.time <= dodgeBufferedUntil && TryDodge(inputDirection))
+                dodgeBufferedUntil = 0f;
 
             if (dodgeTimer > 0f)
             {

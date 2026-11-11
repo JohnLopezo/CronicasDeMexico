@@ -172,6 +172,61 @@ namespace CronicasDeMexico.Tests
             }
         }
 
+        // E1: tres golpes seguidos forman un combo; el tercero remata con más daño y después se reinicia.
+        [UnityTest]
+        public IEnumerator Attack_ChainsAThreeHitCombo_WhoseFinisherHitsHarder()
+        {
+            var dummy = CreateDummy(new Vector3(0f, 0f, -1f), out var dummyHealth);
+            typeof(Health).GetField("invulnerabilityTime", PrivateField).SetValue(dummyHealth, 0f);
+            typeof(PlayerAttack).GetField("lungeSpeed", PrivateField).SetValue(attack, 0f); // que no se acerque
+            try
+            {
+                yield return new WaitForFixedUpdate();
+                var expected = new[] { attack.Damage, attack.Damage, Mathf.RoundToInt(attack.Damage * 1.5f), attack.Damage };
+                for (var i = 0; i < expected.Length; i++)
+                {
+                    var before = dummyHealth.Current;
+                    Assert.That(attack.Attack(), Is.EqualTo(1), $"El golpe {i + 1} debe acertar.");
+                    Assert.That(attack.ComboStep, Is.EqualTo(i % 3));
+                    Assert.That(before - dummyHealth.Current, Is.EqualTo(expected[i]), $"Daño del golpe {i + 1}.");
+                    yield return new WaitForSeconds(0.25f);
+                }
+                Assert.That(Time.timeScale, Is.EqualTo(1f), "El hitstop debe devolver la escala de tiempo.");
+
+                yield return new WaitForSeconds(0.6f);
+                attack.Attack();
+                Assert.That(attack.ComboStep, Is.EqualTo(0), "Pasada la ventana el combo vuelve a empezar.");
+            }
+            finally
+            {
+                Object.Destroy(dummy);
+            }
+        }
+
+        // E2: un enemigo en diagonal, que el golpe recto no alcanza, se alcanza girando hacia él; uno detrás no.
+        [UnityTest]
+        public IEnumerator Attack_TurnsTowardANearbyEnemyInsideTheCone_ButNotBehind()
+        {
+            var behind = CreateDummy(new Vector3(0f, 0f, 1.2f), out var behindHealth);
+            var side = CreateDummy(new Vector3(1.1f, 0f, -1.1f), out var sideHealth);
+            typeof(PlayerAttack).GetField("lungeSpeed", PrivateField).SetValue(attack, 0f);
+            try
+            {
+                yield return new WaitForFixedUpdate();
+                Assert.That(attack.Strike(), Is.EqualTo(0), "Sin girar, el golpe recto no llega a la diagonal.");
+                Assert.That(attack.Attack(), Is.EqualTo(1), "Con el apuntado asistido debe acertar.");
+                Assert.That(sideHealth.Current, Is.LessThan(sideHealth.Max));
+                Assert.That(behindHealth.Current, Is.EqualTo(behindHealth.Max), "No debe girarse hacia atrás.");
+                var facing = player.GetComponent<PlayerMovement>().FacingDirection;
+                Assert.That(Vector3.Angle(facing, new Vector3(1f, 0f, -1f)), Is.LessThan(5f), "Debe quedar mirando al enemigo.");
+            }
+            finally
+            {
+                Object.Destroy(behind);
+                Object.Destroy(side);
+            }
+        }
+
         [UnityTest]
         public IEnumerator Enemy_ChasesAndDamagesPlayer_IsKnockedBack_AndDisappearsOnDeath()
         {

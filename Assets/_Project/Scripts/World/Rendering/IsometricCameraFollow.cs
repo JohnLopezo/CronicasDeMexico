@@ -1,3 +1,4 @@
+using CronicasDeMexico.Core.Feedback;
 using UnityEngine;
 
 namespace CronicasDeMexico.World.Rendering
@@ -65,7 +66,8 @@ namespace CronicasDeMexico.World.Rendering
 
         void Apply()
         {
-            var desired = focus - transform.forward * distance;
+            var shake = ScreenShake.Offset();
+            var desired = focus - transform.forward * distance + transform.right * shake.x + transform.up * shake.y;
 
             // Con PixelArtScreen la cámara dibuja a la resolución del arte: se alinea a sus píxeles y el resto lo
             // compensa la presentación en píxeles de pantalla. PixelArtScreen fija el tamaño ortográfico.

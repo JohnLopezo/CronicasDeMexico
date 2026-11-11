@@ -1,6 +1,7 @@
 using CronicasDeMexico.Core.Events;
 using CronicasDeMexico.Core.Progress;
 using CronicasDeMexico.Core.Services;
+using CronicasDeMexico.Data.Characters;
 using CronicasDeMexico.Gameplay.Combat;
 using CronicasDeMexico.Gameplay.Dungeon;
 using UnityEngine;
@@ -93,7 +94,7 @@ namespace CronicasDeMexico.Gameplay.Player
             var damage = Mathf.RoundToInt(attack.Damage * damageFactor);
 
             // Enemigos en el área.
-            attack.StrikeArea(center, radius, damage);
+            attack.StrikeArea(center, radius, damage, blessingId == EarthBlessingId ? Affinity.Tierra : null);
 
             // Basalto agrietado en el área (exploración).
             var count = Physics.OverlapSphereNonAlloc(center + Vector3.up * 0.5f, radius, hits, ~0, QueryTriggerInteraction.Collide);

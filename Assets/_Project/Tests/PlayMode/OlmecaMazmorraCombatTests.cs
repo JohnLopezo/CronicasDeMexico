@@ -3,6 +3,7 @@ using System.Linq;
 using CronicasDeMexico.Core.Events;
 using CronicasDeMexico.Core.Narrative;
 using CronicasDeMexico.Core.Services;
+using CronicasDeMexico.Data.Characters;
 using CronicasDeMexico.Data.Narrative;
 using CronicasDeMexico.Gameplay.Combat;
 using CronicasDeMexico.Gameplay.Enemies;
@@ -146,6 +147,30 @@ namespace CronicasDeMexico.Tests
             Assert.IsFalse(player.TryDodge(Vector3.zero), "Gastadas las dos cargas hay que esperar.");
             yield return new WaitForSeconds(0.5f);
             Assert.IsTrue(player.TryDodge(Vector3.zero), "Pasada la espera se puede volver a esquivar.");
+        }
+
+        // E4 de punta a punta: los murciélagos de El Umbral traen su ruptura de ED_Murcielago y el HUD la muestra.
+        [UnityTest]
+        public IEnumerator Bat_BreaksWithLight_AndTheHudShowsItsShieldAndWeaknesses()
+        {
+            yield return Load(Floor1);
+            var bat = Object.FindObjectsByType<WildEnemy>(FindObjectsSortMode.None).First(enemy => enemy.Data.id == "murcielago");
+            var gauge = bat.GetComponent<BreakGauge>();
+            Assert.IsNotNull(gauge, "WildEnemy crea su medidor desde EnemyData.");
+            Assert.IsTrue(gauge.IsWeakTo(Affinity.Luz));
+
+            Assert.IsFalse(gauge.RegisterPlayerHit(Affinity.Tierra), "Tierra no es su debilidad.");
+            var hud = Object.FindObjectsByType<UIDocument>(FindObjectsSortMode.None)
+                .Select(document => document.rootVisualElement?.Q("target")).First(panel => panel != null);
+            Assert.IsFalse(hud.ClassListContains("hidden"), "Al golpearlo aparece su panel.");
+            Assert.AreEqual(gauge.MaxShield, hud.Q("target-shield").childCount, "Un rombo por punto de escudo.");
+            Assert.AreEqual(2, hud.Q("target-weak").childCount);
+            Assert.IsTrue(hud.Q("target-broken").ClassListContains("hidden"));
+
+            Assert.IsTrue(gauge.RegisterPlayerHit(Affinity.Luz));
+            Assert.IsTrue(gauge.IsBroken, "Con un punto de escudo, un golpe de luz lo rompe.");
+            Assert.IsFalse(hud.Q("target-broken").ClassListContains("hidden"), "El HUD avisa la ruptura.");
+            yield return new WaitForSecondsRealtime(0.2f);
         }
 
         // La pista se muestra al entrar en su zona una sola vez en la partida y se quita al salir.

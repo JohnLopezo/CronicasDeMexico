@@ -32,6 +32,9 @@ namespace CronicasDeMexico.Gameplay.Combat
         /// <summary>Parte del daño que se recibe, después de restar la defensa (PlayerDefense). Nunca baja de 1 de daño.</summary>
         public float DamageFactor { get; set; } = 1f;
 
+        /// <summary>Multiplica el daño recibido aparte de DamageFactor (que WildEnemy reescribe cada frame): ruptura.</summary>
+        public float Vulnerability { get; set; } = 1f;
+
         /// <summary>Recibió daño; el argumento es la posición de quien lo causó.</summary>
         public event Action<Vector3> Damaged;
 
@@ -67,7 +70,7 @@ namespace CronicasDeMexico.Gameplay.Combat
             if (Intercept != null && Intercept(amount, sourcePosition))
                 return false;
 
-            current = Mathf.Max(0, current - Mathf.CeilToInt(Mathf.Max(1, amount - Defense) * DamageFactor));
+            current = Mathf.Max(0, current - Mathf.CeilToInt(Mathf.Max(1, amount - Defense) * DamageFactor * Vulnerability));
             invulnerableUntil = Time.time + invulnerabilityTime;
             Publish();
             Damaged?.Invoke(sourcePosition);

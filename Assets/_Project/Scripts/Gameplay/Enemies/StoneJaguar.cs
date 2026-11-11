@@ -90,6 +90,8 @@ namespace CronicasDeMexico.Gameplay.Enemies
         {
             controller = GetComponent<CharacterController>();
             health = GetComponent<Health>();
+            // Mini-jefe: no se aturde (sus ataques no se cortan), pero roto recibe más daño. shortcut: valores en código.
+            BreakGauge.Ensure(gameObject, displayName, 5, 3f, Affinity.Luz, Affinity.Tierra);
         }
 
         void Start()

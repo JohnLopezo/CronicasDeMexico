@@ -34,6 +34,17 @@
                 <ui:VisualElement name="boss-fill" class="hud-boss__fill" picking-mode="Ignore" />
             </ui:VisualElement>
         </ui:VisualElement>
+        <ui:VisualElement name="target" class="hud-target hidden" picking-mode="Ignore">
+            <ui:VisualElement class="hud-target__row" picking-mode="Ignore">
+                <ui:Label name="target-name" class="hud-target__name" picking-mode="Ignore" />
+                <ui:VisualElement name="target-shield" class="hud-target__shield" picking-mode="Ignore" />
+            </ui:VisualElement>
+            <ui:VisualElement class="hud-target__row" picking-mode="Ignore">
+                <ui:Label text="Débil:" class="hud-target__label" picking-mode="Ignore" />
+                <ui:VisualElement name="target-weak" class="hud-target__weak" picking-mode="Ignore" />
+            </ui:VisualElement>
+            <ui:Label name="target-broken" text="¡RUPTURA!" class="hud-target__broken hidden" picking-mode="Ignore" />
+        </ui:VisualElement>
         <ui:VisualElement class="hud-bottom" picking-mode="Ignore">
             <ui:Label name="message" class="hud-message hidden" picking-mode="Ignore" />
             <ui:Label name="prompt" class="hud-prompt hidden" picking-mode="Ignore" />

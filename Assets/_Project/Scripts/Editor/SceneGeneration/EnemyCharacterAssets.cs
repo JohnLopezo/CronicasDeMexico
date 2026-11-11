@@ -36,32 +36,39 @@ namespace CronicasDeMexico.Editor.SceneGeneration
             ["Serpiente"] = d => Set(d, "serpiente", "Serpiente", hp: 25, speed: 2.6f, EnemyMovement.Zigzag,
                 EnemyAttackShape.Circle, range: 1.1f, size: 0.8f, reach: 0f, windup: 0.4f, recover: 0.5f, cooldown: 1.3f, damage: 8,
                 EnemyDefense.GuardAfterHit, factor: 0.5f, seconds: 1.2f, defenseCooldown: 3f)
-                .With(EnemySpecial.SlowSpit, range: 4f, radius: 0.45f, windup: 0.5f, cooldown: 5f, damage: 4, slow: 0.5f, slowSeconds: 2f),
+                .With(EnemySpecial.SlowSpit, range: 4f, radius: 0.45f, windup: 0.5f, cooldown: 5f, damage: 4, slow: 0.5f, slowSeconds: 2f)
+                .Breaks(2, Affinity.Viento, Affinity.Luz),
             ["Cocodrilo"] = d => Set(d, "cocodrilo", "Cocodrilo", hp: 60, speed: 1.6f, EnemyMovement.Ambush,
                 EnemyAttackShape.Line, range: 2.8f, size: 1.0f, reach: 2.5f, windup: 0.7f, recover: 1.0f, cooldown: 2.2f, damage: 14,
                 EnemyDefense.FrontArmor, factor: 0.5f, seconds: 0f, defenseCooldown: 0f, body: 0.4f)
-                .With(EnemySpecial.TailSweep, range: 1.6f, radius: 1.8f, windup: 0.5f, cooldown: 4f, damage: 10),
+                .With(EnemySpecial.TailSweep, range: 1.6f, radius: 1.8f, windup: 0.5f, cooldown: 4f, damage: 10)
+                .Breaks(4, Affinity.Tierra, Affinity.Viento),
             ["EspirituJaguar"] = d => Set(d, "espiritu_jaguar", "Espíritu jaguar", hp: 35, speed: 3.0f, EnemyMovement.Chase,
                 EnemyAttackShape.Line, range: 3.0f, size: 0.9f, reach: 3.2f, windup: 0.6f, recover: 0.7f, cooldown: 2.0f, damage: 12,
                 EnemyDefense.Phase, factor: 1f, seconds: 1.0f, defenseCooldown: 4f)
-                .With(EnemySpecial.DoubleSwipe, range: 1.3f, radius: 0.9f, windup: 0.35f, cooldown: 4f, damage: 7),
+                .With(EnemySpecial.DoubleSwipe, range: 1.3f, radius: 0.9f, windup: 0.35f, cooldown: 4f, damage: 7)
+                .Breaks(3, Affinity.Luz, Affinity.Agua),
             ["Mono"] = d => Set(d, "mono", "Mono agresivo", hp: 22, speed: 3.0f, EnemyMovement.KeepDistance,
                 EnemyAttackShape.Projectile, range: 6f, size: 0.45f, reach: 7f, windup: 0.5f, recover: 0.4f, cooldown: 1.6f, damage: 6,
                 EnemyDefense.LeapBack, factor: 1f, seconds: 0f, defenseCooldown: 2.5f)
-                .With(EnemySpecial.FanThrow, range: 6f, radius: 0.45f, windup: 0.6f, cooldown: 5f, damage: 5),
+                .With(EnemySpecial.FanThrow, range: 6f, radius: 0.45f, windup: 0.6f, cooldown: 5f, damage: 5)
+                .Breaks(2, Affinity.Tierra, Affinity.Oscuridad),
             ["Avispa"] = d => Set(d, "avispa", "Avispa gigante", hp: 12, speed: 3.2f, EnemyMovement.Erratic,
                 EnemyAttackShape.Line, range: 2.5f, size: 0.6f, reach: 2.2f, windup: 0.45f, recover: 0.6f, cooldown: 1.8f, damage: 6,
                 EnemyDefense.Dodge, factor: 1f, seconds: 0f, defenseCooldown: 2f, body: 0.22f, hover: 0.9f)
-                .Swarm(radius: 4f),
+                .Swarm(radius: 4f)
+                .Breaks(1, Affinity.Viento, Affinity.Agua),
             ["Guacamaya"] = d => Set(d, "guacamaya", "Guacamaya hostil", hp: 20, speed: 3.4f, EnemyMovement.Chase,
                 EnemyAttackShape.Line, range: 3.2f, size: 0.8f, reach: 3f, windup: 0.7f, recover: 0.8f, cooldown: 2.4f, damage: 9,
                 EnemyDefense.FlyHigh, factor: 1f, seconds: 1.5f, defenseCooldown: 4f, hover: 1.2f)
-                .With(EnemySpecial.SlowScreech, range: 2.8f, radius: 3f, windup: 0.7f, cooldown: 6f, damage: 3, slow: 0.5f, slowSeconds: 2f),
+                .With(EnemySpecial.SlowScreech, range: 2.8f, radius: 3f, windup: 0.7f, cooldown: 6f, damage: 3, slow: 0.5f, slowSeconds: 2f)
+                .Breaks(2, Affinity.Agua, Affinity.Oscuridad),
             ["Murcielago"] = d => Set(d, "murcielago", "Murciélago vampiro", hp: 10, speed: 3.6f, EnemyMovement.Erratic,
                 EnemyAttackShape.Circle, range: 0.9f, size: 0.6f, reach: 0f, windup: 0.3f, recover: 0.5f, cooldown: 1.4f, damage: 5,
                 EnemyDefense.Dodge, factor: 1f, seconds: 0f, defenseCooldown: 1.5f, body: 0.22f, hover: 1.0f)
                 .Drains()
-                .With(EnemySpecial.SlowScreech, range: 2f, radius: 2.2f, windup: 0.5f, cooldown: 6f, damage: 2, slow: 0.6f, slowSeconds: 1.5f),
+                .With(EnemySpecial.SlowScreech, range: 2f, radius: 2.2f, windup: 0.5f, cooldown: 6f, damage: 2, slow: 0.6f, slowSeconds: 1.5f)
+                .Breaks(1, Affinity.Luz, Affinity.Viento),
         };
 
         public static IEnumerable<string> Names => Defaults.Keys;
@@ -117,6 +124,14 @@ namespace CronicasDeMexico.Editor.SceneGeneration
         static EnemyData Drains(this EnemyData d)
         {
             d.attackDrains = true;
+            return d;
+        }
+
+        // Propuesta de debilidades, pendiente del autor (Docs/Sistemas/Ruptura.md).
+        static EnemyData Breaks(this EnemyData d, int shield, params Affinity[] weaknesses)
+        {
+            d.shieldPoints = shield;
+            d.weaknesses = weaknesses;
             return d;
         }
 

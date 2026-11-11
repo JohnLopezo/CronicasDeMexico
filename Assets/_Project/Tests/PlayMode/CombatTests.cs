@@ -1,5 +1,7 @@
 using System.Collections;
 using System.Reflection;
+using CronicasDeMexico.Core.Feedback;
+using CronicasDeMexico.Data.Characters;
 using CronicasDeMexico.Gameplay.Combat;
 using CronicasDeMexico.Gameplay.Enemies;
 using CronicasDeMexico.Gameplay.Player;
@@ -240,6 +242,7 @@ namespace CronicasDeMexico.Tests
             var defense = player.AddComponent<PlayerDefense>();
             var attacker = CreateDummy(new Vector3(0f, 0f, -1f), out _);
             var probe = attacker.AddComponent<StaggerProbe>();
+            var gauge = BreakGauge.Ensure(attacker, "Diana", 3, 1f, Affinity.Luz);
             var blocks = 0;
             defense.PerfectBlocked += () => blocks++;
             try
@@ -251,6 +254,7 @@ namespace CronicasDeMexico.Tests
                 Assert.IsFalse(playerHealth.TryDamage(10, attacker.transform.position), "El bloqueo perfecto anula el golpe.");
                 Assert.That(playerHealth.Current, Is.EqualTo(playerHealth.Max));
                 Assert.That(probe.Seconds, Is.GreaterThan(0f), "Aturde a quien golpeó.");
+                Assert.That(gauge.Shield, Is.EqualTo(2), "Y le quita un punto de escudo.");
                 Assert.That(blocks, Is.EqualTo(1));
 
                 yield return new WaitForSecondsRealtime(0.15f);
@@ -270,6 +274,50 @@ namespace CronicasDeMexico.Tests
             {
                 Object.Destroy(attacker);
             }
+        }
+
+        // E4: solo los golpes débiles quitan escudo; sin escudo queda roto (aturdido, más daño) y luego se recupera.
+        [UnityTest]
+        public IEnumerator BreakGauge_WeakHitsBreakTheShield_WhichStunsAndRaisesDamage_ThenRecovers()
+        {
+            var enemy = CreateDummy(new Vector3(0f, 0f, -1.5f), out var enemyHealth);
+            typeof(Health).GetField("invulnerabilityTime", PrivateField).SetValue(enemyHealth, 0f);
+            var probe = enemy.AddComponent<StaggerProbe>();
+            var gauge = BreakGauge.Ensure(enemy, "Diana", 2, 0.5f, Affinity.Luz, Affinity.Agua);
+            var center = enemy.transform.position;
+            try
+            {
+                yield return new WaitForFixedUpdate();
+                attack.StrikeArea(center, 0.5f, 5, Affinity.Tierra);
+                Assert.That(gauge.Shield, Is.EqualTo(2), "Un golpe que no es débil no quita escudo.");
+                Assert.IsTrue(BreakReadout.Current.HasValue, "El HUD muestra al enemigo golpeado.");
+                Assert.That(BreakReadout.Current.Value.Name, Is.EqualTo("Diana"));
+                CollectionAssert.AreEqual(new[] { "Luz", "Agua" }, BreakReadout.Current.Value.Weaknesses);
+
+                attack.StrikeArea(center, 0.5f, 5, Affinity.Luz);
+                Assert.That(gauge.Shield, Is.EqualTo(1));
+                Assert.IsFalse(gauge.IsBroken);
+                attack.StrikeArea(center, 0.5f, 5, Affinity.Agua);
+                Assert.IsTrue(gauge.IsBroken, "Sin escudo queda roto.");
+                Assert.IsTrue(BreakReadout.Current.Value.Broken);
+                Assert.That(probe.Seconds, Is.EqualTo(0.5f), "Roto, queda aturdido lo que dura la ruptura.");
+
+                var before = enemyHealth.Current;
+                attack.StrikeArea(center, 0.5f, 10, Affinity.Tierra);
+                Assert.That(before - enemyHealth.Current, Is.EqualTo(15), "Roto recibe ×1,5.");
+
+                yield return new WaitForSecondsRealtime(0.2f);
+                yield return new WaitForSeconds(0.6f);
+                Assert.IsFalse(gauge.IsBroken, "La ruptura termina sola.");
+                Assert.That(gauge.Shield, Is.EqualTo(2), "Y el escudo vuelve entero.");
+                Assert.That(enemyHealth.Vulnerability, Is.EqualTo(1f));
+            }
+            finally
+            {
+                Object.Destroy(enemy);
+            }
+            yield return null;
+            Assert.IsFalse(BreakReadout.Current.HasValue, "Al desaparecer el enemigo, el HUD lo oculta.");
         }
 
         [UnityTest]

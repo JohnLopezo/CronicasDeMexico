@@ -1,4 +1,7 @@
 using CronicasDeMexico.Core.Feedback;
+using CronicasDeMexico.Core.Progress;
+using CronicasDeMexico.Core.Services;
+using CronicasDeMexico.Data.Characters;
 using CronicasDeMexico.Gameplay.Player;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -191,9 +194,24 @@ namespace CronicasDeMexico.Gameplay.Combat
         /// <summary>Se lanzó un golpe (para la animación del zarpazo).</summary>
         public event System.Action Struck;
 
-        /// <summary>Daña una vez a cada enemigo en una esfera con centro a medio metro sobre el punto dado (habilidades).</summary>
-        public void StrikeArea(Vector3 center, float areaRadius, int areaDamage)
+        /// <summary>Afinidad de los golpes: la del Guardián elegido; null si no hay partida (pruebas, prototipo).</summary>
+        public Affinity? Element =>
+            ServiceLocator.TryGet(out Progression progression) && progression.Profile is GuardianData guardian ? guardian.InitialAffinity : null;
+
+        // Golpe acertado: avisa al medidor de ruptura del objetivo, si tiene.
+        static void ReportHit(Health target, Affinity? element)
         {
+            if (target.TryGetComponent(out BreakGauge gauge))
+                gauge.RegisterPlayerHit(element);
+        }
+
+        /// <summary>
+        /// Daña una vez a cada enemigo en una esfera con centro a medio metro sobre el punto dado (habilidades). La
+        /// afinidad es la del Guardián salvo que se indique otra (el golpe de tierra es siempre Tierra).
+        /// </summary>
+        public void StrikeArea(Vector3 center, float areaRadius, int areaDamage, Affinity? element = null)
+        {
+            element ??= Element;
             var count = Physics.OverlapSphereNonAlloc(center + Vector3.up * 0.5f, areaRadius, areaHits, targetLayers, QueryTriggerInteraction.Ignore);
             var struckCount = 0;
             for (var i = 0; i < count && struckCount < areaStruck.Length; i++)
@@ -202,7 +220,8 @@ namespace CronicasDeMexico.Gameplay.Combat
                 if (target == null || target == ownHealth || System.Array.IndexOf(areaStruck, target, 0, struckCount) >= 0)
                     continue;
                 areaStruck[struckCount++] = target;
-                target.TryDamage(areaDamage, transform.position);
+                if (target.TryDamage(areaDamage, transform.position))
+                    ReportHit(target, element);
             }
             System.Array.Clear(areaStruck, 0, struckCount);
         }
@@ -218,6 +237,8 @@ namespace CronicasDeMexico.Gameplay.Combat
 
             var struckCount = 0;
             var damaged = 0;
+            Affinity? element = null;
+            var elementKnown = false;
             for (var i = 0; i < count && struckCount < struck.Length; i++)
             {
                 var target = hits[i].GetComponentInParent<Health>();
@@ -225,8 +246,15 @@ namespace CronicasDeMexico.Gameplay.Combat
                     continue;
 
                 struck[struckCount++] = target;
-                if (target.TryDamage(strikeDamage, transform.position))
-                    damaged++;
+                if (!target.TryDamage(strikeDamage, transform.position))
+                    continue;
+                damaged++;
+                if (!elementKnown)
+                {
+                    element = Element;
+                    elementKnown = true;
+                }
+                ReportHit(target, element);
             }
 
             System.Array.Clear(struck, 0, struckCount);

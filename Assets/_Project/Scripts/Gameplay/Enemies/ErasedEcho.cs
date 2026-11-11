@@ -1,4 +1,5 @@
 using System.Collections;
+using CronicasDeMexico.Data.Characters;
 using CronicasDeMexico.Gameplay.Combat;
 using CronicasDeMexico.Gameplay.Movement;
 using UnityEngine;
@@ -77,6 +78,8 @@ namespace CronicasDeMexico.Gameplay.Enemies
             foreach (var projectile in projectiles)
                 projectile.transform.SetParent(null, true); // vuelan por su cuenta
             renderers = GetComponentsInChildren<Renderer>(true);
+            // shortcut: ruptura en código (sin datos de diseño); pasarla a un asset con el arte definitivo del eco.
+            BreakGauge.Ensure(gameObject, "Eco borrado", 3, 2.5f, Affinity.Luz, Affinity.Agua);
         }
 
         void Start()

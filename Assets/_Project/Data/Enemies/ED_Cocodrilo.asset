@@ -49,6 +49,11 @@ MonoBehaviour:
   loot: {fileID: 0}
   zoneLevel: 1
   respawnDelay: 20
+  shieldPoints: 4
+  weaknesses:
+  - 1
+  - 3
+  breakSeconds: 2.5
   walk: {fileID: 11400000, guid: fd97851563024c143adf3ec8bfd6f363, type: 2}
   run: {fileID: 11400000, guid: bd1d25a6eaf9e93458c1ee27f4117afa, type: 2}
   attack: {fileID: 11400000, guid: 0443dc8d74ce35e4b95b82760c47218d, type: 2}

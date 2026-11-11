@@ -106,11 +106,17 @@ namespace CronicasDeMexico.Gameplay.Player
                 var count = Physics.OverlapSphereNonAlloc(source + Vector3.up * 0.5f, attackerSearchRadius, nearby, attack.TargetLayers,
                     QueryTriggerInteraction.Ignore);
                 for (var i = 0; i < count; i++)
-                    if (nearby[i].GetComponentInParent<IStaggerable>() is { } attacker)
-                    {
-                        attacker.Stagger(staggerSeconds);
-                        break;
-                    }
+                {
+                    // El bloqueo perfecto también quita un punto de escudo (sistema de Ruptura), también a los jefes.
+                    var gauge = nearby[i].GetComponentInParent<BreakGauge>();
+                    var attacker = nearby[i].GetComponentInParent<IStaggerable>();
+                    if (gauge == null && attacker == null)
+                        continue;
+                    attacker?.Stagger(staggerSeconds);
+                    if (gauge != null)
+                        gauge.Chip(1);
+                    break;
+                }
             }
 
             TimeDilation.Request(PerfectTimeScale, PerfectFreeze);

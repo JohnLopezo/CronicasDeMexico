@@ -124,6 +124,12 @@ namespace CronicasDeMexico.Data.Enemies
         [Min(0), Tooltip("Nivel de la zona para la experiencia (0 = sin reducción).")] public int zoneLevel = 1;
         [Min(0f), Tooltip("Segundos hasta reaparecer en su sitio (0 = no reaparece: mazmorra).")] public float respawnDelay = 20f;
 
+        [Header("Ruptura (Docs/Sistemas/Ruptura.md)")]
+        [Min(0), Tooltip("Puntos de escudo. Cada golpe del jugador con una debilidad quita uno; 0 = sin ruptura.")]
+        public int shieldPoints;
+        [Tooltip("Afinidades a las que es débil.")] public Affinity[] weaknesses = System.Array.Empty<Affinity>();
+        [Min(0.1f), Tooltip("Segundos roto: aturdido y recibiendo más daño.")] public float breakSeconds = 2.5f;
+
         [Header("Animaciones (las crea EnemyCharacterAssets)")]
         public DirectionalSpriteSet walk;
         public DirectionalSpriteSet run;

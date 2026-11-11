@@ -1,3 +1,4 @@
+using CronicasDeMexico.Data.Characters;
 using CronicasDeMexico.Gameplay.Combat;
 using CronicasDeMexico.Gameplay.Movement;
 using CronicasDeMexico.Gameplay.Npc;
@@ -119,6 +120,8 @@ namespace CronicasDeMexico.Gameplay.Enemies
             health = GetComponent<Health>();
             renderers = GetComponentsInChildren<Renderer>();
             home = marches ? marchPoint : transform.position;
+            // shortcut: ruptura en código porque no tiene datos de diseño; pasarla a un asset si se vuelve un enemigo con variantes.
+            BreakGauge.Ensure(gameObject, "Espíritu corrompido", 3, 2.5f, Affinity.Luz, Affinity.Agua);
         }
 
         void OnEnable()

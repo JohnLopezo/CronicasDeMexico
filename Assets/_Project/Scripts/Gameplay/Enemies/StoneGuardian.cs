@@ -105,6 +105,8 @@ namespace CronicasDeMexico.Gameplay.Enemies
             health = GetComponent<Health>();
             foreach (var shard in shards)
                 shard.transform.SetParent(null, true); // vuelan por su cuenta
+            // Jefe de tierra: débil al agua y al viento; con Balam se rompe con bloqueos perfectos. shortcut: valores en código.
+            BreakGauge.Ensure(gameObject, displayName, 6, 3f, Affinity.Agua, Affinity.Viento);
         }
 
         void Start()

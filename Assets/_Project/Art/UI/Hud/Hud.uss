@@ -77,6 +77,85 @@
     border-radius: 2px;
 }
 
+/* Ruptura: escudo y debilidades del último enemigo golpeado, bajo la barra del jefe. */
+.hud-target {
+    position: absolute;
+    top: 76px;
+    left: 30%;
+    width: 40%;
+    align-items: center;
+    padding: 6px 10px;
+    background-color: rgba(20, 16, 12, 0.7);
+    border-radius: 4px;
+}
+
+.hud-target__row {
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+.hud-target__name {
+    color: rgb(240, 232, 214);
+    font-size: 18px;
+    margin-right: 8px;
+    -unity-text-outline-width: 1px;
+    -unity-text-outline-color: rgba(0, 0, 0, 0.8);
+}
+
+.hud-target__shield {
+    flex-direction: row;
+}
+
+.hud-target__pip {
+    width: 12px;
+    height: 12px;
+    margin-left: 3px;
+    border-width: 2px;
+    border-color: rgb(214, 196, 150);
+    background-color: rgb(214, 196, 150);
+    rotate: 45deg;
+}
+
+.hud-target__pip--empty {
+    background-color: rgba(0, 0, 0, 0);
+    border-color: rgba(214, 196, 150, 0.45);
+}
+
+.hud-target__label {
+    color: rgb(200, 190, 170);
+    font-size: 15px;
+    margin-right: 4px;
+}
+
+.hud-target__weak {
+    flex-direction: row;
+}
+
+.hud-target__chip {
+    font-size: 15px;
+    color: rgb(20, 16, 12);
+    padding: 1px 6px;
+    margin-left: 4px;
+    border-radius: 3px;
+    -unity-font-style: bold;
+}
+
+.hud-target__chip--agua { background-color: rgb(96, 160, 222); }
+.hud-target__chip--tierra { background-color: rgb(196, 146, 86); }
+.hud-target__chip--fuego { background-color: rgb(226, 104, 72); }
+.hud-target__chip--viento { background-color: rgb(150, 214, 160); }
+.hud-target__chip--luz { background-color: rgb(240, 214, 110); }
+.hud-target__chip--oscuridad { background-color: rgb(150, 112, 200); color: rgb(245, 240, 250); }
+
+.hud-target__broken {
+    color: rgb(255, 214, 96);
+    font-size: 20px;
+    -unity-font-style: bold;
+    -unity-text-outline-width: 1px;
+    -unity-text-outline-color: rgba(0, 0, 0, 0.9);
+}
+
 /* Objetivo de la misión activa, bajo la vida. */
 .hud-objective {
     position: absolute;

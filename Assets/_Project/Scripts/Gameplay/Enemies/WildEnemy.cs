@@ -122,7 +122,10 @@ namespace CronicasDeMexico.Gameplay.Enemies
             health = GetComponent<Health>();
             home = transform.position;
             if (data != null)
+            {
                 health.SetMaxHealth(data.maxHealth);
+                BreakGauge.Ensure(gameObject, data.displayName, data.shieldPoints, data.breakSeconds, data.weaknesses);
+            }
         }
 
         void OnEnable()

@@ -46,7 +46,19 @@ Plantilla:
   - Nueva: `PerfectBlock_NegatesTheHit_StaggersTheAttacker_AndCannotBeSpammed`.
   - La de la esquiva comprueba la esquiva perfecta y la cámara lenta.
   - La de la defensa del Jaguar espera a que pase la ventana.
-- **Sin commit E3.** No se ha jugado.
+- E3 en el commit `72d848a`. No se ha jugado.
+- **Hecho (E4, sistema de Ruptura; detalle y tabla de debilidades en `Docs/Sistemas/Ruptura.md`):**
+  - `Combat/BreakGauge` lleva el escudo y las debilidades. Los golpes del jugador con una afinidad débil y los bloqueos perfectos quitan un punto.
+  - Sin escudo, el enemigo queda roto: ×1,5 de daño (`Health.Vulnerability`) y aturdido si es `IStaggerable`. Después el escudo vuelve.
+  - Los golpes llevan la afinidad del Guardián (`PlayerAttack.Element`); el golpe de tierra, siempre Tierra.
+  - `EnemyData` tiene `shieldPoints`, `weaknesses` y `breakSeconds` (escritos en los 7 `ED_*.asset` y en `EnemyCharacterAssets`).
+  - Espíritu corrompido, eco, mini-jefe y jefe llevan sus valores en código (`shortcut:`).
+  - HUD: panel `target` bajo la barra del jefe (nombre, rombos, debilidades en color y «¡RUPTURA!»), alimentado por `Core/Feedback/BreakReadout`. No se regeneró ninguna escena.
+  - **La tabla de debilidades es una propuesta de Claude; falta la aprobación del autor.**
+- **Pruebas (E4):** PlayMode 131/131 y EditMode 139/139.
+  - `BreakGauge_WeakHitsBreakTheShield_WhichStunsAndRaisesDamage_ThenRecovers`.
+  - `Bat_BreaksWithLight_AndTheHudShowsItsShieldAndWeaknesses`, en el HUD real del piso 1.
+  - El bloqueo perfecto quita un punto.
 - **Siguiente:**
   - Que el autor juegue y ajuste en el Inspector del jugador (Combo, Sensación del impacto, Apuntado asistido, Bloqueo perfecto y Esquiva perfecta).
   - Falta arte o VFX propio para el bloqueo y la esquiva perfectos (hoy es el destello blanco del daño).

@@ -1,4 +1,5 @@
 using CronicasDeMexico.Core.Events;
+using CronicasDeMexico.Core.Feedback;
 using CronicasDeMexico.Core.Narrative;
 using CronicasDeMexico.Core.Services;
 using UnityEngine;
@@ -43,6 +44,11 @@ namespace CronicasDeMexico.UI.Hud
         VisualElement boss;
         Label bossName;
         VisualElement bossFill;
+        VisualElement target;
+        Label targetName;
+        VisualElement targetShield;
+        VisualElement targetWeak;
+        Label targetBroken;
         QuestService quests;
         int frameCount;
         float fpsTimer;
@@ -62,6 +68,13 @@ namespace CronicasDeMexico.UI.Hud
             boss = root.Q("boss");
             bossName = root.Q<Label>("boss-name");
             bossFill = root.Q("boss-fill");
+            target = root.Q("target");
+            targetName = root.Q<Label>("target-name");
+            targetShield = root.Q("target-shield");
+            targetWeak = root.Q("target-weak");
+            targetBroken = root.Q<Label>("target-broken");
+            ShowBreak(BreakReadout.Current);
+            BreakReadout.Changed += ShowBreak;
 
             ShowPrompt(null);
             ShowBoss(null);
@@ -83,6 +96,7 @@ namespace CronicasDeMexico.UI.Hud
 
         void OnDisable()
         {
+            BreakReadout.Changed -= ShowBreak;
             if (promptChannel != null)
                 promptChannel.Unsubscribe(ShowPrompt);
             if (messageChannel != null)
@@ -162,6 +176,37 @@ namespace CronicasDeMexico.UI.Hud
 
         void ShowBossHealth(HealthChange change) =>
             bossFill.style.width = Length.Percent(change.Max > 0 ? 100f * change.Current / change.Max : 0f);
+
+        // Solo cambia al golpear o al romperse el escudo: crear los elementos aquí no pesa.
+        void ShowBreak(BreakInfo? info)
+        {
+            // HUD de una escena sin el panel (uxml antiguo): no hay nada que mostrar.
+            if (target == null)
+                return;
+            target.EnableInClassList(HiddenClass, info == null);
+            if (info is not { } data)
+                return;
+
+            targetName.text = data.Name;
+            targetShield.Clear();
+            for (var i = 0; i < data.MaxShield; i++)
+            {
+                var pip = new VisualElement { pickingMode = PickingMode.Ignore };
+                pip.AddToClassList("hud-target__pip");
+                pip.EnableInClassList("hud-target__pip--empty", data.Broken || i >= data.Shield);
+                targetShield.Add(pip);
+            }
+
+            targetWeak.Clear();
+            foreach (var weakness in data.Weaknesses)
+            {
+                var chip = new Label(weakness) { pickingMode = PickingMode.Ignore };
+                chip.AddToClassList("hud-target__chip");
+                chip.AddToClassList($"hud-target__chip--{weakness.ToLowerInvariant()}");
+                targetWeak.Add(chip);
+            }
+            targetBroken.EnableInClassList(HiddenClass, !data.Broken);
+        }
 
         static void SetText(Label label, string text)
         {

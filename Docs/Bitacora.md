@@ -73,6 +73,15 @@ Plantilla:
   - `Hud_TypesDialogueWithASpeakerPlate_AndShowsDamageNumbers`, en el HUD real del piso 1.
   - `ComfortSettingsTests` (3).
   - **Falta:** ver el cuadro y los números en pantalla (Editor y S24+), y probar que el retrato se ve nítido. La vibración se descartó: en Android `Handheld.Vibrate` es un zumbido largo y fijo.
+- E5 en el commit `7f72125`.
+- **Hecho (E6, Códice de la Memoria; detalle en `Docs/Sistemas/Codice.md`):**
+  - 8 páginas escondidas, al estilo de las del manual de Tunic: 5 enseñan mecánicas y 3 son culturales, con su origen D/I/F.
+  - **Cómo se revelan:** con avisos y banderas que ya existían (el reflejo del río, la entrada al piso 1, las ofrendas ocultas tras el basalto, el altar-trono y el sello del Guardián). No se regeneró ninguna escena.
+  - `Core/Narrative/CodexService` guarda lo encontrado como banderas `codice.<id>`. Se registra en `GameBootstrapper` y en el guardado, después de StoryState. Al cargar recupera en silencio las páginas cuyo disparador es una bandera que ya se cumplía.
+  - `Data/Narrative/CodexCatalog` tiene su asset en `Resources/Narrativa/CatalogoCodice`, creado por `CodexAssets` (menú Crónicas) solo si falta.
+  - Pestaña **Códice** en el menú (encontradas con texto; las que faltan, «??? — pista») y aviso emergente `RewardNoticeKind.CodexPage`.
+  - **Aviso cultural:** el Códice es un objeto ficticio. No se conservan códices olmecas, y las páginas no dicen que los olmecas los escribieran. **Los textos culturales los debe contrastar el autor.**
+- **Pruebas (E6):** EditMode 145/145 y PlayMode 132/132. Nuevas: `CodexTests` (3), que incluyen la del catálogo real en Resources. No se ha visto la pestaña en pantalla.
 - **Siguiente:**
   - Que el autor juegue y ajuste en el Inspector del jugador (Combo, Sensación del impacto, Apuntado asistido, Bloqueo perfecto y Esquiva perfecta).
   - Falta arte o VFX propio para el bloqueo y la esquiva perfectos (hoy es el destello blanco del daño).

@@ -13,6 +13,7 @@ namespace CronicasDeMexico.Core.Progress
         public const string Crafting = "fabricar";
         public const string Trading = "comerciar";
         public const string Museum = "museo";
+        public const string Codex = "codice";
         public const string BlessingChoice = "eleccion";
         public const string Results = "resultados";
     }

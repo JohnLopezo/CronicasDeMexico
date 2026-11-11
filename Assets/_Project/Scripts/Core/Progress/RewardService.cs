@@ -5,7 +5,7 @@ using CronicasDeMexico.Core.Save;
 
 namespace CronicasDeMexico.Core.Progress
 {
-    public enum RewardNoticeKind { Item, Experience, LevelUp, Blessing }
+    public enum RewardNoticeKind { Item, Experience, LevelUp, Blessing, CodexPage }
 
     /// <summary>Algo que se acaba de obtener, para el aviso del HUD.</summary>
     public readonly struct RewardNotice

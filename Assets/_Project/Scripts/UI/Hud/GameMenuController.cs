@@ -48,6 +48,7 @@ namespace CronicasDeMexico.UI.Hud
         Progression progression;
         RewardService rewards;
         StoryState story;
+        CodexService codex;
         ItemCatalog items;
         BlessingCatalog blessings;
         EconomyCatalog economy;
@@ -111,6 +112,8 @@ namespace CronicasDeMexico.UI.Hud
             ServiceLocator.TryGet(out inventory);
             ServiceLocator.TryGet(out rewards);
             ServiceLocator.TryGet(out story);
+            if (ServiceLocator.TryGet(out codex))
+                codex.PageFound += OnPageFound;
             progression.EnergyChanged += RefreshBars;
             progression.StatsChanged += RefreshBars;
             progression.ExperienceGained += OnExperience;
@@ -133,6 +136,9 @@ namespace CronicasDeMexico.UI.Hud
                 rewards.Notified -= Enqueue;
             if (inventory != null)
                 inventory.Changed -= RefreshOpen;
+            if (codex != null)
+                codex.PageFound -= OnPageFound;
+            codex = null;
             progression = null;
         }
 
@@ -166,6 +172,8 @@ namespace CronicasDeMexico.UI.Hud
         }
 
         void Enqueue(RewardNotice notice) => pending.Enqueue(notice);
+
+        void OnPageFound(ICodexPage page) => Enqueue(new RewardNotice(RewardNoticeKind.CodexPage, page.Title, 0));
 
         void UpdateToasts()
         {
@@ -206,6 +214,10 @@ namespace CronicasDeMexico.UI.Hud
                     break;
                 case RewardNoticeKind.Experience:
                     text = $"+{notice.Amount} de experiencia";
+                    break;
+                case RewardNoticeKind.CodexPage:
+                    text = $"Nueva página del Códice: {notice.Id}";
+                    toast.AddToClassList(RarityClasses[(int)Rarity.Raro]);
                     break;
                 case RewardNoticeKind.LevelUp:
                     text = $"¡Nivel {notice.Amount}! Tus atributos mejoran.";
@@ -302,6 +314,7 @@ namespace CronicasDeMexico.UI.Hud
                 case MenuTabs.Crafting: RenderCrafting(); break;
                 case MenuTabs.Trading: RenderTrading(); break;
                 case MenuTabs.Museum: RenderMuseum(); break;
+                case MenuTabs.Codex: RenderCodex(); break;
                 case MenuTabs.BlessingChoice: RenderChoice(); break;
                 case MenuTabs.Results: RenderResults(); break;
                 default: RenderInventory(); break;
@@ -316,6 +329,7 @@ namespace CronicasDeMexico.UI.Hud
             AddTab(MenuTabs.Inventory, "Bolsa");
             AddTab(MenuTabs.Blessings, "Bendiciones");
             AddTab(MenuTabs.Guardian, "Guardián");
+            AddTab(MenuTabs.Codex, "Códice");
             if (contextTab == MenuTabs.Crafting)
                 AddTab(MenuTabs.Crafting, "Fabricar");
             if (contextTab == MenuTabs.Trading)
@@ -558,6 +572,23 @@ namespace CronicasDeMexico.UI.Hud
                     RarityClasses[(int)Rarity.Epico]);
             ItemSection("Fragmentos de memoria y objetos de la historia", ItemCategory.Narrativo);
             ItemSection("Coleccionables", ItemCategory.Coleccionable);
+        }
+
+        void RenderCodex()
+        {
+            if (codex == null || codex.Pages.Count == 0)
+            {
+                Note("El Códice no está cargado (abre la escena desde Boot).");
+                return;
+            }
+            Note($"Páginas encontradas: {codex.FoundCount} de {codex.Pages.Count}. Están escondidas por el mundo: explora, examina y busca tras la piedra.");
+            foreach (var page in codex.Pages)
+            {
+                if (codex.IsFound(page))
+                    Row($"{page.Title} · {OriginNames[(int)page.Origin]}\n{page.Text}", RarityClasses[(int)Rarity.Raro]);
+                else
+                    Row($"??? — {page.Hint}", null);
+            }
         }
 
         void ItemSection(string title, ItemCategory category)

@@ -1,0 +1,81 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f2189e34c1a749a4eb3e7f9a1c94f939, type: 3}
+  m_Name: CatalogoCodice
+  m_EditorClassIdentifier: 
+  pages:
+  - id: ruptura
+    title: Escudos y afinidades
+    text: "Cada criatura del olvido lleva un escudo de rombos y teme ciertas afinidades.
+      Golp\xE9ala con lo que teme y el escudo se rompe: queda indefensa un momento
+      y recibe m\xE1s da\xF1o. El agua refleja lo que eres: tu afinidad es tu arma."
+    hint: "El agua del r\xEDo muestra m\xE1s de lo que parece."
+    trigger: examinar:reflejo
+    origin: 2
+  - id: combo
+    title: El golpe que se encadena
+    text: "Tres golpes seguidos, sin perder el ritmo, terminan en un remate que pega
+      m\xE1s fuerte. Esquivar rompe la cadena. Tus golpes buscan solos a la criatura
+      m\xE1s cercana que tengas delante."
+    hint: Se aprende al cruzar el umbral de la antigua estructura.
+    trigger: llegar:mazmorra_piso1
+    origin: 2
+  - id: esquiva
+    title: "Esquivar en el \xFAltimo instante"
+    text: "Esquivar justo cuando el golpe llega detiene el mundo un momento y te
+      devuelve el aliento: puedes esquivar dos veces m\xE1s sin esperar."
+    hint: Una ofrenda de El Umbral la guarda.
+    trigger: ofrenda.p1_especial
+    origin: 2
+  - id: bloqueo
+    title: Defender en el instante
+    text: "Alzar la defensa justo antes del golpe lo anula y deja aturdido a quien
+      lo dio. Si la alzas una y otra vez sin parar, el instante no llega. Cada bloqueo
+      as\xED le quita un rombo al escudo de tu enemigo, aunque no temas lo mismo
+      que \xE9l."
+    hint: "Detr\xE1s de una piedra agrietada del primer piso."
+    trigger: ofrenda.p1_oculta
+    origin: 2
+  - id: basalto
+    title: La piedra que escucha
+    text: El basalto agrietado cede ante el golpe de tierra. Donde la piedra se ve
+      rota, la memoria suele esconder algo.
+    hint: "La guarda el Pantano, detr\xE1s de la piedra."
+    trigger: ofrenda.p2_oculta
+    origin: 2
+  - id: altares
+    title: Altares que eran tronos
+    text: Las grandes piedras talladas de La Venta se llamaron altares durante mucho
+      tiempo. Hoy muchos estudiosos las interpretan como tronos donde se sentaba
+      el gobernante. En la que se conoce como Altar 4, una figura sale de un nicho,
+      como de la boca de una cueva.
+    hint: Junto a una gran piedra tallada de la ciudad.
+    trigger: examinar:altar_trono
+    origin: 1
+  - id: cabezas
+    title: Las cabezas colosales
+    text: "Los olmecas tallaron cabezas colosales de basalto. Se conocen diecisiete,
+      de San Lorenzo, La Venta, Tres Zapotes y sus alrededores. El basalto se trajo
+      de la sierra de los Tuxtlas, a decenas de kil\xF3metros. Se suele pensar que
+      retratan a gobernantes, pero eso es una interpretaci\xF3n."
+    hint: "Junto al sello de un guardi\xE1n de piedra."
+    trigger: examinar:sello_guardian
+    origin: 0
+  - id: jade
+    title: El jade azul-verde
+    text: "Los olmecas apreciaban la jade\xEDta azul-verde y la tallaban en hachas,
+      m\xE1scaras y figurillas. Su origen se ha rastreado hasta el valle del r\xEDo
+      Motagua, en la actual Guatemala, muy lejos de La Venta. Que el jade guarde
+      memorias es ficci\xF3n de este juego."
+    hint: "En lo m\xE1s hondo de la estructura, tras la piedra."
+    trigger: ofrenda.p3_oculta
+    origin: 0

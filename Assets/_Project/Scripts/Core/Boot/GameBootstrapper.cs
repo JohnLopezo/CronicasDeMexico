@@ -44,6 +44,7 @@ namespace CronicasDeMexico.Core.Boot
 
         // Igual que QuestCatalog.ResourcePath y los ResourcePath de Data/Rewards, que Core no puede referenciar.
         const string QuestCatalogResource = "Narrativa/CatalogoMisiones";
+        const string CodexCatalogResource = "Narrativa/CatalogoCodice"; // CodexCatalog.ResourcePath
         const string ItemCatalogResource = "Recompensas/CatalogoObjetos";
         const string BlessingCatalogResource = "Recompensas/CatalogoBendiciones";
         const string ProgressionConfigResource = "Recompensas/ConfigProgresion";
@@ -64,8 +65,12 @@ namespace CronicasDeMexico.Core.Boot
             save.Register(story); // antes que las misiones, que confían en que las banderas ya estén
             save.Register(quests);
             save.Register(checkpoint);
+            // Después de StoryState: al cargar recupera las páginas cuyo disparador (una bandera) ya se cumplía.
+            var codex = new CodexService(story, Resources.Load<ScriptableObject>(CodexCatalogResource) as ICodexCatalog);
+            save.Register(codex);
             ServiceLocator.Register(story);
             ServiceLocator.Register(quests);
+            ServiceLocator.Register(codex);
             ServiceLocator.Register(checkpoint);
 
             // Recompensas y progresión (M5). El inventario se restaura antes que la progresión, que suma sus reliquias.

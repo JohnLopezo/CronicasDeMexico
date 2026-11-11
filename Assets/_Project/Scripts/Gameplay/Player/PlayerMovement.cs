@@ -52,6 +52,19 @@ namespace CronicasDeMexico.Gameplay.Player
         [SerializeField, Min(0f), Tooltip("Segundos que se guarda una pulsación de esquiva hecha antes de poder esquivar.")]
         float dodgeBuffer = 0.15f;
 
+        [Header("Esquiva perfecta")]
+        [SerializeField, Min(0f), Tooltip("Segundos desde que empieza la esquiva en los que esquivar un golpe es perfecto. 0 lo desactiva.")]
+        float perfectDodgeWindow = 0.2f;
+
+        [SerializeField, Range(0.05f, 1f), Tooltip("Escala de tiempo de la cámara lenta.")]
+        float perfectDodgeTimeScale = 0.35f;
+
+        [SerializeField, Min(0f), Tooltip("Segundos reales de cámara lenta.")]
+        float perfectDodgeSlowMotion = 0.45f;
+
+        [SerializeField, Min(0f), Tooltip("Segundos mínimos entre dos esquivas perfectas.")]
+        float perfectDodgeCooldown = 1.5f;
+
         CharacterController controller;
         Health health;
         InputAction dodge;
@@ -62,6 +75,9 @@ namespace CronicasDeMexico.Gameplay.Player
         float nextDodgeTime;
         int dodgesUsed;
         float dodgeBufferedUntil;
+        float dodgeStartTime = float.NegativeInfinity;
+        float nextPerfectDodge = float.NegativeInfinity;
+        DamageFlash flash;
         SlowTracker slow;
 
         /// <summary>Velocidad horizontal actual en m/s.</summary>
@@ -80,7 +96,8 @@ namespace CronicasDeMexico.Gameplay.Player
         {
             controller = GetComponent<CharacterController>();
             health = GetComponent<Health>();
-            dodge = dodgeAction != null ? dodgeAction.action : FindSiblingAction(DodgeActionName);
+            flash = GetComponent<DamageFlash>();
+            dodge =dodgeAction != null ? dodgeAction.action : FindSiblingAction(DodgeActionName);
         }
 
         /// <summary>
@@ -101,6 +118,8 @@ namespace CronicasDeMexico.Gameplay.Player
             if (moveAction != null)
                 moveAction.action.Enable();
             dodge?.Enable();
+            if (health != null)
+                health.Evaded += OnEvaded;
         }
 
         void OnDisable()
@@ -108,6 +127,8 @@ namespace CronicasDeMexico.Gameplay.Player
             if (moveAction != null)
                 moveAction.action.Disable();
             dodge?.Disable();
+            if (health != null)
+                health.Evaded -= OnEvaded;
 
             // Desactivado (p. ej. al morir) queda quieto: el sprite no debe seguir caminando.
             planarVelocity = Vector3.zero;
@@ -132,6 +153,7 @@ namespace CronicasDeMexico.Gameplay.Player
             if (dodgesUsed >= dodgeCharges)
                 return false;
             dodgesUsed++;
+            dodgeStartTime = Time.time;
 
             direction = Vector3.ProjectOnPlane(direction, Vector3.up);
             dodgeDirection = direction.sqrMagnitude > 0.0001f ? direction.normalized : FacingDirection;
@@ -141,6 +163,22 @@ namespace CronicasDeMexico.Gameplay.Player
             if (health != null)
                 health.GrantInvulnerability(dodgeInvulnerability);
             return true;
+        }
+
+        /// <summary>Se esquivó un golpe justo a tiempo: cámara lenta y esquivas recargadas.</summary>
+        public event System.Action PerfectDodged;
+
+        // Golpe que no contó por la invulnerabilidad: es perfecto si llegó al principio de una esquiva.
+        void OnEvaded(Vector3 source)
+        {
+            if (!IsDodging || Time.time - dodgeStartTime > perfectDodgeWindow || Time.time < nextPerfectDodge)
+                return;
+            nextPerfectDodge = Time.time + perfectDodgeCooldown;
+            dodgesUsed = 0;
+            TimeDilation.Request(perfectDodgeTimeScale, perfectDodgeSlowMotion);
+            if (flash != null)
+                flash.Flash();
+            PerfectDodged?.Invoke();
         }
 
         /// <summary>Gira la mirada sin moverse (apuntado asistido). Ignora direcciones nulas o verticales.</summary>

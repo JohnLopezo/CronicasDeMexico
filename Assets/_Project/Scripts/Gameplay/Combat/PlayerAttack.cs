@@ -68,6 +68,7 @@ namespace CronicasDeMexico.Gameplay.Combat
         [SerializeField, Range(0f, 180f), Tooltip("Grados a cada lado de la mirada en los que busca enemigo.")]
         float aimAssistAngle = 60f;
 
+        // Casi nula y no 0: con 0 el juego se daría por pausado (controles táctiles, menús).
         const float HitStopScale = 0.05f;
 
         readonly Collider[] hits = new Collider[8];
@@ -81,7 +82,6 @@ namespace CronicasDeMexico.Gameplay.Combat
         float nextAttackTime;
         float bufferedUntil;
         float lastAttackTime = float.NegativeInfinity;
-        float hitStopUntil;
 
         /// <summary>Golpe del combo lanzado el último: 0, 1… (el remate es ComboLength − 1).</summary>
         public int ComboStep { get; private set; }
@@ -113,14 +113,10 @@ namespace CronicasDeMexico.Gameplay.Combat
         {
             if (attackAction != null)
                 attackAction.action.Disable();
-            EndHitStop();
         }
 
         void Update()
         {
-            if (hitStopUntil > 0f && Time.unscaledTime >= hitStopUntil)
-                EndHitStop();
-
             // La esquiva corta el combo: el siguiente golpe vuelve a ser el primero.
             if (movement.IsDodging)
                 lastAttackTime = float.NegativeInfinity;
@@ -155,7 +151,7 @@ namespace CronicasDeMexico.Gameplay.Combat
             var damaged = Strike(finisher ? Mathf.RoundToInt(damage * finisherDamageFactor) : damage);
             if (damaged > 0)
             {
-                StartHitStop(hitStop * (finisher ? 1.6f : 1f));
+                TimeDilation.Request(HitStopScale, hitStop * (finisher ? 1.6f : 1f));
                 ScreenShake.Request(hitShake * (finisher ? 2f : 1f), 0.12f);
             }
             return damaged;
@@ -190,23 +186,6 @@ namespace CronicasDeMexico.Gameplay.Combat
                 return false;
             movement.Face(best);
             return true;
-        }
-
-        // Escala casi nula y no 0: con 0 el juego se daría por pausado (controles táctiles, menús).
-        void StartHitStop(float seconds)
-        {
-            if (seconds <= 0f || Time.timeScale != 1f)
-                return;
-            Time.timeScale = HitStopScale;
-            hitStopUntil = Time.unscaledTime + seconds;
-        }
-
-        void EndHitStop()
-        {
-            // Si entretanto un menú pausó, la escala ya no es la del hitstop y no se toca.
-            if (hitStopUntil > 0f && Mathf.Approximately(Time.timeScale, HitStopScale))
-                Time.timeScale = 1f;
-            hitStopUntil = 0f;
         }
 
         /// <summary>Se lanzó un golpe (para la animación del zarpazo).</summary>

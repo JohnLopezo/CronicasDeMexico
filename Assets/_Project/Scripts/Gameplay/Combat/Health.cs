@@ -40,6 +40,15 @@ namespace CronicasDeMexico.Gameplay.Combat
         /// <summary>Recuperó vida: cantidad efectiva y origen.</summary>
         public event Action<int, HealSource> Healed;
 
+        /// <summary>Un golpe no contó por la invulnerabilidad (p. ej. durante la esquiva); argumento: su origen.</summary>
+        public event Action<Vector3> Evaded;
+
+        /// <summary>
+        /// Decide antes del daño si el golpe se anula (bloqueo perfecto, PlayerDefense). Recibe cantidad y origen y
+        /// devuelve true para anularlo. Un solo dueño: se asigna, no se suma.
+        /// </summary>
+        public Func<int, Vector3, bool> Intercept { get; set; }
+
         void Awake() => current = maxHealth;
 
         // En Start y no en Awake: los oyentes ya se suscribieron en su OnEnable.
@@ -48,7 +57,14 @@ namespace CronicasDeMexico.Gameplay.Combat
         /// <summary>Aplica daño si no está muerto ni es invulnerable. Devuelve true si el golpe contó.</summary>
         public bool TryDamage(int amount, Vector3 sourcePosition)
         {
-            if (amount <= 0 || IsDead || Time.time < invulnerableUntil)
+            if (amount <= 0 || IsDead)
+                return false;
+            if (Time.time < invulnerableUntil)
+            {
+                Evaded?.Invoke(sourcePosition);
+                return false;
+            }
+            if (Intercept != null && Intercept(amount, sourcePosition))
                 return false;
 
             current = Mathf.Max(0, current - Mathf.CeilToInt(Mathf.Max(1, amount - Defense) * DamageFactor));

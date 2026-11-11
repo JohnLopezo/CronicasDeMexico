@@ -16,7 +16,7 @@ namespace CronicasDeMexico.Gameplay.Enemies
     /// Los voladores mueven un hijo intermedio (heightRoot) para que el sprite suba sin perder la rejilla de píxeles.
     /// </summary>
     [RequireComponent(typeof(CharacterController), typeof(Health))]
-    public sealed class WildEnemy : MonoBehaviour, IPlanarMotion, ISlowable
+    public sealed class WildEnemy : MonoBehaviour, IPlanarMotion, ISlowable, IStaggerable
     {
         public enum State { Idle, Chase, Windup, Strike, Recover, Guard, Phased, Special, Dead }
 
@@ -573,6 +573,15 @@ namespace CronicasDeMexico.Gameplay.Enemies
             health.GrantInvulnerability(StunTime);
             defenseCooldownTimer = data.defenseCooldown;
             Play(data.guard);
+        }
+
+        public void Stagger(float seconds)
+        {
+            if (Current == State.Dead || health.IsDead)
+                return;
+            CancelAttack();
+            stunTimer = Mathf.Max(stunTimer, seconds);
+            Play(data.hit);
         }
 
         void OnDamaged(Vector3 source)

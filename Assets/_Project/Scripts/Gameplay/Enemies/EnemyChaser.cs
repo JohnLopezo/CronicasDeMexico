@@ -15,7 +15,7 @@ namespace CronicasDeMexico.Gameplay.Enemies
     /// quedarse visible al morir para mostrar su caída.
     /// </summary>
     [RequireComponent(typeof(CharacterController), typeof(Health))]
-    public sealed class EnemyChaser : MonoBehaviour, IPlanarMotion, ISlowable
+    public sealed class EnemyChaser : MonoBehaviour, IPlanarMotion, ISlowable, IStaggerable
     {
         const float HomeArriveDistance = 0.2f;
         const float ReturnSpeedFactor = 0.6f;
@@ -304,6 +304,16 @@ namespace CronicasDeMexico.Gameplay.Enemies
         }
 
         public void ApplySlow(float speedFactor) => slow.Apply(speedFactor);
+
+        public void Stagger(float seconds)
+        {
+            if (health != null && health.IsDead)
+                return;
+            if (Lunge != LungePhase.None)
+                EndLunge();
+            stunTimer = Mathf.Max(stunTimer, seconds);
+            planarVelocity = Vector3.zero;
+        }
 
         void OnDamaged(Vector3 sourcePosition)
         {

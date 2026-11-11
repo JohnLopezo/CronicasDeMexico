@@ -154,6 +154,7 @@ namespace CronicasDeMexico.Tests
             Assert.AreEqual("DSS_Guerrero_Balam_Defensa", ActionName(animator));
             Assert.IsTrue(player.Rooted, "Quieto mientras defiende.");
             Assert.IsFalse(player.TryDodge(Vector3.left), "Defendiendo no esquiva.");
+            yield return new WaitForSeconds(0.25f); // pasada la ventana del bloqueo perfecto: defensa normal
 
             var before = health.Current;
             Assert.IsTrue(health.TryDamage(11, source));

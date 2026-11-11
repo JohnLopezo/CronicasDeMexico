@@ -45,7 +45,10 @@ namespace CronicasDeMexico.Gameplay.Combat
                 SetFlash(0f);
         }
 
-        void OnDamaged(Vector3 sourcePosition)
+        void OnDamaged(Vector3 sourcePosition) => Flash();
+
+        /// <summary>Destello blanco ahora (golpe recibido, bloqueo y esquiva perfectos).</summary>
+        public void Flash()
         {
             timer = duration;
             SetFlash(1f);

@@ -122,15 +122,26 @@ namespace CronicasDeMexico.Tests
             yield return WaitPhysics();
             var start = player.transform.position;
 
+            var perfect = 0;
+            player.PerfectDodged += () => perfect++;
             Assert.IsTrue(player.TryDodge(Flow(1f, 0f) - Flow(0f, 0f)));
             Assert.IsTrue(player.IsDodging);
             Assert.IsFalse(health.TryDamage(1, start), "Durante la esquiva no se recibe daño.");
-            Assert.IsFalse(player.TryDodge(Vector3.zero), "La esquiva tiene un tiempo de espera.");
+            Assert.AreEqual(1, perfect, "Un golpe al empezar la esquiva es una esquiva perfecta.");
+            Assert.Less(Time.timeScale, 1f, "La esquiva perfecta ralentiza el tiempo.");
+            Assert.IsFalse(health.TryDamage(1, start));
+            Assert.AreEqual(1, perfect, "Una sola por esquiva.");
+            Assert.IsFalse(player.TryDodge(Vector3.zero), "No se esquiva durante otra esquiva.");
 
             yield return new WaitForSeconds(0.3f);
             Assert.IsFalse(player.IsDodging);
             Assert.Greater(Vector3.Distance(start, player.transform.position), 1.4f, "La esquiva debe recorrer más que el paso.");
+            yield return new WaitForSecondsRealtime(0.3f);
+            Assert.AreEqual(1f, Time.timeScale, "La cámara lenta termina sola.");
+            // La esquiva perfecta recargó las dos: se encadenan otras dos y después hay que esperar.
             Assert.IsTrue(player.TryDodge(Vector3.zero), "Al acabar la primera se encadena una segunda.");
+            yield return new WaitForSeconds(0.25f);
+            Assert.IsTrue(player.TryDodge(Vector3.zero), "Y otra encadenada.");
             yield return new WaitForSeconds(0.25f);
             Assert.IsFalse(player.TryDodge(Vector3.zero), "Gastadas las dos cargas hay que esperar.");
             yield return new WaitForSeconds(0.5f);

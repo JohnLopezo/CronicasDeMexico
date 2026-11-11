@@ -227,6 +227,51 @@ namespace CronicasDeMexico.Tests
             }
         }
 
+        sealed class StaggerProbe : MonoBehaviour, IStaggerable
+        {
+            public float Seconds;
+            public void Stagger(float seconds) => Seconds = seconds;
+        }
+
+        // E3: defender justo antes del golpe lo anula y aturde al atacante; tarde, solo reduce; pulsar sin parar no sirve.
+        [UnityTest]
+        public IEnumerator PerfectBlock_NegatesTheHit_StaggersTheAttacker_AndCannotBeSpammed()
+        {
+            var defense = player.AddComponent<PlayerDefense>();
+            var attacker = CreateDummy(new Vector3(0f, 0f, -1f), out _);
+            var probe = attacker.AddComponent<StaggerProbe>();
+            var blocks = 0;
+            defense.PerfectBlocked += () => blocks++;
+            try
+            {
+                yield return new WaitForFixedUpdate();
+                defense.Held = true;
+                yield return null;
+                Assert.IsTrue(defense.InPerfectWindow);
+                Assert.IsFalse(playerHealth.TryDamage(10, attacker.transform.position), "El bloqueo perfecto anula el golpe.");
+                Assert.That(playerHealth.Current, Is.EqualTo(playerHealth.Max));
+                Assert.That(probe.Seconds, Is.GreaterThan(0f), "Aturde a quien golpeó.");
+                Assert.That(blocks, Is.EqualTo(1));
+
+                yield return new WaitForSecondsRealtime(0.15f);
+                Assert.That(Time.timeScale, Is.EqualTo(1f), "La pausa del bloqueo termina sola.");
+                yield return new WaitForSeconds(0.25f);
+                Assert.IsFalse(defense.InPerfectWindow);
+                Assert.IsTrue(playerHealth.TryDamage(10, attacker.transform.position), "Tarde, la defensa solo reduce.");
+                Assert.That(playerHealth.Current, Is.EqualTo(playerHealth.Max - 5));
+
+                defense.Held = false;
+                yield return null;
+                defense.Held = true;
+                yield return null;
+                Assert.IsFalse(defense.InPerfectWindow, "Soltar y volver a pulsar enseguida no rearma la ventana.");
+            }
+            finally
+            {
+                Object.Destroy(attacker);
+            }
+        }
+
         [UnityTest]
         public IEnumerator Enemy_ChasesAndDamagesPlayer_IsKnockedBack_AndDisappearsOnDeath()
         {

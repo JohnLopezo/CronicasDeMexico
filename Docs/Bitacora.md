@@ -36,7 +36,22 @@ Plantilla:
   - `Core/Feedback/ScreenShake`: la piden `PlayerAttack` y `PlayerDamageResponse` (al recibir daño) y la aplica `IsometricCameraFollow`. Tiene `Enabled` para la futura opción de accesibilidad (E5).
   - Sin cambios en prefabs ni escenas: los campos nuevos toman sus valores por defecto.
 - **Pruebas:** EditMode 139/139 y PlayMode 128/128. Nuevas: `Attack_ChainsAThreeHitCombo_WhoseFinisherHitsHarder` y `Attack_TurnsTowardANearbyEnemyInsideTheCone_ButNotBehind`. La de la esquiva ahora comprueba la segunda carga. **No se ha jugado en el Editor ni en el teléfono.**
-- **Siguiente:** que el autor juegue y ajuste en el Inspector del jugador (secciones Combo, Sensación del impacto y Apuntado asistido); fijar objetivo (pendiente de E2, necesita un botón táctil nuevo); E3–E7.
+- Commits `fc7211c` (controles táctiles del S24+) y `8e4cb45` (E1 y E2), con la aprobación del autor. Sin push.
+- **Hecho (E3, bloqueo y esquiva perfectos; GDD §115 pide "esquive perfecto con recompensa"):**
+  - `PlayerDefense`: un golpe que llega en los primeros 0,2 s de defensa se anula. Aturde 1,2 s al atacante (`IStaggerable`: `WildEnemy` y `EnemyChaser`; los jefes no, porque sus ataques son corrutinas) y da pausa breve, sacudida y destello. Los proyectiles solo se anulan. La ventana se rearma a los 0,6 s, así que pulsar sin parar no sirve.
+  - `PlayerMovement`: un golpe que llega en los primeros 0,2 s de una esquiva es una esquiva perfecta. Da cámara lenta (×0,35 durante 0,45 s reales), recarga las esquivas y un destello; una cada 1,5 s como máximo.
+  - `Health`: `Intercept` (decide antes del daño) y `Evaded` (golpe ignorado por invulnerabilidad). `DamageFlash.Flash()` es pública.
+  - `Combat/TimeDilation` reúne el hitstop y la cámara lenta. Nunca usa escala 0 y, si el plazo vence con el menú abierto, espera a que se cierre. Antes, el hitstop de E1 podía dejar el juego a 0,05 si vencía con el menú abierto.
+- **Pruebas (E3):** EditMode 139/139 y PlayMode 129/129.
+  - Nueva: `PerfectBlock_NegatesTheHit_StaggersTheAttacker_AndCannotBeSpammed`.
+  - La de la esquiva comprueba la esquiva perfecta y la cámara lenta.
+  - La de la defensa del Jaguar espera a que pase la ventana.
+- **Sin commit E3.** No se ha jugado.
+- **Siguiente:**
+  - Que el autor juegue y ajuste en el Inspector del jugador (Combo, Sensación del impacto, Apuntado asistido, Bloqueo perfecto y Esquiva perfecta).
+  - Falta arte o VFX propio para el bloqueo y la esquiva perfectos (hoy es el destello blanco del daño).
+  - Fijar objetivo (pendiente de E2).
+  - E4–E7.
 
 ---
 

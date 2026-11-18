@@ -111,6 +111,37 @@ namespace CronicasDeMexico.Tests
             }
         }
 
+        // Salto (PORTAR_A_UNITY §2): en el aire, a más de 0,3 m sobre los pinchos, no pinchan; al caer encima, sí.
+        [UnityTest]
+        public IEnumerator Spikes_DoNotHurt_InTheAir_ButDoOnLanding()
+        {
+            var trap = Trap(Vector3.zero, periodic: false, out _, out _);
+            var controller = player.GetComponent<CharacterController>();
+            try
+            {
+                controller.enabled = false;
+                player.transform.position = new Vector3(5f, 0f, 0f);
+                controller.enabled = true;
+                trap.Trigger();
+                yield return Until(() => trap.Current == SpikeTrap.State.Raised, 1f, "Los pinchos no subieron.");
+
+                controller.enabled = false;
+                player.transform.position = new Vector3(0f, 0.9f, 0f); // en el aire, sobre los pinchos
+                controller.enabled = true;
+                while (player.transform.position.y > PlayerMovement.AirClearance + 0.05f)
+                {
+                    Assert.That(playerHealth.Current, Is.EqualTo(playerHealth.Max), "En el aire los pinchos no pinchan.");
+                    yield return new WaitForFixedUpdate();
+                }
+                yield return new WaitForSeconds(0.3f);
+                Assert.That(playerHealth.Current, Is.LessThan(playerHealth.Max), "Al caer encima, sí.");
+            }
+            finally
+            {
+                Object.Destroy(trap.gameObject);
+            }
+        }
+
         [UnityTest]
         public IEnumerator PressurePlate_RaisesItsLinkedSpikes()
         {

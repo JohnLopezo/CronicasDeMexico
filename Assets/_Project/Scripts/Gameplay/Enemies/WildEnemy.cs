@@ -16,7 +16,7 @@ namespace CronicasDeMexico.Gameplay.Enemies
     /// Los voladores mueven un hijo intermedio (heightRoot) para que el sprite suba sin perder la rejilla de píxeles.
     /// </summary>
     [RequireComponent(typeof(CharacterController), typeof(Health))]
-    public sealed class WildEnemy : MonoBehaviour, IPlanarMotion, ISlowable, IStaggerable
+    public sealed class WildEnemy : MonoBehaviour, IPlanarMotion, ISlowable, IStaggerable, IJumpDodger
     {
         public enum State { Idle, Chase, Windup, Strike, Recover, Guard, Phased, Special, Dead }
 
@@ -38,6 +38,7 @@ namespace CronicasDeMexico.Gameplay.Enemies
         const float PhaseReappearDistance = 1.8f;
         const float PhasedAlpha = 0.3f;
         const float FlyHighFactor = 2.5f;
+        const float HeightEase = 14f;
         const float ZigzagAngle = 35f;
         const float ZigzagFrequency = 4f;
         const float ErraticAngle = 50f;
@@ -90,6 +91,7 @@ namespace CronicasDeMexico.Gameplay.Enemies
         float attackCooldownTimer;
         float defenseCooldownTimer;
         float flyHighTimer;
+        float shownHeight = -1f; // altura de vuelo dibujada; -1 = aún sin colocar
         float erraticTimer;
         float erraticAngle;
         float lingerTimer;
@@ -120,6 +122,7 @@ namespace CronicasDeMexico.Gameplay.Enemies
         {
             controller = GetComponent<CharacterController>();
             health = GetComponent<Health>();
+            EnemyJumpDodge.Ensure(gameObject);
             home = transform.position;
             if (data != null)
             {
@@ -578,6 +581,17 @@ namespace CronicasDeMexico.Gameplay.Enemies
             Play(data.guard);
         }
 
+        // Esquiva saltando (EnemyJumpDodge): no mientras avisa o ataca, aturdido o desvanecido.
+        public bool CanDodgeJump => Current is State.Idle or State.Chase or State.Recover && stunTimer <= 0f && !health.IsDead;
+        public bool Flies => data != null && data.flies;
+        public void DodgeJump(float upSpeed)
+        {
+            if (Flies)
+                flyHighTimer = Mathf.Max(flyHighTimer, EnemyJumpDodge.FlyerInvulnerable * 2f); // sube como su defensa de vuelo
+            else
+                verticalSpeed = upSpeed;
+        }
+
         public void Stagger(float seconds)
         {
             if (Current == State.Dead || health.IsDead)
@@ -720,7 +734,9 @@ namespace CronicasDeMexico.Gameplay.Enemies
             if (heightRoot == null || data == null || !data.flies)
                 return;
             var height = data.hoverHeight * (flyHighTimer > 0f ? FlyHighFactor : 1f);
-            heightRoot.localPosition = Vector3.up * (height + Mathf.Sin(Time.time * BobFrequency) * BobAmplitude);
+            // Sube y baja suave (como en la versión HTML), no de golpe: defensa vueloAlto y esquiva saltando.
+            shownHeight = shownHeight < 0f ? height : shownHeight + (height - shownHeight) * Mathf.Min(1f, Time.deltaTime * HeightEase);
+            heightRoot.localPosition = Vector3.up * (shownHeight + Mathf.Sin(Time.time * BobFrequency) * BobAmplitude);
         }
 
         void SetAlpha(float alpha)

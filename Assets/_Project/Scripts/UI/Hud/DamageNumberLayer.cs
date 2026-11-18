@@ -66,7 +66,7 @@ namespace CronicasDeMexico.UI.Hud
         void OnReported(Vector3 worldPosition, int amount, DamageKind kind)
         {
             var label = labels[next];
-            label.text = amount.ToString();
+            label.text = kind == DamageKind.Dodged ? "Esquiva" : amount.ToString();
             label.EnableInClassList(BrokenClass, kind == DamageKind.Broken);
             label.EnableInClassList(TakenClass, kind == DamageKind.Taken);
             origins[next] = worldPosition;

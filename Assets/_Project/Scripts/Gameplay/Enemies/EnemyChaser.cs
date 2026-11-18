@@ -16,7 +16,7 @@ namespace CronicasDeMexico.Gameplay.Enemies
     /// quedarse visible al morir para mostrar su caída.
     /// </summary>
     [RequireComponent(typeof(CharacterController), typeof(Health))]
-    public sealed class EnemyChaser : MonoBehaviour, IPlanarMotion, ISlowable, IStaggerable
+    public sealed class EnemyChaser : MonoBehaviour, IPlanarMotion, ISlowable, IStaggerable, IJumpDodger
     {
         const float HomeArriveDistance = 0.2f;
         const float ReturnSpeedFactor = 0.6f;
@@ -118,6 +118,7 @@ namespace CronicasDeMexico.Gameplay.Enemies
         {
             controller = GetComponent<CharacterController>();
             health = GetComponent<Health>();
+            EnemyJumpDodge.Ensure(gameObject);
             renderers = GetComponentsInChildren<Renderer>();
             home = marches ? marchPoint : transform.position;
             // shortcut: ruptura en código porque no tiene datos de diseño; pasarla a un asset si se vuelve un enemigo con variantes.
@@ -307,6 +308,11 @@ namespace CronicasDeMexico.Gameplay.Enemies
         }
 
         public void ApplySlow(float speedFactor) => slow.Apply(speedFactor);
+
+        // Esquiva saltando (EnemyJumpDodge): no aturdido ni durante su embestida.
+        public bool CanDodgeJump => stunTimer <= 0f && Lunge == LungePhase.None && !health.IsDead;
+        public bool Flies => false;
+        public void DodgeJump(float upSpeed) => verticalSpeed = upSpeed;
 
         public void Stagger(float seconds)
         {

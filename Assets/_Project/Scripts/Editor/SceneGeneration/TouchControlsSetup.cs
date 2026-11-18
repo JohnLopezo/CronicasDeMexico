@@ -32,6 +32,7 @@ namespace CronicasDeMexico.Editor.SceneGeneration
             ("Golpe_Tierra", "Tierra", "<Gamepad>/buttonEast", new(-250f, 450f), 110f),
             ("Interactuar", "Hablar", "<Gamepad>/buttonNorth", new(-90f, 330f), 110f),
             ("Usar", "Usar", "<Gamepad>/dpad/left", new(-90f, 510f), 100f), // el consumible más útil (acción UseItem)
+            ("Saltar", "Saltar", "<Gamepad>/dpad/up", new(-90f, 670f), 100f), // acción Hop, encima de Usar (como en la versión HTML)
             // Fijar objetivo (acción LockOn): arriba a la izquierda del grupo, lejos de Atacar para no pulsarlo sin querer.
             ("Fijar", "Fijar", "<Gamepad>/rightStickPress", new(-430f, 510f), 100f),
         };

@@ -24,7 +24,7 @@ namespace CronicasDeMexico.Gameplay.Enemies
     /// avisa "vencer:guardian_piedra_viva" (ReportOnDefeat); su bandera lo retira y muestra la figura liberada.
     /// </summary>
     [RequireComponent(typeof(CharacterController), typeof(Health))]
-    public sealed class StoneGuardian : MonoBehaviour, IPlanarMotion, ISlowable
+    public sealed class StoneGuardian : MonoBehaviour, IPlanarMotion, ISlowable, IJumpDodger
     {
         const float PhaseTwoFraction = 0.6f;
         const float PhaseThreeFraction = 0.25f;
@@ -103,6 +103,7 @@ namespace CronicasDeMexico.Gameplay.Enemies
         {
             controller = GetComponent<CharacterController>();
             health = GetComponent<Health>();
+            EnemyJumpDodge.Ensure(gameObject);
             foreach (var shard in shards)
                 shard.transform.SetParent(null, true); // vuelan por su cuenta
             // Jefe de tierra: débil al agua y al viento; con Balam se rompe con bloqueos perfectos. shortcut: valores en código.
@@ -137,6 +138,11 @@ namespace CronicasDeMexico.Gameplay.Enemies
             health.Died -= OnDied;
             HideMarkers();
         }
+
+        // Esquiva saltando (EnemyJumpDodge): solo despierto y sin un ataque en marcha (busy).
+        public bool CanDodgeJump => IsEngaged && !IsDefeated && !busy && !health.IsDead;
+        public bool Flies => false;
+        public void DodgeJump(float upSpeed) => verticalSpeed = upSpeed;
 
         public void ApplySlow(float speedFactor) => slow.Apply(speedFactor);
 

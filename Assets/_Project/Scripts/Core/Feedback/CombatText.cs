@@ -11,6 +11,8 @@ namespace CronicasDeMexico.Core.Feedback
         Broken,
         /// <summary>Daño al jugador.</summary>
         Taken,
+        /// <summary>Un enemigo esquivó el golpe de un salto (EnemyJumpDodge): texto «Esquiva», sin cantidad.</summary>
+        Dodged,
     }
 
     /// <summary>
@@ -26,7 +28,7 @@ namespace CronicasDeMexico.Core.Feedback
 
         public static void Report(Vector3 worldPosition, int amount, DamageKind kind)
         {
-            if (amount > 0 && ComfortSettings.DamageNumbers)
+            if ((amount > 0 || kind == DamageKind.Dodged) && ComfortSettings.DamageNumbers)
                 Reported?.Invoke(worldPosition, amount, kind);
         }
     }

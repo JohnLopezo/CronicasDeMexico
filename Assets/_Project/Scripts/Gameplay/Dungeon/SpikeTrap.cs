@@ -1,4 +1,5 @@
 using CronicasDeMexico.Gameplay.Combat;
+using CronicasDeMexico.Gameplay.Player;
 using UnityEngine;
 
 namespace CronicasDeMexico.Gameplay.Dungeon
@@ -110,6 +111,10 @@ namespace CronicasDeMexico.Gameplay.Dungeon
         void OnTriggerStay(Collider other)
         {
             if (Current != State.Raised || !other.CompareTag("Player"))
+                return;
+            // Saltando por encima no se pincha (más de PlayerMovement.AirClearance sobre la trampa).
+            var movement = other.GetComponentInParent<PlayerMovement>();
+            if (movement != null && movement.IsAirborneAbove(transform.position.y))
                 return;
             var health = other.GetComponentInParent<Health>();
             if (health != null)

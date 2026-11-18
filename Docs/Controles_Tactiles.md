@@ -16,6 +16,7 @@ Aprobada por el autor. Las posiciones están en píxeles de una pantalla de refe
 | Tierra | (−250, 450) | 110 | Este | Golpe de tierra |
 | Hablar | (−90, 330) | 110 | Norte | Interact (examinar, hablar, cerrar mensajes) |
 | **Usar** | (−90, 510) | 100 | cruceta izquierda | UseItem (el consumible más útil) |
+| Saltar | (−90, 670) | 100 | cruceta arriba | Hop (salto; K en el teclado). Pendiente de que lo apruebe el autor en el teléfono |
 | **Fijar** | (−430, 510) | 100 | pulsar el stick derecho | LockOn (fijar o soltar objetivo; Tab en el teclado) |
 | Menú | arriba a la derecha (−90, −80) | 100 | Select | Menú del juego (bolsa, Bendiciones…) |
 

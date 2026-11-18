@@ -127,7 +127,8 @@ namespace CronicasDeMexico.Gameplay.Player
                         actionSet = null;
                 }
             }
-            else if (movement.PlanarVelocity.sqrMagnitude > WalkSpeedThreshold * WalkSpeedThreshold)
+            // En el aire por un salto, el cuadro de correr aunque salte en el sitio: no hay sprite de salto.
+            else if (movement.PlanarVelocity.sqrMagnitude > WalkSpeedThreshold * WalkSpeedThreshold || movement is PlayerMovement { IsHopping: true })
             {
                 walkTime += Time.deltaTime * WalkPace(movement.PlanarVelocity.magnitude, movement.CruiseSpeed);
                 idleTime = 0f;

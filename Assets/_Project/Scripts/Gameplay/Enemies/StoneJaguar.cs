@@ -16,7 +16,7 @@ namespace CronicasDeMexico.Gameplay.Enemies
     /// "vencer:jaguar_piedra" (ReportOnDefeat) y su bandera lo retira para siempre (ActiveWhenFlags).
     /// </summary>
     [RequireComponent(typeof(CharacterController), typeof(Health))]
-    public sealed class StoneJaguar : MonoBehaviour, IPlanarMotion, ISlowable
+    public sealed class StoneJaguar : MonoBehaviour, IPlanarMotion, ISlowable, IJumpDodger
     {
         enum State { Dormant, Stalk, Windup, Leaping, Recover, Defeated }
         enum Attack { Swipe, Leap, Roar }
@@ -90,6 +90,7 @@ namespace CronicasDeMexico.Gameplay.Enemies
         {
             controller = GetComponent<CharacterController>();
             health = GetComponent<Health>();
+            EnemyJumpDodge.Ensure(gameObject);
             // Mini-jefe: no se aturde (sus ataques no se cortan), pero roto recibe más daño. shortcut: valores en código.
             BreakGauge.Ensure(gameObject, displayName, 5, 3f, Affinity.Luz, Affinity.Tierra);
         }
@@ -117,6 +118,11 @@ namespace CronicasDeMexico.Gameplay.Enemies
             if (marker != null)
                 marker.Hide();
         }
+
+        // Esquiva saltando (EnemyJumpDodge): solo al acecho, nunca avisando, saltando ni recuperándose.
+        public bool CanDodgeJump => state == State.Stalk && !health.IsDead;
+        public bool Flies => false;
+        public void DodgeJump(float upSpeed) => verticalSpeed = upSpeed;
 
         public void ApplySlow(float speedFactor) => slow.Apply(speedFactor);
 

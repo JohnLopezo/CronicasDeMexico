@@ -1,3 +1,4 @@
+using CronicasDeMexico.Gameplay.Player;
 using UnityEngine;
 
 namespace CronicasDeMexico.Gameplay.Dungeon
@@ -31,6 +32,10 @@ namespace CronicasDeMexico.Gameplay.Dungeon
         void OnTriggerStay(Collider other)
         {
             if (!other.CompareTag("Player"))
+                return;
+            // Saltando por encima no se pisa (más de PlayerMovement.AirClearance sobre la placa).
+            var movement = other.GetComponentInParent<PlayerMovement>();
+            if (movement != null && movement.IsAirborneAbove(transform.position.y))
                 return;
             lastStay = Time.time;
             if (IsPressed)

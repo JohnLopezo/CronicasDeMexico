@@ -21,6 +21,17 @@ Plantilla:
 
 ---
 
+## 2026-11-18 — port de la versión HTML, etapa U1: esquiva saltando de los enemigos y salto del jugador
+
+- **Rama / commit al empezar:** `feature/port-html` (nueva, autorizada por el autor) desde `feature/prototipo-olmeca` @ `671015e`.
+- **Pedido del autor:** pasar a Unity lo de `CronicasDeMexico-Web/PORTAR_A_UNITY.md`. Se propusieron 9 etapas (U1 §1-2; U2 §3, 4, 9; U3 §5, 12-15; U4 §6, 20; U5 §7, 22; U6 §8; U7 §10, 11, 18, 19; U8 §16, 17, 21; U9 §23-25) y el autor autorizó **U1**.
+- **Hecho:**
+  - Esquiva saltando: `Combat/EnemyJumpDodge` (nuevo) + `IJumpDodger`; `Health.Dodge` y `TryDamage(..., fromPlayer)`; `PlayerAttack` marca sus golpes; `WildEnemy`, `EnemyChaser`, `StoneJaguar`, `StoneGuardian` la añaden en `Awake`; «Esquiva» en el HUD (`DamageKind.Dodged`); altura de vuelo suavizada en `WildEnemy`.
+  - Salto: acción `Hop` (K, cruceta arriba) en `InputSystem_Actions`; `PlayerMovement.TryHop`, `AirStep`/`BlockedInAir`, `GroundBelowCenter`, `IsAirborneAbove`; `SpikeTrap` y `PressurePlate` no cuentan al jugador en el aire; `DirectionalSpriteAnimator` usa el cuadro de correr al saltar; botón Saltar en `TouchControlsSetup` (regenerados `Controles_Tactiles.prefab` y `Boot.unity`).
+  - Pruebas: `EnemyJumpDodgeTests` (nuevo, con `[SetUpFixture]` que apaga la esquiva en las demás pruebas), una del Guardián, tres de salto en `PlayerMovementTests` y una de pinchos en `DungeonTrapsTests`. Documentación: `CLAUDE.md` (Arquitectura), `Docs/Controles_Tactiles.md`.
+- **Estado al cerrar:** commit y push de U1 en `feature/port-html`, a petición del autor (el commit es el que añade esta entrada). Sin tocar lo que ya estaba sin seguimiento (`Docs/Bus/`, capturas de `Tools/ArtPipeline/Salida`, `UpgradeLog.htm`). Batería completa: **EditMode 145/145 y PlayMode 149/149**.
+- **Siguiente:** que el autor pruebe en el Editor y en el teléfono (sensación del salto, botón Saltar en (−90, 670), «Esquiva» en el HUD y que el jaguar solo esquive al acecho, que no tiene prueba propia); con su visto bueno, commit de U1 y proponer U2.
+
 ## 2026-11-11 — sensación del combate (E1) y apuntado asistido (E2)
 
 - **Rama / commit al empezar:** `feature/prototipo-olmeca` @ `bb6ab68`, con los cambios de los controles táctiles aún sin commit.

@@ -15,6 +15,10 @@ namespace CronicasDeMexico.Gameplay.Player
     public sealed class PlayerMovement : MonoBehaviour, IPlanarMotion, ISlowable
     {
         const string DodgeActionName = "Dodge";
+        const string HopActionName = "Hop"; // salto (K, cruceta arriba); Dodge es la antigua Jump
+
+        /// <summary>Altura sobre una trampa a partir de la cual el jugador en el aire no la pisa (SpikeTrap, PressurePlate).</summary>
+        public const float AirClearance = 0.3f;
 
         [SerializeField, Tooltip("Acción Vector2 de movimiento (Player/Move).")]
         InputActionReference moveAction;
@@ -52,6 +56,15 @@ namespace CronicasDeMexico.Gameplay.Player
         [SerializeField, Min(0f), Tooltip("Segundos que se guarda una pulsación de esquiva hecha antes de poder esquivar.")]
         float dodgeBuffer = 0.15f;
 
+        [Header("Salto")]
+        // shortcut: 5,8 y no los 6 de la versión HTML, que integra a pasos y sube 0,83 m; aquí 6 daría 0,9 m. Si se
+        // cambia la gravedad, recalcular: altura = v² / (2 × |gravedad|).
+        [SerializeField, Min(0f), Tooltip("Velocidad inicial del salto en m/s. Con la gravedad de −20, 5,8 sube ~0,84 m y dura ~0,6 s.")]
+        float hopSpeed = 5.8f;
+
+        [SerializeField, Min(0f), Tooltip("En el aire no avanza hacia suelo más alto que esto sobre el despegue: no sube terrazas ni rocas saltando.")]
+        float hopMaxStepUp = 0.35f;
+
         [Header("Esquiva perfecta")]
         [SerializeField, Min(0f), Tooltip("Segundos desde que empieza la esquiva en los que esquivar un golpe es perfecto. 0 lo desactiva.")]
         float perfectDodgeWindow = 0.2f;
@@ -68,6 +81,12 @@ namespace CronicasDeMexico.Gameplay.Player
         CharacterController controller;
         Health health;
         InputAction dodge;
+        InputAction hop;
+        const float LedgeSlideStep = 0.15f; // m por cuadro al apartarse de una arista alta tras un salto
+        bool hopping;
+        Vector3 hopStart;
+        float hopGroundY;
+        readonly RaycastHit[] airHits = new RaycastHit[8];
         Vector3 planarVelocity;
         Vector3 dodgeDirection;
         float verticalSpeed;
@@ -89,6 +108,15 @@ namespace CronicasDeMexico.Gameplay.Player
 
         public bool IsDodging => dodgeTimer > 0f;
 
+        /// <summary>En el aire por un salto (hasta volver a tocar el suelo). Se dibuja con el cuadro de correr.</summary>
+        public bool IsHopping => hopping;
+
+        /// <summary>
+        /// Más de AirClearance por encima de <paramref name="groundY"/> (una trampa del suelo): ahí solo se está en el aire,
+        /// así que no la pisa. Por altura y no por isGrounded, que no se actualiza hasta el siguiente Move.
+        /// </summary>
+        public bool IsAirborneAbove(float groundY) => transform.position.y > groundY + AirClearance;
+
         /// <summary>Multiplicador de la velocidad por el terreno lento (1 fuera de él).</summary>
         public float SpeedMultiplier => slow.Multiplier;
 
@@ -98,6 +126,7 @@ namespace CronicasDeMexico.Gameplay.Player
             health = GetComponent<Health>();
             flash = GetComponent<DamageFlash>();
             dodge =dodgeAction != null ? dodgeAction.action : FindSiblingAction(DodgeActionName);
+            hop = FindSiblingAction(HopActionName);
         }
 
         /// <summary>
@@ -118,6 +147,7 @@ namespace CronicasDeMexico.Gameplay.Player
             if (moveAction != null)
                 moveAction.action.Enable();
             dodge?.Enable();
+            hop?.Enable();
             if (health != null)
                 health.Evaded += OnEvaded;
         }
@@ -127,12 +157,67 @@ namespace CronicasDeMexico.Gameplay.Player
             if (moveAction != null)
                 moveAction.action.Disable();
             dodge?.Disable();
+            hop?.Disable();
             if (health != null)
                 health.Evaded -= OnEvaded;
 
             // Desactivado (p. ej. al morir) queda quieto: el sprite no debe seguir caminando.
             planarVelocity = Vector3.zero;
             dodgeTimer = 0f;
+            hopping = false;
+        }
+
+        /// <summary>
+        /// Salta si está en el suelo y no defiende ni esquiva (sin doble salto). Devuelve si saltó. En el aire no sube
+        /// terrazas ni obstáculos de más de hopMaxStepUp sobre el despegue (BlockedInAir).
+        /// </summary>
+        public bool TryHop()
+        {
+            if (!enabled || Rooted || IsDodging || hopping || !controller.isGrounded || (health != null && health.IsDead))
+                return false;
+            hopping = true;
+            hopStart = transform.position;
+            hopGroundY = GroundBelowCenter();
+            verticalSpeed = hopSpeed;
+            return true;
+        }
+
+        // En el aire, el paso horizontal sin entrar en suelo más alto que hopMaxStepUp sobre el despegue (terraza, roca),
+        // como puedePisar en la versión HTML. Si el paso entero no cabe, prueba solo en X o solo en Z (se desliza junto al
+        // borde). Sin esto el CharacterController se sube al borde como a un escalón.
+        Vector3 AirStep(Vector3 step)
+        {
+            if (!BlockedInAir(step))
+                return step;
+            var alongX = new Vector3(step.x, 0f, 0f);
+            if (!BlockedInAir(alongX))
+                return alongX;
+            var alongZ = new Vector3(0f, 0f, step.z);
+            return BlockedInAir(alongZ) ? Vector3.zero : alongZ;
+        }
+
+        // Altura del suelo bajo el centro (no la del jugador): apoyado en una arista, el CharacterController se da por
+        // «en el suelo» a media altura, y despegar desde ahí dejaría subir a lo que tiene al lado.
+        float GroundBelowCenter()
+        {
+            var origin = transform.position + Vector3.up * 0.3f; // dentro de la cápsula: el rayo no la toca a ella
+            return Physics.Raycast(origin, Vector3.down, out var hit, 1.3f, Physics.DefaultRaycastLayers, QueryTriggerInteraction.Ignore)
+                ? Mathf.Min(hit.point.y, transform.position.y)
+                : transform.position.y;
+        }
+
+        // Una esfera del radio de la cápsula (más su piel) baja desde arriba sobre el punto de destino.
+        bool BlockedInAir(Vector3 step)
+        {
+            const float castFrom = 4f; // por encima de los muros de 3 m: SphereCast ignora lo que ya toca al empezar
+            var radius = controller.radius + controller.skinWidth;
+            var origin = new Vector3(transform.position.x + step.x, hopGroundY + castFrom, transform.position.z + step.z);
+            var count = Physics.SphereCastNonAlloc(origin, radius, Vector3.down, airHits, castFrom - hopMaxStepUp - radius,
+                Physics.DefaultRaycastLayers, QueryTriggerInteraction.Ignore);
+            for (var i = 0; i < count; i++)
+                if (airHits[i].collider != controller)
+                    return true;
+            return false;
         }
 
         /// <summary>
@@ -205,6 +290,8 @@ namespace CronicasDeMexico.Gameplay.Player
                 dodgeBufferedUntil = Time.time + dodgeBuffer;
             if (Time.time <= dodgeBufferedUntil && TryDodge(inputDirection))
                 dodgeBufferedUntil = 0f;
+            if (hop != null && Time.timeScale > 0f && hop.WasPressedThisFrame())
+                TryHop();
 
             if (dodgeTimer > 0f)
             {
@@ -224,11 +311,35 @@ namespace CronicasDeMexico.Gameplay.Player
 
             verticalSpeed = PlanarMovement.ApplyGravity(verticalSpeed, controller.isGrounded, gravity, deltaTime);
 
-            var flags = controller.Move((planarVelocity + Vector3.up * verticalSpeed) * deltaTime);
+            var step = planarVelocity * deltaTime;
+            if (hopping && step.sqrMagnitude > 0f)
+            {
+                var allowed = AirStep(step);
+                if (allowed != step && deltaTime > 0f)
+                    planarVelocity = allowed / deltaTime;
+                step = allowed;
+            }
+            var flags = controller.Move(step + Vector3.up * (verticalSpeed * deltaTime));
 
             // Al chocar con un muro se descarta la velocidad acumulada para no "arrancar" de golpe al rodearlo.
             if ((flags & CollisionFlags.Sides) != 0 && dodgeTimer <= 0f)
                 planarVelocity = Vector3.ProjectOnPlane(controller.velocity, Vector3.up);
+
+            if (hopping && controller.isGrounded && verticalSpeed <= 0f)
+            {
+                // Posado en la arista de algo más alto (saltó pegado a ello): se aparta hacia el despegue y sigue cayendo.
+                if (transform.position.y > hopGroundY + hopMaxStepUp)
+                {
+                    var back = hopStart - transform.position;
+                    back.y = 0f;
+                    var away = back.sqrMagnitude > 0.0001f ? back.normalized : -FacingDirection;
+                    controller.Move(away * Mathf.Min(back.magnitude + controller.radius, LedgeSlideStep));
+                }
+                else
+                {
+                    hopping = false;
+                }
+            }
         }
     }
 }

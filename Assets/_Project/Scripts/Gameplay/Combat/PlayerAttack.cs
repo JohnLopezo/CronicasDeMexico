@@ -300,7 +300,7 @@ namespace CronicasDeMexico.Gameplay.Combat
                 if (target == null || target == ownHealth || System.Array.IndexOf(areaStruck, target, 0, struckCount) >= 0)
                     continue;
                 areaStruck[struckCount++] = target;
-                if (target.TryDamage(areaDamage, transform.position))
+                if (target.TryDamage(areaDamage, transform.position, fromPlayer: true))
                     ReportHit(target, element);
             }
             System.Array.Clear(areaStruck, 0, struckCount);
@@ -326,7 +326,7 @@ namespace CronicasDeMexico.Gameplay.Combat
                     continue;
 
                 struck[struckCount++] = target;
-                if (!target.TryDamage(strikeDamage, transform.position))
+                if (!target.TryDamage(strikeDamage, transform.position, fromPlayer: true))
                     continue;
                 damaged++;
                 if (!elementKnown)

@@ -152,6 +152,32 @@ namespace CronicasDeMexico.Tests
 
         static bool FloodActive() => Object.FindObjectsByType<SlowZone>(FindObjectsSortMode.None).Length > 0;
 
+        // Esquiva saltando (PORTAR_A_UNITY §1): el jefe solo esquiva al acecho, nunca con un ataque en marcha.
+        [UnityTest]
+        public IEnumerator Guardian_DodgesTheJumpOnlyWhileStalking()
+        {
+            yield return FaceGuardian(5.5f);
+            var guardian = Object.FindAnyObjectByType<StoneGuardian>();
+            var health = guardian.GetComponent<Health>();
+            Assert.IsNotNull(guardian.GetComponent<EnemyJumpDodge>(), "El Guardián debe añadir EnemyJumpDodge en su Awake.");
+            yield return WaitWhileBusy(guardian);
+            EnemyJumpDodge.Roll = () => 0f;
+            try
+            {
+                var from = Player().transform.position;
+                Assert.IsTrue(guardian.ForceAttack(GuardianAttack.Slam));
+                yield return null;
+                Assert.IsTrue(guardian.IsBusy);
+                Assert.IsTrue(health.TryDamage(10, from, fromPlayer: true), "Con un ataque en marcha no esquiva.");
+                yield return WaitWhileBusy(guardian);
+                Assert.IsFalse(health.TryDamage(10, from, fromPlayer: true), "Al acecho esquiva.");
+            }
+            finally
+            {
+                EnemyJumpDodge.Roll = () => 1f;
+            }
+        }
+
         // La embestida se avisa con una franja hacia el jugador y lo alcanza si no se aparta.
         [UnityTest]
         public IEnumerator Charge_IsTelegraphedAsALine_AndHitsAlongIt()

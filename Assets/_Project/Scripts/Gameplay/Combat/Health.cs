@@ -53,13 +53,22 @@ namespace CronicasDeMexico.Gameplay.Combat
         /// </summary>
         public Func<int, Vector3, bool> Intercept { get; set; }
 
+        /// <summary>
+        /// Decide si un golpe del jugador se esquiva de un salto (EnemyJumpDodge). Recibe el origen y devuelve true para
+        /// anularlo sin daño. Solo lo miran los golpes con fromPlayer. Un solo dueño, como Intercept.
+        /// </summary>
+        public Func<Vector3, bool> Dodge { get; set; }
+
         void Awake() => current = maxHealth;
 
         // En Start y no en Awake: los oyentes ya se suscribieron en su OnEnable.
         void Start() => Publish();
 
-        /// <summary>Aplica daño si no está muerto ni es invulnerable. Devuelve true si el golpe contó.</summary>
-        public bool TryDamage(int amount, Vector3 sourcePosition)
+        /// <summary>
+        /// Aplica daño si no está muerto ni es invulnerable. Devuelve true si el golpe contó. fromPlayer: golpe del
+        /// jugador (PlayerAttack), el único que un enemigo puede esquivar saltando (Dodge).
+        /// </summary>
+        public bool TryDamage(int amount, Vector3 sourcePosition, bool fromPlayer = false)
         {
             if (amount <= 0 || IsDead)
                 return false;
@@ -68,6 +77,8 @@ namespace CronicasDeMexico.Gameplay.Combat
                 Evaded?.Invoke(sourcePosition);
                 return false;
             }
+            if (fromPlayer && Dodge != null && Dodge(sourcePosition))
+                return false;
             if (Intercept != null && Intercept(amount, sourcePosition))
                 return false;
 
